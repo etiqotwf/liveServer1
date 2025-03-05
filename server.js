@@ -120,7 +120,7 @@ function pushToGitHub() {
         exec('git commit -m "Auto update"', (err, stdout, stderr) => {
             if (err) return console.error("❌ Error in git commit:", err);
 
-            exec(`git push https://etiqotwf:${GITHUB_TOKEN}@github.com/etiqotwf/dictionary.git main`, (err, stdout, stderr) => {
+            exec(`git push https://etiqotwf:${GITHUB_TOKEN}@github.com/etiqotwf/dictonary.git main`, (err, stdout, stderr) => {
                 if (err) return console.error("❌ Error in git push:", err);
                 console.log("✅ All changes successfully pushed to GitHub!");
             });
