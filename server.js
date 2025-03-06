@@ -111,17 +111,26 @@ function processNgrokResponse(response) {
     }
 }
 
+const { spawn } = require("child_process");
+
+function runCommand(command, args, callback) {
+    const process = spawn(command, args);
+
+    process.stdout.on("data", (data) => console.log(`stdout: ${data}`));
+    process.stderr.on("data", (data) => console.error(`stderr: ${data}`));
+
+    process.on("close", (code) => {
+        if (code !== 0) return console.error(`❌ Command failed: ${command} ${args.join(" ")}`);
+        callback();
+    });
+}
+
 function pushToGitHub() {
     console.log("📤 Pushing updates to GitHub...");
 
-    exec("git add .", (err, stdout, stderr) => {
-        if (err) return console.error("❌ Error in git add:", err);
-
-        exec('git commit -m "Auto update"', (err, stdout, stderr) => {
-            if (err) return console.error("❌ Error in git commit:", err);
-
-            exec(`git push https://etiqotwf:${GITHUB_TOKEN}@github.com/etiqotwf/liveServer.git main`, (err, stdout, stderr) => {
-                if (err) return console.error("❌ Error in git push:", err);
+    runCommand("git", ["add", "."], () => {
+        runCommand("git", ["commit", "-m", "Auto update"], () => {
+            runCommand("git", ["push", `https://etiqotwf:${GITHUB_TOKEN}@github.com/etiqotwf/javaScriptCourse.git`, "main"], () => {
                 console.log("✅ All changes successfully pushed to GitHub!");
             });
         });
