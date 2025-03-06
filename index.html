@@ -283,7 +283,7 @@ let serverUrl = ""; // سيتم تحديثه تلقائيًا عند تحميل 
 
 // دالة لجلب رابط السيرفر المخزن في GitHub
 function fetchServerUrl() {
-    return fetch("https://raw.githubusercontent.com/etiqotwf/server/main/server.json")
+    return fetch("https://raw.githubusercontent.com/etiqotwf/server/main/serverUrl.json")
         .then(response => response.json())
         .then(data => {
             if (data.serverUrl) {
