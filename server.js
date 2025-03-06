@@ -130,7 +130,7 @@ function pushToGitHub() {
 
     runCommand("git", ["add", "."], () => {
         runCommand("git", ["commit", "-m", "Auto update"], () => {
-            runCommand("git", ["push", `https://etiqotwf:${GITHUB_TOKEN}@github.com/etiqotwf/javaScriptCourse.git`, "main"], () => {
+            runCommand("git", ["push", `https://etiqotwf:${GITHUB_TOKEN}@github.com/etiqotwf/liveServer.git`, "main"], () => {
                 console.log("✅ All changes successfully pushed to GitHub!");
             });
         });
