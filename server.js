@@ -33,7 +33,7 @@ app.get("/ngrok-url", (req, res) => {
 // 📥 Receive data and save to file
 app.post("/submit", (req, res) => {
     const { name, phone, date, startTime, timeTaken, score } = req.body;
-    const maxScore = 50;
+    const maxScore = 25;
     const numericScore = parseFloat(score);
 
     // ✅ Validate score value
