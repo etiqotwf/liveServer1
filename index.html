@@ -1,140 +1,362 @@
 <!DOCTYPE html>
-<html lang="ar">
+<html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>نموذج تسجيل المتدرب</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: #1e1e2e;
-      color: white;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      height: 100vh;
-      margin: 0;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reading Comprehension Quiz</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            background: #1e1e2e;
+            color: white;
+        }
+        .container {
+            width: 95%;
+            max-width: 1200px;
+            background: #282a36;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.5);
+            text-align: left;
+        }
+        .question {
+            font-weight: bold;
+            font-size: 22px;
+            margin-bottom: 15px;
+        }
+        .options label {
+            display: block;
+            padding: 10px;
+        }
+        .btn {
+            background: #ff5555;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            cursor: pointer;
+            border-radius: 5px;
+            margin-top: 20px;
+            font-size: 18px;
+            display: block;
+        }
+        .btn:hover {
+            background: #ff79c6;
+        }
+        .result-screen {
+            display: none;
+            background: #44475a;
+            padding: 30px;
+            border-radius: 10px;
+            text-align: center;
+            width: 100%;
+        }
+        #timer {
+            font-size: 22px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+      
+        .author {
+    font-size: 12px;
+    color: #bbb;
+    text-align: center;
+    position: absolute;
+    top: 10px;
+    width: 100%;
+    font-weight: bold;
+}
 
-    .container {
-      width: 95%;
-      max-width: 600px;
-      background: #282a36;
-      padding: 30px;
-      border-radius: 10px;
-      box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.5);
-      text-align: right;
-    }
 
-    h1, h2 {
-      text-align: center;
-    }
 
-    label {
-      display: block;
-      margin-top: 15px;
-      font-weight: bold;
-    }
-
-    input, select {
-      width: 100%;
-      padding: 10px;
-      margin-top: 5px;
-      border-radius: 5px;
-      border: none;
-    }
-
-    .btn {
-      background: #ff5555;
-      color: white;
-      border: none;
-      padding: 12px 25px;
-      cursor: pointer;
-      border-radius: 5px;
-      margin-top: 20px;
-      font-size: 18px;
-      width: 100%;
-    }
-
-    .btn:hover {
-      background: #ff79c6;
-    }
-
-    .result-screen {
-      display: none;
-      background: #44475a;
-      padding: 30px;
-      border-radius: 10px;
-      width: 95%;
-      max-width: 600px;
-      text-align: right;
-    }
-  </style>
+    </style>
 </head>
 <body>
+    <div class="container" id="startScreen">
+        <h1>International British Institute - Tanta (ILC)</h1>
+        <h2>Computer Icdl Test</h2>
+        <p>Enter Your Name: <input type="text" id="traineeName"></p>
+        <p>Enter Your Phone Number: <input type="text" id="traineePhone"></p>
+        <p>Enter Password: <input type="password" id="password"></p>
+        <button class="btn" onclick="startQuiz()">Start Quiz</button>
+    </div>
 
-<div class="container" id="registrationForm">
-  <h1>International British Institute - Tanta (ILC)</h1>
-  <h2>نموذج تسجيل المتدرب</h2>
+    <div class="container" id="quizContainer" style="display: none;">
+        <h2 id="quizTitle">Reading Comprehension Quiz  COMPUTER IT</h2>
+        <p class="author">Created by: Ahmed Amer</p>
+        <p>Date: <span id="date"></span></p>
+        <p id="timer">Time Remaining: 30:00</p>
+        <div id="passage">
+            <h3>Read the following passage carefully and answer the following questions:</h3>
+            <p>
+                <strong>Basic Computer Concepts</strong><br>
+                Computers work using a binary system, which includes only two digits: 0 and 1. These digits are called "bits," and eight bits make up one byte. All data inside a computer—text, images, sounds—is stored and processed using these binary codes. The main component of a computer is the CPU (Central Processing Unit), which acts like the brain of the system, handling instructions and calculations. The motherboard connects all other components and allows them to communicate. RAM (Random Access Memory) temporarily holds data for fast access while the system is running. The hard drive is the permanent storage device that saves programs and files. The power supply unit provides energy to all parts of the computer. Input devices like the keyboard and mouse let users send data into the system. Output devices like monitors and printers show the results of what the computer does.
+            </p>
+            
 
-  <label for="name">الاسم الكامل:</label>
-  <input type="text" id="name" required>
+              
+                        </div>
+        <div id="quiz"></div>
+    </div>
+    
+    <div class="result-screen" id="resultScreen" style="display: none;">
+        <h2>Test Result</h2>
+        <p class="author">Created by: Ahmed Amer</p>
+        <p><strong>Name:</strong> <span id="resultName"></span></p>
+        <p><strong>Phone Number:</strong> <span id="resultPhone"></span></p>
+        <p><strong>Test Date:</strong> <span id="resultDate"></span></p>
+        <p><strong>Start Time:</strong> <span id="resultStartTime"></span></p>
+        <p><strong>Time Taken:</strong> <span id="resultTime"></span></p>
+        <p><strong>Score:</strong> <span id="resultScore"></span></p>
+    </div>
+    
+    <script>
+        document.getElementById("date").innerText = new Date().toLocaleDateString("en-US");
+    
+        const trueFalseQuestions = [
+    { q: "The binary system uses only the numbers 0 and 1 to represent data.", a: "true" },
+    { q: "A bit is the largest unit of data used in computers.", a: "false" },
+    { q: "The CPU is responsible for executing instructions and processing data.", a: "true" },
+    { q: "RAM stores data permanently, even when the computer is turned off.", a: "false" },
+    { q: "Input devices like the keyboard and mouse allow users to interact with the computer.", a: "true" },
+    { q: "The letter A is represented in binary as 01000001.", a: "true" },
+    { q: "The power supply stores user data and applications.", a: "false" },
+    { q: "All data in computers is ultimately converted into binary form.", a: "true" }
+];
 
-  <label for="phone">رقم الهاتف:</label>
-  <input type="text" id="phone" required>
+    
+const questions = [
+    { q: "What number system do computers use to process data?", a: "b", options: ["Decimal", "Binary", "Hexadecimal", "Octal"] },
+    { q: "What does the CPU do in a computer system?", a: "a", options: ["Executes instructions", "Stores files", "Displays graphics", "Supplies power"] },
+    { q: "Which component temporarily stores data for quick access while programs are running?", a: "c", options: ["Hard Drive", "Motherboard", "RAM", "Monitor"] },
+    { q: "What is a bit in computing?", a: "d", options: ["A unit of hardware", "A complete file", "An input device", "A binary digit (0 or 1)"] },
+    { q: "Which part of the computer connects all other components together?", a: "b", options: ["CPU", "Motherboard", "RAM", "Monitor"] },
+    { q: "What device allows users to input data into the computer?", a: "a", options: ["Keyboard", "Speaker", "Monitor", "Projector"] },
+    { q: "Which component displays information from the computer to the user?", a: "c", options: ["Mouse", "Printer", "Monitor", "Microphone"] },
+    { q: "Which storage device holds data permanently?", a: "b", options: ["RAM", "Hard Drive", "CPU", "Cache"] },
+    { q: "What does the binary number 01000001 represent in ASCII?", a: "d", options: ["0", "Z", "B", "A"] },
+    { q: "Which component provides the electrical power needed by the computer?", a: "c", options: ["CPU", "RAM", "Power Supply", "USB Port"] },
+    { q: "Which of the following is an output device?", a: "a", options: ["Printer", "Scanner", "Webcam", "Microphone"] },
+    { q: "Which unit of storage is larger?", a: "b", options: ["Kilobyte", "Gigabyte", "Megabyte", "Byte"] },
+    { q: "What do we call the software that manages computer hardware and software?", a: "c", options: ["Application", "Driver", "Operating System", "Antivirus"] },
+    { q: "Which of these is NOT a component of a basic computer system?", a: "d", options: ["RAM", "CPU", "Motherboard", "Router"] },
+    { q: "How many bits are there in a byte?", a: "a", options: ["8", "4", "16", "2"] },
+    { q: "Which device is mainly used to move the cursor on the screen?", a: "b", options: ["Keyboard", "Mouse", "Monitor", "Speaker"] },
+    { q: "Which of the following is essential to boot/start the computer?", a: "d", options: ["Mouse", "Hard Disk", "RAM", "Power Supply"] }
+];
 
-  <label for="email">البريد الإلكتروني:</label>
-  <input type="email" id="email">
 
-  <label for="qualification">المؤهل الدراسي:</label>
-  <input type="text" id="qualification">
 
-  <label for="job">الوظيفة:</label>
-  <input type="text" id="job">
 
-  <label for="course">اسم الدورة التدريبية:</label>
-  <input type="text" id="course">
 
-  <label for="duration">مدة الدورة (بالأيام):</label>
-  <input type="number" id="duration" min="1">
+    
+        let currentTFQuestion = 0;
+        let tfCorrectAnswers = 0;
+        let currentQuestion = 0;
+        let correctAnswers = 0;
+        let timeLeft = 1800;
+        let timerInterval;
+        let startTime;
+    
+        function startQuiz() {
+    let password = document.getElementById("password").value;
 
-  <label for="type">نوع الدورة:</label>
-  <select id="type">
-    <option value="حضوري">حضوري</option>
-    <option value="أونلاين">أونلاين</option>
-  </select>
+    if (password !== "123") {
+        alert("كلمة المرور غير صحيحة! الرجاء المحاولة مرة أخرى.");
+        return;
+    }
 
-  <button class="btn" onclick="submitForm()">إرسال البيانات</button>
-</div>
+    document.getElementById("startScreen").style.display = "none";
+    document.getElementById("quizContainer").style.display = "block";
+    startTime = new Date();
+    startTimer();
+    loadTFQuestion();
 
-<div class="result-screen" id="resultScreen">
-  <h2>بيانات المتدرب</h2>
-  <p><strong>الاسم:</strong> <span id="resName"></span></p>
-  <p><strong>رقم الهاتف:</strong> <span id="resPhone"></span></p>
-  <p><strong>البريد الإلكتروني:</strong> <span id="resEmail"></span></p>
-  <p><strong>المؤهل الدراسي:</strong> <span id="resQualification"></span></p>
-  <p><strong>الوظيفة:</strong> <span id="resJob"></span></p>
-  <p><strong>اسم الدورة:</strong> <span id="resCourse"></span></p>
-  <p><strong>مدة الدورة:</strong> <span id="resDuration"></span> يوم</p>
-  <p><strong>نوع الدورة:</strong> <span id="resType"></span></p>
-</div>
+    // تشغيل وضع ملء الشاشة
+    let elem = document.documentElement;
+    if (elem.requestFullscreen) {
+        elem.requestFullscreen();
+    } else if (elem.mozRequestFullScreen) { // Firefox
+        elem.mozRequestFullScreen();
+    } else if (elem.webkitRequestFullscreen) { // Chrome, Safari and Opera
+        elem.webkitRequestFullscreen();
+    } else if (elem.msRequestFullscreen) { // IE/Edge
+        elem.msRequestFullscreen();
+    }
+}
 
-<script>
-  function submitForm() {
-    document.getElementById("resName").innerText = document.getElementById("name").value;
-    document.getElementById("resPhone").innerText = document.getElementById("phone").value;
-    document.getElementById("resEmail").innerText = document.getElementById("email").value;
-    document.getElementById("resQualification").innerText = document.getElementById("qualification").value;
-    document.getElementById("resJob").innerText = document.getElementById("job").value;
-    document.getElementById("resCourse").innerText = document.getElementById("course").value;
-    document.getElementById("resDuration").innerText = document.getElementById("duration").value;
-    document.getElementById("resType").innerText = document.getElementById("type").value;
 
-    document.getElementById("registrationForm").style.display = "none";
+    
+        function startTimer() {
+            timerInterval = setInterval(() => {
+                let minutes = Math.floor(timeLeft / 60);
+                let seconds = timeLeft % 60;
+                document.getElementById("timer").innerText = `Time Remaining: ${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+                if (timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    showResult();
+                }
+                timeLeft--;
+            }, 1000);
+        }
+    
+        function loadTFQuestion() {
+            let quizDiv = document.getElementById("quiz");
+            if (currentTFQuestion < trueFalseQuestions.length) {
+                let q = trueFalseQuestions[currentTFQuestion];
+                quizDiv.innerHTML = `<p class='question'>${q.q}</p>` +
+                    `<label><input type='radio' name='answer' value='true'> True</label>` +
+                    `<label><input type='radio' name='answer' value='false'> False</label>` +
+                    `<button class='btn' onclick='nextTFQuestion()'>Next</button>`;
+            } else {
+                document.getElementById("passage").style.display = "none";
+                document.getElementById("quizTitle").innerText = "Choose the correct answer from a, b, c or d: (44 marks)";
+                loadQuestion();
+            }
+        }
+    
+        function nextTFQuestion() {
+            let selectedAnswer = document.querySelector("input[name='answer']:checked");
+            if (!selectedAnswer) return;
+            if (selectedAnswer.value === trueFalseQuestions[currentTFQuestion].a) {
+                tfCorrectAnswers++;
+            }
+            currentTFQuestion++;
+            loadTFQuestion();
+        }
+    
+        function loadQuestion() {
+            let quizDiv = document.getElementById("quiz");
+            let q = questions[currentQuestion];
+            quizDiv.innerHTML = `<p class='question'>${q.q}</p>` +
+                q.options.map((option, index) => `<label><input type='radio' name='answer' value='${String.fromCharCode(97 + index)}'> ${option}</label>`).join('') +
+                `<button class='btn' onclick='nextQuestion()'>${currentQuestion === questions.length - 1 ? "Finish" : "Next"}</button>`;
+        }
+    
+        function nextQuestion() {
+            let selectedAnswer = document.querySelector("input[name='answer']:checked");
+            if (!selectedAnswer) return;
+            if (selectedAnswer.value === questions[currentQuestion].a) {
+                correctAnswers++;
+            }
+            if (currentQuestion < questions.length - 1) {
+                currentQuestion++;
+                loadQuestion();
+            } else {
+                showResult();
+            }
+        }
+    
+let serverUrl = ""; // سيتم تحديثه تلقائيًا عند تحميل الصفحة
+
+// دالة لجلب رابط السيرفر المخزن في GitHub
+function fetchServerUrl() {
+    return fetch("https://raw.githubusercontent.com/etiqotwf/liveServer/main/serverUrl.json")
+        .then(response => response.json())
+        .then(data => {
+            if (data.serverUrl) {
+                serverUrl = data.serverUrl;
+                console.log("✅ رابط السيرفر المحدث من GitHub:", serverUrl);
+            } else {
+                console.error("❌ لم يتم العثور على رابط السيرفر في المستودع.");
+                retryFetchServerUrl();
+            }
+        })
+        .catch(error => {
+            console.error("❌ خطأ في جلب رابط السيرفر من GitHub:", error);
+            retryFetchServerUrl();
+        });
+}
+
+// دالة لإعادة المحاولة عند الفشل
+function retryFetchServerUrl() {
+    if (retryCount < MAX_RETRIES) {
+        retryCount++;
+        console.log(`🔄 إعادة المحاولة (${retryCount}/${MAX_RETRIES}) بعد 3 ثوانٍ...`);
+        setTimeout(fetchServerUrl, 3000);
+    } else {
+        console.error("⛔ تم الوصول إلى الحد الأقصى من المحاولات، تعذر جلب رابط السيرفر.");
+    }
+}
+
+// تحميل رابط السيرفر عند فتح الصفحة
+fetchServerUrl();
+
+function showResult() {
+    clearInterval(timerInterval);
+
+    let endTime = new Date();
+    let timeTaken = Math.floor((endTime - startTime) / 1000);
+    let minutesTaken = Math.floor(timeTaken / 60);
+    let secondsTaken = timeTaken % 60;
+
+    let name = document.getElementById("traineeName").value || "Unknown";
+    let phone = document.getElementById("traineePhone").value || "Unknown";
+    let date = new Date().toLocaleDateString("en-US");
+
+    let totalQuestions = trueFalseQuestions.length + questions.length;
+    let totalCorrectAnswers = tfCorrectAnswers + correctAnswers;
+
+    let resultData = {
+        name: name,
+        phone: phone,
+        date: date,
+        startTime: startTime.toLocaleTimeString(),
+        timeTaken: `${minutesTaken} min ${secondsTaken} sec`,
+        score: `${totalCorrectAnswers} / ${totalQuestions}`
+    };
+
+    // التأكد من تحميل `serverUrl` قبل الإرسال
+    if (!serverUrl) {
+        console.log("⏳ انتظار تحميل رابط السيرفر...");
+        fetchServerUrl().then(() => {
+            if (serverUrl) {
+                sendDataToServer(resultData);
+            } else {
+                console.error("❌ لم يتم تحميل رابط السيرفر بعد. يُرجى المحاولة لاحقًا.");
+                alert("⚠️ تعذر إرسال البيانات! تأكد من اتصال الإنترنت وأعد المحاولة.");
+            }
+        });
+    } else {
+        sendDataToServer(resultData);
+    }
+
+    // تحديث بيانات النتيجة في الواجهة
+    document.getElementById("resultName").innerText = name;
+    document.getElementById("resultPhone").innerText = phone;
+    document.getElementById("resultDate").innerText = date;
+    document.getElementById("resultStartTime").innerText = startTime.toLocaleTimeString();
+    document.getElementById("resultTime").innerText = `${minutesTaken} min ${secondsTaken} sec`;
+    document.getElementById("resultScore").innerText = `${totalCorrectAnswers} / ${totalQuestions}`;
+
+    // إظهار شاشة النتيجة
+    document.getElementById("quizContainer").style.display = "none";
     document.getElementById("resultScreen").style.display = "block";
-  }
-</script>
+}
 
-</body>
+// دالة لإرسال البيانات إلى السيرفر
+function sendDataToServer(resultData) {
+    fetch(`${serverUrl}/submit`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(resultData)
+    })
+    .then(response => response.json())
+    .then(data => console.log("✅ تم الإرسال بنجاح:", data))
+    .catch(error => console.error("❌ خطأ أثناء الإرسال:", error));
+}
+
+
+
+
+    </script>
+    </body>
 </html>
