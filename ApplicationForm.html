@@ -54,6 +54,29 @@
   </style>
 </head>
 <body>
+
+   <!-- النموذج أو المحتوى الرئيسي -->
+  <form id="container">
+    <!-- محتويات النموذج -->
+  </form>
+
+  <script>
+    // عند الضغط على أي مكان في الصفحة، أدخل وضع ملء الشاشة
+    document.addEventListener("click", () => {
+      const elem = document.documentElement; // أو document.getElementById("myForm")
+      if (document.fullscreenElement) return; // لا تفعل شيء إذا كنا بالفعل في ملء الشاشة
+
+      if (elem.requestFullscreen) {
+        elem.requestFullscreen();
+      } else if (elem.webkitRequestFullscreen) { /* Safari */
+        elem.webkitRequestFullscreen();
+      } else if (elem.msRequestFullscreen) { /* IE11 */
+        elem.msRequestFullscreen();
+      }
+    });
+  </script>
+
+
   <div class="container">
    <style>
   h2 {
@@ -344,6 +367,7 @@
 
 
 <form id="registrationForm" style="display: none;">
+  
   <!-- باقي العناصر كما هي -->
       <label>الاسم:</label>
       <input type="text" id="name" required>
