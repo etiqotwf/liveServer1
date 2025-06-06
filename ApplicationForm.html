@@ -1,7 +1,9 @@
 <!DOCTYPE html>
 <html lang="ar">
 <head>
-  <script src="https://cdn.sheetjs.com/xlsx-latest/package/dist/xlsx.full.min.js"></script>
+<script src="xlsx.full.min.js"></script>
+<script src="chart.js"></script>
+
 
   <meta charset="UTF-8">
   <title>نظام تسجيل المتدربين</title>
@@ -317,9 +319,8 @@
   <svg viewBox="0 0 24 24">
     <circle cx="12" cy="12" r="3"/>
     <path d="M2 12a10 10 0 0 1 20 0 10 10 0 0 1-20 0z"/>
-  </svg>
-  عرض / إخفاء قاعدة البيانات
-</button>
+  </svg>🖨️ 
+طباعة نتائج البحث </button>
 
 
 <div style="text-align:center; margin: 15px 0;">
@@ -330,7 +331,7 @@
     style="
       width: 320px; 
       padding: 10px 15px; 
-      font-size: 16px; 
+      font-size: 20px; 
       border: 1.5px solid #007BFF; 
       border-radius: 5px 0 0 5px; 
       outline: none;
@@ -872,34 +873,39 @@ function closePasswordModal() {
 
   function toggleAllTrainees() {
   const traineesTable = document.getElementById("traineesTable");
-  const isHidden = traineesTable.style.display === "none" || traineesTable.style.display === "";
+  const tableHtml = traineesTable.innerHTML;
 
-  if (isHidden) {
-    // عرض الجدول وتحديث البيانات
-    const tbody = document.querySelector("#allTrainees tbody");
-    tbody.innerHTML = "";
-    const tx = db.transaction("trainees", "readonly");
-    tx.objectStore("trainees").openCursor(null, 'prev').onsuccess = e => {
-      const cursor = e.target.result;
-      if (cursor) {
-        const d = cursor.value;
-        const row = `<tr>
-          <td>${d.name}</td><td>${d.phone}</td><td>${d.email}</td>
-          <td>${d.qualification}</td><td>${d.job}</td><td>${d.course}</td>
-          <td>${d.duration}</td><td>${d.type}</td><td>${d.datetime || ''}</td>
-          <td><button onclick="deleteRecord(${cursor.key})">🗑 حذف</button></td>
-        </tr>`;
-        tbody.innerHTML += row;
-        cursor.continue();
-      } else {
-        traineesTable.style.display = 'block';
-      }
-    };
-  } else {
-    // إخفاء الجدول
-    traineesTable.style.display = 'none';
-  }
+  // فتح نافذة جديدة لطباعة محتوى الجدول
+  const printWindow = window.open('', '', 'width=900,height=600');
+  printWindow.document.write(`
+    <html>
+      <head>
+        <title>طباعة جدول المتدربين</title>
+        <style>
+          body { font-family: Arial, sans-serif; direction: rtl; }
+          table { width: 100%; border-collapse: collapse; }
+          th, td { border: 1px solid #333; padding: 8px; text-align: center; }
+          th { background-color: #f2f2f2; }
+          button { display: none; } /* إخفاء أزرار الحذف في الطباعة */
+        </style>
+      </head>
+      <body>
+        <h2 style="text-align:center;">جدول نتائج البحث للمتدربين</h2>
+        <table id="printTable">${tableHtml}</table>
+      </body>
+    </html>
+  `);
+
+  printWindow.document.close();
+  printWindow.focus();
+
+  // انتظار قليل قبل الطباعة
+  setTimeout(() => {
+    printWindow.print();
+    printWindow.close();
+  }, 300);
 }
+
 
 
 function deleteRecord(id) {
@@ -925,15 +931,36 @@ function addNewTrainee() {
 }
 
 
+let showResults = false; // حالة الإظهار الافتراضية
+
 function searchTrainees() {
   const query = document.getElementById('searchInput').value.trim().toLowerCase();
-  if (!query) {
-    alert("الرجاء إدخال كلمة للبحث");
+  const tbody = document.querySelector("#allTrainees tbody");
+  const tableContainer = document.getElementById("traineesTable");
+
+  // لتبديل العرض / الإخفاء عند الضغط على مربع البحث
+  if (!showResults) {
+    // لو مخفي، نعرض النتائج
+    tbody.innerHTML = "";
+    showResults = true;
+  } else {
+    // لو ظاهر، نخفي النتائج والمربعات وننهي الدالة هنا
+    tbody.innerHTML = "";
+    tableContainer.style.display = 'none';
+    const oldStats = document.getElementById("statsInfo");
+    if (oldStats) oldStats.style.display = 'none';
+    showResults = false;
     return;
   }
 
-  const tbody = document.querySelector("#allTrainees tbody");
-  tbody.innerHTML = "";
+  let count = 0;
+  const stats = {
+    courses: {},
+    dates: {},
+    jobs: {},
+    residencies: {},
+    emails: {}
+  };
 
   const tx = db.transaction("trainees", "readonly");
   const store = tx.objectStore("trainees");
@@ -943,20 +970,32 @@ function searchTrainees() {
     if (cursor) {
       const d = cursor.value;
 
-      // دمج كل القيم في نص واحد لمقارنة شاملة
       const combined = (
-        d.name + " " +
-        d.phone + " " +
-        d.email + " " +
-        d.qualification + " " +
-        d.job + " " +
-        d.course + " " +
-        d.duration + " " +
-        d.type + " " +
-        (d.datetime || "")
+        d.name + " " + d.phone + " " + d.email + " " +
+        d.qualification + " " + d.job + " " + d.course + " " +
+        d.duration + " " + d.type + " " + (d.datetime || "")
       ).toLowerCase();
 
-      if (combined.includes(query)) {
+      if (!query || combined.includes(query)) {
+        count++;
+
+        let residency = "غير مقيم";
+        if (d.type && d.type.toLowerCase().includes("مقيم")) {
+          residency = "مقيم";
+        }
+
+        stats.courses[d.course] = (stats.courses[d.course] || 0) + 1;
+
+        const dateOnly = (d.datetime || "غير محدد").substring(0, 10);
+        stats.dates[dateOnly] = (stats.dates[dateOnly] || 0) + 1;
+
+        stats.jobs[d.job] = (stats.jobs[d.job] || 0) + 1;
+
+        stats.residencies[residency] = (stats.residencies[residency] || 0) + 1;
+
+        const dept = d.email || "غير محدد";
+        stats.emails[dept] = (stats.emails[dept] || 0) + 1;
+
         const row = `<tr>
           <td>${d.name}</td><td>${d.phone}</td><td>${d.email}</td>
           <td>${d.qualification}</td><td>${d.job}</td><td>${d.course}</td>
@@ -968,13 +1007,70 @@ function searchTrainees() {
 
       cursor.continue();
     } else {
-      if (!tbody.innerHTML) {
+      const oldStats = document.getElementById("statsInfo");
+      if (oldStats) oldStats.remove();
+
+      if (count === 0) {
         tbody.innerHTML = `<tr><td colspan="10" style="text-align:center;">لا توجد نتائج مطابقة</td></tr>`;
+        tableContainer.style.display = 'none';
+        return;
       }
-      document.getElementById("traineesTable").style.display = 'block';
+
+      const statsDiv = document.createElement("div");
+      statsDiv.id = "statsInfo";
+      statsDiv.style.display = "flex";
+      statsDiv.style.flexWrap = "nowrap";
+      statsDiv.style.gap = "12px";
+      statsDiv.style.margin = "10px 0";
+      statsDiv.style.direction = "rtl";
+      statsDiv.style.justifyContent = "space-between";
+
+      const createCard = (title, icon, content, bgColor) => {
+        const card = document.createElement("div");
+        card.style.display = "flex";
+        card.style.flexDirection = "column";
+        card.style.justifyContent = "center";
+        card.style.alignItems = "center";
+        card.style.flex = "0 1 auto";
+        card.style.padding = "14px 16px";
+        card.style.borderRadius = "10px";
+        card.style.backgroundColor = bgColor;
+        card.style.color = "#fff";
+        card.style.boxShadow = "0 4px 8px rgba(0,0,0,0.15)";
+        card.style.fontFamily = "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif";
+        card.style.fontSize = "16px";
+        card.style.fontWeight = "bold";
+        card.style.wordBreak = "break-word";
+        card.style.textAlign = "center";
+
+        card.innerHTML = `
+          <div style="margin-bottom:10px;">${icon} ${title}</div>
+          <div style="line-height:1.6;">${content}</div>
+        `;
+        return card;
+      };
+
+      const formatList = (obj) => {
+        const entries = Object.entries(obj);
+        return entries.map(([key, val], index) => {
+          const suffix = (index === entries.length - 1) ? "" : " - ";
+          return `<span>${key}: ${val}${suffix}</span>`;
+        }).join("");
+      };
+
+      statsDiv.appendChild(createCard("عدد السجلات", "📊", count, "#4caf50"));
+      statsDiv.appendChild(createCard("حسب الدورة", "🎓", formatList(stats.courses), "#2196f3"));
+      statsDiv.appendChild(createCard("حسب التاريخ", "📅", formatList(stats.dates), "#ff9800"));
+      statsDiv.appendChild(createCard("حسب الإدارة ", "🏢", formatList(stats.emails), "#009688"));
+      statsDiv.appendChild(createCard("حسب الوظيفة", "💼", formatList(stats.jobs), "#9c27b0"));
+      statsDiv.appendChild(createCard("حسب الإقامة", "🏠", formatList(stats.residencies), "#f44336"));
+
+      tableContainer.parentNode.insertBefore(statsDiv, tableContainer);
+      tableContainer.style.display = 'block';
     }
   };
 }
+
 
 
 
