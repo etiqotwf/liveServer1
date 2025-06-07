@@ -374,21 +374,140 @@
       <input type="text" id="name" required>
       <label>رقم الهاتف:</label>
       <input type="tel" id="phone" required>
-      <label>الإدارة</label>
-      <input type="email" id="email" required>
-      <label>المؤهل:</label>
-      <input type="text" id="qualification">
-      <label>الوظيفة:</label>
-      <input type="text" id="job">
+
+      
+     <label for="email">الادارة:</label>
+<input list="departments" id="email" name="email" placeholder="اختر الإدارة التابع لها">
+
+<datalist id="departments">
+  <option value="الإدارة العامة لصرف غرب كفر الشيخ">
+  <option value="الإدارة العامة لصرف شرق كفر الشيخ">
+  <option value="الإدارة العامة لصرف وسط الدقهلية">
+  <option value="الإدارة العامة لصرف شمال الدقهلية">
+  <option value="الإدارة العامة لصرف جنوب الدقهلية">
+  <option value="الإدارة العامة لصرف غرب المنوفية">
+  <option value="الإدارة العامة لصرف شرق المنوفية">
+  <option value="الإدارة العامة لصرف وسط الدلتا">
+  <option value="الإدارة العامة لصرف غرب الغربية">
+  <option value="الإدارة العامة لصرف شرق الغربية">
+  <option value="الإدارة العامة لصرف شمال البحيرة">
+  <option value="الإدارة العامة لصرف جنوب البحيرة">
+  <option value="الإدارة العامة لصرف شمال الشرقية">
+  <option value="الإدارة العامة لصرف جنوب الشرقية">
+  <option value="الإدارة العامة لصرف شمال الإسماعيلية">
+  <option value="الإدارة العامة لصرف جنوب الإسماعيلية">
+  <option value="الإدارة العامة لصرف بورسعيد">
+  <option value="الإدارة العامة لصرف دمياط">
+  <option value="الإدارة العامة لصرف شمال سيناء">
+  <option value="الإدارة العامة لصرف جنوب سيناء">
+  <option value="الإدارة العامة لصرف غرب البحيرة">
+  <option value="الإدارة العامة لصرف النوبارية">
+  <option value="الإدارة العامة لصرف العامرية">
+  <option value="الإدارة العامة لصرف برج العرب">
+  <option value="الإدارة العامة لصرف الإسكندرية">
+  <option value="الإدارة العامة لصرف مرسى مطروح">
+  <option value="الإدارة العامة لصرف بني سويف">
+  <option value="الإدارة العامة لصرف الفيوم">
+  <option value="الإدارة العامة لصرف المنيا">
+  <option value="الإدارة العامة لصرف الواحات">
+  <option value="الإدارة العامة لصرف أسيوط">
+  <option value="الإدارة العامة لصرف سوهاج">
+  <option value="الإدارة العامة لصرف قنا">
+  <option value="الإدارة العامة لصرف الأقصر">
+  <option value="الإدارة العامة لصرف أسوان">
+  <option value="الإدارة العامة لمشروعات الصرف في شمال سيناء">
+  <option value="الإدارة العامة لمشروعات الصرف في الوادي الجديد">
+  <option value="الإدارة العامة لمشروعات الصرف في توشكى">
+  <option value="الإدارة العامة لمشروعات الصرف في شرق العوينات">
+</datalist>
+
+
+    <label for="qualification">المؤهل الدراسي:</label>
+<input list="qualifications" id="qualification" name="qualification" placeholder="اختر المؤهل الدراسي">
+
+<datalist id="qualifications">
+  <option value="بكالوريوس هندسة زراعية">
+  <option value="بكالوريوس هندسة مدنية">
+  <option value="بكالوريوس هندسة ميكانيكية">
+  <option value="بكالوريوس علوم زراعية">
+  <option value="بكالوريوس رياضيات وإحصاء">
+  <option value="بكالوريوس اقتصاد وإدارة أعمال">
+  <option value="بكالوريوس علوم البيئة">
+  <option value="بكالوريوس نظم معلومات">
+  <option value="بكالوريوس تجارة">
+  <option value="دبلوم فني زراعي">
+  <option value="دبلوم فني ميكانيكا">
+  <option value="دبلوم فني كهرباء">
+  <option value="دبلوم فني شبكات وري">
+  <option value="دبلوم">
+  <option value="المعهد الفني التجاري">
+  <option value="ماجستير إدارة موارد مائية">
+  <option value="ماجستير هندسة الري والصرف">
+  <option value="دكتوراه في الموارد المائية">
+  <option value="ثانوية عامة">
+  <option value="شهادة معهد فني متخصص">
+</datalist>
+
+      
+      
+      <label for="job">الوظيفة:</label>
+<input list="jobs" id="job" name="job" placeholder="اختر الوظيفة">
+
+<datalist id="jobs">
+  <option value="مدير عام">
+  <option value="وكيل الوزارة">
+  <option value="مدير إدارة">
+  <option value="مدير قسم">
+  <option value="رئيس قسم">
+  <option value="مدير فرع">
+  <option value="مدير مكتب">
+  <option value="كبير مهندسين">
+  <option value="مهندس أول">
+  <option value="مهندس">
+  <option value="مهندس متدرب">
+  <option value="معاون مهندس">
+  <option value="محاسب أول">
+  <option value="محاسب">
+  <option value="مراجع داخلي">
+  <option value="مدقق مالي">
+  <option value="مراجع حسابات">
+  <option value="أخصائي تمويل">
+  <option value="أخصائي تنمية إدارية">
+  <option value="أخصائي تدريب">
+  <option value="أخصائي شؤون قانونية">
+  <option value="أمين مستودع">
+  <option value="كاتب رابع">
+  <option value="كاتب ثالث">
+  <option value="كاتب ثاني">
+  <option value="كاتب أول">
+  <option value="مساعد إداري">
+  <option value="سكرتير تنفيذي">
+  <option value="فني تشغيل">
+  <option value="فني صيانة">
+  <option value="سائق">
+  <option value="حارس">
+  <option value="عامل">
+  <option value="مندوب">
+</datalist>
+
+      
+      
       <label>اسم الدورة:</label>
       <input type="text" id="course">
+      
+      
       <label>مدة الدورة:</label>
       <input type="text" id="duration">
-      <label>الاقامة:</label>
-      <select id="type">
-        <option value="مقيم">مقيم</option>
-        <option value="غير مقيم">غير مقيم</option>
-      </select>
+      
+      
+      
+      <label for="typeInput">الإقامة:</label>
+<input list="residencyOptions" id="type" name="type" placeholder="اختر أو اكتب الإقامة">
+<datalist id="residencyOptions">
+  <option value="مقيم">
+  <option value="غير مقيم">
+</datalist>
+
       <div class="buttons">
         <style>
 
@@ -593,8 +712,8 @@
 
 
 <div class="buttons" id="actionButtons" style="display: none;">
+   <button onclick="addNewTrainee()">🧑‍🎓 إضافة متدرب جديد</button>
   <button onclick="printResult()">🖨️ طباعة</button>
-  <button onclick="addNewTrainee()">🧑‍🎓 إضافة متدرب جديد</button>
 </div>
 
     </div>
@@ -875,23 +994,111 @@ function closePasswordModal() {
   const traineesTable = document.getElementById("traineesTable");
   const tableHtml = traineesTable.innerHTML;
 
-  // فتح نافذة جديدة لطباعة محتوى الجدول
   const printWindow = window.open('', '', 'width=900,height=600');
+
+  const currentDate = new Date().toLocaleDateString('ar-EG', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric'
+  });
+
   printWindow.document.write(`
     <html>
       <head>
         <title>طباعة جدول المتدربين</title>
         <style>
-          body { font-family: Arial, sans-serif; direction: rtl; }
-          table { width: 100%; border-collapse: collapse; }
-          th, td { border: 1px solid #333; padding: 8px; text-align: center; }
-          th { background-color: #f2f2f2; }
-          button { display: none; } /* إخفاء أزرار الحذف في الطباعة */
+          body {
+            font-family: 'Arial', sans-serif;
+            direction: rtl;
+            padding: 20px;
+            background-color: #fff;
+            color: #000;
+          }
+          header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 10px;
+          }
+          .logo-container {
+            text-align: center;
+          }
+          .logo {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            object-fit: cover;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            display: block;
+            margin: 0 auto;
+          }
+          .logo-caption {
+            font-size: 12px;
+            font-weight: bold;
+            margin-top: 5px;
+            text-align: center;
+          }
+          .header-info {
+            flex-grow: 1;
+            margin-right: 20px;
+            text-align: center;
+          }
+          .center-title {
+            font-size: 20px;
+            font-weight: bold;
+            margin: 10px 0 5px 0; /* تقليل المسافة السفلية */
+            border-bottom: 2px solid #000; /* الخط أسفل العنوان */
+            display: inline-block;
+            padding-bottom: 5px;
+          }
+          .date {
+            font-size: 14px;
+            color: #333;
+            text-align: left;
+            margin-top: 10px;
+          }
+          table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px; /* تقليل المسافة العلوية للجدول */
+          }
+          th, td {
+            border: 1px solid #333;
+            padding: 8px;
+            text-align: center;
+            font-size: 14px;
+            font-weight: bold;
+          }
+          th {
+            background-color: #f2f2f2;
+          }
+          button {
+            display: none;
+          }
+          .signature {
+            text-align: left;
+            margin-top: 50px;
+            font-family: 'Brush Script MT', cursive;
+            font-size: 24px;
+            color: #444;
+            padding-left: 40px;
+          }
         </style>
       </head>
       <body>
-        <h2 style="text-align:center;">جدول نتائج البحث للمتدربين</h2>
+        <header>
+          <div class="logo-container">
+            <img src="logo.jpg" alt="الشعار" class="logo">
+            <div class="logo-caption">مركز تدريب الصرف بطنطا</div>
+          </div>
+          <div class="header-info">
+            <div class="center-title">جدول نتائج البحث للمتدربين</div>
+          </div>
+          <div class="date">تاريخ الطباعة: ${currentDate}</div>
+        </header>
+
         <table id="printTable">${tableHtml}</table>
+
       </body>
     </html>
   `);
@@ -899,7 +1106,6 @@ function closePasswordModal() {
   printWindow.document.close();
   printWindow.focus();
 
-  // انتظار قليل قبل الطباعة
   setTimeout(() => {
     printWindow.print();
     printWindow.close();
@@ -914,8 +1120,8 @@ function deleteRecord(id) {
     const store = tx.objectStore("trainees");
     store.delete(id).onsuccess = () => {
       alert("تم حذف السجل.");
-      toggleAllTrainees();
-     toggleAllTrainees();
+      searchTrainees() ;
+
 
     };
   }
@@ -926,9 +1132,19 @@ function addNewTrainee() {
   document.getElementById("registrationForm").style.display = "block";
   document.getElementById("resultScreen").style.display = "none";
   document.getElementById("traineesTable").style.display = "none";
-  document.getElementById("registrationForm").reset();
   document.getElementById("actionButtons").style.display = "none";
+
+  // تعبئة حقول النموذج بآخر البيانات المدخلة
+  document.getElementById("name").value = document.getElementById("resName").textContent;
+  document.getElementById("phone").value = document.getElementById("resPhone").textContent;
+  document.getElementById("email").value = document.getElementById("resEmail").textContent;
+  document.getElementById("qualification").value = document.getElementById("resQualification").textContent;
+  document.getElementById("job").value = document.getElementById("resJob").textContent;
+  document.getElementById("course").value = document.getElementById("resCourse").textContent;
+  document.getElementById("duration").value = document.getElementById("resDuration").textContent;
+  document.getElementById("type").value = document.getElementById("resType").textContent;
 }
+
 
 
 let showResults = false; // حالة الإظهار الافتراضية
@@ -938,13 +1154,10 @@ function searchTrainees() {
   const tbody = document.querySelector("#allTrainees tbody");
   const tableContainer = document.getElementById("traineesTable");
 
-  // لتبديل العرض / الإخفاء عند الضغط على مربع البحث
   if (!showResults) {
-    // لو مخفي، نعرض النتائج
     tbody.innerHTML = "";
     showResults = true;
   } else {
-    // لو ظاهر، نخفي النتائج والمربعات وننهي الدالة هنا
     tbody.innerHTML = "";
     tableContainer.style.display = 'none';
     const oldStats = document.getElementById("statsInfo");
@@ -965,6 +1178,8 @@ function searchTrainees() {
   const tx = db.transaction("trainees", "readonly");
   const store = tx.objectStore("trainees");
 
+  tbody.innerHTML = ""; // نظف التابل قبل بداية العرض
+
   store.openCursor().onsuccess = function (e) {
     const cursor = e.target.result;
     if (cursor) {
@@ -979,15 +1194,16 @@ function searchTrainees() {
       if (!query || combined.includes(query)) {
         count++;
 
-        let residency = "غير مقيم";
-        if (d.type && d.type.toLowerCase().includes("مقيم")) {
-          residency = "مقيم";
-        }
+      let residency = "غير مقيم";
+const typeValue = d.type ? d.type.trim() : "";
+if (typeValue === "مقيم") {
+  residency = "مقيم";
+}
 
         stats.courses[d.course] = (stats.courses[d.course] || 0) + 1;
 
-        const dateOnly = (d.datetime || "غير محدد").substring(0, 10);
-        stats.dates[dateOnly] = (stats.dates[dateOnly] || 0) + 1;
+        const durationVal = d.duration || "غير محددة";
+        stats.dates[durationVal] = (stats.dates[durationVal] || 0) + 1;
 
         stats.jobs[d.job] = (stats.jobs[d.job] || 0) + 1;
 
@@ -996,13 +1212,66 @@ function searchTrainees() {
         const dept = d.email || "غير محدد";
         stats.emails[dept] = (stats.emails[dept] || 0) + 1;
 
-        const row = `<tr>
-          <td>${d.name}</td><td>${d.phone}</td><td>${d.email}</td>
-          <td>${d.qualification}</td><td>${d.job}</td><td>${d.course}</td>
-          <td>${d.duration}</td><td>${d.type}</td><td>${d.datetime || ''}</td>
-          <td><button onclick="deleteRecord(${cursor.key})">🗑 حذف</button></td>
-        </tr>`;
-        tbody.innerHTML += row;
+        // ننشئ صف الجدول
+        const row = document.createElement("tr");
+
+        // كل حقل نجعله قابل للتعديل contenteditable ونعطيه بيانات المفتاح واسم الحقل
+        const fields = ["name", "phone", "email", "qualification", "job", "course", "duration", "type", "datetime"];
+        fields.forEach(field => {
+          const cell = document.createElement("td");
+          cell.textContent = d[field] || "";
+          cell.contentEditable = "true";
+          cell.dataset.key = cursor.key; // المفتاح للعنصر في IndexedDB
+          cell.dataset.field = field;
+
+          // حدث blur لحفظ التعديل تلقائياً
+          cell.addEventListener("blur", function () {
+            const key = Number(this.dataset.key);
+            const field = this.dataset.field;
+            const newValue = this.textContent.trim();
+
+            const txUpdate = db.transaction("trainees", "readwrite");
+            const storeUpdate = txUpdate.objectStore("trainees");
+            const getRequest = storeUpdate.get(key);
+
+            getRequest.onsuccess = function () {
+              const data = getRequest.result;
+              if (data && field in data) {
+                data[field] = newValue;
+                const updateRequest = storeUpdate.put(data);
+
+                updateRequest.onsuccess = function () {
+                  console.log(`تم تحديث السجل مع المفتاح ${key} بنجاح`);
+                  // لو تحب ممكن تعيد تحميل الجدول أو تحدّث الإحصائيات هنا
+                };
+
+                updateRequest.onerror = function (event) {
+                  console.error("خطأ في تحديث السجل:", event.target.error);
+                };
+              }
+            };
+
+            getRequest.onerror = function (event) {
+              console.error("خطأ في جلب السجل:", event.target.error);
+            };
+          });
+
+          row.appendChild(cell);
+        });
+
+        // عمود زر الحذف
+        const deleteCell = document.createElement("td");
+const deleteBtn = document.createElement("button");
+deleteBtn.textContent = "🗑 حذف";
+const recordKey = cursor.key; // نخزن المفتاح في متغير ثابت
+deleteBtn.onclick = function () {
+  deleteRecord(recordKey);
+};
+deleteCell.appendChild(deleteBtn);
+row.appendChild(deleteCell);
+
+tbody.appendChild(row);
+
       }
 
       cursor.continue();
@@ -1060,7 +1329,7 @@ function searchTrainees() {
 
       statsDiv.appendChild(createCard("عدد السجلات", "📊", count, "#4caf50"));
       statsDiv.appendChild(createCard("حسب الدورة", "🎓", formatList(stats.courses), "#2196f3"));
-      statsDiv.appendChild(createCard("حسب التاريخ", "📅", formatList(stats.dates), "#ff9800"));
+      statsDiv.appendChild(createCard(" حسب انعقاد الدورة", "⏳", formatList(stats.dates), "#ff9800"));
       statsDiv.appendChild(createCard("حسب الإدارة ", "🏢", formatList(stats.emails), "#009688"));
       statsDiv.appendChild(createCard("حسب الوظيفة", "💼", formatList(stats.jobs), "#9c27b0"));
       statsDiv.appendChild(createCard("حسب الإقامة", "🏠", formatList(stats.residencies), "#f44336"));
@@ -1070,8 +1339,6 @@ function searchTrainees() {
     }
   };
 }
-
-
 
 
 function printResult() {
@@ -1147,6 +1414,8 @@ function restoreIndexedDB(event) {
   };
   reader.readAsText(file);
 }
+
+
 
 
   window.onload = openDB;
