@@ -5,7 +5,9 @@
 <script src="chart.js"></script>
 
 
+
   <meta charset="UTF-8">
+  
   <title>نظام تسجيل المتدربين</title>
   <style>
 
@@ -323,6 +325,66 @@
 طباعة نتائج البحث </button>
 
 
+<style>
+@media print {
+  body * {
+    visibility: hidden !important;
+  }
+
+  #statsInfo, #statsInfo * {
+    visibility: visible !important;
+    font-weight: 900 !important; /* جعل الخط ثقيل جداً */
+    color: #000 !important;
+  }
+
+  #statsInfo {
+    position: absolute;
+    top: 40px;
+    right: 0;
+    left: 0;
+    margin: 0 auto;
+    padding: 10px 15px;
+    box-sizing: border-box;
+    font-size: 16pt !important; /* تصغير الخط قليلاً */
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important;
+  }
+
+  #statsInfo div {
+    height: auto !important;
+    overflow: visible !important;
+    page-break-inside: avoid;
+  }
+
+  #statsInfo::before {
+    content: "الإحصاءات التفصيلية للمتدربين";
+    position: fixed;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    text-align: center;
+    font-weight: 900;
+    font-size: 20pt; /* تصغير العنوان شوي */
+    color: #000;
+    margin-bottom: 8px;
+    border-bottom: 3px solid #000;
+    padding-bottom: 6px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: white;
+    z-index: 9999;
+  }
+
+  #traineesTable,
+  #allTrainees,
+  #searchInput {
+    display: none !important;
+  }
+}
+</style>
+
+
+
+
 <div style="text-align:center; margin: 15px 0;">
   <input 
     type="text" 
@@ -382,92 +444,90 @@
 <input list="departments" id="email" name="email" placeholder="اختر الإدارة التابع لها">
 
 <datalist id="departments">
-  <option value="الإدارة العامة لصرف غرب كفر الشيخ"> <option value="الإدارة العامة لصرف غرب كفر الشيخ">
-  <option value="الإدارة العامة لصرف غرب الدلتا">
-  <option value="الإدارة العامة لصرف القليوبيه">
-  <option value="الإدارة العامة لصرف وسط الدقهلية">
-  <option value="الإدارة العامة لصرف شمال الدقهلية">
-  <option value="الإدارة العامة لصرف جنوب الدقهلية">
-  <option value="الإدارة العامة لصرف غرب المنوفية">
-  <option value="الإدارة العامة لصرف شرق المنوفية">
-  <option value="الإدارة العامة لصرف وسط الدلتا">
-  <option value="الإدارة العامة لصرف غرب الدلتا">
-  <option value="الإدارة العامة لصرف شرق الدلتا">
-  <option value="الإدارة العامة لصرف شمال البحيرة">
-  <option value="الإدارة العامة لصرف جنوب البحيرة">
-  <option value="الإدارة العامة لصرف شمال الشرقية">
-  <option value="الإدارة العامة لصرف جنوب الشرقية">
-  <option value="الإدارة العامة لصرف شمال الإسماعيلية">
-  <option value="الإدارة العامة لصرف جنوب الإسماعيلية">
-  <option value="الإدارة العامة لصرف بورسعيد">
-  <option value="الإدارة العامة لصرف دمياط">
-  <option value="الإدارة العامة لصرف شمال سيناء">
-  <option value="الإدارة العامة لصرف جنوب سيناء">
-  <option value="الإدارة العامة لصرف غرب البحيرة">
-  <option value="الإدارة العامة لصرف النوبارية">
-  <option value="الإدارة العامة لصرف العامرية">
-  <option value="الإدارة العامة لصرف برج العرب">
-  <option value="الإدارة العامة لصرف الإسكندرية">
-  <option value="الإدارة العامة لصرف مرسى مطروح">
-  <option value="الإدارة العامة لصرف بني سويف">
-  <option value="الإدارة العامة لصرف الفيوم">
-  <option value="الإدارة العامة لصرف المنيا">
-  <option value="الإدارة العامة لصرف الواحات">
-  <option value="الإدارة العامة لصرف أسيوط">
-  <option value="الإدارة العامة لصرف سوهاج">
-  <option value="الإدارة العامة لصرف قنا">
-  <option value="الإدارة العامة لصرف الأقصر">
-  <option value="الإدارة العامة لصرف أسوان">
-  <option value="الإدارة العامة لمشروعات الصرف في شمال سيناء">
-  <option value="الإدارة العامة لمشروعات الصرف في الوادي الجديد">
-  <option value="الإدارة العامة لمشروعات الصرف في توشكى">
-  <option value="الإدارة العامة لمشروعات الصرف في شرق العوينات">
+  <option value="صرف غرب كفر الشيخ">
+  <option value="صرف غرب الدلتا">
+  <option value="صرف القليوبيه">
+  <option value="صرف وسط الدقهلية">
+  <option value="صرف شمال الدقهلية">
+  <option value="صرف جنوب الدقهلية">
+  <option value="صرف غرب المنوفية">
+  <option value="صرف شرق المنوفية">
+  <option value="صرف وسط الدلتا">
+  <option value="صرف شرق الدلتا">
+  <option value="صرف شمال البحيرة">
+  <option value="صرف جنوب البحيرة">
+  <option value="صرف شمال الشرقية">
+  <option value="صرف جنوب الشرقية">
+  <option value="صرف شمال الإسماعيلية">
+  <option value="صرف جنوب الإسماعيلية">
+  <option value="صرف بورسعيد">
+  <option value="صرف دمياط">
+  <option value="صرف شمال سيناء">
+  <option value="صرف جنوب سيناء">
+  <option value="صرف غرب البحيرة">
+  <option value="صرف النوبارية">
+  <option value="صرف العامرية">
+  <option value="صرف برج العرب">
+  <option value="صرف الإسكندرية">
+  <option value="صرف مرسى مطروح">
+  <option value="صرف بني سويف">
+  <option value="صرف الفيوم">
+  <option value="صرف المنيا">
+  <option value="صرف الواحات">
+  <option value="صرف أسيوط">
+  <option value="صرف سوهاج">
+  <option value="صرف قنا">
+  <option value="صرف الأقصر">
+  <option value="صرف أسوان">
+  <option value="مشروعات الصرف في شمال سيناء">
+  <option value="مشروعات الصرف في الوادي الجديد">
+  <option value="مشروعات الصرف في توشكى">
+  <option value="مشروعات الصرف في شرق العوينات">
 </datalist>
 
 <script>
   const departmentPhones = {
-    "الإدارة العامة لصرف غرب كفر الشيخ": "0473235349",
-    "الإدارة العامة لصرف غرب الدلتا": "0473235349",
-    "الإدارة العامة لصرف القليوبيه": "0132233733",
-    "الإدارة العامة لصرف شرق كفر الشيخ": "0473244007",
-    "الإدارة العامة لصرف وسط الدقهلية": "0502244346",
-    "الإدارة العامة لصرف شمال الدقهلية": "0502522541",
-    "الإدارة العامة لصرف جنوب الدقهلية": "0502605456",
-    "الإدارة العامة لصرف غرب المنوفية": "0486663770",
-    "الإدارة العامة لصرف شرق المنوفية": "0482175059",
-    "الإدارة العامة لصرف وسط الدلتا": "0403318220",
-    "الإدارة العامة لصرف غرب الدلتا": "0403305747",
-    "الإدارة العامة لصرف شرق الدلتا": "0402780923",
-    "الإدارة العامة لصرف شمال البحيرة": "0453552843",
-    "الإدارة العامة لصرف جنوب البحيرة": "0453260287",
-    "الإدارة العامة لصرف شمال الشرقية": "0552372235",
-    "الإدارة العامة لصرف جنوب الشرقية": "0552360291",
-    "الإدارة العامة لصرف شمال الإسماعيلية": "0643318642",
-    "الإدارة العامة لصرف جنوب الإسماعيلية": "0643231520",
-    "الإدارة العامة لصرف بورسعيد": "0663744312",
-    "الإدارة العامة لصرف دمياط": "0572404232",
-    "الإدارة العامة لصرف شمال سيناء": "0683351353",
-    "الإدارة العامة لصرف جنوب سيناء": "0693661147",
-    "الإدارة العامة لصرف غرب البحيرة": "0453464445",
-    "الإدارة العامة لصرف النوبارية": "0453170714",
-    "الإدارة العامة لصرف العامرية": "034480373",
-    "الإدارة العامة لصرف برج العرب": "034780063",
-    "الإدارة العامة لصرف الإسكندرية": "034253095",
-    "الإدارة العامة لصرف مرسى مطروح": "0464931776",
-    "الإدارة العامة لصرف بني سويف": "0822312610",
-    "الإدارة العامة لصرف الفيوم": "0842164223",
-    "الإدارة العامة لصرف المنيا": "0862366124",
-    "الإدارة العامة لصرف الواحات": "0844822180",
-    "الإدارة العامة لصرف أسيوط": "0882336430",
-    "الإدارة العامة لصرف سوهاج": "0934604283",
-    "الإدارة العامة لصرف قنا": "0965322605",
-    "الإدارة العامة لصرف الأقصر": "0952372724",
-    "الإدارة العامة لصرف أسوان": "0972310010",
-    "الإدارة العامة لمشروعات الصرف في شمال سيناء": "0683351422",
-    "الإدارة العامة لمشروعات الصرف في الوادي الجديد": "0922522213",
-    "الإدارة العامة لمشروعات الصرف في توشكى": "0972245112",
-    "الإدارة العامة لمشروعات الصرف في شرق العوينات": "0972600362"
-  };
+  "صرف غرب كفر الشيخ": "0473235349",
+  "صرف غرب الدلتا": "0403305747",
+  "صرف القليوبيه": "0132233733",
+  "صرف شرق كفر الشيخ": "0473244007",
+  "صرف وسط الدقهلية": "0502244346",
+  "صرف شمال الدقهلية": "0502522541",
+  "صرف جنوب الدقهلية": "0502605456",
+  "صرف غرب المنوفية": "0486663770",
+  "صرف شرق المنوفية": "0482175059",
+  "صرف وسط الدلتا": "0403318220",
+  "صرف شرق الدلتا": "0402780923",
+  "صرف شمال البحيرة": "0453552843",
+  "صرف جنوب البحيرة": "0453260287",
+  "صرف شمال الشرقية": "0552372235",
+  "صرف جنوب الشرقية": "0552360291",
+  "صرف شمال الإسماعيلية": "0643318642",
+  "صرف جنوب الإسماعيلية": "0643231520",
+  "صرف بورسعيد": "0663744312",
+  "صرف دمياط": "0572404232",
+  "صرف شمال سيناء": "0683351353",
+  "صرف جنوب سيناء": "0693661147",
+  "صرف غرب البحيرة": "0453464445",
+  "صرف النوبارية": "0453170714",
+  "صرف العامرية": "034480373",
+  "صرف برج العرب": "034780063",
+  "صرف الإسكندرية": "034253095",
+  "صرف مرسى مطروح": "0464931776",
+  "صرف بني سويف": "0822312610",
+  "صرف الفيوم": "0842164223",
+  "صرف المنيا": "0862366124",
+  "صرف الواحات": "0844822180",
+  "صرف أسيوط": "0882336430",
+  "صرف سوهاج": "0934604283",
+  "صرف قنا": "0965322605",
+  "صرف الأقصر": "0952372724",
+  "صرف أسوان": "0972310010",
+  "مشروعات الصرف في شمال سيناء": "0683351422",
+  "مشروعات الصرف في الوادي الجديد": "0922522213",
+  "مشروعات الصرف في توشكى": "0972245112",
+  "مشروعات الصرف في شرق العوينات": "0972600362"
+};
 
   document.getElementById("email").addEventListener("input", function () {
     const selectedDept = this.value;
@@ -819,7 +879,20 @@
 
 
 <div id="traineesTable">
-  <h3>قائمة المتدربين المسجلين:</h3>
+<h3 style="
+  font-weight: 900; 
+  font-size: 18px; 
+  color: #222; 
+  display: flex; 
+  align-items: center; 
+  gap: 8px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  margin: 0;           
+  padding-top: 16px;    /* رفع أكثر */
+">
+  🖨️ ⬆️ <span>لطباعة الاحصاءات والرسوم البيانية CTRL+p</span>
+</h3>
+<h3 style="margin: 0; padding-top: 2px; padding-bottom: 0;">قائمة المتدربين المسجلين:</h3>
   <table id="allTrainees">
     <thead>
       <tr>
@@ -1062,7 +1135,16 @@ function closePasswordModal() {
 
   function toggleAllTrainees() {
   const traineesTable = document.getElementById("traineesTable");
-  const tableHtml = traineesTable.innerHTML;
+
+  // إنشاء عنصر مؤقت لنسخ المحتوى
+  const tempDiv = document.createElement('div');
+  tempDiv.innerHTML = traineesTable.innerHTML;
+
+  // حذف كل عناوين h3 داخل النسخة المؤقتة
+  const h3s = tempDiv.querySelectorAll('h3');
+  h3s.forEach(h3 => h3.remove());
+
+  const tableHtml = tempDiv.innerHTML;
 
   // هنا نجيب محتوى البوكسات الإحصائية
   const statsBoxes = document.getElementById("statsBoxes");
@@ -1120,8 +1202,8 @@ function closePasswordModal() {
           .center-title {
             font-size: 20px;
             font-weight: bold;
-            margin: 10px 0 5px 0; /* تقليل المسافة السفلية */
-            border-bottom: 2px solid #000; /* الخط أسفل العنوان */
+            margin: 10px 0 5px 0;
+            border-bottom: 2px solid #000;
             display: inline-block;
             padding-bottom: 5px;
           }
@@ -1153,7 +1235,7 @@ function closePasswordModal() {
           table {
             width: 100%;
             border-collapse: collapse;
-            margin-top: 20px; /* زيادة المسافة العلوية للجدول */
+            margin-top: 20px;
           }
           th, td {
             border: 1px solid #333;
@@ -1192,7 +1274,7 @@ function closePasswordModal() {
 
         <div id="statsBoxes">${statsHtml}</div>
 
-        <table id="printTable">${tableHtml}</table>
+        <div id="traineesTable">${tableHtml}</div>
 
       </body>
     </html>
@@ -1277,110 +1359,107 @@ function searchTrainees() {
   tbody.innerHTML = ""; // نظف التابل قبل بداية العرض
 
   // جمع كل السجلات في مصفوفة أولاً
-const allRecords = [];
+  const allRecords = [];
 
-store.openCursor().onsuccess = function (e) {
-  const cursor = e.target.result;
-  if (cursor) {
-    allRecords.push({ key: cursor.key, value: cursor.value });
-    cursor.continue();
-  } else {
-    // الترتيب حسب التاريخ من الأحدث للأقدم
-   allRecords.sort((a, b) => {
-  const dateA = parseArabicDate(a.value.datetime);
-  const dateB = parseArabicDate(b.value.datetime);
-  return dateB - dateA; // الأحدث أولاً
-});
+  store.openCursor().onsuccess = function (e) {
+    const cursor = e.target.result;
+    if (cursor) {
+      allRecords.push({ key: cursor.key, value: cursor.value });
+      cursor.continue();
+    } else {
+      // الترتيب حسب التاريخ من الأحدث للأقدم
+      allRecords.sort((a, b) => {
+        const dateA = parseArabicDate(a.value.datetime);
+        const dateB = parseArabicDate(b.value.datetime);
+        return dateB - dateA; // الأحدث أولاً
+      });
 
+      const oldStats = document.getElementById("statsInfo");
+      if (oldStats) oldStats.remove();
 
+      allRecords.forEach(({ key, value: d }) => {
+        const combined = (
+          d.name + " " + d.phone + " " + d.email + " " +
+          d.qualification + " " + d.job + " " + d.course + " " +
+          d.duration + " " + d.type + " " + (d.datetime || "")
+        ).toLowerCase();
 
-    const oldStats = document.getElementById("statsInfo");
-    if (oldStats) oldStats.remove();
+        if (!query || combined.includes(query)) {
+          count++;
 
-    allRecords.forEach(({ key, value: d }) => {
-      const combined = (
-        d.name + " " + d.phone + " " + d.email + " " +
-        d.qualification + " " + d.job + " " + d.course + " " +
-        d.duration + " " + d.type + " " + (d.datetime || "")
-      ).toLowerCase();
+          let residency = "غير مقيم";
+          const typeValue = d.type ? d.type.trim() : "";
+          if (typeValue === "مقيم") {
+            residency = "مقيم";
+          }
 
-      if (!query || combined.includes(query)) {
-        count++;
+          stats.courses[d.course] = (stats.courses[d.course] || 0) + 1;
+          const durationVal = d.duration || "غير محددة";
+          stats.dates[durationVal] = (stats.dates[durationVal] || 0) + 1;
+          stats.jobs[d.job] = (stats.jobs[d.job] || 0) + 1;
+          stats.residencies[residency] = (stats.residencies[residency] || 0) + 1;
+          const dept = d.email || "غير محدد";
+          stats.emails[dept] = (stats.emails[dept] || 0) + 1;
 
-        let residency = "غير مقيم";
-        const typeValue = d.type ? d.type.trim() : "";
-        if (typeValue === "مقيم") {
-          residency = "مقيم";
-        }
+          const row = document.createElement("tr");
 
-        stats.courses[d.course] = (stats.courses[d.course] || 0) + 1;
-        const durationVal = d.duration || "غير محددة";
-        stats.dates[durationVal] = (stats.dates[durationVal] || 0) + 1;
-        stats.jobs[d.job] = (stats.jobs[d.job] || 0) + 1;
-        stats.residencies[residency] = (stats.residencies[residency] || 0) + 1;
-        const dept = d.email || "غير محدد";
-        stats.emails[dept] = (stats.emails[dept] || 0) + 1;
+          const fields = ["name", "phone", "email", "qualification", "job", "course", "duration", "type", "datetime"];
+          fields.forEach(field => {
+            const cell = document.createElement("td");
+            cell.textContent = d[field] || "";
+            cell.contentEditable = "true";
+            cell.dataset.key = key;
+            cell.dataset.field = field;
 
-        const row = document.createElement("tr");
+            cell.addEventListener("blur", function () {
+              const key = Number(this.dataset.key);
+              const field = this.dataset.field;
+              const newValue = this.textContent.trim();
 
-        const fields = ["name", "phone", "email", "qualification", "job", "course", "duration", "type", "datetime"];
-        fields.forEach(field => {
-          const cell = document.createElement("td");
-          cell.textContent = d[field] || "";
-          cell.contentEditable = "true";
-          cell.dataset.key = key;
-          cell.dataset.field = field;
+              const txUpdate = db.transaction("trainees", "readwrite");
+              const storeUpdate = txUpdate.objectStore("trainees");
+              const getRequest = storeUpdate.get(key);
 
-          cell.addEventListener("blur", function () {
-            const key = Number(this.dataset.key);
-            const field = this.dataset.field;
-            const newValue = this.textContent.trim();
+              getRequest.onsuccess = function () {
+                const data = getRequest.result;
+                if (data && field in data) {
+                  data[field] = newValue;
+                  const updateRequest = storeUpdate.put(data);
 
-            const txUpdate = db.transaction("trainees", "readwrite");
-            const storeUpdate = txUpdate.objectStore("trainees");
-            const getRequest = storeUpdate.get(key);
+                  updateRequest.onsuccess = () => {
+                    console.log(`تم تحديث السجل مع المفتاح ${key} بنجاح`);
+                  };
+                  updateRequest.onerror = (event) => {
+                    console.error("خطأ في تحديث السجل:", event.target.error);
+                  };
+                }
+              };
 
-            getRequest.onsuccess = function () {
-              const data = getRequest.result;
-              if (data && field in data) {
-                data[field] = newValue;
-                const updateRequest = storeUpdate.put(data);
+              getRequest.onerror = function (event) {
+                console.error("خطأ في جلب السجل:", event.target.error);
+              };
+            });
 
-                updateRequest.onsuccess = () => {
-                  console.log(`تم تحديث السجل مع المفتاح ${key} بنجاح`);
-                };
-                updateRequest.onerror = (event) => {
-                  console.error("خطأ في تحديث السجل:", event.target.error);
-                };
-              }
-            };
-
-            getRequest.onerror = function (event) {
-              console.error("خطأ في جلب السجل:", event.target.error);
-            };
+            row.appendChild(cell);
           });
 
-          row.appendChild(cell);
-        });
+          const deleteCell = document.createElement("td");
+          const deleteBtn = document.createElement("button");
+          deleteBtn.textContent = "🗑 حذف";
+          deleteBtn.onclick = () => deleteRecord(key);
+          deleteCell.appendChild(deleteBtn);
+          row.appendChild(deleteCell);
 
-        const deleteCell = document.createElement("td");
-        const deleteBtn = document.createElement("button");
-        deleteBtn.textContent = "🗑 حذف";
-        deleteBtn.onclick = () => deleteRecord(key);
-        deleteCell.appendChild(deleteBtn);
-        row.appendChild(deleteCell);
+          tbody.appendChild(row);
+        }
+      });
 
-        tbody.appendChild(row);
+      if (count === 0) {
+        tbody.innerHTML = `<tr><td colspan="10" style="text-align:center;">لا توجد نتائج مطابقة</td></tr>`;
+        tableContainer.style.display = 'none';
+        return;
       }
-    });
 
-    if (count === 0) {
-      tbody.innerHTML = `<tr><td colspan="10" style="text-align:center;">لا توجد نتائج مطابقة</td></tr>`;
-      tableContainer.style.display = 'none';
-      return;
-    }
-
-   
       const statsDiv = document.createElement("div");
       statsDiv.id = "statsInfo";
       statsDiv.style.display = "flex";
@@ -1390,56 +1469,138 @@ store.openCursor().onsuccess = function (e) {
       statsDiv.style.direction = "rtl";
       statsDiv.style.justifyContent = "space-between";
 
-      const createCard = (title, icon, content, bgColor) => {
+const createCard = (title, icon, contentObj, bgColor, cardId) => {
   const card = document.createElement("div");
   card.style.display = "flex";
   card.style.flexDirection = "column";
-  card.style.justifyContent = "center";
+  card.style.justifyContent = "flex-start";
   card.style.alignItems = "center";
   card.style.padding = "14px 16px";
   card.style.borderRadius = "10px";
   card.style.backgroundColor = bgColor;
-  card.style.color = "#fff";
+  card.style.color = "#fff";  // نص أبيض
   card.style.boxShadow = "0 4px 8px rgba(0,0,0,0.15)";
   card.style.fontFamily = "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif";
-  card.style.fontSize = "16px";
+  card.style.fontSize = "18px";
   card.style.fontWeight = "bold";
   card.style.wordBreak = "break-word";
   card.style.textAlign = "center";
-  card.style.width = "fit-content";
-  card.style.minWidth = "140px";
-  card.style.maxWidth = "260px";
-  card.style.height = "180px"; // 👈 تحديد الطول الرأسي للبوكس
-  card.style.overflowY = "auto"; // 👈 ظهور شريط التمرير العمودي عند الحاجة
 
-  // محتوى الكارد داخل حاوية تتحكم في overflow
-  card.innerHTML = `
-    <div style="margin-bottom:10px; white-space: nowrap;">${icon} ${title}</div>
-    <div style="line-height:1.6; overflow-y: auto;">${content}</div>
-  `;
+  card.style.width = "100%";
+  card.style.maxWidth = "280px";
+  card.style.minWidth = "180px";
+  card.style.boxSizing = "border-box";
+  card.style.height = "320px";
+  card.style.overflowY = "auto";
+
+  const textDiv = document.createElement("div");
+  textDiv.style.marginBottom = "10px";
+  textDiv.style.whiteSpace = "normal";
+  textDiv.style.lineHeight = "1.5em";
+  textDiv.style.fontSize = "20px";
+  textDiv.style.textAlign = "right";
+  textDiv.style.color = "#fff";  // لون النص أبيض
+
+  const lines = Object.entries(contentObj).map(([key, val]) => `${key}: ${val}`);
+  textDiv.textContent = lines.length > 0 ? lines.join(" - ") : "لا توجد بيانات";
+
+  const header = document.createElement("div");
+  header.textContent = `${icon} ${title}`;
+  header.style.marginBottom = "10px";
+  header.style.fontSize = "22px";
+  header.style.textAlign = "center";
+  header.style.color = "#fff";  // نص العنوان أبيض
+
+  const canvas = document.createElement("canvas");
+  canvas.id = `chart_${cardId}`;
+  canvas.style.maxWidth = "240px";
+  canvas.style.maxHeight = "180px";
+  canvas.style.backgroundColor = "#001F3F";  // كحلي غامق للخلفية
+  canvas.style.borderRadius = "8px";
+  canvas.style.display = "block";
+  canvas.style.margin = "0 auto";
+
+  card.appendChild(header);
+  card.appendChild(textDiv);
+  card.appendChild(canvas);
+
   return card;
 };
 
 
+
+
+
+      // دالة لتحويل محتوى الإحصائيات لنصوص
       const formatList = (obj) => {
         const entries = Object.entries(obj);
-        return entries.map(([key, val], index) => {
-          const suffix = (index === entries.length - 1) ? "" : " - ";
-          return `<span>${key}: ${val}${suffix}</span>`;
-        }).join("");
+        return entries.map(([key, val]) => `${key}: ${val}`).join(" - ");
       };
 
-      statsDiv.appendChild(createCard("عدد السجلات", "📊", count, "#4caf50"));
-      statsDiv.appendChild(createCard("حسب الدورة", "🎓", formatList(stats.courses), "#2196f3"));
-      statsDiv.appendChild(createCard(" حسب انعقاد الدورة", "⏳", formatList(stats.dates), "#ff9800"));
-      statsDiv.appendChild(createCard("حسب الإدارة ", "🏢", formatList(stats.emails), "#009688"));
-      statsDiv.appendChild(createCard("حسب الوظيفة", "💼", formatList(stats.jobs), "#9c27b0"));
-      statsDiv.appendChild(createCard("حسب الإقامة", "🏠", formatList(stats.residencies), "#f44336"));
+      // دالة لإنشاء بيانات مناسبة للرسم البياني
+      const prepareChartData = (obj) => {
+        const labels = Object.keys(obj);
+        const data = Object.values(obj);
+        const colors = labels.map(() => `hsl(${Math.floor(Math.random() * 360)}, 70%, 60%)`);
+        return { labels, data, colors };
+      };
+
+      // إنشاء الكروت أولاً وإضافتها
+      statsDiv.appendChild(createCard("عدد السجلات", "📊", { "السجلات": count }, "#4caf50", "count"));
+      statsDiv.appendChild(createCard("حسب الدورة", "🎓", stats.courses, "#2196f3", "courses"));
+      statsDiv.appendChild(createCard("حسب انعقاد الدورة", "⏳", stats.dates, "#ff9800", "dates"));
+      statsDiv.appendChild(createCard("حسب الإدارة", "🏢", stats.emails, "#009688", "emails"));
+      statsDiv.appendChild(createCard("حسب الوظيفة", "💼", stats.jobs, "#9c27b0", "jobs"));
+      statsDiv.appendChild(createCard("حسب الإقامة", "🏠", stats.residencies, "#f44336", "residencies"));
 
       tableContainer.parentNode.insertBefore(statsDiv, tableContainer);
       tableContainer.style.display = 'block';
+
+      // الآن نرسم كل الرسمات البيانية داخل الكروت
+      // دالة رسم دياجرام دائري
+      function drawPieChart(canvasId, chartData) {
+        const ctx = document.getElementById(canvasId).getContext("2d");
+        new Chart(ctx, {
+          type: "pie",
+          data: {
+            labels: chartData.labels,
+            datasets: [{
+              data: chartData.data,
+              backgroundColor: chartData.colors,
+              borderColor: "#fff",
+              borderWidth: 1,
+            }]
+          },
+          options: {
+            responsive: true,
+            plugins: {
+              legend: { position: "bottom", labels: { boxWidth: 14, padding: 6 } },
+              tooltip: { enabled: true }
+            }
+          }
+        });
+      }
+
+      drawPieChart("chart_count", { labels: ["السجلات"], data: [count], colors: ["#4caf50"] });
+      drawPieChart("chart_courses", prepareChartData(stats.courses));
+      drawPieChart("chart_dates", prepareChartData(stats.dates));
+      drawPieChart("chart_emails", prepareChartData(stats.emails));
+      drawPieChart("chart_jobs", prepareChartData(stats.jobs));
+      drawPieChart("chart_residencies", prepareChartData(stats.residencies));
     }
   };
+}
+
+// دالة مساعدة لتحويل التاريخ العربي (إذا عندك دالة خاصة ممكن تستخدمها)
+function parseArabicDate(dateStr) {
+  // فرضاً التاريخ بالشكل: يوم/شهر/سنة
+  // تحتاج تحويله لتاريخ JS عادي
+  // مثال: "10/06/2025"
+  if (!dateStr) return 0;
+  const parts = dateStr.split("/");
+  if (parts.length !== 3) return 0;
+  const [day, month, year] = parts.map(Number);
+  return new Date(year, month - 1, day).getTime();
 }
 
 
@@ -1570,6 +1731,9 @@ function parseArabicDate(arabicDate) {
     return new Date(0);
   }
 }
+
+
+
 
 
 
