@@ -421,6 +421,60 @@
   <option value="الإدارة العامة لمشروعات الصرف في شرق العوينات">
 </datalist>
 
+<script>
+  const departmentPhones = {
+    "الإدارة العامة لصرف غرب كفر الشيخ": "0473235349",
+    "الإدارة العامة لصرف شرق كفر الشيخ": "0473244007",
+    "الإدارة العامة لصرف وسط الدقهلية": "0502244346",
+    "الإدارة العامة لصرف شمال الدقهلية": "0502522541",
+    "الإدارة العامة لصرف جنوب الدقهلية": "0502605456",
+    "الإدارة العامة لصرف غرب المنوفية": "0486663770",
+    "الإدارة العامة لصرف شرق المنوفية": "0482175059",
+    "الإدارة العامة لصرف وسط الدلتا": "0403318220",
+    "الإدارة العامة لصرف غرب الغربية": "0403305747",
+    "الإدارة العامة لصرف شرق الغربية": "0402780923",
+    "الإدارة العامة لصرف شمال البحيرة": "0453552843",
+    "الإدارة العامة لصرف جنوب البحيرة": "0453260287",
+    "الإدارة العامة لصرف شمال الشرقية": "0552372235",
+    "الإدارة العامة لصرف جنوب الشرقية": "0552360291",
+    "الإدارة العامة لصرف شمال الإسماعيلية": "0643318642",
+    "الإدارة العامة لصرف جنوب الإسماعيلية": "0643231520",
+    "الإدارة العامة لصرف بورسعيد": "0663744312",
+    "الإدارة العامة لصرف دمياط": "0572404232",
+    "الإدارة العامة لصرف شمال سيناء": "0683351353",
+    "الإدارة العامة لصرف جنوب سيناء": "0693661147",
+    "الإدارة العامة لصرف غرب البحيرة": "0453464445",
+    "الإدارة العامة لصرف النوبارية": "0453170714",
+    "الإدارة العامة لصرف العامرية": "034480373",
+    "الإدارة العامة لصرف برج العرب": "034780063",
+    "الإدارة العامة لصرف الإسكندرية": "034253095",
+    "الإدارة العامة لصرف مرسى مطروح": "0464931776",
+    "الإدارة العامة لصرف بني سويف": "0822312610",
+    "الإدارة العامة لصرف الفيوم": "0842164223",
+    "الإدارة العامة لصرف المنيا": "0862366124",
+    "الإدارة العامة لصرف الواحات": "0844822180",
+    "الإدارة العامة لصرف أسيوط": "0882336430",
+    "الإدارة العامة لصرف سوهاج": "0934604283",
+    "الإدارة العامة لصرف قنا": "0965322605",
+    "الإدارة العامة لصرف الأقصر": "0952372724",
+    "الإدارة العامة لصرف أسوان": "0972310010",
+    "الإدارة العامة لمشروعات الصرف في شمال سيناء": "0683351422",
+    "الإدارة العامة لمشروعات الصرف في الوادي الجديد": "0922522213",
+    "الإدارة العامة لمشروعات الصرف في توشكى": "0972245112",
+    "الإدارة العامة لمشروعات الصرف في شرق العوينات": "0972600362"
+  };
+
+  document.getElementById("email").addEventListener("input", function () {
+    const selectedDept = this.value;
+    const phoneField = document.getElementById("phone");
+    phoneField.value = departmentPhones[selectedDept] || "";
+  });
+</script>
+
+
+
+
+
 
     <label for="qualification">المؤهل الدراسي:</label>
 <input list="qualifications" id="qualification" name="qualification" placeholder="اختر المؤهل الدراسي">
@@ -1180,11 +1234,28 @@ function searchTrainees() {
 
   tbody.innerHTML = ""; // نظف التابل قبل بداية العرض
 
-  store.openCursor().onsuccess = function (e) {
-    const cursor = e.target.result;
-    if (cursor) {
-      const d = cursor.value;
+  // جمع كل السجلات في مصفوفة أولاً
+const allRecords = [];
 
+store.openCursor().onsuccess = function (e) {
+  const cursor = e.target.result;
+  if (cursor) {
+    allRecords.push({ key: cursor.key, value: cursor.value });
+    cursor.continue();
+  } else {
+    // الترتيب حسب التاريخ من الأحدث للأقدم
+   allRecords.sort((a, b) => {
+  const dateA = parseArabicDate(a.value.datetime);
+  const dateB = parseArabicDate(b.value.datetime);
+  return dateB - dateA; // الأحدث أولاً
+});
+
+
+
+    const oldStats = document.getElementById("statsInfo");
+    if (oldStats) oldStats.remove();
+
+    allRecords.forEach(({ key, value: d }) => {
       const combined = (
         d.name + " " + d.phone + " " + d.email + " " +
         d.qualification + " " + d.job + " " + d.course + " " +
@@ -1194,37 +1265,30 @@ function searchTrainees() {
       if (!query || combined.includes(query)) {
         count++;
 
-      let residency = "غير مقيم";
-const typeValue = d.type ? d.type.trim() : "";
-if (typeValue === "مقيم") {
-  residency = "مقيم";
-}
+        let residency = "غير مقيم";
+        const typeValue = d.type ? d.type.trim() : "";
+        if (typeValue === "مقيم") {
+          residency = "مقيم";
+        }
 
         stats.courses[d.course] = (stats.courses[d.course] || 0) + 1;
-
         const durationVal = d.duration || "غير محددة";
         stats.dates[durationVal] = (stats.dates[durationVal] || 0) + 1;
-
         stats.jobs[d.job] = (stats.jobs[d.job] || 0) + 1;
-
         stats.residencies[residency] = (stats.residencies[residency] || 0) + 1;
-
         const dept = d.email || "غير محدد";
         stats.emails[dept] = (stats.emails[dept] || 0) + 1;
 
-        // ننشئ صف الجدول
         const row = document.createElement("tr");
 
-        // كل حقل نجعله قابل للتعديل contenteditable ونعطيه بيانات المفتاح واسم الحقل
         const fields = ["name", "phone", "email", "qualification", "job", "course", "duration", "type", "datetime"];
         fields.forEach(field => {
           const cell = document.createElement("td");
           cell.textContent = d[field] || "";
           cell.contentEditable = "true";
-          cell.dataset.key = cursor.key; // المفتاح للعنصر في IndexedDB
+          cell.dataset.key = key;
           cell.dataset.field = field;
 
-          // حدث blur لحفظ التعديل تلقائياً
           cell.addEventListener("blur", function () {
             const key = Number(this.dataset.key);
             const field = this.dataset.field;
@@ -1240,12 +1304,10 @@ if (typeValue === "مقيم") {
                 data[field] = newValue;
                 const updateRequest = storeUpdate.put(data);
 
-                updateRequest.onsuccess = function () {
+                updateRequest.onsuccess = () => {
                   console.log(`تم تحديث السجل مع المفتاح ${key} بنجاح`);
-                  // لو تحب ممكن تعيد تحميل الجدول أو تحدّث الإحصائيات هنا
                 };
-
-                updateRequest.onerror = function (event) {
+                updateRequest.onerror = (event) => {
                   console.error("خطأ في تحديث السجل:", event.target.error);
                 };
               }
@@ -1259,32 +1321,24 @@ if (typeValue === "مقيم") {
           row.appendChild(cell);
         });
 
-        // عمود زر الحذف
         const deleteCell = document.createElement("td");
-const deleteBtn = document.createElement("button");
-deleteBtn.textContent = "🗑 حذف";
-const recordKey = cursor.key; // نخزن المفتاح في متغير ثابت
-deleteBtn.onclick = function () {
-  deleteRecord(recordKey);
-};
-deleteCell.appendChild(deleteBtn);
-row.appendChild(deleteCell);
+        const deleteBtn = document.createElement("button");
+        deleteBtn.textContent = "🗑 حذف";
+        deleteBtn.onclick = () => deleteRecord(key);
+        deleteCell.appendChild(deleteBtn);
+        row.appendChild(deleteCell);
 
-tbody.appendChild(row);
-
+        tbody.appendChild(row);
       }
+    });
 
-      cursor.continue();
-    } else {
-      const oldStats = document.getElementById("statsInfo");
-      if (oldStats) oldStats.remove();
+    if (count === 0) {
+      tbody.innerHTML = `<tr><td colspan="10" style="text-align:center;">لا توجد نتائج مطابقة</td></tr>`;
+      tableContainer.style.display = 'none';
+      return;
+    }
 
-      if (count === 0) {
-        tbody.innerHTML = `<tr><td colspan="10" style="text-align:center;">لا توجد نتائج مطابقة</td></tr>`;
-        tableContainer.style.display = 'none';
-        return;
-      }
-
+   
       const statsDiv = document.createElement("div");
       statsDiv.id = "statsInfo";
       statsDiv.style.display = "flex";
@@ -1415,6 +1469,59 @@ function restoreIndexedDB(event) {
   reader.readAsText(file);
 }
 
+
+
+function parseArabicDate(arabicDate) {
+  if (!arabicDate) return new Date(0); // تاريخ قديم جدًا لو مش موجود
+
+  try {
+    // حول الأرقام العربية إلى إنجليزية
+    const westernDigits = arabicDate.replace(/[٠-٩]/g, d => "٠١٢٣٤٥٦٧٨٩".indexOf(d));
+
+    // استخرج التاريخ والوقت
+    const dateTimeParts = westernDigits.split(" في ");
+    if (dateTimeParts.length !== 2) return new Date(0);
+
+    const [dayMonthYear, timePart] = dateTimeParts;
+
+    // ترجم الشهر
+    const months = {
+      "يناير": "01",
+      "فبراير": "02",
+      "مارس": "03",
+      "أبريل": "04",
+      "مايو": "05",
+      "يونيو": "06",
+      "يوليو": "07",
+      "أغسطس": "08",
+      "سبتمبر": "09",
+      "أكتوبر": "10",
+      "نوفمبر": "11",
+      "ديسمبر": "12"
+    };
+
+    const dayMonthYearMatch = dayMonthYear.match(/(\d{1,2}) (\S+) (\d{4})/);
+    if (!dayMonthYearMatch) return new Date(0);
+
+    const day = dayMonthYearMatch[1].padStart(2, '0');
+    const month = months[dayMonthYearMatch[2]] || "01";
+    const year = dayMonthYearMatch[3];
+
+    // الوقت ٠١:٤٩:٥٢ ص أو م
+    let time = timePart.trim();
+    let isPM = time.includes("م");
+    let timeDigits = time.replace(/[^\d:]/g, "");
+    let [hh, mm, ss] = timeDigits.split(":").map(v => parseInt(v));
+    if (isPM && hh < 12) hh += 12;
+    if (!isPM && hh === 12) hh = 0;
+
+    const isoString = `${year}-${month}-${day}T${String(hh).padStart(2, '0')}:${String(mm).padStart(2, '0')}:${String(ss).padStart(2, '0')}`;
+
+    return new Date(isoString);
+  } catch (e) {
+    return new Date(0);
+  }
+}
 
 
 
