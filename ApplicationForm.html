@@ -370,26 +370,29 @@
 <form id="registrationForm" style="display: none;">
   
   <!-- باقي العناصر كما هي -->
-      <label>الاسم:</label>
-      <input type="text" id="name" required>
-      <label>رقم الهاتف:</label>
-      <input type="tel" id="phone" required>
+      <label>👤 الاسم:</label>
+<input type="text" id="name" required>
+
+<label>📞 رقم الهاتف:</label>
+<input type="tel" id="phone" required>
+
 
       
-     <label for="email">الادارة:</label>
+<label for="email">🏛️   الإدارة:</label>
 <input list="departments" id="email" name="email" placeholder="اختر الإدارة التابع لها">
 
 <datalist id="departments">
-  <option value="الإدارة العامة لصرف غرب كفر الشيخ">
-  <option value="الإدارة العامة لصرف شرق كفر الشيخ">
+  <option value="الإدارة العامة لصرف غرب كفر الشيخ"> <option value="الإدارة العامة لصرف غرب كفر الشيخ">
+  <option value="الإدارة العامة لصرف غرب الدلتا">
+  <option value="الإدارة العامة لصرف القليوبيه">
   <option value="الإدارة العامة لصرف وسط الدقهلية">
   <option value="الإدارة العامة لصرف شمال الدقهلية">
   <option value="الإدارة العامة لصرف جنوب الدقهلية">
   <option value="الإدارة العامة لصرف غرب المنوفية">
   <option value="الإدارة العامة لصرف شرق المنوفية">
   <option value="الإدارة العامة لصرف وسط الدلتا">
-  <option value="الإدارة العامة لصرف غرب الغربية">
-  <option value="الإدارة العامة لصرف شرق الغربية">
+  <option value="الإدارة العامة لصرف غرب الدلتا">
+  <option value="الإدارة العامة لصرف شرق الدلتا">
   <option value="الإدارة العامة لصرف شمال البحيرة">
   <option value="الإدارة العامة لصرف جنوب البحيرة">
   <option value="الإدارة العامة لصرف شمال الشرقية">
@@ -424,6 +427,8 @@
 <script>
   const departmentPhones = {
     "الإدارة العامة لصرف غرب كفر الشيخ": "0473235349",
+    "الإدارة العامة لصرف غرب الدلتا": "0473235349",
+    "الإدارة العامة لصرف القليوبيه": "0132233733",
     "الإدارة العامة لصرف شرق كفر الشيخ": "0473244007",
     "الإدارة العامة لصرف وسط الدقهلية": "0502244346",
     "الإدارة العامة لصرف شمال الدقهلية": "0502522541",
@@ -431,8 +436,8 @@
     "الإدارة العامة لصرف غرب المنوفية": "0486663770",
     "الإدارة العامة لصرف شرق المنوفية": "0482175059",
     "الإدارة العامة لصرف وسط الدلتا": "0403318220",
-    "الإدارة العامة لصرف غرب الغربية": "0403305747",
-    "الإدارة العامة لصرف شرق الغربية": "0402780923",
+    "الإدارة العامة لصرف غرب الدلتا": "0403305747",
+    "الإدارة العامة لصرف شرق الدلتا": "0402780923",
     "الإدارة العامة لصرف شمال البحيرة": "0453552843",
     "الإدارة العامة لصرف جنوب البحيرة": "0453260287",
     "الإدارة العامة لصرف شمال الشرقية": "0552372235",
@@ -476,7 +481,7 @@
 
 
 
-    <label for="qualification">المؤهل الدراسي:</label>
+<label for="qualification">🎓 المؤهل الدراسي:</label>
 <input list="qualifications" id="qualification" name="qualification" placeholder="اختر المؤهل الدراسي">
 
 <datalist id="qualifications">
@@ -504,7 +509,7 @@
 
       
       
-      <label for="job">الوظيفة:</label>
+<label for="job">💼 الوظيفة:</label>
 <input list="jobs" id="job" name="job" placeholder="اختر الوظيفة">
 
 <datalist id="jobs">
@@ -546,16 +551,16 @@
 
       
       
-      <label>اسم الدورة:</label>
+<label for="course">📘 اسم الدورة:</label>
       <input type="text" id="course">
       
       
-      <label>مدة الدورة:</label>
+<label for="duration">⏱ مدة الدورة:</label>
       <input type="text" id="duration">
       
       
       
-      <label for="typeInput">الإقامة:</label>
+<label for="typeInput">🏠 الإقامة:</label>
 <input list="residencyOptions" id="type" name="type" placeholder="اختر أو اكتب الإقامة">
 <datalist id="residencyOptions">
   <option value="مقيم">
@@ -726,17 +731,18 @@
 <div id="resultScreen">
   <h3>تم تسجيل البيانات بنجاح:</h3>
   <table>
-    <tr><th>الاسم</th><td id="resName"></td></tr>
-    <tr><th>رقم الهاتف</th><td id="resPhone"></td></tr>
-    <tr><th>الإدارة </th><td id="resEmail"></td></tr>
-    <tr><th>المؤهل</th><td id="resQualification"></td></tr>
-    <tr><th>الوظيفة</th><td id="resJob"></td></tr>
-    <tr><th>اسم الدورة</th><td id="resCourse"></td></tr>
-    <tr><th>مدة الدورة</th><td id="resDuration"></td></tr>
-    <tr><th>الاقامة</th><td id="resType"></td></tr>
-    <tr><th>تاريخ ووقت التسجيل</th><td id="resDatetime"></td></tr>
+    <tr><th>👤 الاسم</th><td id="resName"></td></tr>
+    <tr><th>📞 رقم الهاتف</th><td id="resPhone"></td></tr>
+    <tr><th> 🏛️  الإدارة</th><td id="resEmail"></td></tr>
+    <tr><th>🎓 المؤهل</th><td id="resQualification"></td></tr>
+    <tr><th>💼 الوظيفة</th><td id="resJob"></td></tr>
+    <tr><th>📚 اسم الدورة</th><td id="resCourse"></td></tr>
+    <tr><th>⏳ مدة الدورة</th><td id="resDuration"></td></tr>
+    <tr><th>🏠 الاقامة</th><td id="resType"></td></tr>
+    <tr><th>🕒 تاريخ ووقت التسجيل</th><td id="resDatetime"></td></tr>
   </table>
 </div>
+
 
 
 
@@ -817,15 +823,25 @@
   <table id="allTrainees">
     <thead>
       <tr>
-        <th>الاسم</th><th>الهاتف</th><th>الإدارة</th><th>المؤهل</th><th>الوظيفة</th>
-        <th>الدورة</th><th>المدة</th><th>الاقامة</th>
-        <th>تاريخ ووقت التسجيل</th>
-        <th>إجراء</th> <!-- زر الحذف -->
+        <th>👤 الاسم</th>
+        <th>📞 الهاتف</th>
+        <th>🏛️   الإدارة</th>
+        <th>🎓 المؤهل</th>
+        <th>💼 الوظيفة</th>
+        <th>📚 الدورة</th>
+        <th>⏳ المدة</th>
+        <th>🏠 الاقامة</th>
+        <th>🕒 تاريخ ووقت التسجيل</th>
+        <th>🗑️ إجراء</th> <!-- زر الحذف -->
       </tr>
     </thead>
     <tbody></tbody>
   </table>
 </div>
+
+
+
+
 
 
 
@@ -1048,6 +1064,10 @@ function closePasswordModal() {
   const traineesTable = document.getElementById("traineesTable");
   const tableHtml = traineesTable.innerHTML;
 
+  // هنا نجيب محتوى البوكسات الإحصائية
+  const statsBoxes = document.getElementById("statsBoxes");
+  const statsHtml = statsBoxes ? statsBoxes.innerHTML : '';
+
   const printWindow = window.open('', '', 'width=900,height=600');
 
   const currentDate = new Date().toLocaleDateString('ar-EG', {
@@ -1111,10 +1131,29 @@ function closePasswordModal() {
             text-align: left;
             margin-top: 10px;
           }
+          /* تنسيق البوكسات الإحصائية */
+          #statsBoxes {
+            margin-top: 15px;
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+          }
+          .stat-box {
+            border: 2px solid #4F81BD;
+            border-radius: 8px;
+            padding: 10px 15px;
+            font-weight: bold;
+            font-size: 16px;
+            background-color: #e7f0ff;
+            color: #2a4d8f;
+            min-width: 150px;
+            text-align: center;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+          }
           table {
             width: 100%;
             border-collapse: collapse;
-            margin-top: 10px; /* تقليل المسافة العلوية للجدول */
+            margin-top: 20px; /* زيادة المسافة العلوية للجدول */
           }
           th, td {
             border: 1px solid #333;
@@ -1151,6 +1190,8 @@ function closePasswordModal() {
           <div class="date">تاريخ الطباعة: ${currentDate}</div>
         </header>
 
+        <div id="statsBoxes">${statsHtml}</div>
+
         <table id="printTable">${tableHtml}</table>
 
       </body>
@@ -1165,6 +1206,7 @@ function closePasswordModal() {
     printWindow.close();
   }, 300);
 }
+
 
 
 
@@ -1349,29 +1391,35 @@ store.openCursor().onsuccess = function (e) {
       statsDiv.style.justifyContent = "space-between";
 
       const createCard = (title, icon, content, bgColor) => {
-        const card = document.createElement("div");
-        card.style.display = "flex";
-        card.style.flexDirection = "column";
-        card.style.justifyContent = "center";
-        card.style.alignItems = "center";
-        card.style.flex = "0 1 auto";
-        card.style.padding = "14px 16px";
-        card.style.borderRadius = "10px";
-        card.style.backgroundColor = bgColor;
-        card.style.color = "#fff";
-        card.style.boxShadow = "0 4px 8px rgba(0,0,0,0.15)";
-        card.style.fontFamily = "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif";
-        card.style.fontSize = "16px";
-        card.style.fontWeight = "bold";
-        card.style.wordBreak = "break-word";
-        card.style.textAlign = "center";
+  const card = document.createElement("div");
+  card.style.display = "flex";
+  card.style.flexDirection = "column";
+  card.style.justifyContent = "center";
+  card.style.alignItems = "center";
+  card.style.padding = "14px 16px";
+  card.style.borderRadius = "10px";
+  card.style.backgroundColor = bgColor;
+  card.style.color = "#fff";
+  card.style.boxShadow = "0 4px 8px rgba(0,0,0,0.15)";
+  card.style.fontFamily = "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif";
+  card.style.fontSize = "16px";
+  card.style.fontWeight = "bold";
+  card.style.wordBreak = "break-word";
+  card.style.textAlign = "center";
+  card.style.width = "fit-content";
+  card.style.minWidth = "140px";
+  card.style.maxWidth = "260px";
+  card.style.height = "180px"; // 👈 تحديد الطول الرأسي للبوكس
+  card.style.overflowY = "auto"; // 👈 ظهور شريط التمرير العمودي عند الحاجة
 
-        card.innerHTML = `
-          <div style="margin-bottom:10px;">${icon} ${title}</div>
-          <div style="line-height:1.6;">${content}</div>
-        `;
-        return card;
-      };
+  // محتوى الكارد داخل حاوية تتحكم في overflow
+  card.innerHTML = `
+    <div style="margin-bottom:10px; white-space: nowrap;">${icon} ${title}</div>
+    <div style="line-height:1.6; overflow-y: auto;">${content}</div>
+  `;
+  return card;
+};
+
 
       const formatList = (obj) => {
         const entries = Object.entries(obj);
