@@ -1556,6 +1556,11 @@ const createCard = (title, icon, contentObj, bgColor, cardId) => {
       tableContainer.parentNode.insertBefore(statsDiv, tableContainer);
       tableContainer.style.display = 'block';
 
+      const statsBox = document.getElementById("statsInfo");
+const offset = statsBox.getBoundingClientRect().top + window.scrollY - 12; // 100 بكسل لفوق
+window.scrollTo({ top: offset, behavior: 'smooth' });
+
+
       // الآن نرسم كل الرسمات البيانية داخل الكروت
       // دالة رسم دياجرام دائري
       function drawPieChart(canvasId, chartData) {
