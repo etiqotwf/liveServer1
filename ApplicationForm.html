@@ -27,13 +27,15 @@
       box-sizing: border-box;
     }
     .container {
-      max-width: 1100px;
-      margin: auto;
-      background-color: white;
-      padding: 20px;
-      border-radius: 10px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
-    }
+  width: 90%; /* أو استخدم 100% إذا أردت أن يملأ الشاشة بالكامل */
+  max-width: 100%; /* يمنع التقييد بعرض ثابت */
+  margin: auto;
+  background-color: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
     .buttons {
       display: flex;
       flex-wrap: wrap;
@@ -1115,7 +1117,7 @@
 
 function confirmPassword() {
   const input = document.getElementById("passwordInput").value;
-  if (input === "1611151amer") {
+  if (input === "12345") {
     const tx = db.transaction("trainees", "readwrite");
     tx.objectStore("trainees").clear().onsuccess = () => {
       alert("تم مسح البيانات.");
