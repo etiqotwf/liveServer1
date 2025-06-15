@@ -434,109 +434,21 @@
 <form id="registrationForm" style="display: none;">
   
   <!-- باقي العناصر كما هي -->
-      <label>👤 الاسم:</label>
-<input type="text" id="name" required>
+     <label for="name">👤 الاسم:</label>
+<input list="names" id="name" name="name" required placeholder="اكتب أو اختر الاسم">
+<datalist id="names"></datalist>
 
-<label>📞 رقم الهاتف:</label>
-<input type="tel" id="phone" required>
+
+<label for="phone">📞 رقم الهاتف:</label>
+<input list="phones" type="tel" id="phone" name="phone" required placeholder="اكتب أو اختر رقم الهاتف" style="direction: rtl; text-align: right;">
+<datalist id="phones"></datalist>
 
 
       
-<label for="email">🏛️   الإدارة:</label>
-<input list="departments" id="email" name="email" placeholder="اختر الإدارة التابع لها">
+<label for="email">🏛️ الإدارة:</label>
+<input list="departments" id="email" name="email" placeholder="اختر أو اكتب الإدارة" />
+<datalist id="departments"></datalist>
 
-<datalist id="departments">
-  <option value="صرف غرب كفر الشيخ">
-  <option value="صرف غرب الدلتا">
-  <option value="صرف القليوبيه">
-  <option value="صرف وسط الدقهلية">
-  <option value="صرف شمال الدقهلية">
-  <option value="صرف جنوب الدقهلية">
-  <option value="صرف غرب المنوفية">
-  <option value="صرف شرق المنوفية">
-  <option value="صرف وسط الدلتا">
-  <option value="صرف شرق الدلتا">
-  <option value="صرف شمال البحيرة">
-  <option value="صرف جنوب البحيرة">
-  <option value="صرف شمال الشرقية">
-  <option value="صرف جنوب الشرقية">
-  <option value="صرف شمال الإسماعيلية">
-  <option value="صرف جنوب الإسماعيلية">
-  <option value="صرف بورسعيد">
-  <option value="صرف دمياط">
-  <option value="صرف شمال سيناء">
-  <option value="صرف جنوب سيناء">
-  <option value="صرف غرب البحيرة">
-  <option value="صرف النوبارية">
-  <option value="صرف العامرية">
-  <option value="صرف برج العرب">
-  <option value="صرف الإسكندرية">
-  <option value="صرف مرسى مطروح">
-  <option value="صرف بني سويف">
-  <option value="صرف الفيوم">
-  <option value="صرف المنيا">
-  <option value="صرف الواحات">
-  <option value="صرف أسيوط">
-  <option value="صرف سوهاج">
-  <option value="صرف قنا">
-  <option value="صرف الأقصر">
-  <option value="صرف أسوان">
-  <option value="مشروعات الصرف في شمال سيناء">
-  <option value="مشروعات الصرف في الوادي الجديد">
-  <option value="مشروعات الصرف في توشكى">
-  <option value="مشروعات الصرف في شرق العوينات">
-</datalist>
-
-<script>
-  const departmentPhones = {
-  "صرف غرب كفر الشيخ": "0473235349",
-  "صرف غرب الدلتا": "0403305747",
-  "صرف القليوبيه": "0132233733",
-  "صرف شرق كفر الشيخ": "0473244007",
-  "صرف وسط الدقهلية": "0502244346",
-  "صرف شمال الدقهلية": "0502522541",
-  "صرف جنوب الدقهلية": "0502605456",
-  "صرف غرب المنوفية": "0486663770",
-  "صرف شرق المنوفية": "0482175059",
-  "صرف وسط الدلتا": "0403318220",
-  "صرف شرق الدلتا": "0402780923",
-  "صرف شمال البحيرة": "0453552843",
-  "صرف جنوب البحيرة": "0453260287",
-  "صرف شمال الشرقية": "0552372235",
-  "صرف جنوب الشرقية": "0552360291",
-  "صرف شمال الإسماعيلية": "0643318642",
-  "صرف جنوب الإسماعيلية": "0643231520",
-  "صرف بورسعيد": "0663744312",
-  "صرف دمياط": "0572404232",
-  "صرف شمال سيناء": "0683351353",
-  "صرف جنوب سيناء": "0693661147",
-  "صرف غرب البحيرة": "0453464445",
-  "صرف النوبارية": "0453170714",
-  "صرف العامرية": "034480373",
-  "صرف برج العرب": "034780063",
-  "صرف الإسكندرية": "034253095",
-  "صرف مرسى مطروح": "0464931776",
-  "صرف بني سويف": "0822312610",
-  "صرف الفيوم": "0842164223",
-  "صرف المنيا": "0862366124",
-  "صرف الواحات": "0844822180",
-  "صرف أسيوط": "0882336430",
-  "صرف سوهاج": "0934604283",
-  "صرف قنا": "0965322605",
-  "صرف الأقصر": "0952372724",
-  "صرف أسوان": "0972310010",
-  "مشروعات الصرف في شمال سيناء": "0683351422",
-  "مشروعات الصرف في الوادي الجديد": "0922522213",
-  "مشروعات الصرف في توشكى": "0972245112",
-  "مشروعات الصرف في شرق العوينات": "0972600362"
-};
-
-  document.getElementById("email").addEventListener("input", function () {
-    const selectedDept = this.value;
-    const phoneField = document.getElementById("phone");
-    phoneField.value = departmentPhones[selectedDept] || "";
-  });
-</script>
 
 
 
@@ -544,77 +456,25 @@
 
 
 <label for="qualification">🎓 المؤهل الدراسي:</label>
-<input list="qualifications" id="qualification" name="qualification" placeholder="اختر المؤهل الدراسي">
+<input list="qualifications" id="qualification" name="qualification" placeholder="اختر أو اكتب المؤهل الدراسي">
+<datalist id="qualifications"></datalist>
 
-<datalist id="qualifications">
-  <option value="بكالوريوس هندسة زراعية">
-  <option value="بكالوريوس هندسة مدنية">
-  <option value="بكالوريوس هندسة ميكانيكية">
-  <option value="بكالوريوس علوم زراعية">
-  <option value="بكالوريوس رياضيات وإحصاء">
-  <option value="بكالوريوس اقتصاد وإدارة أعمال">
-  <option value="بكالوريوس علوم البيئة">
-  <option value="بكالوريوس نظم معلومات">
-  <option value="بكالوريوس تجارة">
-  <option value="دبلوم فني زراعي">
-  <option value="دبلوم فني ميكانيكا">
-  <option value="دبلوم فني كهرباء">
-  <option value="دبلوم فني شبكات وري">
-  <option value="دبلوم">
-  <option value="المعهد الفني التجاري">
-  <option value="ماجستير إدارة موارد مائية">
-  <option value="ماجستير هندسة الري والصرف">
-  <option value="دكتوراه في الموارد المائية">
-  <option value="ثانوية عامة">
-  <option value="شهادة معهد فني متخصص">
-</datalist>
+
 
       
       
 <label for="job">💼 الوظيفة:</label>
-<input list="jobs" id="job" name="job" placeholder="اختر الوظيفة">
+<input list="jobs" id="job" name="job" placeholder="اختر الوظيفة أو اكتبها">
+<datalist id="jobs"></datalist>
 
-<datalist id="jobs">
-  <option value="مدير عام">
-  <option value="وكيل الوزارة">
-  <option value="مدير إدارة">
-  <option value="مدير قسم">
-  <option value="رئيس قسم">
-  <option value="مدير فرع">
-  <option value="مدير مكتب">
-  <option value="كبير مهندسين">
-  <option value="مهندس أول">
-  <option value="مهندس">
-  <option value="مهندس متدرب">
-  <option value="معاون مهندس">
-  <option value="محاسب أول">
-  <option value="محاسب">
-  <option value="مراجع داخلي">
-  <option value="مدقق مالي">
-  <option value="مراجع حسابات">
-  <option value="أخصائي تمويل">
-  <option value="أخصائي تنمية إدارية">
-  <option value="أخصائي تدريب">
-  <option value="أخصائي شؤون قانونية">
-  <option value="أمين مستودع">
-  <option value="كاتب رابع">
-  <option value="كاتب ثالث">
-  <option value="كاتب ثاني">
-  <option value="كاتب أول">
-  <option value="مساعد إداري">
-  <option value="سكرتير تنفيذي">
-  <option value="فني تشغيل">
-  <option value="فني صيانة">
-  <option value="سائق">
-  <option value="حارس">
-  <option value="عامل">
-  <option value="مندوب">
-</datalist>
+
 
       
       
 <label for="course">📘 اسم الدورة:</label>
-      <input type="text" id="course">
+<input list="courses" id="course" name="course" placeholder="اختر الدورة أو اكتبها">
+<datalist id="courses"></datalist>
+
       
       
 <label for="duration">⏱ مدة الدورة:</label>
@@ -923,25 +783,196 @@
   <script>
   let db;
 
-  function openDB() {
-    const request = indexedDB.open("TraineeDB", 1);
+function openDB() {
+  const request = indexedDB.open("TraineeDB", 1);
 
-    request.onupgradeneeded = function (e) {
-      db = e.target.result;
-      if (!db.objectStoreNames.contains("trainees")) {
-        db.createObjectStore("trainees", { keyPath: "id", autoIncrement: true });
+  request.onupgradeneeded = function (e) {
+    db = e.target.result;
+    if (!db.objectStoreNames.contains("trainees")) {
+      db.createObjectStore("trainees", { keyPath: "id", autoIncrement: true });
+    }
+  };
+
+  request.onsuccess = function (e) {
+  db = e.target.result;
+  loadDepartmentsFromEmailField();  // الإدارات
+  loadQualificationsFromDB();       // المؤهلات
+  loadJobsFromDB();                 // الوظائف
+  loadCoursesFromDB();              // الدورات ✅
+  loadLatestData();                 // آخر سجل
+  loadNamesFromDB(); // تحميل الأسماء
+  loadPhonesFromDB(); // تحميل أرقام الهاتف
+};
+
+
+
+  request.onerror = function () {
+    alert("فشل في فتح قاعدة البيانات");
+  };
+}
+
+function loadDepartmentsFromEmailField() {
+  const tx = db.transaction("trainees", "readonly");
+  const store = tx.objectStore("trainees");
+  const request = store.getAll();
+
+  request.onsuccess = function () {
+    const allRecords = request.result;
+    const departments = new Set();
+
+    allRecords.forEach(record => {
+      if (record.email && record.email.trim() !== "") {
+        departments.add(record.email.trim());
       }
-    };
+    });
 
-    request.onsuccess = function (e) {
-      db = e.target.result;
-      loadLatestData();
-    };
+    const datalist = document.getElementById("departments");
+    datalist.innerHTML = "";
 
-    request.onerror = function () {
-      alert("فشل في فتح قاعدة البيانات");
-    };
-  }
+    departments.forEach(dep => {
+      const option = document.createElement("option");
+      option.value = dep;
+      datalist.appendChild(option);
+    });
+  };
+}
+
+function loadQualificationsFromDB() {
+  const tx = db.transaction("trainees", "readonly");
+  const store = tx.objectStore("trainees");
+  const request = store.getAll();
+
+  request.onsuccess = function () {
+    const allRecords = request.result;
+    const qualifications = new Set();
+
+    allRecords.forEach(record => {
+      if (record.qualification && record.qualification.trim() !== "") {
+        qualifications.add(record.qualification.trim());
+      }
+    });
+
+    const datalist = document.getElementById("qualifications");
+    datalist.innerHTML = "";
+
+    qualifications.forEach(q => {
+      const option = document.createElement("option");
+      option.value = q;
+      datalist.appendChild(option);
+    });
+  };
+}
+
+function loadJobsFromDB() {
+  const tx = db.transaction("trainees", "readonly");
+  const store = tx.objectStore("trainees");
+  const request = store.getAll();
+
+  request.onsuccess = function () {
+    const allRecords = request.result;
+    const jobs = new Set();
+
+    allRecords.forEach(record => {
+      if (record.job && record.job.trim() !== "") {
+        jobs.add(record.job.trim());
+      }
+    });
+
+    const datalist = document.getElementById("jobs");
+    datalist.innerHTML = "";
+
+    jobs.forEach(job => {
+      const option = document.createElement("option");
+      option.value = job;
+      datalist.appendChild(option);
+    });
+  };
+}
+
+
+
+function loadCoursesFromDB() {
+  const tx = db.transaction("trainees", "readonly");
+  const store = tx.objectStore("trainees");
+  const request = store.getAll();
+
+  request.onsuccess = function () {
+    const allRecords = request.result;
+    const courses = new Set();
+
+    allRecords.forEach(record => {
+      if (record.course && record.course.trim() !== "") {
+        courses.add(record.course.trim());
+      }
+    });
+
+    const datalist = document.getElementById("courses");
+    datalist.innerHTML = "";
+
+    courses.forEach(course => {
+      const option = document.createElement("option");
+      option.value = course;
+      datalist.appendChild(option);
+    });
+  };
+}
+
+
+function loadNamesFromDB() {
+  const tx = db.transaction("trainees", "readonly");
+  const store = tx.objectStore("trainees");
+  const request = store.getAll();
+
+  request.onsuccess = function () {
+    const allRecords = request.result;
+    const names = new Set();
+
+    allRecords.forEach(record => {
+      if (record.name && record.name.trim() !== "") {
+        names.add(record.name.trim());
+      }
+    });
+
+    const datalist = document.getElementById("names");
+    datalist.innerHTML = "";
+
+    names.forEach(name => {
+      const option = document.createElement("option");
+      option.value = name;
+      datalist.appendChild(option);
+    });
+  };
+}
+
+
+function loadPhonesFromDB() {
+  const tx = db.transaction("trainees", "readonly");
+  const store = tx.objectStore("trainees");
+  const request = store.getAll();
+
+  request.onsuccess = function () {
+    const allRecords = request.result;
+    const phones = new Set();
+
+    allRecords.forEach(record => {
+      if (record.phone && record.phone.trim() !== "") {
+        phones.add(record.phone.trim());
+      }
+    });
+
+    const datalist = document.getElementById("phones");
+    datalist.innerHTML = "";
+
+    phones.forEach(phone => {
+      const option = document.createElement("option");
+      option.value = phone;
+      datalist.appendChild(option);
+    });
+  };
+}
+
+
+
 
   function submitForm() {
     const now = new Date();
