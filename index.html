@@ -114,20 +114,35 @@
 
   </style>
 
-  <script>
-document.body.addEventListener("click", function () {
-    if (!document.fullscreenElement) {
-        const elem = document.documentElement; // يمكن استخدام body أيضاً
-        if (elem.requestFullscreen) {
+
+
+ <script>
+    // ننتظر تحميل الصفحة
+    document.addEventListener("DOMContentLoaded", function () {
+      document.body.addEventListener("click", function () {
+        const elem = document.documentElement;
+
+        // تحقق أننا لسنا في fullscreen
+        if (
+          !document.fullscreenElement &&
+          !document.webkitFullscreenElement &&
+          !document.msFullscreenElement
+        ) {
+          if (elem.requestFullscreen) {
             elem.requestFullscreen();
-        } else if (elem.webkitRequestFullscreen) { // Safari
-            elem.webkitRequestFullscreen();
-        } else if (elem.msRequestFullscreen) { // IE11
-            elem.msRequestFullscreen();
+          } else if (elem.webkitRequestFullscreen) {
+            elem.webkitRequestFullscreen(); // Safari
+          } else if (elem.msRequestFullscreen) {
+            elem.msRequestFullscreen(); // IE11
+          } else {
+            alert("المتصفح لا يدعم fullscreen.");
+          }
         }
-    }
-});
-</script>
+      }, { once: true });
+    });
+  </script>
+
+  
 
   <script>
     // تحميل أسماء الدورات تلقائيًا من Google Sheets
