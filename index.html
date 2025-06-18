@@ -90,7 +90,44 @@
     .dtc {
       color: #ff79c6;
     }
+
+@media (max-width: 600px) {
+  .logo-container img {
+    width: 50px !important;
+    height: 50px !important;
+  }
+
+  .design-text {
+    font-size: 10px !important;
+    left: 20px !important;
+    top: 60px !important;
+  }
+
+  .emoji-icon {
+    font-size: 50px !important;
+    top: 40px !important;
+    right: 30px !important;
+  }
+}
+
+
+
   </style>
+
+  <script>
+document.body.addEventListener("click", function () {
+    if (!document.fullscreenElement) {
+        const elem = document.documentElement; // يمكن استخدام body أيضاً
+        if (elem.requestFullscreen) {
+            elem.requestFullscreen();
+        } else if (elem.webkitRequestFullscreen) { // Safari
+            elem.webkitRequestFullscreen();
+        } else if (elem.msRequestFullscreen) { // IE11
+            elem.msRequestFullscreen();
+        }
+    }
+});
+</script>
 
   <script>
     // تحميل أسماء الدورات تلقائيًا من Google Sheets
@@ -166,44 +203,33 @@
 
 
 
-
-        <div id="evaluationsDisplay"></div>
-    </div>
-</div>
-
-
-  <!-- عبارة التصميم في أقصى اليسار -->
-  <div style="
+<!-- عبارة التصميم في أقصى اليسار -->
+<div class="design-text" style="
   position: absolute;
-  top: 80px; /* أنزل العنصر لأسفل */
+  top: 80px;
   left: 70px;
-  font-size: 14px; /* تكبير الخط */
+  font-size: 14px;
   font-weight: 800;
-    background: whitesmoke;
+  background: whitesmoke;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   user-select: none;
 ">
 
- Tanta (DTC)
-
-
-  
-
-   
   <!-- الصورة الدائرية في أعلى اليسار -->
-  <img src="logo.jpg" alt="الشعار" style="
-    top: 80;
-    width: 80px;
-    height: 80px;
-    border-radius: 50%;
-    object-fit: cover;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-  ">
-
-
+  <div class="logo-container">
+    <img src="logo.jpg" alt="الشعار" style="
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      object-fit: cover;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    ">
   </div>
-<div style="
+</div>
+
+<!-- أيقونة التقييم 📝 -->
+<div class="emoji-icon" style="
   position: fixed;
   top: 80px;
   right: 80px;
@@ -211,8 +237,9 @@
   font-weight: bold;
   color: gold;
 ">
-  📝 
+  📝
 </div>
+
 
 
 </body>
