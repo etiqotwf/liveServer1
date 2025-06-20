@@ -36,7 +36,7 @@
       font-size: 22px;
     }
 
-    select, input[type="text"], textarea {
+    select, input[type="text"], input[type="date"], textarea {
       width: 100%;
       padding: 12px;
       margin-top: 5px;
@@ -109,20 +109,12 @@
     right: 30px !important;
   }
 }
-
-
-
   </style>
 
-
-
- <script>
-    // ننتظر تحميل الصفحة
+  <script>
     document.addEventListener("DOMContentLoaded", function () {
       document.body.addEventListener("click", function () {
         const elem = document.documentElement;
-
-        // تحقق أننا لسنا في fullscreen
         if (
           !document.fullscreenElement &&
           !document.webkitFullscreenElement &&
@@ -142,12 +134,9 @@
     });
   </script>
 
-  
-
   <script>
-    // تحميل أسماء الدورات تلقائيًا من Google Sheets
     document.addEventListener("DOMContentLoaded", function () {
-      fetch("https://script.google.com/macros/s/AKfycbx5E7R8jYyke2oi2F9YZfpCM3nJmait9CbL6JrUl8NOC5horzeXL6qwuOhUXCkGRM6f9w/exec") // ← ضع هنا رابط تطبيق Google Apps Script
+      fetch("https://script.google.com/macros/s/AKfycbz-TZJnvz7WP3yaN6h0SWWGILgGdb0AYu5nAufGYVM_Hqc2AL-DS1Tsj-2eJdjPxD_8JA/exec")
         .then(response => response.json())
         .then(data => {
           const datalist = document.getElementById("courseList");
@@ -171,16 +160,35 @@
 
     <h2>📝 نموذج تقييم الدورة التدريبية</h2>
 
-    <form action="https://script.google.com/macros/s/AKfycbx5E7R8jYyke2oi2F9YZfpCM3nJmait9CbL6JrUl8NOC5horzeXL6qwuOhUXCkGRM6f9w/exec" method="post">
+    <form action="https://script.google.com/macros/s/AKfycbz-TZJnvz7WP3yaN6h0SWWGILgGdb0AYu5nAufGYVM_Hqc2AL-DS1Tsj-2eJdjPxD_8JA/exec" method="post">
       <label>👤 اسم المتدرب:</label>
       <input type="text" name="traineeName" placeholder="ادخل اسمك الكامل" required>
 
       <label>📱 رقم الهاتف:</label>
       <input type="text" name="traineePhone" placeholder="ادخل رقم الهاتف" required>
 
+      <label>🏢 الإدارة:</label>
+      <input type="text" name="department" placeholder="ادخل اسم الإدارة" required>
+
+      <label>🎓 المؤهل:</label>
+      <input type="text" name="qualification" placeholder="ادخل المؤهل الدراسي" required>
+
+      <label>💼 الوظيفة:</label>
+      <input type="text" name="jobTitle" placeholder="ادخل الوظيفة الحالية" required>
+
+      <label>🏨 حالة الإقامة:</label>
+      <select name="residencyStatus" required>
+        <option value="">اختر الحالة</option>
+        <option>مقيم</option>
+        <option>غير</option>
+      </select>
+
       <label>📘 اسم الدورة:</label>
       <input type="text" name="courseName" list="courseList" placeholder="اكتب أو اختر اسم الدورة" required>
       <datalist id="courseList"></datalist>
+
+      <label>📅 تاريخ بداية الدورة:</label>
+      <input type="date" name="courseStartDate" required>
 
       <label>🧑‍🏫 تقييم المدرب:</label>
       <select name="trainerRating" required>
@@ -200,8 +208,17 @@
         <option>ضعيف</option>
       </select>
 
-      <label>🏨 تقييم الإقامة والتنظيم:</label>
-      <select name="timeRating" required>
+      <label>🏢 تقييم التنظيم وقاعة المحاضرات:</label>
+      <select name="organizationRating" required>
+        <option>ممتاز</option>
+        <option>جيد جداً</option>
+        <option>جيد</option>
+        <option>مقبول</option>
+        <option>ضعيف</option>
+      </select>
+
+      <label>🏨 تقييم الإقامة:</label>
+      <select name="residencyRating" required>
         <option>ممتاز</option>
         <option>جيد جداً</option>
         <option>جيد</option>
@@ -216,8 +233,6 @@
     </form>
   </div>
 
-
-
 <!-- عبارة التصميم في أقصى اليسار -->
 <div class="design-text" style="
   position: absolute;
@@ -230,8 +245,6 @@
   -webkit-text-fill-color: transparent;
   user-select: none;
 ">
-
-  <!-- الصورة الدائرية في أعلى اليسار -->
   <div class="logo-container">
     <img src="logo.jpg" alt="الشعار" style="
       width: 80px;
@@ -246,16 +259,13 @@
 <!-- أيقونة التقييم 📝 -->
 <div class="emoji-icon" style="
   position: fixed;
-  top: 80;
+  top: 80px;
   right: 50px;
-  font-size: 80px;
+  font-size: 70px;
   font-weight: bold;
   color: gold;
 ">
   📝
 </div>
-
-
-
 </body>
 </html>
