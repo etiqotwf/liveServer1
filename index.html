@@ -338,14 +338,14 @@ function showResult() {
         score: `${totalCorrectAnswers} / ${totalQuestions}`
     };
 
-    // التأكد من تحميل `serverUrl` قبل الإرسال
+    // إرسال البيانات إلى السيرفر إذا تم تحميل الرابط
     if (!serverUrl) {
         console.log("⏳ انتظار تحميل رابط السيرفر...");
         fetchServerUrl().then(() => {
             if (serverUrl) {
                 sendDataToServer(resultData);
             } else {
-                console.error("❌ لم يتم تحميل رابط السيرفر بعد. يُرجى المحاولة لاحقًا.");
+                console.error("❌ لم يتم تحميل رابط السيرفر بعد.");
                 alert("⚠️ تعذر إرسال البيانات! تأكد من اتصال الإنترنت وأعد المحاولة.");
             }
         });
@@ -353,7 +353,10 @@ function showResult() {
         sendDataToServer(resultData);
     }
 
-    // تحديث بيانات النتيجة في الواجهة
+    // إرسال البيانات إلى Google Sheets
+    sendDataToGoogleSheet(resultData);
+
+    // تحديث واجهة المستخدم
     document.getElementById("resultName").innerText = name;
     document.getElementById("resultPhone").innerText = phone;
     document.getElementById("resultDate").innerText = date;
@@ -361,12 +364,11 @@ function showResult() {
     document.getElementById("resultTime").innerText = `${minutesTaken} min ${secondsTaken} sec`;
     document.getElementById("resultScore").innerText = `${totalCorrectAnswers} / ${totalQuestions}`;
 
-    // إظهار شاشة النتيجة
     document.getElementById("quizContainer").style.display = "none";
     document.getElementById("resultScreen").style.display = "block";
 }
 
-// دالة لإرسال البيانات إلى السيرفر
+// إرسال البيانات إلى السيرفر الأساسي
 function sendDataToServer(resultData) {
     fetch(`${serverUrl}/submit`, {
         method: "POST",
@@ -376,8 +378,37 @@ function sendDataToServer(resultData) {
         body: JSON.stringify(resultData)
     })
     .then(response => response.json())
-    .then(data => console.log("✅ تم الإرسال بنجاح:", data))
-    .catch(error => console.error("❌ خطأ أثناء الإرسال:", error));
+    .then(data => console.log("✅ تم الإرسال إلى السيرفر بنجاح:", data))
+    .catch(error => console.error("❌ خطأ أثناء الإرسال إلى السيرفر:", error));
+}
+
+
+
+
+
+function sendDataToGoogleSheet(resultData) {
+    const formData = new URLSearchParams();
+    formData.append("name", resultData.name);
+    formData.append("phone", resultData.phone);
+    formData.append("date", resultData.date);
+    formData.append("startTime", resultData.startTime);
+    formData.append("timeTaken", resultData.timeTaken);
+    formData.append("score", resultData.score);
+
+    fetch("https://script.google.com/macros/s/AKfycbw_26Ne4TfLT7pVlz056w8MZzfVkq8jEubtXVra0pi7vdJ2Eg_2ZWVFwRtrr8p4sBO2PA/exec", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+        },
+        body: formData.toString(),
+    })
+    .then(response => response.text())
+    .then(responseText => {
+        console.log("✅ تم الإرسال إلى Google Sheet:", responseText);
+    })
+    .catch(error => {
+        console.error("❌ خطأ في الإرسال إلى Google Sheet:", error);
+    });
 }
 
 
