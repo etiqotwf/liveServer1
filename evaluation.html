@@ -836,5 +836,75 @@ function restoreData() {
 
 </script>
 
+
+
+<script>
+    // إنشاء قاعدة البيانات
+    let db;
+    const request = indexedDB.open("CourseEvaluationDB", 1);
+
+    request.onupgradeneeded = function (event) {
+        db = event.target.result;
+        if (!db.objectStoreNames.contains("Evaluations")) {
+            db.createObjectStore("Evaluations", { keyPath: "id", autoIncrement: true });
+        }
+    };
+
+    request.onsuccess = function (event) {
+        db = event.target.result;
+        console.log("✅ تم فتح قاعدة بيانات التقييمات.");
+        fetchAndStoreData();
+    };
+
+    request.onerror = function () {
+        console.error("❌ خطأ في فتح قاعدة بيانات التقييمات.");
+    };
+
+    function fetchAndStoreData() {
+        fetch("https://script.google.com/macros/s/AKfycbz1LoEPJYiPa0ptSxef9riXHt4zuPZk39BdjlcEXvvtspiGVGDt-r4Eq0DZnYfn7ZnuPw/exec")
+            .then(response => response.json())
+            .then(data => {
+                const tx = db.transaction("Evaluations", "readwrite");
+                const store = tx.objectStore("Evaluations");
+
+                // امسح القديم
+                store.clear();
+
+                // أضف الجديد
+                data.forEach((row, index) => {
+                    const record = {
+                        id: index + 1,
+                        name: row["👤 الاسم "] || "",
+                        phone: row["📞  الهاتف"] || "",
+                        email: row["📧 البريد الإلكتروني"] || "",
+                        department: row["🏢 الإدارة"] || "",
+                        qualification: row["🎓 المؤهل"] || "",
+                        jobTitle: row["💼 الوظيفة"] || "",
+                        residencyStatus: row["🏨  الإقامة"] || "",
+                        courseName: row["📘 اسم الدورة"] || "",
+                        startDate: row["📅  بداية الدورة"] || "",
+                        endDate: row["📅  نهاية الدورة"] || "",
+                        trainerRating: row["🧑‍🏫  المدرب"] || "",
+                        contentRating: row["📖  المادة العلمية"] || "",
+                        organizationRating: row["🏢  التنظيم  "] || "",
+                        residencyRating: row["🏨  الإقامة"] || "",
+                        comments: row["📝 ملاحظات "] || "",
+                        timestamp: row["📅  والوقت"] || ""
+                    };
+
+                    store.add(record);
+                });
+
+                tx.oncomplete = () => {
+                    console.log("✅ تم تحديث بيانات التقييمات من Google Sheet.");
+                };
+            })
+            .catch(error => {
+                console.error("❌ فشل في جلب البيانات من Google Sheet:", error);
+            });
+    }
+</script>
+
+
 </body>
 </html>

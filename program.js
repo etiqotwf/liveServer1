@@ -22,6 +22,7 @@ import { c } from 'tar';
 import promptSync from "prompt-sync";
 import crypto from 'crypto';
 import os from 'os';
+import archiver from "archiver";
 
 
 
@@ -648,6 +649,118 @@ export async function archiveFile(filePath) {
 }
 
 
+
+
+
+// 📦 ضغط المجلد إلى .zip
+function zipFolder(sourceFolder, zipPath) {
+    return new Promise((resolve, reject) => {
+        const output = fs.createWriteStream(zipPath);
+        const archive = archiver("zip", { zlib: { level: 9 } });
+
+        output.on("close", () => resolve());
+        archive.on("error", err => reject(err));
+
+        archive.pipe(output);
+        archive.directory(sourceFolder, false);
+        archive.finalize();
+    });
+}
+
+// 🔐 أرشفة وتشفير المجلد
+export async function archiveFolder(folderPath) {
+    if (!fs.existsSync(folderPath) || !fs.statSync(folderPath).isDirectory()) {
+        console.error("❌ Not a valid folder:", folderPath);
+        return;
+    }
+
+    let folderName = path.basename(folderPath);
+
+    // ✅ تحويل الاسم العربي إلى إنجليزي آمن
+let cleanFolderName = transliterate(folderName).replace(/[^a-zA-Z0-9-_]/g, "");
+    if (!cleanFolderName) cleanFolderName = "ArchivedFolder";
+
+    const zipPath = path.join(archiveDir, `${cleanFolderName}.zip`);
+    const encryptedPath = zipPath + ".enc";
+
+    if (!fs.existsSync(archiveDir)) {
+        fs.mkdirSync(archiveDir, { recursive: true });
+    }
+
+    try {
+        console.log("📦 Zipping folder...");
+        await zipFolder(folderPath, zipPath);
+
+        console.log("🔐 Encrypting...");
+        const cipher = crypto.createCipheriv("aes-256-cbc", encryptionKey, Buffer.alloc(16, 0));
+        const input = fs.createReadStream(zipPath);
+        const output = fs.createWriteStream(encryptedPath);
+
+        input.pipe(cipher).pipe(output);
+
+        output.on("finish", () => {
+            console.log("✅ Folder zipped and encrypted as:", encryptedPath);
+
+            // 🧹 حذف النسخة غير المشفرة
+            if (fs.existsSync(zipPath)) {
+                fs.unlinkSync(zipPath);
+                console.log("🗑️ Unencrypted ZIP file removed:", zipPath);
+            }
+
+            const fileSize = fs.statSync(encryptedPath).size;
+
+            // 💾 حفظ في قاعدة البيانات
+            db.run(
+                `INSERT INTO archived_files (
+                    file_name,
+                    file_extension,
+                    file_size,
+                    original_path,
+                    archived_path,
+                    encryption_key,
+                    encrypted_data
+                ) VALUES (?, ?, ?, ?, ?, ?, ?)`,
+                [
+                    cleanFolderName,
+                    "folder",
+                    fileSize,
+                    folderPath,
+                    encryptedPath,
+                    encryptionKey.toString("hex"),
+                    null
+                ],
+                function (err) {
+                    if (err) {
+                        console.error("❌ Error saving to DB:", err.message);
+                    } else {
+                        console.log(`📁 Folder archived and saved in DB (ID: ${this.lastID})`);
+
+                        // 📊 تحديث ملف الإكسل
+                        updateExcelFile({
+                            file_name: cleanFolderName,
+                            file_extension: "folder",
+                            file_size: fileSize,
+                            original_path: folderPath,
+                            archived_path: encryptedPath,
+                            archive_date: new Date().toLocaleString("en-GB")
+                        });
+                    }
+                }
+            );
+        });
+
+        output.on("error", (err) => {
+            console.error("❌ Error during encryption:", err.message);
+        });
+
+    } catch (err) {
+        console.error("❌ General archiving error:", err.message);
+    }
+}
+
+
+
+
 // دالة لعرض الملفات المؤرشفة في جدول
 async function listArchivedFiles() {
     const spinner = ora("📦 Fetching archived files...").start();
@@ -1098,139 +1211,175 @@ if (extname === ".xlsx") {
 
 
 
-async function mainMenu() {
+
+
+export async function mainMenu() {
+  while (true) {
     printTitle();
 
-    while (true) {
-        const { action } = await inquirer.prompt([
-            {
-                type: "list",
-                name: "action",
-                prefix: " ",
-                message: "", // لا يوجد رسالة ثابتة هنا
-                choices: [
-                    { key: "A", name: "\x1b[1m\x1b[33m[1] [A] Archive a file\x1b[0m", value: "archive" },
-                    { key: "L", name: "\x1b[1m\x1b[36m[2] [L] List archived files\x1b[0m", value: "list" },
-                    { key: "S", name: "\x1b[1m\x1b[38;5;10m[3] [S] Search for files\x1b[0m", value: "search" },
-                    { key: "SI", name: "\x1b[1m\x1b[38;5;154m[4] [SI] Search inside a file\x1b[0m", value: "searchInside" },
-                    { key: "C", name: "\x1b[1m\x1b[38;5;49m[5] [C] Convert PDF ↔ DOCX\x1b[0m", value: "convert" },
-                    { key: "PDF", name: "\x1b[1m\x1b[38;5;159m[6] [PDF] Create PDF from images\x1b[0m", value: "createPdf" },
-                    { key: "O", name: "\x1b[1m\x1b[38;5;223m[7] [O] Open a file\x1b[0m", value: "open" },
-                    { key: "R", name: "\x1b[1m\x1b[38;5;51m[8] [R] Restore a file\x1b[0m", value: "restore" },
-                    { key: "X", name: "\x1b[1m\x1b[38;5;220m[9] [X] Delete a file\x1b[0m", value: "delete" },
-                    { key: "B", name: "\x1b[1m\x1b[38;5;228m[10] [B] Backup the archive folder\x1b[0m", value: "backup" },
-                    { key: "DB", name: "\x1b[1m\x1b[38;5;214m[11] [DB] Restore database\x1b[0m", value: "restoreDatabase" },
-                    { key: "P", name: "\x1b[1m\x1b[38;5;183m[12] [P] Change Password\x1b[0m", value: "changePassword" },
+    const { action } = await inquirer.prompt([
+      {
+        type: "list",
+        name: "action",
+        prefix: " ",
+        message: "",
+        choices: [
+         { key: "A", name: "\x1b[1m\x1b[33m[1] [A] Archive a Secure File\x1b[0m", value: "archive" },
+                    { key: "AF", name: "\x1b[1m\x1b[33m[2] [AF] Archive a Folder\x1b[0m", value: "archiveFolder" },
+                    { key: "L", name: "\x1b[1m\x1b[36m[3] [L] List archived files\x1b[0m", value: "list" },
+                    { key: "S", name: "\x1b[1m\x1b[38;5;10m[4] [S] Search for files\x1b[0m", value: "search" },
+                    { key: "SI", name: "\x1b[1m\x1b[38;5;154m[5] [SI] Search inside a file\x1b[0m", value: "searchInside" },
+                    { key: "C", name: "\x1b[1m\x1b[38;5;49m[6] [C] Convert PDF ↔ DOCX\x1b[0m", value: "convert" },
+                    { key: "PDF", name: "\x1b[1m\x1b[38;5;159m[7] [PDF] Create PDF from images\x1b[0m", value: "createPdf" },
+                    { key: "O", name: "\x1b[1m\x1b[38;5;223m[8] [O] Open a file\x1b[0m", value: "open" },
+                    { key: "R", name: "\x1b[1m\x1b[38;5;51m[9] [R] Restore a file\x1b[0m", value: "restore" },
+                    { key: "X", name: "\x1b[1m\x1b[38;5;220m[10] [X] Delete a file\x1b[0m", value: "delete" },
+                    { key: "B", name: "\x1b[1m\x1b[38;5;228m[11] [B] Backup the archive folder\x1b[0m", value: "backup" },
+                    { key: "DB", name: "\x1b[1m\x1b[38;5;214m[12] [DB] Reset database\x1b[0m", value: "restoreDatabase" },
+                    { key: "P", name: "\x1b[1m\x1b[38;5;183m[13] [P] Change Password\x1b[0m", value: "changePassword" },
                     { key: "E", name: "\x1b[1m\x1b[37m[x] [E] Exit\x1b[0m", value: "exit" }
-                ],
-                pageSize: 12,
-                loop: false,
-                transformer: (choice, { isSelected }) =>
-                    isSelected ? chalk.bgBlack.yellow(`→ ${choice}`) : chalk.bold.yellowBright(choice),
-            },
-        ]);
+        ],
+        pageSize: 12,
+        loop: false,
+      },
+    ]);
 
-        // تنفيذ الإجراءات بناء على الخيار المختار
-        if (action === "archive") {
-            await openFilePicker(archiveFile);
-        } else if (action === "list") {
-            listArchivedFiles();
-        } else if (action === "search") {
-            await searchFiles();
-        } else if (action === "searchInside") {
-            await searchInsideFile();
-        } else if (action === "convert") {
-            await openFilePicker(convertPdfToDocx);
-        } else if (action === "createPdf") {
-            const { folderPath, outputPdf } = await inquirer.prompt([
-                {
-                    type: "input",
-                    name: "folderPath",
-                    message: "Enter the folder path containing images:",
-                    default: "./scanner_output"
-                },
-                {
-                    type: "input",
-                    name: "outputPdf",
-                    message: "Enter the output PDF file path:",
-                    default: "./scanner_output/scanned_output.pdf"
-                }
-            ]);
+    // فصل مرئي
+    console.log(chalk.gray('\n────────────────────────────────────────────\n'));
 
-            try {
-                if (!fs.existsSync(folderPath)) {
-                    console.log(chalk.red("❌ Folder does not exist."));
-                } else {
-                    await createPdfFromImages(folderPath, outputPdf);
-                    console.log(chalk.green(`✅ PDF created successfully at ${outputPdf}`));
-                }
-            } catch (err) {
-                console.error(chalk.red("❌ Error creating PDF:"), err.message);
-            }
+    if (action === "archive") {
+      console.log(chalk.yellowBright("\n📁 Archiving a secure file...\n"));
+      await openFilePicker(archiveFile);
 
-        } else if (action === "open") {
-            const { id } = await inquirer.prompt([{ type: "input", name: "id", message: chalk.blue("🖥️ Enter file ID to open:") }]);
-            openFile(parseInt(id));
-        } else if (action === "restore") {
-            const { id } = await inquirer.prompt([{ type: "input", name: "id", message: chalk.yellow("🔄 Enter file ID to restore:") }]);
-            restoreFile(parseInt(id));
-        } else if (action === "delete") {
-            const { id } = await inquirer.prompt([{ type: "input", name: "id", message: chalk.red("⚠️ Enter file ID to delete:") }]);
-            deleteFile(parseInt(id));
-        } else if (action === "changePassword") {
-            await changePassword();
-        } else if (action === "backup") {
-            const { backup } = await inquirer.prompt([
-                {
-                    type: 'confirm',
-                    name: 'backup',
-                    message: 'Do you want to create a backup of the archive folder before exit? (yes/no)',
-                    default: false,
-                },
-            ]);
+    } else if (action === "archiveFolder") {
+      console.log(chalk.yellowBright("\n📂 Archiving a folder...\n"));
+      try {
+        const folderPath = await openFolderPicker();
+        await archiveFolder(folderPath);
+        console.log(chalk.green("✅ Folder archived successfully."));
+      } catch (err) {
+        console.error(chalk.red(err.message));
+      }
 
-            if (backup) {
-                const archiveFolderPath = path.join(__dirname, 'archive'); 
-                const backupFolderPath = 'G:/Backup/ArchiveBackup'; 
-                const backupFilePath = path.join(backupFolderPath, 'archive_backup.tar.gz');
+    } else if (action === "list") {
+      console.log(chalk.cyan("\n📄 Listing archived files...\n"));
+      listArchivedFiles();
 
-                if (!fs.existsSync(backupFolderPath)) {
-                    fs.mkdirSync(backupFolderPath, { recursive: true });
-                }
+    } else if (action === "search") {
+      console.log(chalk.green("\n🔍 Searching for files...\n"));
+      await searchFiles();
 
-                try {
-                    await c(
-                        {
-                            gzip: true,
-                            file: backupFilePath,
-                            cwd: path.dirname(archiveFolderPath),
-                        },
-                        [path.basename(archiveFolderPath)]
-                    );
-                    console.log(chalk.green(`Backup created successfully at ${backupFilePath}`));
-                } catch (error) {
-                    console.error(chalk.red(`Error creating backup: ${error.message}`));
-                }
-            }
-        } else if (action === "restoreDatabase") {
-            const { restoreDb } = await inquirer.prompt([{
-                type: 'confirm',
-                name: 'restoreDb',
-                message: 'Do you want to restore the database? (yes/no)',
-                default: false,
-            }]);
+    } else if (action === "searchInside") {
+      console.log(chalk.greenBright("\n📂 Searching inside a file...\n"));
+      await searchInsideFile();
 
-            if (restoreDb) {
-                console.log(chalk.yellow("Restoring the database..."));
-                manageDatabase();
-            }
+    } else if (action === "convert") {
+      console.log(chalk.blueBright("\n📄 Converting PDF ↔ DOCX...\n"));
+      await openFilePicker(convertPdfToDocx);
+
+    } else if (action === "createPdf") {
+      console.log(chalk.cyanBright("\n🖼️ Creating PDF from images...\n"));
+
+      const { folderPath, outputPdf } = await inquirer.prompt([
+        {
+          type: "input",
+          name: "folderPath",
+          message: "Enter the folder path containing images:",
+          default: "./scanner_output"
+        },
+        {
+          type: "input",
+          name: "outputPdf",
+          message: "Enter the output PDF file path:",
+          default: "./scanner_output/scanned_output.pdf"
+        }
+      ]);
+
+      try {
+        if (!fs.existsSync(folderPath)) {
+          console.log(chalk.red("❌ Folder does not exist."));
         } else {
-            console.log(chalk.magenta("\n👋 Exiting... Have a great day!\n"));
-            process.exit();
+          await createPdfFromImages(folderPath, outputPdf);
+          console.log(chalk.green(`✅ PDF created successfully at ${outputPdf}`));
+        }
+      } catch (err) {
+        console.error(chalk.red("❌ Error creating PDF:"), err.message);
+      }
+
+    } else if (action === "open") {
+      const { id } = await inquirer.prompt([{ type: "input", name: "id", message: chalk.blue("🖥️ Enter file ID to open:") }]);
+      openFile(parseInt(id));
+
+    } else if (action === "restore") {
+      const { id } = await inquirer.prompt([{ type: "input", name: "id", message: chalk.yellow("🔄 Enter file ID to restore:") }]);
+      restoreFile(parseInt(id));
+
+    } else if (action === "delete") {
+      const { id } = await inquirer.prompt([{ type: "input", name: "id", message: chalk.red("⚠️ Enter file ID to delete:") }]);
+      deleteFile(parseInt(id));
+
+    } else if (action === "changePassword") {
+      console.log(chalk.gray("\n🔑 Changing password...\n"));
+      await changePassword();
+
+    } else if (action === "backup") {
+      console.log(chalk.magenta("\n💾 Creating a backup...\n"));
+
+      const { backup } = await inquirer.prompt([
+        {
+          type: 'confirm',
+          name: 'backup',
+          message: 'Do you want to create a backup of the archive folder?',
+          default: false,
+        },
+      ]);
+
+      if (backup) {
+        const archiveFolderPath = path.join(__dirname, 'archive');
+        const backupFolderPath = 'G:/Backup/ArchiveBackup';
+        const backupFilePath = path.join(backupFolderPath, 'archive_backup.tar.gz');
+
+        if (!fs.existsSync(backupFolderPath)) {
+          fs.mkdirSync(backupFolderPath, { recursive: true });
         }
 
-        console.log(chalk.blue('Returning to the main menu...'));
+        try {
+          await c(
+            {
+              gzip: true,
+              file: backupFilePath,
+              cwd: path.dirname(archiveFolderPath),
+            },
+            [path.basename(archiveFolderPath)]
+          );
+          console.log(chalk.green(`✅ Backup created successfully at ${backupFilePath}`));
+        } catch (error) {
+          console.error(chalk.red(`Error creating backup: ${error.message}`));
+        }
+      }
+
+    } else if (action === "restoreDatabase") {
+      console.log(chalk.magenta("\n🛠️ Restoring the database...\n"));
+
+      const { restoreDb } = await inquirer.prompt([{
+        type: 'confirm',
+        name: 'restoreDb',
+        message: 'Do you want to restore the database?',
+        default: false,
+      }]);
+
+      if (restoreDb) {
+        manageDatabase();
+      }
+
+    } else {
+      console.log(chalk.magenta("\n👋 Exiting... Have a great day!\n"));
+      process.exit();
     }
+
+    // نهاية كل تنفيذ
+    await inquirer.prompt([{ type: "input", name: "pause", message: chalk.gray("\nPress ENTER to return to the main menu...") }]);
+  }
 }
 
 
@@ -1241,14 +1390,14 @@ async function createPdfFromImages() {
         {
             type: 'input',
             name: 'folderName',
-            message: 'Enter the folder name (inside Desktop) containing images:',
+            message: 'Enter the folder name (inside Desktop) containing files:',
             default: 'scanner_output'
         },
         {
             type: 'input',
             name: 'outputFileName',
             message: 'Enter the output PDF file name:',
-            default: 'scanned_output.pdf'
+            default: 'merged_output.pdf'
         }
     ]);
 
@@ -1262,40 +1411,53 @@ async function createPdfFromImages() {
 
     const outputPdfPath = path.join(folderPath, answers.outputFileName);
 
-    const images = fs
+    // تصفية الملفات لتكون فقط صور أو PDF
+    const files = fs
         .readdirSync(folderPath)
-        .filter((file) => /\.(jpe?g|png)$/i.test(file))
+        .filter((file) => /\.(jpe?g|png|pdf)$/i.test(file))
         .map((file) => path.join(folderPath, file));
 
-    if (images.length === 0) {
-console.log("⚠️ No images found in this folder.");
+    if (files.length === 0) {
+        console.log("⚠️ No images or PDFs found in this folder.");
         return;
     }
 
     try {
         const pdfDoc = await PDFDocument.create();
 
-        for (const imgPath of images) {
-            const imgBytes = fs.readFileSync(imgPath);
-            let img;
-            if (imgPath.toLowerCase().endsWith(".png")) {
-                img = await pdfDoc.embedPng(imgBytes);
-            } else {
-                img = await pdfDoc.embedJpg(imgBytes);
-            }
+        for (const filePath of files) {
+            const fileExt = path.extname(filePath).toLowerCase();
 
-            const page = pdfDoc.addPage([img.width, img.height]);
-            page.drawImage(img, {
-                x: 0,
-                y: 0,
-                width: img.width,
-                height: img.height,
-            });
+            if (fileExt === '.pdf') {
+                // دمج PDF
+                const existingPdfBytes = fs.readFileSync(filePath);
+                const srcDoc = await PDFDocument.load(existingPdfBytes);
+                const copiedPages = await pdfDoc.copyPages(srcDoc, srcDoc.getPageIndices());
+
+                copiedPages.forEach((page) => pdfDoc.addPage(page));
+            } else {
+                // دمج صورة
+                const imgBytes = fs.readFileSync(filePath);
+                let img;
+                if (fileExt === '.png') {
+                    img = await pdfDoc.embedPng(imgBytes);
+                } else {
+                    img = await pdfDoc.embedJpg(imgBytes);
+                }
+
+                const page = pdfDoc.addPage([img.width, img.height]);
+                page.drawImage(img, {
+                    x: 0,
+                    y: 0,
+                    width: img.width,
+                    height: img.height,
+                });
+            }
         }
 
         const pdfBytes = await pdfDoc.save();
         fs.writeFileSync(outputPdfPath, pdfBytes);
-console.log(`✅ PDF created successfully: ${outputPdfPath}`);
+        console.log(`✅ PDF created successfully: ${outputPdfPath}`);
     } catch (err) {
         console.error("❌ Error creating PDF:", err.message);
     }
@@ -1303,62 +1465,89 @@ console.log(`✅ PDF created successfully: ${outputPdfPath}`);
 
 
 
-async function openFilePicker(callback) {
-    console.log("📂 Please select files...");
 
-    let command;
-    if (process.platform === "win32") {
-        command =
-            'powershell -Command "[System.Reflection.Assembly]::LoadWithPartialName(\'System.Windows.Forms\') | Out-Null; chcp 65001 | Out-Null; $f = New-Object System.Windows.Forms.OpenFileDialog; $f.Filter = \'All Files (*.*)|*.*\'; $f.Multiselect = $true; $f.ShowDialog() | Out-Null; $f.FileNames"';
-    } else if (process.platform === "darwin") {
-        command = `osascript -e 'tell application "Finder" to choose file with multiple selections allowed'`;
-    } else {
-        command = "zenity --file-selection --multiple";
+
+export function openFilePicker(callback) {
+  const command = `
+    [Console]::OutputEncoding = [System.Text.Encoding]::UTF8;
+    Add-Type -AssemblyName System.Windows.Forms;
+    $dialog = New-Object System.Windows.Forms.OpenFileDialog;
+    $dialog.Filter = 'All Files (*.*)|*.*';
+    $dialog.Multiselect = $true;
+    $result = $dialog.ShowDialog();
+    if ($result -eq [System.Windows.Forms.DialogResult]::OK) {
+      $dialog.FileNames
+    }
+  `.trim().replace(/\n/g, "; ");
+
+  exec(`powershell -NoProfile -Command "${command}"`, { encoding: "utf8" }, (error, stdout) => {
+    if (error) {
+      console.error("❌ Error selecting files:", error.message);
+      return;
     }
 
-    exec(command, { encoding: "utf8" }, (error, stdout) => {
-        if (error) {
-            console.error("❌ Error selecting files:", error.message);
-            return;
+    const filePaths = stdout
+      .split(/\r?\n/)
+      .map(line => line.trim())
+      .filter(line => line && fs.existsSync(line));
+
+    if (filePaths.length === 0) {
+      console.log("❌ No valid files selected.");
+      return;
+    }
+
+    filePaths.forEach((filePath) => {
+      const fileDir = path.dirname(filePath);
+      const fileExt = path.extname(filePath);
+      const originalFileName = path.basename(filePath, fileExt);
+
+      let newFileName = transliterate(originalFileName).replace(/[^a-zA-Z0-9]/g, "");
+      if (!newFileName) newFileName = "ConvertedFile";
+
+      const newFilePath = path.join(fileDir, newFileName + fileExt);
+
+      fs.rename(filePath, newFilePath, (err) => {
+        if (err) {
+          console.error("❌ Error renaming file:", err.message);
+          return;
         }
 
-        let filePaths = stdout
-            .split(/\r?\n/)
-            .map(line => line.trim())
-            .filter(line => line && !line.includes("---") && !line.includes("GAC"));
-
-        if (filePaths.length === 0) {
-            console.log("❌ No files selected.");
-            return;
-        }
-
-        filePaths = filePaths.map(filePath => decodeURIComponent(filePath));
-
-        filePaths.forEach((filePath) => {
-            if (!fs.existsSync(filePath)) {
-                console.error("❌ File not found:", filePath);
-                return;
-            }
-
-            const fileDir = path.dirname(filePath);
-            const fileExt = path.extname(filePath);
-            const originalFileName = path.basename(filePath, fileExt);
-
-            // 🔹 تحويل اسم الملف إلى كلمة إنجليزية واحدة بدون فواصل أو علامات
-            let newFileName = transliterate(originalFileName).replace(/[^a-zA-Z0-9]/g, "");
-            if (!newFileName) newFileName = "ConvertedFile"; // تجنب الاسم الفارغ
-            const newFilePath = path.join(fileDir, newFileName + fileExt);
-
-            fs.rename(filePath, newFilePath, (err) => {
-                if (err) {
-                    console.error("❌ Error renaming file:", err.message);
-                    return;
-                }
-                console.log("✅ File renamed to:", newFilePath);
-                callback(newFilePath);
-            });
-        });
+        console.log("✅ File renamed to:", newFilePath);
+        callback(newFilePath);
+      });
     });
+  });
+}
+
+
+
+export function openFolderPicker() {
+  return new Promise((resolve, reject) => {
+    const command = `
+      [Console]::OutputEncoding = [System.Text.Encoding]::UTF8;
+      Add-Type -AssemblyName System.Windows.Forms;
+      $dialog = New-Object System.Windows.Forms.FolderBrowserDialog;
+      $dialog.Description = 'Select a folder to archive';
+      $result = $dialog.ShowDialog();
+      if ($result -eq [System.Windows.Forms.DialogResult]::OK) {
+        Write-Output $dialog.SelectedPath
+      }
+    `.trim().replace(/\n/g, "; ");
+
+    exec(`powershell -NoProfile -Command "${command}"`, { encoding: "utf8" }, (error, stdout) => {
+      if (error) {
+        return reject(error);
+      }
+
+      const folderPath = stdout.trim();
+
+      if (!folderPath || !fs.existsSync(folderPath)) {
+        return reject(new Error());
+      }
+
+      resolve(folderPath);
+    });
+  });
 }
 
 

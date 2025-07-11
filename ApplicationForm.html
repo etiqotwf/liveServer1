@@ -44,6 +44,17 @@
     #resultScreen, #traineesTable {
       display: none;
     }
+
+    
+#traineesTable {
+  display: none;
+  overflow-x: auto;
+  max-width: 100%;
+  white-space: nowrap;
+}
+
+
+
     table {
       width: 100%;
       border-collapse: collapse;
@@ -116,7 +127,7 @@
     position: absolute;
     top: 10;
     left: 25px;
-    font-size: 14px;
+    font-size: 20px;
     font-weight: 800;
     background: linear-gradient(90deg, #ff00cc, #3333ff, #ff0000);
     -webkit-background-clip: text;
@@ -125,7 +136,7 @@
   ">
 
   
-    🎨     Designed by Ahmed Amer
+         DTC
 
    
   <!-- الصورة الدائرية في أعلى اليسار -->
@@ -149,31 +160,38 @@
   <h2>🔹 Trainees Database Management Form </h2>
 </div>
 
-<button id="toggleFormBtn" onclick="toggleForm()">📋 عرض / إخفاء نموذج التسجيل</button>
+<button id="toggleFormBtn" onclick="window.open('https://etiqotwf.github.io/liveServer/', '_blank')">
+📝 فتح منظومة المتابعة والتقييم |  Monitoring and Evaluation System
+
+</button>
+
 
 
 <style>
-  h2:last-of-type {
-    margin-bottom: 8px; /* تقليل المسافة أسفل العنوان الأخير */
-  }
 
-  #toggleFormBtn {
-    margin-top: -20px; /* تقليل المسافة العلوية للزر */
-    font-size: 20px;
-    font-weight: bold;
-    padding: 14px 28px;
-    background-color: #004085;
-    color: white;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
-    transition: background-color 0.3s ease;
-  }
 
-  #toggleFormBtn:hover {
-    background-color: #002752;
-  }
+#toggleFormBtn {
+  display: block;
+  width: 60%;               /* تقليل العرض عن 100% */
+  margin: 15px auto;        /* وسط الصفحة أفقياً */
+  font-size: 20px;
+  font-weight: bold;
+  padding: 14px 28px;
+  background-color: #004085;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+  transition: background-color 0.3s ease;
+  text-align: center;
+}
+
+#toggleFormBtn:hover {
+  background-color: #002752;
+}
+
+
 </style>
 
 
@@ -294,14 +312,12 @@
 <button class="db-button" onclick="document.getElementById('restoreFile').click()">♻️ Restore Database</button>
 <input type="file" id="restoreFile" style="display: none;" onchange="restoreIndexedDB(event)" accept=".json" />
 
-
 <div class="btn-container">
-  <button class="btn btn-submit" type="button" onclick="submitForm()">
+  <button class="btn btn-submit" type="button" onclick="printStatsAndCharts()">
     <svg viewBox="0 0 24 24" >
       <path d="M5 13l4 4L19 7"/>
     </svg>
-    إرسال البيانات
-  </button>
+طباعة 📊 الاحصاء  </button>
 
   
 
@@ -431,65 +447,6 @@
 
 
 
-<form id="registrationForm" style="display: none;">
-  
-  <!-- باقي العناصر كما هي -->
-     <label for="name">👤 الاسم:</label>
-<input list="names" id="name" name="name" required placeholder="اكتب أو اختر الاسم">
-<datalist id="names"></datalist>
-
-
-<label for="phone">📞 رقم الهاتف:</label>
-<input list="phones" type="tel" id="phone" name="phone" required placeholder="اكتب أو اختر رقم الهاتف" style="direction: rtl; text-align: right;">
-<datalist id="phones"></datalist>
-
-
-      
-<label for="email">🏛️ الإدارة:</label>
-<input list="departments" id="email" name="email" placeholder="اختر أو اكتب الإدارة" />
-<datalist id="departments"></datalist>
-
-
-
-
-
-
-
-<label for="qualification">🎓 المؤهل الدراسي:</label>
-<input list="qualifications" id="qualification" name="qualification" placeholder="اختر أو اكتب المؤهل الدراسي">
-<datalist id="qualifications"></datalist>
-
-
-
-      
-      
-<label for="job">💼 الوظيفة:</label>
-<input list="jobs" id="job" name="job" placeholder="اختر الوظيفة أو اكتبها">
-<datalist id="jobs"></datalist>
-
-
-
-      
-      
-<label for="course">📘 اسم الدورة:</label>
-<input list="courses" id="course" name="course" placeholder="اختر الدورة أو اكتبها">
-<datalist id="courses"></datalist>
-
-      
-      
-<label for="duration">⏱ مدة الدورة:</label>
-      <input type="text" id="duration">
-      
-      
-      
-<label for="typeInput">🏠 الإقامة:</label>
-<input list="residencyOptions" id="type" name="type" placeholder="اختر أو اكتب الإقامة">
-<datalist id="residencyOptions">
-  <option value="مقيم">
-  <option value="غير مقيم">
-</datalist>
-
-      <div class="buttons">
         <style>
 
 
@@ -650,20 +607,8 @@
   }
 </style>
 
-<div id="resultScreen">
-  <h3>تم تسجيل البيانات بنجاح:</h3>
-  <table>
-    <tr><th>👤 الاسم</th><td id="resName"></td></tr>
-    <tr><th>📞 رقم الهاتف</th><td id="resPhone"></td></tr>
-    <tr><th> 🏛️  الإدارة</th><td id="resEmail"></td></tr>
-    <tr><th>🎓 المؤهل</th><td id="resQualification"></td></tr>
-    <tr><th>💼 الوظيفة</th><td id="resJob"></td></tr>
-    <tr><th>📚 اسم الدورة</th><td id="resCourse"></td></tr>
-    <tr><th>⏳ مدة الدورة</th><td id="resDuration"></td></tr>
-    <tr><th>🏠 الاقامة</th><td id="resType"></td></tr>
-    <tr><th>🕒 تاريخ ووقت التسجيل</th><td id="resDatetime"></td></tr>
-  </table>
-</div>
+
+
 
 
 
@@ -693,12 +638,7 @@
 </style>
 
 
-<div class="buttons" id="actionButtons" style="display: none;">
-   <button onclick="addNewTrainee()">🧑‍🎓 إضافة متدرب جديد</button>
-  <button onclick="printResult()">🖨️ طباعة</button>
-</div>
 
-    </div>
 
    
 
@@ -758,17 +698,27 @@
   <table id="allTrainees">
     <thead>
       <tr>
-        <th>👤 الاسم</th>
-        <th>📞 الهاتف</th>
-        <th>🏛️   الإدارة</th>
-        <th>🎓 المؤهل</th>
-        <th>💼 الوظيفة</th>
-        <th>📚 الدورة</th>
-        <th>⏳ المدة</th>
-        <th>🏠 الاقامة</th>
-        <th>🕒 تاريخ ووقت التسجيل</th>
-        <th>🗑️ إجراء</th> <!-- زر الحذف -->
-      </tr>
+       <tr>
+  <th>🕒 تاريخ ووقت التسجيل</th> <!-- "📅  والوقت" -->
+<th>👤 الاسم</th>
+<th>📞 الهاتف</th>
+<th>📧 البريد الإلكتروني</th>
+<th>🏢 الإدارة</th>
+<th>🎓 المؤهل</th>
+<th>💼 الوظيفة</th>
+<th>🏨 الإقامة</th>
+<th>📘 اسم الدورة</th>
+<th>📅 بداية الدورة</th>
+<th>📅 نهاية الدورة</th>
+<th>🧑‍🏫 تقييم المدرب</th>     <!-- "🧑‍🏫 المدرب" -->
+<th>📘 تقييم المحتوى</th>     <!-- "📖 المادة العلمية" -->
+<th>🛠️ تقييم التنظيم</th>     <!-- "🏢 التنظيم" -->
+<th>🏨 تقييم الإقامة</th>     <!-- "🏨 الإقامة" (مكررة في titles) -->
+<th>📝 ملاحظات</th>
+<th>🗑️ إجراء</th>
+
+</tr>
+
     </thead>
     <tbody></tbody>
   </table>
@@ -783,6 +733,87 @@
   <script>
   let db;
 
+
+function syncWithGoogleSheets() {
+  const txCheck = db.transaction("trainees", "readonly");
+  const storeCheck = txCheck.objectStore("trainees");
+
+  const countRequest = storeCheck.count();
+
+  countRequest.onsuccess = function () {
+    const count = countRequest.result;
+
+    // إذا فاضي → lastIndex = 0
+    const lastIndex = (count === 0) ? 0 : (localStorage.getItem("lastSyncedIndex") || 0);
+
+    fetch(`https://script.google.com/macros/s/AKfycbzk4-ndp1Cx-1VasOKiDGjCXJzjLsCv67nTPMbWLqL7340ibeJqWPepm2Hgnae5NaiM0A/exec?lastIndex=${lastIndex}`)
+      .then(response => response.json())
+      .then(data => {
+        if (!Array.isArray(data)) {
+          console.error("البيانات غير صالحة");
+          return;
+        }
+
+        if (data.length === 0) {
+          console.log("لا توجد بيانات جديدة.");
+          return;
+        }
+
+        const tx = db.transaction("trainees", "readwrite");
+        const store = tx.objectStore("trainees");
+
+        data.forEach(row => {
+          const newRecord = {
+            datetime: row[0] || "",
+            name: row[1] || "",
+            phone: row[2] || "",
+            email: row[3] || "",
+            department: row[4] || "",
+            qualification: row[5] || "",
+            job: row[6] || "",
+            residency: row[7] || "",
+            course: row[8] || "",
+            courseStart: row[9] || "",
+            courseEnd: row[10] || "",
+            trainerRating: row[11] || "",
+            contentRating: row[12] || "",
+            organizationRating: row[13] || "",
+            residencyRating: row[14] || "",
+            comments: row[15] || ""
+          };
+
+          store.add(newRecord);
+        });
+
+        tx.oncomplete = () => {
+          console.log("✅ تمت مزامنة البيانات");
+
+          // تحديث الـ lastSyncedIndex فقط لو مش صفر
+          if (lastIndex !== 0) {
+            const newLastIndex = parseInt(lastIndex) + data.length;
+            localStorage.setItem("lastSyncedIndex", newLastIndex);
+          } else {
+            // أول مرة، نحفظ آخر رقم في Google Sheet كله
+            localStorage.setItem("lastSyncedIndex", data.length);
+          }
+
+          // تحديث الواجهة
+          loadDepartmentsFromEmailField();
+          loadQualificationsFromDB();
+          loadJobsFromDB();
+          loadCoursesFromDB();
+          loadLatestData();
+          loadNamesFromDB();
+          loadPhonesFromDB();
+        };
+      })
+      .catch(err => {
+        console.error("❌ فشل في جلب البيانات من Google Sheets", err);
+      });
+  };
+}
+
+
 function openDB() {
   const request = indexedDB.open("TraineeDB", 1);
 
@@ -793,16 +824,16 @@ function openDB() {
     }
   };
 
-  request.onsuccess = function (e) {
+ request.onsuccess = function (e) {
   db = e.target.result;
-  loadDepartmentsFromEmailField();  // الإدارات
-  loadQualificationsFromDB();       // المؤهلات
-  loadJobsFromDB();                 // الوظائف
-  loadCoursesFromDB();              // الدورات ✅
-  loadLatestData();                 // آخر سجل
-  loadNamesFromDB(); // تحميل الأسماء
-  loadPhonesFromDB(); // تحميل أرقام الهاتف
+
+  // أول مرة: مزامنة من Google Sheets إلى IndexedDB
+  syncWithGoogleSheets();
+
+  // باقي الوظائف تعمل من IndexedDB بعد المزامنة
+  // مفيش داعي ننادي دوال التحميل مباشرة لأنها هتتنادى داخل tx.oncomplete بعد ما يتم التحميل
 };
+
 
 
 
@@ -1008,19 +1039,31 @@ function loadPhonesFromDB() {
     req.onerror = () => alert("خطأ أثناء الحفظ");
   }
 
-  function showData(data) {
-    document.getElementById("resName").innerText = data.name;
-    document.getElementById("resPhone").innerText = data.phone;
-    document.getElementById("resEmail").innerText = data.email;
-    document.getElementById("resQualification").innerText = data.qualification;
-    document.getElementById("resJob").innerText = data.job;
-    document.getElementById("resCourse").innerText = data.course;
-    document.getElementById("resDuration").innerText = data.duration;
-    document.getElementById("resType").innerText = data.type;
-    document.getElementById("resDatetime").innerText = data.datetime || '';
-    document.getElementById("registrationForm").style.display = "none";
-    document.getElementById("resultScreen").style.display = "block";
-  }
+ function showData(data) {
+  document.getElementById("resName").innerText = data.name || "";
+  document.getElementById("resPhone").innerText = data.phone || "";
+  document.getElementById("resDepartment").innerText = data.department || "";
+  document.getElementById("resQualification").innerText = data.qualification || "";
+  document.getElementById("resJob").innerText = data.job || "";
+  document.getElementById("resCourse").innerText = data.course || "";
+  document.getElementById("resDuration").innerText = (data.courseStart || "") + " إلى " + (data.courseEnd || "");
+  document.getElementById("resType").innerText = data.residency || "";
+  document.getElementById("resDatetime").innerText = data.datetime || "";
+
+  // الحقول الإضافية الخاصة بالتقييمات
+  document.getElementById("resTrainerRating").innerText = data.trainerRating || "";
+  document.getElementById("resContentRating").innerText = data.contentRating || "";
+  document.getElementById("resOrganizationRating").innerText = data.organizationRating || "";
+  document.getElementById("resResidencyRating").innerText = data.residencyRating || "";
+  document.getElementById("resComments").innerText = data.comments || "";
+
+  // إظهار شاشة النتيجة وإخفاء نموذج التسجيل
+  document.getElementById("registrationForm").style.display = "none";
+  document.getElementById("resultScreen").style.display = "block";
+}
+
+
+
 
   function loadLatestData() {
     const tx = db.transaction("trainees", "readonly");
@@ -1047,17 +1090,26 @@ function loadPhonesFromDB() {
   const tx = db.transaction("trainees", "readonly");
   const store = tx.objectStore("trainees");
   // أضفت رموز (icons) بسيطة بجانب العناوين
-  const headers = [
-    "👤 الاسم",
-    "📞 الهاتف",
-    "📧 الإدارة",
-    "🎓 المؤهل",
-    "💼 الوظيفة",
-    "📚 الدورة",
-    "⏳ المدة",
-    "⚧ الاقامة",
-    "📅 تاريخ ووقت التسجيل"
-  ];
+ const headers = [
+  "🕒 تاريخ ووقت التسجيل",
+  "👤 الاسم",
+  "📞 الهاتف",
+  "📧 البريد الإلكتروني",
+  "🏢 الإدارة",
+  "🎓 المؤهل",
+  "💼 الوظيفة",
+  "🏨 الإقامة",
+  "📘 اسم الدورة",
+  "📅 بداية الدورة",
+  "📅 نهاية الدورة",
+  "🧑‍🏫 تقييم المدرب",
+  "📘 تقييم المحتوى",
+  "🛠️ تقييم التنظيم",
+  "🏨 تقييم الإقامة",
+  "📝 ملاحظات"
+];
+
+
   const rows = [headers];
   const allData = [];
 
@@ -1065,17 +1117,26 @@ function loadPhonesFromDB() {
     const cursor = e.target.result;
     if (cursor) {
       const d = cursor.value;
-      allData.push([
-        d.name,
-        d.phone,
-        d.email,
-        d.qualification,
-        d.job,
-        d.course,
-        d.duration,
-        d.type,
-        d.datetime || ""
-      ]);
+    allData.push([
+  d.datetime || "",         // 📅 والوقت
+  d.name || "",             // 👤 الاسم
+  d.phone || "",            // 📞 الهاتف
+  d.email || "",            // 📧 البريد الإلكتروني
+  d.department || "",       // 🏢 الإدارة
+  d.qualification || "",    // 🎓 المؤهل
+  d.job || "",              // 💼 الوظيفة
+  d.residency || "",        // 🏨 الإقامة
+  d.course || "",           // 📘 اسم الدورة
+  d.courseStart || "",      // 📅 بداية الدورة
+  d.courseEnd || "",        // 📅 نهاية الدورة
+  d.trainerRating || "",    // 🧑‍🏫 تقييم المدرب
+  d.contentRating || "",    // 📘 تقييم المحتوى
+  d.organizationRating || "", // 🛠️ تقييم التنظيم
+  d.residencyRating || "",  // 🏨 تقييم الإقامة
+  d.comments || ""          // 📝 ملاحظات
+]);
+
+
       cursor.continue();
     } else {
       const data = [...rows, ...allData];
@@ -1358,10 +1419,98 @@ function addNewTrainee() {
 
 
 
-let showResults = false; // حالة الإظهار الافتراضية
+// ✅ الكود بعد التعديل النهائي لمعالجة التاريخ بالإنجليزية وتمييز المقيم/ة وإضافة فلترة الفترة الزمنية بالنص داخل خانة البحث
+let showResults = false;
+
+function extractDateRangeFromText(text) {
+  const monthNames = {
+    "يناير": 0, "فبراير": 1, "مارس": 2, "أبريل": 3, "ابريل": 3,
+    "مايو": 4, "يونيو": 5, "يوليو": 6, "أغسطس": 7, "اغسطس": 7,
+    "سبتمبر": 8, "أكتوبر": 9, "اكتوبر": 9,
+    "نوفمبر": 10, "ديسمبر": 11
+  };
+
+  // تطبيع النص
+  text = text.replace(/الى|إلى/g, "الى")
+             .replace(/اكتوبر/g, "أكتوبر")
+             .replace(/ابريل/g, "أبريل")
+             .replace(/ +/g, " ").trim()
+             .replace(/([^\s])الى/, "$1 الى")
+             .replace(/شهرين/g, "2 شهر");
+
+  // نمط: من يونيو 2025 لمدة 2 شهر
+  const altMatch = text.match(/من\s+(\w+)\s+(\d{4})\s+لمدة\s+(\d+)/);
+  if (altMatch) {
+    const monthName = altMatch[1];
+    const year = parseInt(altMatch[2]);
+    const duration = parseInt(altMatch[3]);
+    const fromMonth = monthNames[monthName];
+    if (!isNaN(fromMonth)) {
+      return {
+        from: new Date(year, fromMonth, 1),
+        to: new Date(year, fromMonth + duration, 0)
+      };
+    }
+  }
+
+  // نمط: من يونيو الى أغسطس 2025
+  const match = text.match(/من\s+(\w+)\s+الى\s+(\w+)\s+(\d{4})/);
+  if (match) {
+    const fromMonth = monthNames[match[1]];
+    const toMonth = monthNames[match[2]];
+    const year = parseInt(match[3]);
+    if (!isNaN(fromMonth) && !isNaN(toMonth)) {
+      return {
+        from: new Date(year, fromMonth, 1),
+        to: new Date(year, toMonth + 1, 0)
+      };
+    }
+  }
+
+  return null;
+}
+
+
 
 function searchTrainees() {
   const query = document.getElementById('searchInput').value.trim().toLowerCase();
+  const range = extractDateRangeFromText(query);
+
+  // تحويل الشهور من العربي للإنجليزي داخل query
+const arabicToEnglishMonths = {
+  "يناير": "january", "فبراير": "february", "مارس": "march", "أبريل": "april", "ابريل": "april",
+  "مايو": "may", "يونيو": "june", "يوليو": "july", "أغسطس": "august", "اغسطس": "august",
+  "سبتمبر": "september", "أكتوبر": "october", "اكتوبر": "october",
+  "نوفمبر": "november", "ديسمبر": "december"
+};
+
+let queryNormalized = query;
+for (const [ar, en] of Object.entries(arabicToEnglishMonths)) {
+  queryNormalized = queryNormalized.replace(new RegExp(ar, 'gi'), en);
+}
+
+// استخراج الشهر والسنة من queryNormalized
+const monthNames = {
+  "january": 0, "february": 1, "march": 2, "april": 3,
+  "may": 4, "june": 5, "july": 6, "august": 7,
+  "september": 8, "october": 9, "november": 10, "december": 11
+};
+
+const monthYearMatch = queryNormalized.match(/(january|february|march|april|may|june|july|august|september|october|november|december)\s+(\d{4})/);
+let searchMonth = null, searchYear = null;
+
+if (monthYearMatch) {
+  const monthName = monthYearMatch[1];
+  const year = parseInt(monthYearMatch[2]);
+  if (monthNames.hasOwnProperty(monthName)) {
+    searchMonth = monthNames[monthName];
+    searchYear = year;
+  }
+}
+
+
+
+  
   const tbody = document.querySelector("#allTrainees tbody");
   const tableContainer = document.getElementById("traineesTable");
 
@@ -1372,26 +1521,23 @@ function searchTrainees() {
     tbody.innerHTML = "";
     tableContainer.style.display = 'none';
     const oldStats = document.getElementById("statsInfo");
-    if (oldStats) oldStats.style.display = 'none';
+    if (oldStats) oldStats.remove();
     showResults = false;
     return;
   }
 
   let count = 0;
   const stats = {
-    courses: {},
-    dates: {},
-    jobs: {},
-    residencies: {},
-    emails: {}
+    byYear: {},
+    byCourseDate: {},
+    byMonthYear: {},
+    byDepartment: {},
+    byJob: {},
+    byResidencyGender: {}
   };
 
   const tx = db.transaction("trainees", "readonly");
   const store = tx.objectStore("trainees");
-
-  tbody.innerHTML = ""; // نظف التابل قبل بداية العرض
-
-  // جمع كل السجلات في مصفوفة أولاً
   const allRecords = [];
 
   store.openCursor().onsuccess = function (e) {
@@ -1400,79 +1546,82 @@ function searchTrainees() {
       allRecords.push({ key: cursor.key, value: cursor.value });
       cursor.continue();
     } else {
-      // الترتيب حسب التاريخ من الأحدث للأقدم
-      allRecords.sort((a, b) => {
-        const dateA = parseArabicDate(a.value.datetime);
-        const dateB = parseArabicDate(b.value.datetime);
-        return dateB - dateA; // الأحدث أولاً
-      });
+      allRecords.sort((a, b) => new Date(b.value.datetime) - new Date(a.value.datetime));
 
       const oldStats = document.getElementById("statsInfo");
       if (oldStats) oldStats.remove();
 
       allRecords.forEach(({ key, value: d }) => {
-        const combined = (
-          d.name + " " + d.phone + " " + d.email + " " +
-          d.qualification + " " + d.job + " " + d.course + " " +
-          d.duration + " " + d.type + " " + (d.datetime || "")
-        ).toLowerCase();
+        const combined = Object.values(d).join(" ").toLowerCase();
 
-        if (!query || combined.includes(query)) {
+const recordDate = d.courseStart ? new Date(Date.parse(d.courseStart)) : null;
+const inRange =
+  (!range || (recordDate && recordDate >= range.from && recordDate <= range.to)) &&
+  (searchMonth === null || (recordDate && recordDate.getMonth() === searchMonth && recordDate.getFullYear() === searchYear));
+
+
+
+        if ((!query || combined.includes(query)) && inRange) {
           count++;
 
-          let residency = "غير مقيم";
-          const typeValue = d.type ? d.type.trim() : "";
-          if (typeValue === "مقيم") {
-            residency = "مقيم";
+          const year = recordDate.getFullYear();
+          stats.byYear[year] = (stats.byYear[year] || 0) + 1;
+
+          const formattedStart = d.courseStart ? new Date(d.courseStart).toLocaleDateString("en-GB") : "No Date";
+          const courseDateKey = `${d.course || 'غير محددة'} (${formattedStart})`;
+          stats.byCourseDate[courseDateKey] = (stats.byCourseDate[courseDateKey] || 0) + 1;
+
+          const monthYear = recordDate.toLocaleString("en-GB", { month: "long", year: "numeric" });
+          stats.byMonthYear[monthYear] = (stats.byMonthYear[monthYear] || 0) + 1;
+
+          stats.byDepartment[d.department || "غير محددة"] = (stats.byDepartment[d.department || "غير محددة"] || 0) + 1;
+          stats.byJob[d.job || "غير محددة"] = (stats.byJob[d.job || "غير محددة"] || 0) + 1;
+
+          let residencyLabel = "غير مقيم/ة";
+          const residencyType = (d.residency || '').trim();
+          const gender = (d.gender || '').trim();
+
+          if (residencyType.includes("غير")) {
+            residencyLabel = gender === "أنثى" ? "غير مقيمة" : "غير مقيم";
+          } else {
+            residencyLabel = gender === "أنثى" ? "مقيمة" : "مقيم";
           }
 
-          stats.courses[d.course] = (stats.courses[d.course] || 0) + 1;
-          const durationVal = d.duration || "غير محددة";
-          stats.dates[durationVal] = (stats.dates[durationVal] || 0) + 1;
-          stats.jobs[d.job] = (stats.jobs[d.job] || 0) + 1;
-          stats.residencies[residency] = (stats.residencies[residency] || 0) + 1;
-          const dept = d.email || "غير محدد";
-          stats.emails[dept] = (stats.emails[dept] || 0) + 1;
+          stats.byResidencyGender[residencyLabel] = (stats.byResidencyGender[residencyLabel] || 0) + 1;
 
           const row = document.createElement("tr");
+          const fields = ["datetime","name","phone","email","department","qualification","job","residency","course","courseStart","courseEnd","trainerRating","contentRating","organizationRating","residencyRating","comments"];
 
-          const fields = ["name", "phone", "email", "qualification", "job", "course", "duration", "type", "datetime"];
           fields.forEach(field => {
             const cell = document.createElement("td");
-            cell.textContent = d[field] || "";
+            if (["datetime", "courseStart", "courseEnd"].includes(field)) {
+              const rawDate = d[field];
+              cell.textContent = rawDate
+                ? new Date(rawDate).toLocaleDateString("en-GB", { year: "numeric", month: "long", day: "numeric" })
+                : "";
+            } else {
+              cell.textContent = d[field] || "";
+            }
             cell.contentEditable = "true";
             cell.dataset.key = key;
             cell.dataset.field = field;
-
             cell.addEventListener("blur", function () {
               const key = Number(this.dataset.key);
               const field = this.dataset.field;
               const newValue = this.textContent.trim();
-
               const txUpdate = db.transaction("trainees", "readwrite");
               const storeUpdate = txUpdate.objectStore("trainees");
               const getRequest = storeUpdate.get(key);
-
               getRequest.onsuccess = function () {
                 const data = getRequest.result;
                 if (data && field in data) {
                   data[field] = newValue;
                   const updateRequest = storeUpdate.put(data);
-
-                  updateRequest.onsuccess = () => {
-                    console.log(`تم تحديث السجل مع المفتاح ${key} بنجاح`);
-                  };
-                  updateRequest.onerror = (event) => {
-                    console.error("خطأ في تحديث السجل:", event.target.error);
-                  };
+                  updateRequest.onsuccess = () => console.log(`✅ تم التحديث للمفتاح ${key}`);
+                  updateRequest.onerror = (event) => console.error("❌ تحديث فشل:", event.target.error);
                 }
               };
-
-              getRequest.onerror = function (event) {
-                console.error("خطأ في جلب السجل:", event.target.error);
-              };
             });
-
             row.appendChild(cell);
           });
 
@@ -1482,7 +1631,6 @@ function searchTrainees() {
           deleteBtn.onclick = () => deleteRecord(key);
           deleteCell.appendChild(deleteBtn);
           row.appendChild(deleteCell);
-
           tbody.appendChild(row);
         }
       });
@@ -1497,106 +1645,75 @@ function searchTrainees() {
       statsDiv.id = "statsInfo";
       statsDiv.style.display = "flex";
       statsDiv.style.flexWrap = "nowrap";
-      statsDiv.style.gap = "12px";
+      statsDiv.style.gap = "14px";
       statsDiv.style.margin = "10px 0";
       statsDiv.style.direction = "rtl";
       statsDiv.style.justifyContent = "space-between";
 
-const createCard = (title, icon, contentObj, bgColor, cardId) => {
+      const createCard = (title, icon, contentObj, bgColor, cardId) => {
   const card = document.createElement("div");
+  card.style.backgroundColor = bgColor;
+  card.style.border = "2px solid #003366"; // إطار كحلي
+  card.style.borderRadius = "10px";
+  card.style.padding = "14px";
+  card.style.color = "#003366"; // لون النص داخل البوكس كحلي
+  card.style.fontSize = "18px";
+  card.style.textAlign = "center";
+  card.style.width = "calc(100% / 6 - 12px)";
+  card.style.height = "320px";
+  card.style.overflowY = "auto";
+  card.style.boxShadow = "0 4px 10px rgba(0,0,0,0.2)";
   card.style.display = "flex";
   card.style.flexDirection = "column";
   card.style.justifyContent = "flex-start";
-  card.style.alignItems = "center";
-  card.style.padding = "14px 16px";
-  card.style.borderRadius = "10px";
-  card.style.backgroundColor = bgColor;
-  card.style.color = "#fff";  // نص أبيض
-  card.style.boxShadow = "0 4px 8px rgba(0,0,0,0.15)";
-  card.style.fontFamily = "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif";
-  card.style.fontSize = "18px";
-  card.style.fontWeight = "bold";
-  card.style.wordBreak = "break-word";
-  card.style.textAlign = "center";
-
-  card.style.width = "100%";
-  card.style.maxWidth = "280px";
-  card.style.minWidth = "180px";
-  card.style.boxSizing = "border-box";
-  card.style.height = "320px";
-  card.style.overflowY = "auto";
-
-  const textDiv = document.createElement("div");
-  textDiv.style.marginBottom = "10px";
-  textDiv.style.whiteSpace = "normal";
-  textDiv.style.lineHeight = "1.5em";
-  textDiv.style.fontSize = "20px";
-  textDiv.style.textAlign = "right";
-  textDiv.style.color = "#fff";  // لون النص أبيض
-
-  const lines = Object.entries(contentObj).map(([key, val]) => `${key}: ${val}`);
-  textDiv.textContent = lines.length > 0 ? lines.join(" - ") : "لا توجد بيانات";
 
   const header = document.createElement("div");
   header.textContent = `${icon} ${title}`;
   header.style.marginBottom = "10px";
-  header.style.fontSize = "22px";
-  header.style.textAlign = "center";
-  header.style.color = "#fff";  // نص العنوان أبيض
+  header.style.fontSize = "20px";
+  header.style.backgroundColor = "#003366"; // خلفية العنوان كحلي
+  header.style.color = "#ffffff"; // النص أبيض
+  header.style.fontWeight = "bold";
+  header.style.padding = "6px";
+  header.style.borderRadius = "6px";
+
+  const body = document.createElement("div");
+body.textContent = Object.entries(contentObj).map(([k, v]) => `${k}: ${v}`).join(" - ") || "لا توجد بيانات";
+body.style.fontWeight = "bold";     // جعل الخط بولد
+body.style.fontSize = "18px";       // نفس حجم الخط
+
 
   const canvas = document.createElement("canvas");
   canvas.id = `chart_${cardId}`;
-  canvas.style.maxWidth = "240px";
+  canvas.style.marginTop = "10px";
   canvas.style.maxHeight = "180px";
-  canvas.style.backgroundColor = "#001F3F";  // كحلي غامق للخلفية
-  canvas.style.borderRadius = "8px";
-  canvas.style.display = "block";
-  canvas.style.margin = "0 auto";
+  canvas.style.maxWidth = "240px";
+  canvas.style.alignSelf = "center";
 
   card.appendChild(header);
-  card.appendChild(textDiv);
+  card.appendChild(body);
   card.appendChild(canvas);
-
   return card;
 };
 
-
-
-
-
-      // دالة لتحويل محتوى الإحصائيات لنصوص
-      const formatList = (obj) => {
-        const entries = Object.entries(obj);
-        return entries.map(([key, val]) => `${key}: ${val}`).join(" - ");
-      };
-
-      // دالة لإنشاء بيانات مناسبة للرسم البياني
       const prepareChartData = (obj) => {
         const labels = Object.keys(obj);
         const data = Object.values(obj);
-        const colors = labels.map(() => `hsl(${Math.floor(Math.random() * 360)}, 70%, 60%)`);
+        const colors = labels.map(() => `hsl(${Math.random() * 360}, 70%, 60%)`);
         return { labels, data, colors };
       };
 
-      // إنشاء الكروت أولاً وإضافتها
-      statsDiv.appendChild(createCard("عدد السجلات", "📊", { "السجلات": count }, "#4caf50", "count"));
-      statsDiv.appendChild(createCard("حسب الدورة", "🎓", stats.courses, "#2196f3", "courses"));
-      statsDiv.appendChild(createCard("حسب انعقاد الدورة", "⏳", stats.dates, "#ff9800", "dates"));
-      statsDiv.appendChild(createCard("حسب الإدارة", "🏢", stats.emails, "#009688", "emails"));
-      statsDiv.appendChild(createCard("حسب الوظيفة", "💼", stats.jobs, "#9c27b0", "jobs"));
-      statsDiv.appendChild(createCard("حسب الإقامة", "🏠", stats.residencies, "#f44336", "residencies"));
+     statsDiv.appendChild(createCard("عدد السجلات حسب السنة", "📅", stats.byYear, "rgba(76, 175, 80, 0.15)", "year"));         // أخضر فاتح
+statsDiv.appendChild(createCard("عدد المتدربين حسب الدورة وتاريخها", "📘", stats.byCourseDate, "rgba(33, 150, 243, 0.15)", "courseDate")); // أزرق فاتح
+statsDiv.appendChild(createCard("عدد المتدربين حسب الشهر والسنة", "🗓️", stats.byMonthYear, "rgba(255, 152, 0, 0.15)", "monthYear"));     // برتقالي فاتح
+statsDiv.appendChild(createCard("عدد المتدربين حسب الإدارة", "🏢", stats.byDepartment, "rgba(0, 150, 136, 0.15)", "department"));       // تركواز فاتح
+statsDiv.appendChild(createCard("عدد المتدربين حسب الوظيفة", "💼", stats.byJob, "rgba(156, 39, 176, 0.15)", "job"));             // بنفسجي فاتح
+statsDiv.appendChild(createCard("عدد المتدربين حسب الإقامة والنوع", "🏠", stats.byResidencyGender, "rgba(244, 67, 54, 0.15)", "residency")); // أحمر فاتح
 
       tableContainer.parentNode.insertBefore(statsDiv, tableContainer);
       tableContainer.style.display = 'block';
 
-      const statsBox = document.getElementById("statsInfo");
-const offset = statsBox.getBoundingClientRect().top + window.scrollY - 12; // 100 بكسل لفوق
-window.scrollTo({ top: offset, behavior: 'smooth' });
-
-
-      // الآن نرسم كل الرسمات البيانية داخل الكروت
-      // دالة رسم دياجرام دائري
-      function drawPieChart(canvasId, chartData) {
+      const drawPieChart = (canvasId, chartData) => {
         const ctx = document.getElementById(canvasId).getContext("2d");
         new Chart(ctx, {
           type: "pie",
@@ -1612,22 +1729,27 @@ window.scrollTo({ top: offset, behavior: 'smooth' });
           options: {
             responsive: true,
             plugins: {
-              legend: { position: "bottom", labels: { boxWidth: 14, padding: 6 } },
+              legend: { position: "bottom" },
               tooltip: { enabled: true }
             }
           }
         });
-      }
+      };
 
-      drawPieChart("chart_count", { labels: ["السجلات"], data: [count], colors: ["#4caf50"] });
-      drawPieChart("chart_courses", prepareChartData(stats.courses));
-      drawPieChart("chart_dates", prepareChartData(stats.dates));
-      drawPieChart("chart_emails", prepareChartData(stats.emails));
-      drawPieChart("chart_jobs", prepareChartData(stats.jobs));
-      drawPieChart("chart_residencies", prepareChartData(stats.residencies));
+      drawPieChart("chart_year", prepareChartData(stats.byYear));
+      drawPieChart("chart_courseDate", prepareChartData(stats.byCourseDate));
+      drawPieChart("chart_monthYear", prepareChartData(stats.byMonthYear));
+      drawPieChart("chart_department", prepareChartData(stats.byDepartment));
+      drawPieChart("chart_job", prepareChartData(stats.byJob));
+      drawPieChart("chart_residency", prepareChartData(stats.byResidencyGender));
+
+      const statsBox = document.getElementById("statsInfo");
+      const offset = statsBox.getBoundingClientRect().top + window.scrollY - 12;
+      window.scrollTo({ top: offset, behavior: 'smooth' });
     }
   };
 }
+
 
 // دالة مساعدة لتحويل التاريخ العربي (إذا عندك دالة خاصة ممكن تستخدمها)
 function parseArabicDate(dateStr) {
@@ -1771,6 +1893,15 @@ function parseArabicDate(arabicDate) {
 }
 
 
+function printStatsAndCharts() {
+  // تأكد من أن قسم الإحصاءات ظاهر قبل الطباعة
+  document.getElementById('traineesTable').style.display = 'block';
+  
+  // طباعة فقط القسم المطلوب
+  setTimeout(() => {
+    window.print();
+  }, 300);
+}
 
 
 

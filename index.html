@@ -3,6 +3,20 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const form = document.querySelector("form");
+    const submitBtn = form.querySelector("button[type='submit']");
+
+    form.addEventListener("submit", function () {
+      submitBtn.disabled = true;
+      submitBtn.textContent = "📤 جارٍ الإرسال..."; // يمكن تعديل النص حسب الحاجة
+    });
+  });
+</script>
+
+
   <title>نموذج تقييم الدورة</title>
   <style>
     body {
@@ -36,7 +50,7 @@
       font-size: 22px;
     }
 
-    select, input[type="text"], input[type="date"], textarea {
+    select, input[type="text"], input[type="date"], input[type="email"], textarea {
       width: 100%;
       padding: 12px;
       margin-top: 5px;
@@ -136,7 +150,7 @@
 
   <script>
     document.addEventListener("DOMContentLoaded", function () {
-      fetch("https://script.google.com/macros/s/AKfycbz-TZJnvz7WP3yaN6h0SWWGILgGdb0AYu5nAufGYVM_Hqc2AL-DS1Tsj-2eJdjPxD_8JA/exec")
+      fetch("https://script.google.com/macros/s/AKfycbz7FaP2dNrWk1zJ4AjKKytrZw2V7xuPma9BvFvbD7Iv7pZCfFGrTSr-yEaZfFMy-qvD8Q/exec")
         .then(response => response.json())
         .then(data => {
           const datalist = document.getElementById("courseList");
@@ -160,12 +174,17 @@
 
     <h2>📝 نموذج تقييم الدورة التدريبية</h2>
 
-    <form action="https://script.google.com/macros/s/AKfycbz-TZJnvz7WP3yaN6h0SWWGILgGdb0AYu5nAufGYVM_Hqc2AL-DS1Tsj-2eJdjPxD_8JA/exec" method="post">
+    <form action="https://script.google.com/macros/s/AKfycbz7FaP2dNrWk1zJ4AjKKytrZw2V7xuPma9BvFvbD7Iv7pZCfFGrTSr-yEaZfFMy-qvD8Q/exec" method="post">
       <label>👤 اسم المتدرب:</label>
       <input type="text" name="traineeName" placeholder="ادخل اسمك الكامل" required>
 
       <label>📱 رقم الهاتف:</label>
       <input type="text" name="traineePhone" placeholder="ادخل رقم الهاتف" required>
+
+      <label>📧 البريد الإلكتروني:</label>
+<input type="email" name="traineeEmail" value="tantadtc@gmail.com" readonly>
+
+
 
       <label>🏢 الإدارة:</label>
       <input type="text" name="department" placeholder="ادخل اسم الإدارة" required>
@@ -177,18 +196,101 @@
       <input type="text" name="jobTitle" placeholder="ادخل الوظيفة الحالية" required>
 
       <label>🏨 حالة الإقامة:</label>
-      <select name="residencyStatus" required>
-        <option value="">اختر الحالة</option>
-        <option>مقيم</option>
-        <option>غير</option>
-      </select>
+<select name="residencyStatus" required>
+  <option value="">اختر الحالة</option>
+  <option value="مقيم">مقيم</option>
+  <option value="مقيمة">مقيمة</option>
+  <option value="غير مقيم">غير مقيم</option>
+  <option value="غير مقيمة">غير مقيمة</option>
+</select>
 
-      <label>📘 اسم الدورة:</label>
-      <input type="text" name="courseName" list="courseList" placeholder="اكتب أو اختر اسم الدورة" required>
-      <datalist id="courseList"></datalist>
 
-      <label>📅 تاريخ بداية الدورة:</label>
-      <input type="date" name="courseStartDate" required>
+<style>
+  select:disabled {
+    background-color: white;
+    color: black;
+  }
+</style>
+
+<label>📘 اسم الدورة:</label>
+<select id="courseName" name="courseName" required>
+  <option value="">اختر اسم الدورة</option>
+</select>
+
+<br><br>
+
+<label>📅 تاريخ بداية الدورة:</label>
+<select id="courseStartDate" name="courseStartDate" disabled required>
+  <option value="">---</option>
+</select>
+
+<br><br>
+
+<label>📅 تاريخ نهاية الدورة:</label>
+<select id="courseEndDate" name="courseEndDate" disabled required>
+  <option value="">---</option>
+</select>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    // 🗂️ الدورات وتواريخها
+    const courseData = {
+      "جافا سكريبت مستوى ثانى": { start: "2025-07-10", end: "2025-07-15" },
+      "  ": { start: "2024-09-08", end: "2024-09-12" },
+      "  ": { start: "2024-09-15", end: "2024-09-19" },
+      "  ": { start: "2024-09-22", end: "2024-09-26" },
+      "  ": { start: "2024-09-29", end: "2024-10-03" }
+    };
+
+    const courseSelect = document.getElementById("courseName");
+    const startSelect = document.getElementById("courseStartDate");
+    const endSelect = document.getElementById("courseEndDate");
+
+    // 🧩 توليد أسماء الدورات تلقائيًا
+    Object.keys(courseData).forEach(courseName => {
+      const option = document.createElement("option");
+      option.value = courseName;
+      option.textContent = courseName;
+      courseSelect.appendChild(option);
+    });
+
+    courseSelect.addEventListener("change", function () {
+      const selectedCourse = this.value;
+
+      // إعادة تعيين القوائم
+      startSelect.innerHTML = '<option value="">---</option>';
+      endSelect.innerHTML = '<option value="">---</option>';
+
+      if (selectedCourse && courseData[selectedCourse]) {
+        const startDate = courseData[selectedCourse].start;
+        const endDate = courseData[selectedCourse].end;
+
+        // توليد خيار واحد لكل من البداية والنهاية
+        const startOption = document.createElement("option");
+        startOption.value = startDate;
+        startOption.textContent = startDate;
+        startSelect.appendChild(startOption);
+
+        const endOption = document.createElement("option");
+        endOption.value = endDate;
+        endOption.textContent = endDate;
+        endSelect.appendChild(endOption);
+
+        startSelect.disabled = false;
+        endSelect.disabled = false;
+
+        // تعيين القيم تلقائيًا
+        startSelect.value = startDate;
+        endSelect.value = endDate;
+      } else {
+        startSelect.disabled = true;
+        endSelect.disabled = true;
+      }
+    });
+  });
+</script>
+
+
 
       <label>🧑‍🏫 تقييم المدرب:</label>
       <select name="trainerRating" required>
@@ -218,13 +320,15 @@
       </select>
 
       <label>🏨 تقييم الإقامة:</label>
-      <select name="residencyRating" required>
-        <option>ممتاز</option>
-        <option>جيد جداً</option>
-        <option>جيد</option>
-        <option>مقبول</option>
-        <option>ضعيف</option>
-      </select>
+<select name="residencyRating">
+  <option value="">اختر التقييم</option>
+  <option>ممتاز</option>
+  <option>جيد جداً</option>
+  <option>جيد</option>
+  <option>مقبول</option>
+  <option>ضعيف</option>
+</select>
+
 
       <label>📝 ملاحظات إضافية:</label>
       <textarea name="comments" placeholder="اكتب ملاحظاتك إن وجدت..."></textarea>
