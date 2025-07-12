@@ -191,22 +191,10 @@ const questions = [
         let startTime;
     
         function startQuiz() {
-    let name = document.getElementById("traineeName").value.trim();
-    let phone = document.getElementById("traineePhone").value.trim();
     let password = document.getElementById("password").value;
 
-    if (!name) {
-        alert("❗ برجاء إدخال الاسم.");
-        return;
-    }
-
-    if (!phone) {
-        alert("❗ برجاء إدخال رقم التليفون.");
-        return;
-    }
-
     if (password !== "1234") {
-        alert("❌ كلمة المرور غير صحيحة! الرجاء المحاولة مرة أخرى.");
+        alert("كلمة المرور غير صحيحة! الرجاء المحاولة مرة أخرى.");
         return;
     }
 
@@ -220,11 +208,11 @@ const questions = [
     let elem = document.documentElement;
     if (elem.requestFullscreen) {
         elem.requestFullscreen();
-    } else if (elem.mozRequestFullScreen) {
+    } else if (elem.mozRequestFullScreen) { // Firefox
         elem.mozRequestFullScreen();
-    } else if (elem.webkitRequestFullscreen) {
+    } else if (elem.webkitRequestFullscreen) { // Chrome, Safari and Opera
         elem.webkitRequestFullscreen();
-    } else if (elem.msRequestFullscreen) {
+    } else if (elem.msRequestFullscreen) { // IE/Edge
         elem.msRequestFullscreen();
     }
 }
@@ -417,7 +405,7 @@ function sendDataToGoogleSheet(resultData) {
     formData.append("timeTaken", resultData.timeTaken);
     formData.append("score", resultData.score);
 
-    fetch("https://script.google.com/macros/s/AKfycbwaPp8Z-VXyzICOIOik_YvQUMczxBNPv32rtDEJYTWTwW9rzCdcPG6lDoZqP9jl5-KWQA/exec", {
+    fetch("https://script.google.com/macros/s/AKfycbz_SSGVVdsKtLKbkavAQiVpTGgrJim9oVDBHeKm2Ulf6M-hKmUUcCoTPdNnFNVo-iU-WQ/exec", {
         method: "POST",
         headers: {
             "Content-Type": "application/x-www-form-urlencoded",
