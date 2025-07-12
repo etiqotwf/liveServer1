@@ -1057,26 +1057,17 @@ function loadPhonesFromDB() {
   function exportToExcel() {
   const tx = db.transaction("trainees", "readonly");
   const store = tx.objectStore("trainees");
-  // أضفت رموز (icons) بسيطة بجانب العناوين
- const headers = [
-  "🕒 تاريخ ووقت التسجيل",
-  "👤 الاسم",
-  "📞 الهاتف",
-  "📧 البريد الإلكتروني",
-  "🏢 الإدارة",
-  "🎓 المؤهل",
-  "💼 الوظيفة",
-  "🏨 الإقامة",
-  "📘 اسم الدورة",
-  "📅 بداية الدورة",
-  "📅 نهاية الدورة",
-  "🧑‍🏫 تقييم المدرب",
-  "📘 تقييم المحتوى",
-  "🛠️ تقييم التنظيم",
-  "🏨 تقييم الإقامة",
-  "📝 ملاحظات"
-];
 
+  const headers = [
+    "📅 تاريخ الاختبار",
+    "🧑‍🎓 الاسم",
+    "📞 رقم الهاتف",
+    "⏰ وقت البدء",
+    "⏳ المدة المستغرقة",
+    "🎯 النتيجة",
+    "📊 النسبة المئوية",
+    "🏅 التقدير"
+  ];
 
   const rows = [headers];
   const allData = [];
@@ -1085,35 +1076,49 @@ function loadPhonesFromDB() {
     const cursor = e.target.result;
     if (cursor) {
       const d = cursor.value;
-    allData.push([
-  d.datetime || "",         // 📅 والوقت
-  d.name || "",             // 👤 الاسم
-  d.phone || "",            // 📞 الهاتف
-  d.email || "",            // 📧 البريد الإلكتروني
-  d.department || "",       // 🏢 الإدارة
-  d.qualification || "",    // 🎓 المؤهل
-  d.job || "",              // 💼 الوظيفة
-  d.residency || "",        // 🏨 الإقامة
-  d.course || "",           // 📘 اسم الدورة
-  d.courseStart || "",      // 📅 بداية الدورة
-  d.courseEnd || "",        // 📅 نهاية الدورة
-  d.trainerRating || "",    // 🧑‍🏫 تقييم المدرب
-  d.contentRating || "",    // 📘 تقييم المحتوى
-  d.organizationRating || "", // 🛠️ تقييم التنظيم
-  d.residencyRating || "",  // 🏨 تقييم الإقامة
-  d.comments || ""          // 📝 ملاحظات
-]);
 
+      // تحليل النتيجة "39 / 50"
+      let score = 0;
+      let total = 100;
+      let percent = "";
+      let grade = "";
+
+      if (typeof d.score === "string" && d.score.includes("/")) {
+        const parts = d.score.split("/").map(x => parseFloat(x.trim()));
+        if (parts.length === 2 && !isNaN(parts[0]) && !isNaN(parts[1])) {
+          score = parts[0];
+          total = parts[1];
+
+          const p = (score / total) * 100;
+          percent = p.toFixed(1) + "%";
+
+          if (p < 50) grade = "راسب";
+          else if (p < 65) grade = "مقبول";
+          else if (p < 75) grade = "جيد";
+          else if (p < 85) grade = "جيد جدًا";
+          else grade = "امتياز";
+        }
+      }
+
+      allData.push([
+        d.datetime || "",
+        d.name || "",
+        d.phone || "",
+        d.startTime || "",
+        d.timeTaken || "",
+        d.score || "",
+        percent || "",
+        grade || ""
+      ]);
 
       cursor.continue();
     } else {
       const data = [...rows, ...allData];
-
       const ws = XLSX.utils.aoa_to_sheet(data);
 
-      // إعدادات الخط وحجمه (16) مع تنسيقات الجدول
+      // تنسيقات
       const headerStyle = {
-        font: { bold: true, sz: 16, color: { rgb: "FFFFFF" } },
+        font: { bold: true, sz: 14, color: { rgb: "FFFFFF" } },
         fill: { fgColor: { rgb: "4F81BD" } },
         alignment: { horizontal: "center", vertical: "center" },
         border: {
@@ -1125,7 +1130,7 @@ function loadPhonesFromDB() {
       };
 
       const dataStyle = {
-        font: { sz: 16 },
+        font: { sz: 12 },
         alignment: { vertical: "center", wrapText: true },
         border: {
           top: { style: "thin", color: { auto: 1 } },
@@ -1145,7 +1150,7 @@ function loadPhonesFromDB() {
         }
       }
 
-      // ضبط عرض الأعمدة تلقائياً حسب المحتوى مع حد أدنى 12 وحد أقصى 40
+      // عرض الأعمدة تلقائيًا
       const colWidths = data[0].map((col, i) => {
         let maxLen = col.length;
         allData.forEach(row => {
@@ -1158,13 +1163,12 @@ function loadPhonesFromDB() {
       ws['!cols'] = colWidths;
 
       const wb = XLSX.utils.book_new();
-      XLSX.utils.book_append_sheet(wb, ws, "المتدربين");
-
-      XLSX.writeFile(wb, "trainees.xlsx");
+      XLSX.utils.book_append_sheet(wb, ws, "نتائج ICDL");
+      XLSX.writeFile(wb, "ICDL_Results.xlsx");
     }
   };
 
-  store.openCursor().onerror = function(e) {
+  store.openCursor().onerror = function (e) {
     alert("حدث خطأ أثناء تحميل البيانات للتصدير.");
   };
 }
@@ -1505,28 +1509,42 @@ function searchTrainees() {
             : "غير معروف";
           stats.byDate[dateKey] = (stats.byDate[dateKey] || 0) + 1;
 
-          const score = parseFloat(d.score);
-          const total = parseFloat(d.total) || 100;
-          const percent = (!isNaN(score) && total !== 0) ? (score / total) * 100 : null;
-          let grade = "";
+         let score = 0;
+let total = 100;
 
-          if (percent !== null) {
-            if (percent < 50) grade = "راسب";
-            else if (percent < 65) grade = "مقبول";
-            else if (percent < 75) grade = "جيد";
-            else if (percent < 85) grade = "جيد جدًا";
-            else grade = "امتياز";
+// استخراج الدرجات من نص مثل "39 / 50"
+if (typeof d.score === "string" && d.score.includes("/")) {
+  const parts = d.score.split("/").map(x => parseFloat(x.trim()));
+  if (parts.length === 2 && !isNaN(parts[0]) && !isNaN(parts[1])) {
+    score = parts[0];
+    total = parts[1];
+  }
+}
 
-            stats.byGrade[grade]++;
-          }
+let percent = null;
+let grade = "";
 
-          if (!stats.byTest[testName]) stats.byTest[testName] = [];
-        stats.byTest[testName].push({
-  name: d.name,
-  phone: d.phone || "غير معروف",  // <-- تم الإضافة هنا
-  percent: percent ? percent.toFixed(1) : "--",
-  grade: grade || "--"
-});
+if (!isNaN(score) && !isNaN(total) && total !== 0) {
+  percent = (score / total) * 100;
+
+  if (percent < 50) grade = "راسب";
+  else if (percent < 65) grade = "مقبول";
+  else if (percent < 75) grade = "جيد";
+  else if (percent < 85) grade = "جيد جدًا";
+  else grade = "امتياز";
+
+  stats.byGrade[grade] = (stats.byGrade[grade] || 0) + 1;
+
+  if (!stats.byTest[testName]) stats.byTest[testName] = [];
+  stats.byTest[testName].push({
+    name: d.name,
+    phone: d.phone || "غير معروف",
+    percent: percent.toFixed(1),
+    grade: grade
+  });
+}
+
+
 
 
           const row = document.createElement("tr");
