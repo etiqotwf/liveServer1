@@ -160,11 +160,10 @@
   <h2>🔹 Trainees Database Management Form </h2>
 </div>
 
-<button id="toggleFormBtn" onclick="window.open('https://etiqotwf.github.io/liveServer/', '_blank')">
+<button id="toggleFormBtn" onclick="window.open('https://etiqotwf.github.io/liveServer1/', '_blank')">
 📝 فتح منظومة المتابعة والتقييم |  Monitoring and Evaluation System
 
 </button>
-
 
 
 <style>
@@ -699,23 +698,14 @@
     <thead>
       <tr>
        <tr>
-  <th>🕒 تاريخ ووقت التسجيل</th> <!-- "📅  والوقت" -->
-<th>👤 الاسم</th>
-<th>📞 الهاتف</th>
-<th>📧 البريد الإلكتروني</th>
-<th>🏢 الإدارة</th>
-<th>🎓 المؤهل</th>
-<th>💼 الوظيفة</th>
-<th>🏨 الإقامة</th>
-<th>📘 اسم الدورة</th>
-<th>📅 بداية الدورة</th>
-<th>📅 نهاية الدورة</th>
-<th>🧑‍🏫 تقييم المدرب</th>     <!-- "🧑‍🏫 المدرب" -->
-<th>📘 تقييم المحتوى</th>     <!-- "📖 المادة العلمية" -->
-<th>🛠️ تقييم التنظيم</th>     <!-- "🏢 التنظيم" -->
-<th>🏨 تقييم الإقامة</th>     <!-- "🏨 الإقامة" (مكررة في titles) -->
-<th>📝 ملاحظات</th>
-<th>🗑️ إجراء</th>
+   <th>🕒 تاريخ ووقت التسجيل</th>
+         <th>📝 اسم الاختبار</th>
+    <th>👤 الاسم</th>
+    <th>📞 الهاتف</th>
+    <th>⏰ وقت البدء</th>
+    <th>⏳ المدة المستغرقة</th>
+    <th>🎯 النتيجة</th>
+    <th>🗑️ إجراء</th>
 
 </tr>
 
@@ -742,11 +732,9 @@ function syncWithGoogleSheets() {
 
   countRequest.onsuccess = function () {
     const count = countRequest.result;
+    const lastIndex = (count === 0) ? 0 : (parseInt(localStorage.getItem("lastSyncedIndex")) || 0);
 
-    // إذا فاضي → lastIndex = 0
-    const lastIndex = (count === 0) ? 0 : (localStorage.getItem("lastSyncedIndex") || 0);
-
-    fetch(`https://script.google.com/macros/s/AKfycbzk4-ndp1Cx-1VasOKiDGjCXJzjLsCv67nTPMbWLqL7340ibeJqWPepm2Hgnae5NaiM0A/exec?lastIndex=${lastIndex}`)
+    fetch(`https://script.google.com/macros/s/AKfycbz_SSGVVdsKtLKbkavAQiVpTGgrJim9oVDBHeKm2Ulf6M-hKmUUcCoTPdNnFNVo-iU-WQ/exec`)
       .then(response => response.json())
       .then(data => {
         if (!Array.isArray(data)) {
@@ -754,7 +742,9 @@ function syncWithGoogleSheets() {
           return;
         }
 
-        if (data.length === 0) {
+        // تحديد البيانات الجديدة فقط
+        const newData = data.slice(lastIndex);
+        if (newData.length === 0) {
           console.log("لا توجد بيانات جديدة.");
           return;
         }
@@ -762,24 +752,14 @@ function syncWithGoogleSheets() {
         const tx = db.transaction("trainees", "readwrite");
         const store = tx.objectStore("trainees");
 
-        data.forEach(row => {
+        newData.forEach(row => {
           const newRecord = {
-            datetime: row[0] || "",
-            name: row[1] || "",
-            phone: row[2] || "",
-            email: row[3] || "",
-            department: row[4] || "",
-            qualification: row[5] || "",
-            job: row[6] || "",
-            residency: row[7] || "",
-            course: row[8] || "",
-            courseStart: row[9] || "",
-            courseEnd: row[10] || "",
-            trainerRating: row[11] || "",
-            contentRating: row[12] || "",
-            organizationRating: row[13] || "",
-            residencyRating: row[14] || "",
-            comments: row[15] || ""
+            datetime: row[0] || "",     // 📅 تاريخ الاختبار
+            name: row[1] || "",         // 🧑‍🎓 الاسم
+            phone: row[2] || "",        // 📞 رقم الهاتف
+            startTime: row[3] || "",    // ⏰ وقت البدء
+            timeTaken: row[4] || "",    // ⏳ المدة المستغرقة
+            score: row[5] || ""         // 🎯 النتيجة
           };
 
           store.add(newRecord);
@@ -788,23 +768,10 @@ function syncWithGoogleSheets() {
         tx.oncomplete = () => {
           console.log("✅ تمت مزامنة البيانات");
 
-          // تحديث الـ lastSyncedIndex فقط لو مش صفر
-          if (lastIndex !== 0) {
-            const newLastIndex = parseInt(lastIndex) + data.length;
-            localStorage.setItem("lastSyncedIndex", newLastIndex);
-          } else {
-            // أول مرة، نحفظ آخر رقم في Google Sheet كله
-            localStorage.setItem("lastSyncedIndex", data.length);
-          }
+          localStorage.setItem("lastSyncedIndex", lastIndex + newData.length);
 
-          // تحديث الواجهة
-          loadDepartmentsFromEmailField();
-          loadQualificationsFromDB();
-          loadJobsFromDB();
-          loadCoursesFromDB();
-          loadLatestData();
-          loadNamesFromDB();
-          loadPhonesFromDB();
+          // تحديث الواجهة أو استدعاء الوظائف المناسبة
+          loadLatestData?.();
         };
       })
       .catch(err => {
@@ -812,6 +779,7 @@ function syncWithGoogleSheets() {
       });
   };
 }
+
 
 
 function openDB() {
@@ -1474,43 +1442,6 @@ function extractDateRangeFromText(text) {
 
 function searchTrainees() {
   const query = document.getElementById('searchInput').value.trim().toLowerCase();
-  const range = extractDateRangeFromText(query);
-
-  // تحويل الشهور من العربي للإنجليزي داخل query
-const arabicToEnglishMonths = {
-  "يناير": "january", "فبراير": "february", "مارس": "march", "أبريل": "april", "ابريل": "april",
-  "مايو": "may", "يونيو": "june", "يوليو": "july", "أغسطس": "august", "اغسطس": "august",
-  "سبتمبر": "september", "أكتوبر": "october", "اكتوبر": "october",
-  "نوفمبر": "november", "ديسمبر": "december"
-};
-
-let queryNormalized = query;
-for (const [ar, en] of Object.entries(arabicToEnglishMonths)) {
-  queryNormalized = queryNormalized.replace(new RegExp(ar, 'gi'), en);
-}
-
-// استخراج الشهر والسنة من queryNormalized
-const monthNames = {
-  "january": 0, "february": 1, "march": 2, "april": 3,
-  "may": 4, "june": 5, "july": 6, "august": 7,
-  "september": 8, "october": 9, "november": 10, "december": 11
-};
-
-const monthYearMatch = queryNormalized.match(/(january|february|march|april|may|june|july|august|september|october|november|december)\s+(\d{4})/);
-let searchMonth = null, searchYear = null;
-
-if (monthYearMatch) {
-  const monthName = monthYearMatch[1];
-  const year = parseInt(monthYearMatch[2]);
-  if (monthNames.hasOwnProperty(monthName)) {
-    searchMonth = monthNames[monthName];
-    searchYear = year;
-  }
-}
-
-
-
-  
   const tbody = document.querySelector("#allTrainees tbody");
   const tableContainer = document.getElementById("traineesTable");
 
@@ -1526,16 +1457,6 @@ if (monthYearMatch) {
     return;
   }
 
-  let count = 0;
-  const stats = {
-    byYear: {},
-    byCourseDate: {},
-    byMonthYear: {},
-    byDepartment: {},
-    byJob: {},
-    byResidencyGender: {}
-  };
-
   const tx = db.transaction("trainees", "readonly");
   const store = tx.objectStore("trainees");
   const allRecords = [];
@@ -1548,60 +1469,70 @@ if (monthYearMatch) {
     } else {
       allRecords.sort((a, b) => new Date(b.value.datetime) - new Date(a.value.datetime));
 
-      const oldStats = document.getElementById("statsInfo");
-      if (oldStats) oldStats.remove();
+      let count = 0;
+      const stats = {
+        byDate: {},
+        byGrade: {
+          "راسب": 0,
+          "مقبول": 0,
+          "جيد": 0,
+          "جيد جدًا": 0,
+          "امتياز": 0
+        },
+        byTest: {}
+      };
 
       allRecords.forEach(({ key, value: d }) => {
         const combined = Object.values(d).join(" ").toLowerCase();
-
-const recordDate = d.courseStart ? new Date(Date.parse(d.courseStart)) : null;
-const inRange =
-  (!range || (recordDate && recordDate >= range.from && recordDate <= range.to)) &&
-  (searchMonth === null || (recordDate && recordDate.getMonth() === searchMonth && recordDate.getFullYear() === searchYear));
-
-
-
-        if ((!query || combined.includes(query)) && inRange) {
+        if (!query || combined.includes(query)) {
           count++;
 
-          const year = recordDate.getFullYear();
-          stats.byYear[year] = (stats.byYear[year] || 0) + 1;
+          const testName = d.testName || "Computer Icdl Test";
 
-          const formattedStart = d.courseStart ? new Date(d.courseStart).toLocaleDateString("en-GB") : "No Date";
-          const courseDateKey = `${d.course || 'غير محددة'} (${formattedStart})`;
-          stats.byCourseDate[courseDateKey] = (stats.byCourseDate[courseDateKey] || 0) + 1;
+          const dateKey = d.datetime
+            ? new Date(d.datetime).toLocaleDateString("ar-EG")
+            : "غير معروف";
+          stats.byDate[dateKey] = (stats.byDate[dateKey] || 0) + 1;
 
-          const monthYear = recordDate.toLocaleString("en-GB", { month: "long", year: "numeric" });
-          stats.byMonthYear[monthYear] = (stats.byMonthYear[monthYear] || 0) + 1;
+          const score = parseFloat(d.score);
+          const total = parseFloat(d.total) || 100;
+          const percent = (!isNaN(score) && total !== 0) ? (score / total) * 100 : null;
+          let grade = "";
 
-          stats.byDepartment[d.department || "غير محددة"] = (stats.byDepartment[d.department || "غير محددة"] || 0) + 1;
-          stats.byJob[d.job || "غير محددة"] = (stats.byJob[d.job || "غير محددة"] || 0) + 1;
+          if (percent !== null) {
+            if (percent < 50) grade = "راسب";
+            else if (percent < 65) grade = "مقبول";
+            else if (percent < 75) grade = "جيد";
+            else if (percent < 85) grade = "جيد جدًا";
+            else grade = "امتياز";
 
-          let residencyLabel = "غير مقيم/ة";
-          const residencyType = (d.residency || '').trim();
-          const gender = (d.gender || '').trim();
-
-          if (residencyType.includes("غير")) {
-            residencyLabel = gender === "أنثى" ? "غير مقيمة" : "غير مقيم";
-          } else {
-            residencyLabel = gender === "أنثى" ? "مقيمة" : "مقيم";
+            stats.byGrade[grade]++;
           }
 
-          stats.byResidencyGender[residencyLabel] = (stats.byResidencyGender[residencyLabel] || 0) + 1;
+          if (!stats.byTest[testName]) stats.byTest[testName] = [];
+        stats.byTest[testName].push({
+  name: d.name,
+  phone: d.phone || "غير معروف",  // <-- تم الإضافة هنا
+  percent: percent ? percent.toFixed(1) : "--",
+  grade: grade || "--"
+});
+
 
           const row = document.createElement("tr");
-          const fields = ["datetime","name","phone","email","department","qualification","job","residency","course","courseStart","courseEnd","trainerRating","contentRating","organizationRating","residencyRating","comments"];
+          const fields = ["datetime", "testName", "name", "phone", "startTime", "timeTaken", "score"];
 
           fields.forEach(field => {
             const cell = document.createElement("td");
-            if (["datetime", "courseStart", "courseEnd"].includes(field)) {
-              const rawDate = d[field];
-              cell.textContent = rawDate
-                ? new Date(rawDate).toLocaleDateString("en-GB", { year: "numeric", month: "long", day: "numeric" })
+            if (field === "datetime") {
+              cell.textContent = d[field]
+                ? new Date(d[field]).toLocaleDateString("en-GB", {
+                    year: "numeric", month: "long", day: "numeric"
+                  })
                 : "";
             } else {
-              cell.textContent = d[field] || "";
+              cell.textContent = field === "testName" ? testName : d[field] || "";
             }
+
             cell.contentEditable = "true";
             cell.dataset.key = key;
             cell.dataset.field = field;
@@ -1622,6 +1553,7 @@ const inRange =
                 }
               };
             });
+
             row.appendChild(cell);
           });
 
@@ -1631,87 +1563,118 @@ const inRange =
           deleteBtn.onclick = () => deleteRecord(key);
           deleteCell.appendChild(deleteBtn);
           row.appendChild(deleteCell);
+
           tbody.appendChild(row);
         }
       });
 
       if (count === 0) {
-        tbody.innerHTML = `<tr><td colspan="10" style="text-align:center;">لا توجد نتائج مطابقة</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="9" style="text-align:center;">لا توجد نتائج مطابقة</td></tr>`;
         tableContainer.style.display = 'none';
         return;
       }
+
+      tableContainer.style.display = 'block';
 
       const statsDiv = document.createElement("div");
       statsDiv.id = "statsInfo";
       statsDiv.style.display = "flex";
       statsDiv.style.flexWrap = "nowrap";
-      statsDiv.style.gap = "14px";
-      statsDiv.style.margin = "10px 0";
-      statsDiv.style.direction = "rtl";
       statsDiv.style.justifyContent = "space-between";
+      statsDiv.style.width = "100%";
+      statsDiv.style.gap = "16px";
+      statsDiv.style.margin = "16px 0";
+      statsDiv.style.direction = "rtl";
 
-      const createCard = (title, icon, contentObj, bgColor, cardId) => {
-  const card = document.createElement("div");
-  card.style.backgroundColor = bgColor;
-  card.style.border = "2px solid #003366"; // إطار كحلي
-  card.style.borderRadius = "10px";
-  card.style.padding = "14px";
-  card.style.color = "#003366"; // لون النص داخل البوكس كحلي
-  card.style.fontSize = "18px";
-  card.style.textAlign = "center";
-  card.style.width = "calc(100% / 6 - 12px)";
-  card.style.height = "320px";
-  card.style.overflowY = "auto";
-  card.style.boxShadow = "0 4px 10px rgba(0,0,0,0.2)";
-  card.style.display = "flex";
-  card.style.flexDirection = "column";
-  card.style.justifyContent = "flex-start";
+      const createCard = (title, icon, dataObj, bgColor, canvasId) => {
+        const card = document.createElement("div");
+        card.style.backgroundColor = bgColor;
+        card.style.border = "2px solid #003366";
+        card.style.borderRadius = "10px";
+        card.style.padding = "14px";
+        card.style.color = "#003366";
+        card.style.width = "33%";
+        card.style.maxHeight = "400px";
+        card.style.overflowY = "auto";
+        card.style.boxShadow = "0 4px 10px rgba(0,0,0,0.2)";
+        card.style.display = "flex";
+        card.style.flexDirection = "column";
+        card.style.justifyContent = "flex-start";
 
-  const header = document.createElement("div");
-  header.textContent = `${icon} ${title}`;
-  header.style.marginBottom = "10px";
-  header.style.fontSize = "20px";
-  header.style.backgroundColor = "#003366"; // خلفية العنوان كحلي
-  header.style.color = "#ffffff"; // النص أبيض
-  header.style.fontWeight = "bold";
-  header.style.padding = "6px";
-  header.style.borderRadius = "6px";
+        const header = document.createElement("div");
+        header.textContent = `${icon} ${title}`;
+        header.style.marginBottom = "10px";
+        header.style.fontSize = "20px";
+        header.style.backgroundColor = "#003366";
+        header.style.color = "#fff";
+        header.style.fontWeight = "bold";
+        header.style.padding = "6px";
+        header.style.borderRadius = "6px";
 
-  const body = document.createElement("div");
-body.textContent = Object.entries(contentObj).map(([k, v]) => `${k}: ${v}`).join(" - ") || "لا توجد بيانات";
-body.style.fontWeight = "bold";     // جعل الخط بولد
-body.style.fontSize = "18px";       // نفس حجم الخط
+        const body = document.createElement("div");
+        const totalCount = Object.values(dataObj).reduce((a, b) => a + b, 0);
+        body.innerHTML = Object.entries(dataObj)
+          .map(([k, v]) => {
+            const percent = totalCount > 0 ? ((v / totalCount) * 100).toFixed(1) : 0;
+            return `${k}: ${v} (${percent}%)`;
+          }).join("<br>") || "لا توجد بيانات";
+        body.style.fontWeight = "bold";
+        body.style.fontSize = "18px";
 
+        const canvas = document.createElement("canvas");
+        canvas.id = canvasId;
+        canvas.style.marginTop = "10px";
+        canvas.style.maxHeight = "180px";
+        canvas.style.alignSelf = "center";
 
-  const canvas = document.createElement("canvas");
-  canvas.id = `chart_${cardId}`;
-  canvas.style.marginTop = "10px";
-  canvas.style.maxHeight = "180px";
-  canvas.style.maxWidth = "240px";
-  canvas.style.alignSelf = "center";
-
-  card.appendChild(header);
-  card.appendChild(body);
-  card.appendChild(canvas);
-  return card;
-};
-
-      const prepareChartData = (obj) => {
-        const labels = Object.keys(obj);
-        const data = Object.values(obj);
-        const colors = labels.map(() => `hsl(${Math.random() * 360}, 70%, 60%)`);
-        return { labels, data, colors };
+        card.appendChild(header);
+        card.appendChild(body);
+        card.appendChild(canvas);
+        return card;
       };
 
-     statsDiv.appendChild(createCard("عدد السجلات حسب السنة", "📅", stats.byYear, "rgba(76, 175, 80, 0.15)", "year"));         // أخضر فاتح
-statsDiv.appendChild(createCard("عدد المتدربين حسب الدورة وتاريخها", "📘", stats.byCourseDate, "rgba(33, 150, 243, 0.15)", "courseDate")); // أزرق فاتح
-statsDiv.appendChild(createCard("عدد المتدربين حسب الشهر والسنة", "🗓️", stats.byMonthYear, "rgba(255, 152, 0, 0.15)", "monthYear"));     // برتقالي فاتح
-statsDiv.appendChild(createCard("عدد المتدربين حسب الإدارة", "🏢", stats.byDepartment, "rgba(0, 150, 136, 0.15)", "department"));       // تركواز فاتح
-statsDiv.appendChild(createCard("عدد المتدربين حسب الوظيفة", "💼", stats.byJob, "rgba(156, 39, 176, 0.15)", "job"));             // بنفسجي فاتح
-statsDiv.appendChild(createCard("عدد المتدربين حسب الإقامة والنوع", "🏠", stats.byResidencyGender, "rgba(244, 67, 54, 0.15)", "residency")); // أحمر فاتح
+      const createTestSummaryCard = (testData) => {
+        const card = document.createElement("div");
+        card.style.backgroundColor = "#f0f0f0";
+        card.style.border = "2px solid #003366";
+        card.style.borderRadius = "10px";
+        card.style.padding = "14px";
+        card.style.color = "#003366";
+        card.style.width = "33%";
+        card.style.maxHeight = "400px";
+        card.style.overflowY = "auto";
+        card.style.boxShadow = "0 4px 10px rgba(0,0,0,0.2)";
+        card.style.fontSize = "16px";
+        card.style.fontWeight = "bold";
+        card.style.direction = "rtl";
+
+        const header = document.createElement("div");
+        header.textContent = "📋 تفاصيل حسب كل اختبار";
+        header.style.backgroundColor = "#003366";
+        header.style.color = "#fff";
+        header.style.padding = "6px";
+        header.style.marginBottom = "10px";
+        header.style.fontSize = "20px";
+        header.style.borderRadius = "6px";
+
+        const body = document.createElement("div");
+        body.innerHTML = Object.entries(testData).map(([test, users]) => {
+const userLines = users.map(u => 
+  `👤 ${u.name} 📞 ${u.phone} - ${u.percent}% (${u.grade})`
+).join("<br>");
+          return `<strong>🧪 ${test} (${users.length} مشارك):</strong><br>${userLines}`;
+        }).join("<br><br>") || "لا توجد بيانات";
+
+        card.appendChild(header);
+        card.appendChild(body);
+        return card;
+      };
+
+      statsDiv.appendChild(createCard("عدد المتدربين حسب التاريخ", "📅", stats.byDate, "rgba(76, 175, 80, 0.15)", "chart_byDate"));
+      statsDiv.appendChild(createTestSummaryCard(stats.byTest));
+      statsDiv.appendChild(createCard("توزيع التقديرات", "📊", stats.byGrade, "rgba(33, 150, 243, 0.15)", "chart_byGrade"));
 
       tableContainer.parentNode.insertBefore(statsDiv, tableContainer);
-      tableContainer.style.display = 'block';
 
       const drawPieChart = (canvasId, chartData) => {
         const ctx = document.getElementById(canvasId).getContext("2d");
@@ -1736,19 +1699,22 @@ statsDiv.appendChild(createCard("عدد المتدربين حسب الإقامة
         });
       };
 
-      drawPieChart("chart_year", prepareChartData(stats.byYear));
-      drawPieChart("chart_courseDate", prepareChartData(stats.byCourseDate));
-      drawPieChart("chart_monthYear", prepareChartData(stats.byMonthYear));
-      drawPieChart("chart_department", prepareChartData(stats.byDepartment));
-      drawPieChart("chart_job", prepareChartData(stats.byJob));
-      drawPieChart("chart_residency", prepareChartData(stats.byResidencyGender));
+      const prepareChartData = (obj) => {
+        const labels = Object.keys(obj);
+        const data = Object.values(obj);
+        const colors = labels.map(() => `hsl(${Math.random() * 360}, 70%, 60%)`);
+        return { labels, data, colors };
+      };
 
-      const statsBox = document.getElementById("statsInfo");
-      const offset = statsBox.getBoundingClientRect().top + window.scrollY - 12;
+      drawPieChart("chart_byDate", prepareChartData(stats.byDate));
+      drawPieChart("chart_byGrade", prepareChartData(stats.byGrade));
+
+      const offset = statsDiv.getBoundingClientRect().top + window.scrollY - 12;
       window.scrollTo({ top: offset, behavior: 'smooth' });
     }
   };
 }
+
 
 
 // دالة مساعدة لتحويل التاريخ العربي (إذا عندك دالة خاصة ممكن تستخدمها)

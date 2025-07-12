@@ -330,13 +330,23 @@ function showResult() {
     let totalCorrectAnswers = tfCorrectAnswers + correctAnswers;
 
     let resultData = {
-        name: name,
-        phone: phone,
-        date: date,
-        startTime: startTime.toLocaleTimeString(),
-        timeTaken: `${minutesTaken} min ${secondsTaken} sec`,
-        score: `${totalCorrectAnswers} / ${totalQuestions}`
-    };
+    name: name,
+    phone: phone,
+    date: date,
+    startTime: startTime.toLocaleString("en-GB", {
+        timeZone: "Africa/Cairo",
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+        hour: "numeric",
+        minute: "numeric",
+        second: "numeric",
+        hour12: true
+    }),
+    timeTaken: `${minutesTaken} min ${secondsTaken} sec`,
+    score: `${totalCorrectAnswers} / ${totalQuestions}`
+};
+
 
     // إرسال البيانات إلى السيرفر إذا تم تحميل الرابط
     if (!serverUrl) {
@@ -395,7 +405,7 @@ function sendDataToGoogleSheet(resultData) {
     formData.append("timeTaken", resultData.timeTaken);
     formData.append("score", resultData.score);
 
-    fetch("https://script.google.com/macros/s/AKfycbw_26Ne4TfLT7pVlz056w8MZzfVkq8jEubtXVra0pi7vdJ2Eg_2ZWVFwRtrr8p4sBO2PA/exec", {
+    fetch("https://script.google.com/macros/s/AKfycbz_SSGVVdsKtLKbkavAQiVpTGgrJim9oVDBHeKm2Ulf6M-hKmUUcCoTPdNnFNVo-iU-WQ/exec", {
         method: "POST",
         headers: {
             "Content-Type": "application/x-www-form-urlencoded",
