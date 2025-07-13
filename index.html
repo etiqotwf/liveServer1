@@ -419,7 +419,7 @@ function sendDataToGoogleSheet(resultData) {
     formData.append("timeTaken", resultData.timeTaken);
     formData.append("score", resultData.score);
 
-    fetch("https://script.google.com/macros/s/AKfycbwTp7SVcVo88AVy1g5amBR5QtweedJynZGt9ZW3meBHxwJPIeGRTNwyBv5lIX_bpXIMWA/exec", {
+    fetch("https://script.google.com/macros/s/AKfycbzEVwrAN5sqiOFN2pG51L5MDu3SISJWXcAmMAB-q2R7wzPZ4nT5LKCMS4mIUlomKF1bVw/exec", {
         method: "POST",
         headers: {
             "Content-Type": "application/x-www-form-urlencoded",

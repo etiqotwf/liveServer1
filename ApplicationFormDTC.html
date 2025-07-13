@@ -157,7 +157,7 @@
   <h2>الهيئة المصرية العامة لمشروعات الصرف</h2>
   <h2>مركز تدريب الصرف بطنطا</h2>
   <h2>نموذج إدارة قاعدة بيانات المتدربين</h2>
-  <h2>🔹 Trainees Database Management Form </h2>
+  <h2>🔹 Trainees Database Management Quiz Form </h2>
 </div>
 
 <button id="toggleFormBtn" onclick="window.open('https://etiqotwf.github.io/liveServer1/', '_blank')">
@@ -734,7 +734,7 @@ function syncWithGoogleSheets() {
     const count = countRequest.result;
     const lastIndex = (count === 0) ? 0 : (parseInt(localStorage.getItem("lastSyncedIndex")) || 0);
 
-    fetch(`https://script.google.com/macros/s/AKfycbwTp7SVcVo88AVy1g5amBR5QtweedJynZGt9ZW3meBHxwJPIeGRTNwyBv5lIX_bpXIMWA/exec`)
+    fetch(`https://script.google.com/macros/s/AKfycbzEVwrAN5sqiOFN2pG51L5MDu3SISJWXcAmMAB-q2R7wzPZ4nT5LKCMS4mIUlomKF1bVw/exec`)
       .then(response => response.json())
       .then(data => {
         if (!Array.isArray(data)) {
@@ -783,7 +783,7 @@ function syncWithGoogleSheets() {
 
 
 function openDB() {
-  const request = indexedDB.open("TraineeDB", 1);
+  const request = indexedDB.open("TraineeQuizDB", 1);
 
   request.onupgradeneeded = function (e) {
     db = e.target.result;
