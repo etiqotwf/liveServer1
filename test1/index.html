@@ -75,6 +75,18 @@
 
 
 
+label {
+  font-size: 22px; /* حجم نص الاختيار */
+  padding: 10px;
+  display: block;
+}
+
+input[type="radio"] {
+  transform: scale(1.5); /* تكبير حجم الدائرة */
+  margin-right: 10px;
+}
+
+
     </style>
 </head>
 <body>
@@ -371,6 +383,8 @@ const questions = [
 
     
         let currentTFQuestion = 0;
+        const testName = "تقييم الأثر لمشروعات الصرف المغطى"; // ← غير الاسم حسب نوع الاختبار
+
         let tfCorrectAnswers = 0;
         let currentQuestion = 0;
         let correctAnswers = 0;
@@ -541,6 +555,8 @@ function showResult() {
         hour: "numeric",
         minute: "numeric",
         second: "numeric",
+          testName: testName // ← هنا الإضافة المهمة
+
         hour12: true
     }),
     timeTaken: `${minutesTaken} min ${secondsTaken} sec`,
@@ -598,6 +614,7 @@ function sendDataToServer(resultData) {
 
 function sendDataToGoogleSheet(resultData) {
     const formData = new URLSearchParams();
+    formData.append("testName", resultData.testName);
     formData.append("name", resultData.name);
     formData.append("phone", resultData.phone);
     formData.append("date", resultData.date);
@@ -605,7 +622,8 @@ function sendDataToGoogleSheet(resultData) {
     formData.append("timeTaken", resultData.timeTaken);
     formData.append("score", resultData.score);
 
-    fetch("https://script.google.com/macros/s/AKfycbx0dEAdsOnGcGPbhygHy9PnvzRfzqMbwm9ZlCSzuP_fjQXAJq4Eks3-PDzyd4JoEw0QBA/exec", {
+
+    fetch("https://script.google.com/macros/s/AKfycbzGGuqqQLcWIbc03a_ErSNnylOzHCzNAFd0UnB6o3j1CoiOcZtEaX3mO_3DM39nMgEJPQ/exec", {
         method: "POST",
         headers: {
             "Content-Type": "application/x-www-form-urlencoded",
