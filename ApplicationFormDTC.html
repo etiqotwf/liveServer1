@@ -734,7 +734,7 @@ function syncWithGoogleSheets() {
     const count = countRequest.result;
     const lastIndex = (count === 0) ? 0 : (parseInt(localStorage.getItem("lastSyncedIndex")) || 0);
 
-    fetch(`https://script.google.com/macros/s/AKfycbzEVwrAN5sqiOFN2pG51L5MDu3SISJWXcAmMAB-q2R7wzPZ4nT5LKCMS4mIUlomKF1bVw/exec`)
+    fetch(`https://script.google.com/macros/s/AKfycbzZQ92N6t_ZJZYpthxtkdPXtCEeZDy7LYjSLxLw3_1er3U7nvrVEmFcTw2ehAwA7APCeg/exec`)
       .then(response => response.json())
       .then(data => {
         if (!Array.isArray(data)) {
