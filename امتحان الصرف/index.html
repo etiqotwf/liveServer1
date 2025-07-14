@@ -79,8 +79,10 @@
 </head>
 <body>
     <div class="container" id="startScreen">
-        <h1>International British Institute - Tanta (ILC)</h1>
-        <h2>Computer Icdl Test</h2>
+        <h1>📘 Tanta Drainage Training Center
+
+</h1>
+        <h2>Computer  Test</h2>
         <p>Enter Your Name: <input type="text" id="traineeName"></p>
         <p>Enter Your Phone Number: <input type="text" id="traineePhone"></p>
         <p>Enter Password: <input type="password" id="password"></p>
@@ -93,14 +95,12 @@
         <p>Date: <span id="date"></span></p>
         <p id="timer">Time Remaining: 30:00</p>
         <div id="passage">
-            <h3>Read the following passage carefully and answer the following questions:</h3>
+            <h3></h3>
             <p>
-                <strong>The Evolution of Information Technology in Computers
+                <strong>
 
                 </strong><br>
-                Young people leave their parents' homes at different ages in different parts of the world. In the United States, a lot of college students do not live at home. They often choose to go to college in different cities – away from their parents. At college, many live in university housing. After college, most people prefer to live in their own homes. They often live alone, but some people rent apartments with others. These people are called roommates.
-                <p> Information Technology (IT) has transformed the world of computers over the years. In the early days, computers were large and slow, used mainly for calculations. Over time, technology advanced, making computers smaller, faster, and more powerful. The rise of the internet changed how people communicate, work, and store data. Today, IT plays a key role in every field, from education to business. Cloud computing, artificial intelligence, and cybersecurity are shaping the future of IT, making computers smarter and more efficient than ever.
-                    As technology continues to evolve, IT is becoming more integrated into daily life. Mobile devices, smart homes, and automation have revolutionized the way people interact with computers. Businesses rely on IT for data management, cybersecurity, and digital marketing. With the development of machine learning and blockchain technology, the IT industry is constantly growing, creating new opportunities and challenges. The future of IT promises even more advancements, making the digital world faster, safer, and more innovative.
+                
                     
                     </p>
                         </div>
@@ -122,60 +122,248 @@
         document.getElementById("date").innerText = new Date().toLocaleDateString("en-US");
     
         const trueFalseQuestions = [
-    { q: "Quantum computing is expected to replace classical computers in all fields within the next decade.", a: "false" },
-    { q: "Machine learning and artificial intelligence rely heavily on big data for improving accuracy.", a: "true" },
-    { q: "Blockchain technology is primarily used for securing online financial transactions.", a: "true" },
-    { q: "Cybersecurity threats are decreasing due to advancements in encryption and firewalls.", a: "false" },
-    { q: "Cloud computing eliminates the need for physical data centers in large enterprises.", a: "false" },
-    { q: "Edge computing improves processing speed by reducing dependence on centralized cloud servers.", a: "true" }
+
 ];
 
     
 const questions = [
-    { q: "Which function in Excel is used to find the highest value in a range?", a: "c", options: ["SUM", "AVERAGE", "MAX", "COUNT"] },
-    { q: "Which keyboard shortcut is used to paste content in Microsoft Word?", a: "b", options: ["Ctrl + X", "Ctrl + V", "Ctrl + P", "Ctrl + C"] },
-    { q: "Which file extension is associated with Microsoft PowerPoint presentations?", a: "a", options: [".pptx", ".xlsx", ".docx", ".mdb"] },
-    { q: "Which function in Excel is used to search for a value in the first column and return a corresponding value?", a: "c", options: ["INDEX", "MATCH", "VLOOKUP", "FIND"] },
-    { q: "Which feature in Excel is used to apply automatic formatting based on cell values?", a: "b", options: ["Data Validation", "Conditional Formatting", "Goal Seek", "Scenario Manager"] },
-    { q: "In Windows, which key combination is used to open Task Manager?", a: "c", options: ["Ctrl + Shift + Esc", "Alt + Tab", "Ctrl + Alt + Delete", "Win + R"] },
-    { q: "Which Excel feature allows you to apply different formatting based on cell values?", a: "d", options: ["Data Validation", "Sorting", "Pivot Table", "Conditional Formatting"] },
-    { q: "Which shortcut key is used to undo an action in Microsoft applications?", a: "a", options: ["Ctrl + Z", "Ctrl + Y", "Ctrl + U", "Ctrl + A"] },
-    { q: "Which software is primarily used for managing databases?", a: "b", options: ["Excel", "Access", "PowerPoint", "OneNote"] },
-    { q: "Which chart type is best for showing trends over time in Excel?", a: "a", options: ["Line Chart", "Pie Chart", "Bar Chart", "Scatter Plot"] },
-    { q: "Which command is used to insert a new slide in PowerPoint?", a: "d", options: ["Ctrl + S", "Ctrl + X", "Ctrl + M", "Ctrl + P"] },
-    { q: "Which Windows feature allows you to restore the system to a previous state?", a: "c", options: ["Task Scheduler", "File Explorer", "System Restore", "Device Manager"] },
-    { q: "In Excel, which symbol is used for absolute cell referencing?", a: "b", options: ["&", "$", "#", "*"] },
-    { q: "Which option in Word is used to check spelling and grammar?", a: "d", options: ["Page Layout", "Track Changes", "Review", "Spelling & Grammar"] },
-    { q: "Which keyboard shortcut is used to save a document?", a: "a", options: ["Ctrl + S", "Ctrl + N", "Ctrl + O", "Ctrl + Q"] },
-    { q: "Which feature in PowerPoint allows animations between slides?", a: "b", options: ["Animations", "Transitions", "Slide Show", "Design"] },
-    { q: "What is the default file format for Excel workbooks?", a: "c", options: [".pptx", ".docx", ".xlsx", ".pdf"] },
-    { q: "Which feature in Word is used to merge multiple letters with a data source?", a: "d", options: ["Page Layout", "Table of Contents", "References", "Mail Merge"] },
-    { q: "Which function in Excel is used to count non-empty cells?", a: "a", options: ["COUNTA", "COUNTBLANK", "COUNTIF", "COUNT"] },
-    { q: "Which shortcut is used to bold text in Word?", a: "b", options: ["Ctrl + I", "Ctrl + B", "Ctrl + U", "Ctrl + E"] },
-    { q: "Which function in Excel is used to count only numeric values in a range?", a: "c", options: ["COUNTA", "COUNTBLANK", "COUNT", "SUM"] },
-    { q: "Which keyboard shortcut is used to fill cells automatically in Excel?", a: "a", options: ["Ctrl + D", "Ctrl + R", "Ctrl + Shift + L", "Ctrl + E"] },
-    { q: "Which Microsoft Office application is used for email management?", a: "c", options: ["Word", "Excel", "Outlook", "Access"] },
-    { q: "Which Windows key combination is used to minimize all open windows?", a: "d", options: ["Win + D", "Alt + Tab", "Ctrl + M", "Win + M"] },
-    { q: "Which function in Excel is used to join text from multiple cells?", a: "b", options: ["SPLIT", "CONCATENATE", "JOIN", "MERGE"] },
-    { q: "Which option in Word helps to create a table of contents?", a: "c", options: ["Track Changes", "Spelling & Grammar", "References", "Mail Merge"] },
-    { q: "Which feature in PowerPoint allows you to rehearse your presentation timing?", a: "a", options: ["Rehearse Timings", "Slide Master", "Animations", "Record Slide Show"] },
-    { q: "Which Windows feature is used to uninstall programs?", a: "b", options: ["Device Manager", "Control Panel", "Task Manager", "Command Prompt"] },
-    { q: "Which function in Excel is used to search for a value in a table?", a: "d", options: ["IF", "COUNTIF", "INDEX", "VLOOKUP"] },
-    { q: "Which option in Word is used to track changes made in a document?", a: "a", options: ["Track Changes", "Page Layout", "Table of Contents", "Review"] },
-    { q: "Which shortcut key is used to insert a new worksheet in Excel?", a: "c", options: ["Ctrl + S", "Ctrl + X", "Shift + F11", "Ctrl + M"] },
-    { q: "Which function is used to extract text from the right side of a cell in Excel?", a: "b", options: ["LEFT", "RIGHT", "MID", "FIND"] },
-    { q: "Which feature in Excel allows you to freeze specific rows and columns?", a: "b", options: ["Consolidate", "Freeze Panes", "Split", "Protect Sheet"] },
-    { q: "Which option in PowerPoint is used to add speaker notes?", a: "b", options: ["Slide Sorter", "Notes Pane", "Master Slide", "Outline View"] },
-    { q: "Which Windows tool is used to check disk errors?", a: "d", options: ["Device Manager", "Disk Cleanup", "Task Scheduler", "Check Disk"] },
-    { q: "Which Excel function is used to return the current date and time?", a: "a", options: ["NOW()", "TODAY()", "DATE()", "TIME()"] },
-    { q: "Which feature in Word is used to split a document into sections?", a: "c", options: ["Columns", "Styles", "Page Breaks", "Footnotes"] },
-    { q: "Which keyboard shortcut is used to insert a hyperlink in Office applications?", a: "d", options: ["Ctrl + S", "Ctrl + P", "Ctrl + K", "Ctrl + H"] },
-    { q: "Which function in Excel is used to calculate the average of a range?", a: "b", options: ["SUM", "AVERAGE", "COUNT", "PRODUCT"] },
-    { q: "Which Windows command is used to view the IP address of a computer?", a: "a", options: ["ipconfig", "ping", "netstat", "tracert"] },
-    { q: "Which Excel function is used to extract a portion of text from a cell?", a: "c", options: ["LEFT", "RIGHT", "MID", "EXTRACT"] },
-    { q: "Which feature in Excel is used to apply automatic formatting based on cell values?", a: "b", options: ["Data Validation", "Conditional Formatting", "Goal Seek", "Scenario Manager"] },
-    { q: "Which feature in Word allows automatic numbering of pages?", a: "b", options: ["Headers", "Page Numbers", "Footnotes", "Track Changes"] },
-    { q: "Which PowerPoint feature allows you to change the appearance of all slides at once?", a: "d", options: ["Themes", "Transitions", "Slide Show", "Slide Master"] }
+  {
+    q: "ما هو الهدف الأساسي من تقييم الأثر بعد تأهيل الأراضي بشبكات صرف مغطى؟",
+    a: "b",
+    options: [
+      "زيادة نسبة الملوحة في التربة",
+      "تحديد كفاءة نظام الصرف وتحسين إدارة المياه",
+      "تقليل إنتاجية المحاصيل",
+      "زيادة منسوب المياه الجوفية"
+    ]
+  },
+  {
+    q: "أثناء تصميم نظام صرف، لاحظت أن منحنى التصرف مقابل الوقت يُظهر ذروة ثم هبوطًا سريعًا. ما هو التفسير الأكثر ذكاءً؟",
+    a: "b",
+    options: [
+      "هناك فاصل في الخط أدى إلى تسرب",
+      "تربة الموقع ذات نفاذية عالية في الطبقة العليا",
+      "منسوب الماء الجوفي كان منخفضًا منذ البداية",
+      "تم تنفيذ الصرف في موسم جاف"
+    ]
+  },
+  {
+    q: "لماذا لا يمكن الاعتماد فقط على معدل التصرف لتقييم كفاءة المصرف؟",
+    a: "d",
+    options: [
+      "لأنه لا يعكس نوعية المياه المصروفة",
+      "لأنه يتغير بتغير المناخ",
+      "لأنه لا يدل على عمق الصرف الفعلي",
+      "لأنه قد يكون عاليًا ولكن غير منتظم أو متقطع"
+    ]
+  },
+  {
+    q: "أي خيار يعكس استخدامًا ذكيًا لنظام الصرف المغطى في التكيف مع تغير المناخ؟",
+    a: "b",
+    options: [
+      "تصريف المياه الزائدة فقط",
+      "الحفاظ على منسوب ماء أرضي مرن حسب الموسم",
+      "إعادة استخدام مياه الصرف في الري",
+      "استخدام المصارف لنقل المياه إلى أماكن أخرى"
+    ]
+  },
+  {
+    q: "لماذا تُعتبر المصارف المغطاة أكثر فاعلية في الأراضي ذات المحاصيل الحقلية مقارنة بالبساتين؟",
+    a: "d",
+    options: [
+      "لأن عمق الجذور في الحقول أقل",
+      "لأن البساتين تحتاج مياه أكثر",
+      "لأن التربة تحت البساتين تكون طينية دائمًا",
+      "لأن التغير في مستوى الماء الأرضي يؤثر أسرع على المحاصيل الحقلية"
+    ]
+  },
+  {
+    q: "في مزرعة تستخدم الصرف المغطى، وجد أن كمية المياه المستخدمة في الري أعلى بعد تثبيت النظام. ما هو السبب الأذكى لذلك؟",
+    a: "b",
+    options: [
+      "الفقد بالتبخر ازداد",
+      "جذور النباتات أصبحت أعمق فتحتاج ماء أكثر",
+      "التربة فقدت احتفاظها بالماء بسبب التصريف",
+      "المزارع يروي أكثر بسبب سهولة التربة المفلوحة"
+    ]
+  },
+  {
+    q: "إذا أردت التأكد من أن فلتر المصرف يؤدي وظيفته بعد 3 سنوات من التركيب، ما المؤشر الأذكى الذي يمكن مراقبته؟",
+    a: "d",
+    options: [
+      "تصرف المصرف",
+      "نقاء المياه المصروفة",
+      "زمن بدء خروج الماء بعد الري",
+      "التغير في توزيع الأملاح على العمق"
+    ]
+  },
+  {
+    q: "أحد أسباب فشل مشاريع الصرف المغطى على المدى الطويل هو:",
+    a: "b",
+    options: [
+      "زيادة كميات مياه الرى المطبقة",
+      "سوء صيانة الشبكة وعدم تنظيف البيارات",
+      "ارتفاع جودة المواد المستخدمة",
+      "كثافة التربة الجيدة"
+    ]
+  },
+  {
+    q: "في تقييم الأثر البيئي لمشروع صرف مغطي، أي من التالي يصنف كتأثير غير مباشر؟",
+    a: "b",
+    options: [
+      "انخفاض منسوب المياه الجوفية",
+      "تدهور التنوع البيولوجي بسبب جفاف البرك",
+      "زيادة ملوحة التربة",
+      "نقص إنتاجية المحصول مباشرة بعد التنفيذ"
+    ]
+  },
+  {
+    q: "في حالة ملاحظة ركود مياه في مناطق معينة رغم وجود شبكة صرف مغطى جديدة، فإن السبب الأكثر ترجيحًا فى رأيك هو:",
+    a: "b",
+    options: [
+      "زيادة كميات مياه الرى",
+      "انسداد في خطوط الصرف أو عيوب في التصميم",
+      "انخفاض درجات الحرارة",
+      "مشكلة ترجع لسوء العمليات الزراعية"
+    ]
+  },
+
+  {
+    q: "يستخدم نظام الصرف المغطى أساسًا لخفض ___________ في التربة بهدف تحسين التهوية ونمو النبات.",
+    a: "منسوب الماء الأرضي",
+    options: ["مستوى الخصوبة", "منسوب الماء الأرضي", "معدل التبخر", "درجة حرارة التربة"]
+  },
+  {
+    q: "من العوامل الرئيسية المؤثرة في تصميم شبكة الصرف المغطى: ___________ التربة، و___________ الأمطار، و___________ المحصول.",
+    a: "نفاذية التربة، وكمية الأمطار، ونوع المحصول",
+    options: [
+      "ملوحة التربة، ومعدل الرطوبة، ونوع البذور",
+      "نفاذية التربة، وكمية الأمطار، ونوع المحصول",
+      "نوع الأسمدة، ودرجة الحرارة، ومعدل الري",
+      "كثافة النبات، وطبيعة الأرض، ونوع السماد"
+    ]
+  },
+  {
+    q: "الفرق بين الصرف السطحي والصرف المغطى هو، الأول يُستخدم لتصريف __________، أما الثاني فيُستخدم لتصريف __________.",
+    a: "المياه السطحية - المياه التحت سطحية الزائدة",
+    options: [
+      "الرطوبة - التربة",
+      "المياه السطحية - المياه التحت سطحية الزائدة",
+      "الأملاح - العناصر الغذائية",
+      "الهواء - المياه السائلة"
+    ]
+  },
+  {
+    q: "من وظائف الفلتر حول أنبوب المصرف المغطى أنه يمنع __________ التربة إلى داخل الأنبوب ويُحافظ على __________ التدفق.",
+    a: "دخول دقائق - استمرارية",
+    options: [
+      "تسرب الماء - بطء",
+      "دخول دقائق - استمرارية",
+      "تصريف الأملاح - تذبذب",
+      "تراكم الجذور - انخفاض"
+    ]
+  },
+  {
+    q: "يستخدم جهاز ___________ لقياس منسوب الماء الأرضي في حقول الصرف المغطى.",
+    a: "البيزوميتر – البئر السطحى",
+    options: [
+      "الثرمومتر",
+      "الهيدروميتر",
+      "البيزوميتر – البئر السطحى",
+      "المانوميتر"
+    ]
+  },
+  {
+    q: "المسافة بين خطوط الصرف المغطى تتحدد عادةً بناءً على معامل __________ للتربة.",
+    a: "النفاذية",
+    options: ["الملوحة", "الحرارة", "النفاذية", "الكثافة"]
+  },
+  {
+    q: "في الأراضي الطينية، تُفضل المصارف بعمق __________ ومسافة __________، مقارنة بالأراضي الرملية.",
+    a: "1.20 – 1.50 م –  30 م تقريبا",
+    options: [
+      "0.50 م – 10 م تقريبًا",
+      "2 م – 70 م تقريبًا",
+      "1.20 – 1.50 م –  30 م تقريبا",
+      "0.80 م – 20 م تقريبًا"
+    ]
+  },
+  {
+    q: "من علامات انسداد المصرف المغطى: ارتفاع __________، وانخفاض __________، وظهور بقع __________ في الحقل.",
+    a: "منسوب الماء الأرضي - التصرف الخارج - مشبعة أو ملحية",
+    options: [
+      "معدل التبخر - الرطوبة - خضراء",
+      "منسوب الماء الأرضي - التصرف الخارج - مشبعة أو ملحية",
+      "مستوى الحموضة - النيتروجين - قاحلة",
+      "درجة الحرارة - الرطوبة - صفراء"
+    ]
+  },
+  {
+    q: "أحد مؤشرات النجاح في مشروعات الصرف المغطى هو تحسن __________ مع مرور الوقت واستقرار منسوب __________.",
+    a: "انتاجية المحصول – الماء الارضى",
+    options: [
+      "درجة الحرارة – المياه السطحية",
+      "الرطوبة – نسبة الأسمدة",
+      "انتاجية المحصول – الماء الارضى",
+      "معدل التبخر – العمق"
+    ]
+  },
+  {
+    q: "من العوامل المؤثرة على فعالية شبكة الصرف: نوع التربة، تصميم الشبكة، ووجود نظام _______ فعال.",
+    a: "صيانة",
+    options: ["تهوية", "صيانة", "إضاءة", "ري"]
+  },
+  {
+    q: "يؤدي التصريف المفرط إلى تقليل قدرة التربة على الاحتفاظ بـ __________ وزيادة خطر __________ في المناطق الهشة بيئيًا.",
+    a: "المغذيات - التصحر",
+    options: [
+      "الماء - الفيضانات",
+      "المغذيات - التصحر",
+      "الهواء - الانجراف",
+      "الأملاح - الانهيار"
+    ]
+  },
+  {
+    q: "من أهم مؤشرات نجاح نظام الصرف المغطى هو تحسّن _______ وزيادة إنتاجية المحاصيل.",
+    a: "التهوية فى التربة",
+    options: [
+      "مستوى المياه",
+      "درجة الحرارة",
+      "التهوية فى التربة",
+      "ملوحة السطح"
+    ]
+  },
+  {
+    q: "التقييم المتكامل لنظام الصرف يجب أن يشمل عناصر: الأداء الهيدروليكي، التأثير البيئي، و__________ و__________ الاجتماعي.",
+    a: "الجدوى الاقتصادية والقبول",
+    options: [
+      "الجدوى الاقتصادية والقبول",
+      "التكلفة والصيانة",
+      "المردود الإنتاجي والربحية",
+      "الوقت والفعالية"
+    ]
+  },
+  {
+    q: "لربط شبكات الري والصرف بكفاءة، يجب مراعاة توازن الاحتياجات المائية للنبات و__________ خلال دورة النمو.",
+    a: "تصريف المياه الزائدة",
+    options: [
+      "زيادة التسميد",
+      "تصريف المياه الزائدة",
+      "الري بالرش",
+      "التحكم في الحرارة"
+    ]
+  },
+  {
+    q: "في الإدارة المتكاملة لموارد المياه، يُعتبر الصرف المغطى أحد أدوات إدارة __________ في المناطق الزراعية.",
+    a: "الملوحة",
+    options: [
+      "الرياح",
+      "الفيضانات",
+      "الملوحة",
+      "الجفاف"
+    ]
+  }
+
 ];
 
 
@@ -191,10 +379,22 @@ const questions = [
         let startTime;
     
         function startQuiz() {
+    let name = document.getElementById("traineeName").value.trim();
+    let phone = document.getElementById("traineePhone").value.trim();
     let password = document.getElementById("password").value;
 
+    if (!name) {
+        alert("❗ برجاء إدخال الاسم.");
+        return;
+    }
+
+    if (!phone) {
+        alert("❗ برجاء إدخال رقم التليفون.");
+        return;
+    }
+
     if (password !== "1234") {
-        alert("كلمة المرور غير صحيحة! الرجاء المحاولة مرة أخرى.");
+        alert("❌ كلمة المرور غير صحيحة! الرجاء المحاولة مرة أخرى.");
         return;
     }
 
@@ -208,11 +408,11 @@ const questions = [
     let elem = document.documentElement;
     if (elem.requestFullscreen) {
         elem.requestFullscreen();
-    } else if (elem.mozRequestFullScreen) { // Firefox
+    } else if (elem.mozRequestFullScreen) {
         elem.mozRequestFullScreen();
-    } else if (elem.webkitRequestFullscreen) { // Chrome, Safari and Opera
+    } else if (elem.webkitRequestFullscreen) {
         elem.webkitRequestFullscreen();
-    } else if (elem.msRequestFullscreen) { // IE/Edge
+    } else if (elem.msRequestFullscreen) {
         elem.msRequestFullscreen();
     }
 }
@@ -405,7 +605,7 @@ function sendDataToGoogleSheet(resultData) {
     formData.append("timeTaken", resultData.timeTaken);
     formData.append("score", resultData.score);
 
-    fetch("https://script.google.com/macros/s/AKfycbz_SSGVVdsKtLKbkavAQiVpTGgrJim9oVDBHeKm2Ulf6M-hKmUUcCoTPdNnFNVo-iU-WQ/exec", {
+    fetch("https://script.google.com/macros/s/AKfycbzEVwrAN5sqiOFN2pG51L5MDu3SISJWXcAmMAB-q2R7wzPZ4nT5LKCMS4mIUlomKF1bVw/exec", {
         method: "POST",
         headers: {
             "Content-Type": "application/x-www-form-urlencoded",
