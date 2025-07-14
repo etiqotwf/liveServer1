@@ -404,11 +404,11 @@ const questions = [
         alert("❗ برجاء إدخال رقم التليفون.");
         return;
     }
-
-    if (password !== "") {
-        alert("❌ كلمة المرور غير صحيحة! الرجاء المحاولة مرة أخرى.");
-        return;
-    }
+// تم إلغاء شرط كلمة المرور
+// if (password !== "1234") {
+//     alert("❌ كلمة المرور غير صحيحة! الرجاء المحاولة مرة أخرى.");
+//     return;
+// }
 
     document.getElementById("startScreen").style.display = "none";
     document.getElementById("quizContainer").style.display = "block";
