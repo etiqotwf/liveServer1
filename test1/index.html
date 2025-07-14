@@ -605,7 +605,7 @@ function sendDataToGoogleSheet(resultData) {
     formData.append("timeTaken", resultData.timeTaken);
     formData.append("score", resultData.score);
 
-    fetch("https://script.google.com/macros/s/AKfycbypqHCPrTw8lB3LgkEIBtvaPdRCTi_gjleTDzz2th4ATMGXdrSeJmRlPMPh2cHfnWjq/exec", {
+    fetch("https://script.google.com/macros/s/AKfycbx0dEAdsOnGcGPbhygHy9PnvzRfzqMbwm9ZlCSzuP_fjQXAJq4Eks3-PDzyd4JoEw0QBA/exec", {
         method: "POST",
         headers: {
             "Content-Type": "application/x-www-form-urlencoded",
