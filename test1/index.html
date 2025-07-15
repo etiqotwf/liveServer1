@@ -551,29 +551,29 @@ function showResult() {
     let phone = document.getElementById("traineePhone").value || "Unknown";
     let date = new Date().toLocaleDateString("en-US");
 
-    // ✅ تم تصحيح الحساب بناءً على الأسئلة فقط
-    let totalQuestions = questions.length;
-    let totalCorrectAnswers = correctAnswers;
+    let totalQuestions = trueFalseQuestions.length + questions.length;
+    let totalCorrectAnswers = tfCorrectAnswers + correctAnswers;
 
     let resultData = {
-        name: name,
-        phone: phone,
-        date: date,
-        startTime: startTime.toLocaleString("en-GB", {
-            timeZone: "Africa/Cairo",
-            year: "numeric",
-            month: "long",
-            day: "numeric",
-            hour: "numeric",
-            minute: "numeric",
-            second: "numeric",
-            hour12: true
-        }),
-        timeTaken: `${minutesTaken} min ${secondsTaken} sec`,
-        score: `${totalCorrectAnswers} / ${totalQuestions}`
-    };
+    name: name,
+    phone: phone,
+    date: date,
+    startTime: startTime.toLocaleString("en-GB", {
+        timeZone: "Africa/Cairo",
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+        hour: "numeric",
+        minute: "numeric",
+        second: "numeric",
+        hour12: true
+    }),
+    timeTaken: `${minutesTaken} min ${secondsTaken} sec`,
+    score: `${totalCorrectAnswers} / ${totalQuestions}`
+};
 
-    // إرسال البيانات إلى السيرفر
+
+    // إرسال البيانات إلى السيرفر إذا تم تحميل الرابط
     if (!serverUrl) {
         console.log("⏳ انتظار تحميل رابط السيرفر...");
         fetchServerUrl().then(() => {
