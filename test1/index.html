@@ -445,27 +445,22 @@ function nextQuestion() {
   if (!selectedAnswer) return;
 
   const q = questions[currentQuestion];
+  const selectedValue = selectedAnswer.value; // ex: "a", "b", ...
 
-  // نحصل على قيمة المستخدم (الحرف أو النص حسب الحالة)
-  const selectedValue = selectedAnswer.value;
+  const isAnswerKeyALetter = q.a.length === 1 && ["a", "b", "c", "d"].includes(q.a);
 
-  // هل الجواب الصحيح هو حرف (a, b, c, d)؟ أم نص كامل؟
-  const correctAnswer = q.a;
-
-  // نحسب الإجابة إن كانت مطابقة للحرف
-  if (
-    correctAnswer.length === 1 &&
-    selectedValue === correctAnswer
-  ) {
-    correctAnswers++;
-  }
-
-  // أو نطابق النص مباشرة (إذا كانت a = نص الجواب نفسه)
-  else if (
-    correctAnswer.length > 1 &&
-    q.options[selectedValue.charCodeAt(0) - 97] === correctAnswer
-  ) {
-    correctAnswers++;
+  // إذا كانت الإجابة المحفوظة هي حرف مثل "b"
+  if (isAnswerKeyALetter) {
+    if (selectedValue === q.a) {
+      correctAnswers++;
+    }
+  } else {
+    // إذا كانت الإجابة المحفوظة هي نص مثل "منسوب الماء الأرضي"
+    const selectedOptionIndex = selectedValue.charCodeAt(0) - 97;
+    const selectedOptionText = q.options[selectedOptionIndex];
+    if (selectedOptionText.trim() === q.a.trim()) {
+      correctAnswers++;
+    }
   }
 
   if (currentQuestion < questions.length - 1) {
