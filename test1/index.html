@@ -403,7 +403,7 @@ const questions = [
         let timerInterval;
         let startTime;
     
-        function startQuiz() {
+       function startQuiz() {
     let name = document.getElementById("traineeName").value.trim();
     let phone = document.getElementById("traineePhone").value.trim();
     let password = document.getElementById("password").value;
@@ -427,7 +427,9 @@ const questions = [
     document.getElementById("quizContainer").style.display = "block";
     startTime = new Date();
     startTimer();
-    loadTFQuestion();
+
+    // ✅ تحميل الأسئلة مباشرةً بدون صح وخطأ
+    loadQuestion();
 
     // تشغيل وضع ملء الشاشة
     let elem = document.documentElement;
@@ -441,7 +443,6 @@ const questions = [
         elem.msRequestFullscreen();
     }
 }
-
 
     
         function startTimer() {
@@ -551,29 +552,29 @@ function showResult() {
     let phone = document.getElementById("traineePhone").value || "Unknown";
     let date = new Date().toLocaleDateString("en-US");
 
-    let totalQuestions = trueFalseQuestions.length + questions.length;
-    let totalCorrectAnswers = tfCorrectAnswers + correctAnswers;
+    // ✅ تم تصحيح الحساب بناءً على الأسئلة فقط
+    let totalQuestions = questions.length;
+    let totalCorrectAnswers = correctAnswers;
 
     let resultData = {
-    name: name,
-    phone: phone,
-    date: date,
-    startTime: startTime.toLocaleString("en-GB", {
-        timeZone: "Africa/Cairo",
-        year: "numeric",
-        month: "long",
-        day: "numeric",
-        hour: "numeric",
-        minute: "numeric",
-        second: "numeric",
-        hour12: true
-    }),
-    timeTaken: `${minutesTaken} min ${secondsTaken} sec`,
-    score: `${totalCorrectAnswers} / ${totalQuestions}`
-};
+        name: name,
+        phone: phone,
+        date: date,
+        startTime: startTime.toLocaleString("en-GB", {
+            timeZone: "Africa/Cairo",
+            year: "numeric",
+            month: "long",
+            day: "numeric",
+            hour: "numeric",
+            minute: "numeric",
+            second: "numeric",
+            hour12: true
+        }),
+        timeTaken: `${minutesTaken} min ${secondsTaken} sec`,
+        score: `${totalCorrectAnswers} / ${totalQuestions}`
+    };
 
-
-    // إرسال البيانات إلى السيرفر إذا تم تحميل الرابط
+    // إرسال البيانات إلى السيرفر
     if (!serverUrl) {
         console.log("⏳ انتظار تحميل رابط السيرفر...");
         fetchServerUrl().then(() => {
