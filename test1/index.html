@@ -403,7 +403,7 @@ const questions = [
         let timerInterval;
         let startTime;
     
-       function startQuiz() {
+        function startQuiz() {
     let name = document.getElementById("traineeName").value.trim();
     let phone = document.getElementById("traineePhone").value.trim();
     let password = document.getElementById("password").value;
@@ -427,9 +427,7 @@ const questions = [
     document.getElementById("quizContainer").style.display = "block";
     startTime = new Date();
     startTimer();
-
-    // ✅ تحميل الأسئلة مباشرةً بدون صح وخطأ
-    loadQuestion();
+    loadTFQuestion();
 
     // تشغيل وضع ملء الشاشة
     let elem = document.documentElement;
@@ -443,6 +441,7 @@ const questions = [
         elem.msRequestFullscreen();
     }
 }
+
 
     
         function startTimer() {
