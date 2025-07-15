@@ -380,15 +380,13 @@ const questions = [
 
 
     
-        let currentTFQuestion = 0;
-        let tfCorrectAnswers = 0;
-        let currentQuestion = 0;
-        let correctAnswers = 0;
-        let timeLeft = 1800;
-        let timerInterval;
-        let startTime;
-    
-        function startQuiz() {
+       let currentQuestion = 0;
+let correctAnswers = 0;
+let timeLeft = 1800;
+let timerInterval;
+let startTime;
+
+function startQuiz() {
     let name = document.getElementById("traineeName").value.trim();
     let phone = document.getElementById("traineePhone").value.trim();
     let password = document.getElementById("password").value;
@@ -397,12 +395,10 @@ const questions = [
         alert("❗ برجاء إدخال الاسم.");
         return;
     }
-
     if (!phone) {
         alert("❗ برجاء إدخال رقم التليفون.");
         return;
     }
-
     if (password !== "1234") {
         alert("❌ كلمة المرور غير صحيحة! الرجاء المحاولة مرة أخرى.");
         return;
@@ -412,83 +408,54 @@ const questions = [
     document.getElementById("quizContainer").style.display = "block";
     startTime = new Date();
     startTimer();
-    loadTFQuestion();
+    loadQuestion();
 
-    // تشغيل وضع ملء الشاشة
     let elem = document.documentElement;
-    if (elem.requestFullscreen) {
-        elem.requestFullscreen();
-    } else if (elem.mozRequestFullScreen) {
-        elem.mozRequestFullScreen();
-    } else if (elem.webkitRequestFullscreen) {
-        elem.webkitRequestFullscreen();
-    } else if (elem.msRequestFullscreen) {
-        elem.msRequestFullscreen();
+    if (elem.requestFullscreen) elem.requestFullscreen();
+    else if (elem.mozRequestFullScreen) elem.mozRequestFullScreen();
+    else if (elem.webkitRequestFullscreen) elem.webkitRequestFullscreen();
+    else if (elem.msRequestFullscreen) elem.msRequestFullscreen();
+}
+
+function startTimer() {
+    timerInterval = setInterval(() => {
+        let minutes = Math.floor(timeLeft / 60);
+        let seconds = timeLeft % 60;
+        document.getElementById("timer").innerText = `Time Remaining: ${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+        if (timeLeft <= 0) {
+            clearInterval(timerInterval);
+            showResult();
+        }
+        timeLeft--;
+    }, 1000);
+}
+
+function loadQuestion() {
+    let quizDiv = document.getElementById("quiz");
+    let q = questions[currentQuestion];
+    quizDiv.innerHTML = `<p class='question'>${q.q}</p>` +
+        q.options.map((option, index) =>
+            `<label><input type='radio' name='answer' value='${String.fromCharCode(97 + index)}'> ${option}</label>`
+        ).join('') +
+        `<button class='btn' onclick='nextQuestion()'>${currentQuestion === questions.length - 1 ? "Finish" : "Next"}</button>`;
+}
+
+function nextQuestion() {
+    let selectedAnswer = document.querySelector("input[name='answer']:checked");
+    if (!selectedAnswer) return;
+
+    if (selectedAnswer.value === questions[currentQuestion].a) {
+        correctAnswers++;
+    }
+
+    if (currentQuestion < questions.length - 1) {
+        currentQuestion++;
+        loadQuestion();
+    } else {
+        showResult();
     }
 }
 
-
-    
-        function startTimer() {
-            timerInterval = setInterval(() => {
-                let minutes = Math.floor(timeLeft / 60);
-                let seconds = timeLeft % 60;
-                document.getElementById("timer").innerText = `Time Remaining: ${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
-                if (timeLeft <= 0) {
-                    clearInterval(timerInterval);
-                    showResult();
-                }
-                timeLeft--;
-            }, 1000);
-        }
-    
-        function loadTFQuestion() {
-            let quizDiv = document.getElementById("quiz");
-            if (currentTFQuestion < trueFalseQuestions.length) {
-                let q = trueFalseQuestions[currentTFQuestion];
-                quizDiv.innerHTML = `<p class='question'>${q.q}</p>` +
-                    `<label><input type='radio' name='answer' value='true'> True</label>` +
-                    `<label><input type='radio' name='answer' value='false'> False</label>` +
-                    `<button class='btn' onclick='nextTFQuestion()'>Next</button>`;
-            } else {
-                document.getElementById("passage").style.display = "none";
-                document.getElementById("quizTitle").innerText = "Choose the correct answer from a, b, c or d: (44 marks)";
-                loadQuestion();
-            }
-        }
-    
-        function nextTFQuestion() {
-            let selectedAnswer = document.querySelector("input[name='answer']:checked");
-            if (!selectedAnswer) return;
-            if (selectedAnswer.value === trueFalseQuestions[currentTFQuestion].a) {
-                tfCorrectAnswers++;
-            }
-            currentTFQuestion++;
-            loadTFQuestion();
-        }
-    
-        function loadQuestion() {
-            let quizDiv = document.getElementById("quiz");
-            let q = questions[currentQuestion];
-            quizDiv.innerHTML = `<p class='question'>${q.q}</p>` +
-                q.options.map((option, index) => `<label><input type='radio' name='answer' value='${String.fromCharCode(97 + index)}'> ${option}</label>`).join('') +
-                `<button class='btn' onclick='nextQuestion()'>${currentQuestion === questions.length - 1 ? "Finish" : "Next"}</button>`;
-        }
-    
-        function nextQuestion() {
-            let selectedAnswer = document.querySelector("input[name='answer']:checked");
-            if (!selectedAnswer) return;
-            if (selectedAnswer.value === questions[currentQuestion].a) {
-                correctAnswers++;
-            }
-            if (currentQuestion < questions.length - 1) {
-                currentQuestion++;
-                loadQuestion();
-            } else {
-                showResult();
-            }
-        }
-    
 let serverUrl = ""; // سيتم تحديثه تلقائيًا عند تحميل الصفحة
 
 // دالة لجلب رابط السيرفر المخزن في GitHub
