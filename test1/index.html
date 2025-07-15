@@ -417,6 +417,9 @@ function startQuiz() {
     else if (elem.msRequestFullscreen) elem.msRequestFullscreen();
 }
 
+
+
+
 function startTimer() {
     timerInterval = setInterval(() => {
         let minutes = Math.floor(timeLeft / 60);
@@ -440,6 +443,17 @@ function loadQuestion() {
         `<button class='btn' onclick='nextQuestion()'>${currentQuestion === questions.length - 1 ? "Finish" : "Next"}</button>`;
 }
 
+
+
+function normalizeText(str) {
+  return str
+    .toLowerCase()
+    .replace(/–/g, "-") // شرطة طويلة لشرطة عادية
+    .replace(/\s+/g, " ") // توحيد المسافات
+    .trim();
+}
+
+
 function nextQuestion() {
   const selectedAnswer = document.querySelector("input[name='answer']:checked");
   if (!selectedAnswer) return;
@@ -458,7 +472,10 @@ function nextQuestion() {
     // إذا كانت الإجابة المحفوظة هي نص مثل "منسوب الماء الأرضي"
     const selectedOptionIndex = selectedValue.charCodeAt(0) - 97;
     const selectedOptionText = q.options[selectedOptionIndex];
-    if (selectedOptionText.trim() === q.a.trim()) {
+    if (
+  normalizeText(selectedOptionText) === normalizeText(q.a)
+)
+ {
       correctAnswers++;
     }
   }
