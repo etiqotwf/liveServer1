@@ -441,19 +441,39 @@ function loadQuestion() {
 }
 
 function nextQuestion() {
-    let selectedAnswer = document.querySelector("input[name='answer']:checked");
-    if (!selectedAnswer) return;
+  const selectedAnswer = document.querySelector("input[name='answer']:checked");
+  if (!selectedAnswer) return;
 
-    if (selectedAnswer.value === questions[currentQuestion].a) {
-        correctAnswers++;
-    }
+  const q = questions[currentQuestion];
 
-    if (currentQuestion < questions.length - 1) {
-        currentQuestion++;
-        loadQuestion();
-    } else {
-        showResult();
-    }
+  // نحصل على قيمة المستخدم (الحرف أو النص حسب الحالة)
+  const selectedValue = selectedAnswer.value;
+
+  // هل الجواب الصحيح هو حرف (a, b, c, d)؟ أم نص كامل؟
+  const correctAnswer = q.a;
+
+  // نحسب الإجابة إن كانت مطابقة للحرف
+  if (
+    correctAnswer.length === 1 &&
+    selectedValue === correctAnswer
+  ) {
+    correctAnswers++;
+  }
+
+  // أو نطابق النص مباشرة (إذا كانت a = نص الجواب نفسه)
+  else if (
+    correctAnswer.length > 1 &&
+    q.options[selectedValue.charCodeAt(0) - 97] === correctAnswer
+  ) {
+    correctAnswers++;
+  }
+
+  if (currentQuestion < questions.length - 1) {
+    currentQuestion++;
+    loadQuestion();
+  } else {
+    showResult();
+  }
 }
 
 let serverUrl = ""; // سيتم تحديثه تلقائيًا عند تحميل الصفحة
