@@ -584,6 +584,20 @@ function sendDataToGoogleSheet(resultData) {
 }
 
 
+// إرسال البيانات إلى السيرفر الأساسي
+function sendDataToServer(resultData) {
+    fetch(`${serverUrl}/submit`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(resultData)
+    })
+    .then(response => response.json())
+    .then(data => console.log("✅ تم الإرسال إلى السيرفر بنجاح:", data))
+    .catch(error => console.error("❌ خطأ أثناء الإرسال إلى السيرفر:", error));
+}
+
 
 
     </script>
