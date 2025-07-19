@@ -723,7 +723,6 @@
   <script>
   let db;
 
-
 function syncWithGoogleSheets() {
   const txCheck = db.transaction("trainees", "readonly");
   const storeCheck = txCheck.objectStore("trainees");
@@ -734,7 +733,7 @@ function syncWithGoogleSheets() {
     const count = countRequest.result;
     const lastIndex = (count === 0) ? 0 : (parseInt(localStorage.getItem("lastSyncedIndex")) || 0);
 
-    fetch(`https://script.google.com/macros/s/AKfycbw_CyivHjaPP_Uj8WDwjdj_L5C9tGk18M1RQxTrKzGgewoMz9K553_fHar4V578pfCSgw/exec`)
+    fetch(`https://script.google.com/macros/s/AKfycbzdOkIPZ_VROXU7QmlrNSxbtVSvBoA1yT3im1xFCxlULAYg7j0zbNDx9rXBAXtVZkOuOg/exec`)
       .then(response => response.json())
       .then(data => {
         if (!Array.isArray(data)) {
@@ -742,7 +741,6 @@ function syncWithGoogleSheets() {
           return;
         }
 
-        // تحديد البيانات الجديدة فقط
         const newData = data.slice(lastIndex);
         if (newData.length === 0) {
           console.log("لا توجد بيانات جديدة.");
@@ -754,12 +752,13 @@ function syncWithGoogleSheets() {
 
         newData.forEach(row => {
           const newRecord = {
-            datetime: row[0] || "",     // 📅 تاريخ الاختبار
-            name: row[1] || "",         // 🧑‍🎓 الاسم
-            phone: row[2] || "",        // 📞 رقم الهاتف
-            startTime: row[3] || "",    // ⏰ وقت البدء
-            timeTaken: row[4] || "",    // ⏳ المدة المستغرقة
-            score: row[5] || ""         // 🎯 النتيجة
+            datetime: row[0] || "",     // 📅 التاريخ
+            course: row[1] || "",       // 📘 اسم الدورة
+            name: row[2] || "",         // 🧑‍🎓 الاسم
+            phone: row[3] || "",        // 📞 الهاتف
+            startTime: row[4] || "",    // ⏰ وقت البدء
+            timeTaken: row[5] || "",    // ⏳ المدة
+            score: row[6] || ""         // 🎯 النتيجة
           };
 
           store.add(newRecord);
@@ -767,10 +766,7 @@ function syncWithGoogleSheets() {
 
         tx.oncomplete = () => {
           console.log("✅ تمت مزامنة البيانات");
-
           localStorage.setItem("lastSyncedIndex", lastIndex + newData.length);
-
-          // تحديث الواجهة أو استدعاء الوظائف المناسبة
           loadLatestData?.();
         };
       })
@@ -779,7 +775,6 @@ function syncWithGoogleSheets() {
       });
   };
 }
-
 
 
 function openDB() {
@@ -1059,15 +1054,14 @@ function loadPhonesFromDB() {
   const store = tx.objectStore("trainees");
 
   const headers = [
-    "📅 تاريخ الاختبار",
-    "🧑‍🎓 الاسم",
-    "📞 رقم الهاتف",
-    "⏰ وقت البدء",
-    "⏳ المدة المستغرقة",
-    "🎯 النتيجة",
-    "📊 النسبة المئوية",
-    "🏅 التقدير"
-  ];
+  "📅 التاريخ",
+  "📘 اسم الدورة",
+  "🧑‍🎓 الاسم",
+  "📞 الهاتف",
+  "⏰ وقت البدء",
+  "⏳ المدة",
+  "🎯 النتيجة"
+];
 
   const rows = [headers];
   const allData = [];
@@ -1502,7 +1496,7 @@ function searchTrainees() {
         if (!query || combined.includes(query)) {
           count++;
 
-          const testName = d.testName || "تقييم الأثر لمشروعات الصرف المغطى ";
+const testName = d.course || "اسم الدورة غير معروف";
 
           const dateKey = d.datetime
             ? new Date(d.datetime).toLocaleDateString("ar-EG")
@@ -1548,43 +1542,55 @@ if (!isNaN(score) && !isNaN(total) && total !== 0) {
 
 
           const row = document.createElement("tr");
-          const fields = ["datetime", "testName", "name", "phone", "startTime", "timeTaken", "score"];
+const fields = ["datetime", "course", "name", "phone", "startTime", "timeTaken", "score"];
 
-          fields.forEach(field => {
-            const cell = document.createElement("td");
-            if (field === "datetime") {
-              cell.textContent = d[field]
-                ? new Date(d[field]).toLocaleDateString("en-GB", {
-                    year: "numeric", month: "long", day: "numeric"
-                  })
-                : "";
-            } else {
-              cell.textContent = field === "testName" ? testName : d[field] || "";
-            }
+        fields.forEach(field => {
+  const cell = document.createElement("td");
 
-            cell.contentEditable = "true";
-            cell.dataset.key = key;
-            cell.dataset.field = field;
-            cell.addEventListener("blur", function () {
-              const key = Number(this.dataset.key);
-              const field = this.dataset.field;
-              const newValue = this.textContent.trim();
-              const txUpdate = db.transaction("trainees", "readwrite");
-              const storeUpdate = txUpdate.objectStore("trainees");
-              const getRequest = storeUpdate.get(key);
-              getRequest.onsuccess = function () {
-                const data = getRequest.result;
-                if (data && field in data) {
-                  data[field] = newValue;
-                  const updateRequest = storeUpdate.put(data);
-                  updateRequest.onsuccess = () => console.log(`✅ تم التحديث للمفتاح ${key}`);
-                  updateRequest.onerror = (event) => console.error("❌ تحديث فشل:", event.target.error);
-                }
-              };
-            });
+  if (field === "datetime") {
+    cell.textContent = d[field]
+      ? new Date(d[field]).toLocaleDateString("en-GB", {
+          year: "numeric", month: "long", day: "numeric"
+        })
+      : "";
+  } else if (field === "course") {
+    cell.innerHTML = `<strong style="font-size: 18px;">${d.course || "اسم الدورة غير معروف"}</strong>`;
+  } else if (field === "score") {
+    let scoreText = d.score || "";
+    if (typeof scoreText === "string" && scoreText.includes("/")) {
+      cell.innerHTML = `<strong style="font-size: 18px; color: #003366;">🎯 ${scoreText}</strong>`;
+    } else {
+      cell.textContent = scoreText;
+    }
+  } else {
+    cell.textContent = d[field] || "";
+  }
 
-            row.appendChild(cell);
-          });
+  cell.contentEditable = "true";
+  cell.dataset.key = key;
+  cell.dataset.field = field;
+
+  cell.addEventListener("blur", function () {
+    const key = Number(this.dataset.key);
+    const field = this.dataset.field;
+    const newValue = this.textContent.trim();
+    const txUpdate = db.transaction("trainees", "readwrite");
+    const storeUpdate = txUpdate.objectStore("trainees");
+    const getRequest = storeUpdate.get(key);
+
+    getRequest.onsuccess = function () {
+      const data = getRequest.result;
+      if (data && field in data) {
+        data[field] = newValue;
+        const updateRequest = storeUpdate.put(data);
+        updateRequest.onsuccess = () => console.log(`✅ تم التحديث للمفتاح ${key}`);
+        updateRequest.onerror = (event) => console.error("❌ تحديث فشل:", event.target.error);
+      }
+    };
+  });
+
+  row.appendChild(cell);
+});
 
           const deleteCell = document.createElement("td");
           const deleteBtn = document.createElement("button");

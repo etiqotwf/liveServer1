@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reading Comprehension Quiz</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            background: #1e1e2e;
+            color: white;
+        }
+        .container {
+            width: 95%;
+            max-width: 1200px;
+            background: #282a36;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.5);
+            text-align: left;
+        }
+        .question {
+            font-weight: bold;
+            font-size: 30px;
+            margin-bottom: 20px;
+        }
+        .options label {
+            display: block;
+            padding: 10px;
+        }
+        .btn {
+            background: #ff5555;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            cursor: pointer;
+            border-radius: 5px;
+            margin-top: 20px;
+            font-size: 18px;
+            display: block;
+        }
+        .btn:hover {
+            background: #ff79c6;
+        }
+
+        .result-screen {
+    display: none;
+    background: #44475a;
+    padding: 30px;
+    border-radius: 10px;
+    text-align: center;
+    width: 100%;
+  }
+
+  #resultScore {
+    font-size: 36px;
+    font-weight: bold;
+    color: #ffffff;
+    margin-top: 20px;
+  }
+
+  .result-screen p {
+    font-size: 20px;
+    font-weight: bold;
+    color: #f8f8f2;
+  }
+
+        #timer {
+            font-size: 22px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+      
+        .author {
+    font-size: 12px;
+    color: #bbb;
+    text-align: center;
+    position: absolute;
+    top: 10px;
+    width: 100%;
+    font-weight: bold;
+}
+
+
+
+label {
+  font-size: 22px; /* حجم نص الاختيار */
+  padding: 10px;
+  display: block;
+}
+
+input[type="radio"] {
+  transform: scale(1.5); /* تكبير حجم الدائرة */
+  margin-right: 10px;
+}
+
+
+  #passage {
+    font-size: 16px;     /* حجم الخط */
+    font-weight: bold;   /* خط عريض */
+  }
+
+
+
+  
+
+    </style>
+</head>
+<body>
+    <div class="container" id="startScreen">
+        <h1>📘 Tanta Drainage Training Center
+
+</h1>
+        <h2>Computer  Test</h2>
+        <p>Enter Course Name: <input type="text" id="courseName"></p>
+        <p>Enter Your Name: <input type="text" id="traineeName"></p>
+        <p>Enter Your Phone Number: <input type="text" id="traineePhone"></p>
+        <p>Enter Password: <input type="password" id="password"></p>
+        <button class="btn" onclick="startQuiz()">Start Quiz</button>
+    </div>
+
+    <div class="container" id="quizContainer" style="display: none;">
+        <h2 id="quizTitle">Reading Comprehension Quiz</h2>
+        <p class="author">Created by: Ahmed Amer</p>
+        <p>Date: <span id="date"></span></p>
+        <p id="timer">Time Remaining: 30:00</p>
+        <div id="passage">
+           <h3>Read the following passage carefully and answer the following questions:</h3>
+            <p>
+                <strong>The Evolution of Information Technology in Computers
+
+                </strong><br>
+                Young people leave their parents' homes at different ages in different parts of the world. In the United States, a lot of college students do not live at home. They often choose to go to college in different cities – away from their parents. At college, many live in university housing. After college, most people prefer to live in their own homes. They often live alone, but some people rent apartments with others. These people are called roommates.
+                <p> Information Technology (IT) has transformed the world of computers over the years. In the early days, computers were large and slow, used mainly for calculations. Over time, technology advanced, making computers smaller, faster, and more powerful. The rise of the internet changed how people communicate, work, and store data. Today, IT plays a key role in every field, from education to business. Cloud computing, artificial intelligence, and cybersecurity are shaping the future of IT, making computers smarter and more efficient than ever.
+                    As technology continues to evolve, IT is becoming more integrated into daily life. Mobile devices, smart homes, and automation have revolutionized the way people interact with computers. Businesses rely on IT for data management, cybersecurity, and digital marketing. With the development of machine learning and blockchain technology, the IT industry is constantly growing, creating new opportunities and challenges. The future of IT promises even more advancements, making the digital world faster, safer, and more innovative.
+                    
+                    </p>
+                        </div>
+        <div id="quiz"></div>
+    </div>
+    
+    <div class="result-screen" id="resultScreen" style="display: none;">
+        <h2>Test Result</h2>
+        <p class="author">Created by: Ahmed Amer</p>
+        <p><strong>Course Name:</strong> <span id="resultCourse"></span></p>
+        <p><strong>Name:</strong> <span id="resultName"></span></p>
+        <p><strong>Phone Number:</strong> <span id="resultPhone"></span></p>
+        <p><strong>Test Date:</strong> <span id="resultDate"></span></p>
+        <p><strong>Start Time:</strong> <span id="resultStartTime"></span></p>
+        <p><strong>Time Taken:</strong> <span id="resultTime"></span></p>
+        <p><strong>Score:</strong> <span id="resultScore"></span></p>
+    </div>
+
+
+ 
+
+ 
+
+  </div>
+<div style="
+  position: fixed;
+  top: 40px;
+  right: 40px;
+  font-size: 50px;
+  font-weight: bold;
+  color: #ffd700;
+">
+  ✏️ 
+</div>
+
+
+<script>
+    // عند الضغط على أي مكان في الصفحة، أدخل وضع ملء الشاشة
+    document.addEventListener("click", () => {
+      const elem = document.documentElement; // أو document.getElementById("myForm")
+      if (document.fullscreenElement) return; // لا تفعل شيء إذا كنا بالفعل في ملء الشاشة
+
+      if (elem.requestFullscreen) {
+        elem.requestFullscreen();
+      } else if (elem.webkitRequestFullscreen) { /* Safari */
+        elem.webkitRequestFullscreen();
+      } else if (elem.msRequestFullscreen) { /* IE11 */
+        elem.msRequestFullscreen();
+      }
+    });
+  </script>
+
+    
+    <script>
+        document.getElementById("date").innerText = new Date().toLocaleDateString("en-US");
+    
+    const trueFalseQuestions = [
+    { q: "Quantum computing is expected to replace classical computers in all fields within the next decade.", a: "false" },
+    { q: "Machine learning and artificial intelligence rely heavily on big data for improving accuracy.", a: "true" },
+    { q: "Blockchain technology is primarily used for securing online financial transactions.", a: "true" },
+    { q: "Cybersecurity threats are decreasing due to advancements in encryption and firewalls.", a: "false" },
+    { q: "Cloud computing eliminates the need for physical data centers in large enterprises.", a: "false" },
+    { q: "Edge computing improves processing speed by reducing dependence on centralized cloud servers.", a: "true" }
+];
+
+    
+const questions = [
+    { q: "Which function in Excel is used to find the highest value in a range?", a: "c", options: ["SUM", "AVERAGE", "MAX", "COUNT"] },
+    { q: "Which keyboard shortcut is used to paste content in Microsoft Word?", a: "b", options: ["Ctrl + X", "Ctrl + V", "Ctrl + P", "Ctrl + C"] },
+    { q: "Which file extension is associated with Microsoft PowerPoint presentations?", a: "a", options: [".pptx", ".xlsx", ".docx", ".mdb"] },
+    { q: "Which function in Excel is used to search for a value in the first column and return a corresponding value?", a: "c", options: ["INDEX", "MATCH", "VLOOKUP", "FIND"] },
+    { q: "Which feature in Excel is used to apply automatic formatting based on cell values?", a: "b", options: ["Data Validation", "Conditional Formatting", "Goal Seek", "Scenario Manager"] },
+    { q: "In Windows, which key combination is used to open Task Manager?", a: "c", options: ["Ctrl + Shift + Esc", "Alt + Tab", "Ctrl + Alt + Delete", "Win + R"] },
+    { q: "Which Excel feature allows you to apply different formatting based on cell values?", a: "d", options: ["Data Validation", "Sorting", "Pivot Table", "Conditional Formatting"] },
+    { q: "Which shortcut key is used to undo an action in Microsoft applications?", a: "a", options: ["Ctrl + Z", "Ctrl + Y", "Ctrl + U", "Ctrl + A"] },
+    { q: "Which software is primarily used for managing databases?", a: "b", options: ["Excel", "Access", "PowerPoint", "OneNote"] },
+    { q: "Which chart type is best for showing trends over time in Excel?", a: "a", options: ["Line Chart", "Pie Chart", "Bar Chart", "Scatter Plot"] },
+    { q: "Which command is used to insert a new slide in PowerPoint?", a: "d", options: ["Ctrl + S", "Ctrl + X", "Ctrl + M", "Ctrl + P"] },
+    { q: "Which Windows feature allows you to restore the system to a previous state?", a: "c", options: ["Task Scheduler", "File Explorer", "System Restore", "Device Manager"] },
+    { q: "In Excel, which symbol is used for absolute cell referencing?", a: "b", options: ["&", "$", "#", "*"] },
+    { q: "Which option in Word is used to check spelling and grammar?", a: "d", options: ["Page Layout", "Track Changes", "Review", "Spelling & Grammar"] },
+    { q: "Which keyboard shortcut is used to save a document?", a: "a", options: ["Ctrl + S", "Ctrl + N", "Ctrl + O", "Ctrl + Q"] },
+    { q: "Which feature in PowerPoint allows animations between slides?", a: "b", options: ["Animations", "Transitions", "Slide Show", "Design"] },
+    { q: "What is the default file format for Excel workbooks?", a: "c", options: [".pptx", ".docx", ".xlsx", ".pdf"] },
+    { q: "Which feature in Word is used to merge multiple letters with a data source?", a: "d", options: ["Page Layout", "Table of Contents", "References", "Mail Merge"] },
+    { q: "Which function in Excel is used to count non-empty cells?", a: "a", options: ["COUNTA", "COUNTBLANK", "COUNTIF", "COUNT"] },
+    { q: "Which shortcut is used to bold text in Word?", a: "b", options: ["Ctrl + I", "Ctrl + B", "Ctrl + U", "Ctrl + E"] },
+    { q: "Which function in Excel is used to count only numeric values in a range?", a: "c", options: ["COUNTA", "COUNTBLANK", "COUNT", "SUM"] },
+    { q: "Which keyboard shortcut is used to fill cells automatically in Excel?", a: "a", options: ["Ctrl + D", "Ctrl + R", "Ctrl + Shift + L", "Ctrl + E"] },
+    { q: "Which Microsoft Office application is used for email management?", a: "c", options: ["Word", "Excel", "Outlook", "Access"] },
+    { q: "Which Windows key combination is used to minimize all open windows?", a: "d", options: ["Win + D", "Alt + Tab", "Ctrl + M", "Win + M"] },
+    { q: "Which function in Excel is used to join text from multiple cells?", a: "b", options: ["SPLIT", "CONCATENATE", "JOIN", "MERGE"] },
+    { q: "Which option in Word helps to create a table of contents?", a: "c", options: ["Track Changes", "Spelling & Grammar", "References", "Mail Merge"] },
+    { q: "Which feature in PowerPoint allows you to rehearse your presentation timing?", a: "a", options: ["Rehearse Timings", "Slide Master", "Animations", "Record Slide Show"] },
+    { q: "Which Windows feature is used to uninstall programs?", a: "b", options: ["Device Manager", "Control Panel", "Task Manager", "Command Prompt"] },
+    { q: "Which function in Excel is used to search for a value in a table?", a: "d", options: ["IF", "COUNTIF", "INDEX", "VLOOKUP"] },
+    { q: "Which option in Word is used to track changes made in a document?", a: "a", options: ["Track Changes", "Page Layout", "Table of Contents", "Review"] },
+    { q: "Which shortcut key is used to insert a new worksheet in Excel?", a: "c", options: ["Ctrl + S", "Ctrl + X", "Shift + F11", "Ctrl + M"] },
+    { q: "Which function is used to extract text from the right side of a cell in Excel?", a: "b", options: ["LEFT", "RIGHT", "MID", "FIND"] },
+    { q: "Which feature in Excel allows you to freeze specific rows and columns?", a: "b", options: ["Consolidate", "Freeze Panes", "Split", "Protect Sheet"] },
+    { q: "Which option in PowerPoint is used to add speaker notes?", a: "b", options: ["Slide Sorter", "Notes Pane", "Master Slide", "Outline View"] },
+    { q: "Which Windows tool is used to check disk errors?", a: "d", options: ["Device Manager", "Disk Cleanup", "Task Scheduler", "Check Disk"] },
+    { q: "Which Excel function is used to return the current date and time?", a: "a", options: ["NOW()", "TODAY()", "DATE()", "TIME()"] },
+    { q: "Which feature in Word is used to split a document into sections?", a: "c", options: ["Columns", "Styles", "Page Breaks", "Footnotes"] },
+    { q: "Which keyboard shortcut is used to insert a hyperlink in Office applications?", a: "d", options: ["Ctrl + S", "Ctrl + P", "Ctrl + K", "Ctrl + H"] },
+    { q: "Which function in Excel is used to calculate the average of a range?", a: "b", options: ["SUM", "AVERAGE", "COUNT", "PRODUCT"] },
+    { q: "Which Windows command is used to view the IP address of a computer?", a: "a", options: ["ipconfig", "ping", "netstat", "tracert"] },
+    { q: "Which Excel function is used to extract a portion of text from a cell?", a: "c", options: ["LEFT", "RIGHT", "MID", "EXTRACT"] },
+    { q: "Which feature in Excel is used to apply automatic formatting based on cell values?", a: "b", options: ["Data Validation", "Conditional Formatting", "Goal Seek", "Scenario Manager"] },
+    { q: "Which feature in Word allows automatic numbering of pages?", a: "b", options: ["Headers", "Page Numbers", "Footnotes", "Track Changes"] },
+    { q: "Which PowerPoint feature allows you to change the appearance of all slides at once?", a: "d", options: ["Themes", "Transitions", "Slide Show", "Slide Master"] }
+];
+
+
+
+
+    
+        let currentTFQuestion = 0;
+        let tfCorrectAnswers = 0;
+        let currentQuestion = 0;
+        let correctAnswers = 0;
+        let timeLeft = 1800;
+        let timerInterval;
+        let startTime;
+    
+        function startQuiz() {
+    let name = document.getElementById("traineeName").value.trim();
+    let phone = document.getElementById("traineePhone").value.trim();
+    let password = document.getElementById("password").value;
+
+    if (!name) {
+        alert("❗ برجاء إدخال الاسم.");
+        return;
+    }
+
+    if (!phone) {
+        alert("❗ برجاء إدخال رقم التليفون.");
+        return;
+    }
+
+    if (password !== "1234") {
+        alert("❌ كلمة المرور غير صحيحة! الرجاء المحاولة مرة أخرى.");
+        return;
+    }
+
+    document.getElementById("startScreen").style.display = "none";
+    document.getElementById("quizContainer").style.display = "block";
+    startTime = new Date();
+    startTimer();
+    loadTFQuestion();
+
+    // تشغيل وضع ملء الشاشة
+    let elem = document.documentElement;
+    if (elem.requestFullscreen) {
+        elem.requestFullscreen();
+    } else if (elem.mozRequestFullScreen) {
+        elem.mozRequestFullScreen();
+    } else if (elem.webkitRequestFullscreen) {
+        elem.webkitRequestFullscreen();
+    } else if (elem.msRequestFullscreen) {
+        elem.msRequestFullscreen();
+    }
+}
+
+
+    
+        function startTimer() {
+            timerInterval = setInterval(() => {
+                let minutes = Math.floor(timeLeft / 60);
+                let seconds = timeLeft % 60;
+                document.getElementById("timer").innerText = `Time Remaining: ${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+                if (timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    showResult();
+                }
+                timeLeft--;
+            }, 1000);
+        }
+    
+        function loadTFQuestion() {
+            let quizDiv = document.getElementById("quiz");
+            if (currentTFQuestion < trueFalseQuestions.length) {
+                let q = trueFalseQuestions[currentTFQuestion];
+                quizDiv.innerHTML = `<p class='question'>${q.q}</p>` +
+                    `<label><input type='radio' name='answer' value='true'> True</label>` +
+                    `<label><input type='radio' name='answer' value='false'> False</label>` +
+                    `<button class='btn' onclick='nextTFQuestion()'>Next</button>`;
+            } else {
+                document.getElementById("passage").style.display = "none";
+                document.getElementById("quizTitle").innerText = "Choose the correct answer from a, b, c or d: (44 marks)";
+                loadQuestion();
+            }
+        }
+    
+        function nextTFQuestion() {
+            let selectedAnswer = document.querySelector("input[name='answer']:checked");
+            if (!selectedAnswer) return;
+            if (selectedAnswer.value === trueFalseQuestions[currentTFQuestion].a) {
+                tfCorrectAnswers++;
+            }
+            currentTFQuestion++;
+            loadTFQuestion();
+        }
+    
+        function loadQuestion() {
+            let quizDiv = document.getElementById("quiz");
+            let q = questions[currentQuestion];
+            quizDiv.innerHTML = `<p class='question'>${q.q}</p>` +
+                q.options.map((option, index) => `<label><input type='radio' name='answer' value='${String.fromCharCode(97 + index)}'> ${option}</label>`).join('') +
+                `<button class='btn' onclick='nextQuestion()'>${currentQuestion === questions.length - 1 ? "Finish" : "Next"}</button>`;
+        }
+    
+        function nextQuestion() {
+            let selectedAnswer = document.querySelector("input[name='answer']:checked");
+            if (!selectedAnswer) return;
+            if (selectedAnswer.value === questions[currentQuestion].a) {
+                correctAnswers++;
+            }
+            if (currentQuestion < questions.length - 1) {
+                currentQuestion++;
+                loadQuestion();
+            } else {
+                showResult();
+            }
+        }
+    
+let serverUrl = ""; // سيتم تحديثه تلقائيًا عند تحميل الصفحة
+
+// دالة لجلب رابط السيرفر المخزن في GitHub
+function fetchServerUrl() {
+fetch("https://raw.githubusercontent.com/etiqotwf/liveServer1/main/serverUrl.json")
+        .then(response => response.json())
+        .then(data => {
+            if (data.serverUrl) {
+                serverUrl = data.serverUrl;
+                console.log("✅ رابط السيرفر المحدث من GitHub:", serverUrl);
+            } else {
+                console.error("❌ لم يتم العثور على رابط السيرفر في المستودع.");
+                retryFetchServerUrl();
+            }
+        })
+        .catch(error => {
+            console.error("❌ خطأ في جلب رابط السيرفر من GitHub:", error);
+            retryFetchServerUrl();
+        });
+}
+
+// دالة لإعادة المحاولة عند الفشل
+function retryFetchServerUrl() {
+    if (retryCount < MAX_RETRIES) {
+        retryCount++;
+        console.log(`🔄 إعادة المحاولة (${retryCount}/${MAX_RETRIES}) بعد 3 ثوانٍ...`);
+        setTimeout(fetchServerUrl, 3000);
+    } else {
+        console.error("⛔ تم الوصول إلى الحد الأقصى من المحاولات، تعذر جلب رابط السيرفر.");
+    }
+}
+
+// تحميل رابط السيرفر عند فتح الصفحة
+fetchServerUrl();
+
+function showResult() {
+    clearInterval(timerInterval);
+
+    let endTime = new Date();
+    let timeTaken = Math.floor((endTime - startTime) / 1000);
+    let minutesTaken = Math.floor(timeTaken / 60);
+    let secondsTaken = timeTaken % 60;
+
+    let name = document.getElementById("traineeName").value || "Unknown";
+    let phone = document.getElementById("traineePhone").value || "Unknown";
+    let date = new Date().toLocaleDateString("en-US");
+    let course = document.getElementById("courseName").value || "Unknown";
+
+    let totalQuestions = trueFalseQuestions.length + questions.length;
+    let totalCorrectAnswers = tfCorrectAnswers + correctAnswers;
+
+    let resultData = {
+        name: name,
+        phone: phone,
+        date: date,
+        course: course,
+        startTime: startTime.toLocaleString("en-GB", {
+            timeZone: "Africa/Cairo",
+            year: "numeric",
+            month: "long",
+            day: "numeric",
+            hour: "numeric",
+            minute: "numeric",
+            second: "numeric",
+            hour12: true
+        }),
+        timeTaken: `${minutesTaken} min ${secondsTaken} sec`,
+        score: `${totalCorrectAnswers} / ${totalQuestions}`
+    };
+
+    // إرسال البيانات إلى السيرفر إذا تم تحميل الرابط
+    if (!serverUrl) {
+        console.log("⏳ انتظار تحميل رابط السيرفر...");
+        fetchServerUrl().then(() => {
+            if (serverUrl) {
+                sendDataToServer(resultData);
+            } else {
+                console.error("❌ لم يتم تحميل رابط السيرفر بعد.");
+                alert("⚠️ تعذر إرسال البيانات! تأكد من اتصال الإنترنت وأعد المحاولة.");
+            }
+        });
+    } else {
+        sendDataToServer(resultData);
+    }
+
+    // إرسال البيانات إلى Google Sheets
+    sendDataToGoogleSheet(resultData);
+
+    // تحديث واجهة المستخدم
+    document.getElementById("resultCourse").innerText = course;
+    document.getElementById("resultName").innerText = name;
+    document.getElementById("resultPhone").innerText = phone;
+    document.getElementById("resultDate").innerText = date;
+    document.getElementById("resultStartTime").innerText = startTime.toLocaleTimeString();
+    document.getElementById("resultTime").innerText = `${minutesTaken} min ${secondsTaken} sec`;
+    document.getElementById("resultScore").innerText = `${totalCorrectAnswers} / ${totalQuestions}`;
+
+    document.getElementById("quizContainer").style.display = "none";
+    document.getElementById("resultScreen").style.display = "block";
+}
+
+// إرسال البيانات إلى السيرفر الأساسي
+function sendDataToServer(resultData) {
+    fetch(`${serverUrl}/submit`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(resultData)
+    })
+    .then(response => response.json())
+    .then(data => console.log("✅ تم الإرسال إلى السيرفر بنجاح:", data))
+    .catch(error => console.error("❌ خطأ أثناء الإرسال إلى السيرفر:", error));
+}
+
+
+
+
+
+function sendDataToGoogleSheet(resultData) {
+    const formData = new URLSearchParams();
+    formData.append("course", resultData.course);
+    formData.append("name", resultData.name);
+    formData.append("phone", resultData.phone);
+    formData.append("date", resultData.date);
+    formData.append("startTime", resultData.startTime);
+    formData.append("timeTaken", resultData.timeTaken);
+    formData.append("score", resultData.score);
+    formData.append("course", resultData.course);
+
+
+    fetch("https://script.google.com/macros/s/AKfycbzdOkIPZ_VROXU7QmlrNSxbtVSvBoA1yT3im1xFCxlULAYg7j0zbNDx9rXBAXtVZkOuOg/exec", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+        },
+        body: formData.toString(),
+    })
+    .then(response => response.text())
+    .then(responseText => {
+        console.log("✅ تم الإرسال إلى Google Sheet:", responseText);
+    })
+    .catch(error => {
+        console.error("❌ خطأ في الإرسال إلى Google Sheet:", error);
+    });
+}
+
+
+
+
+    </script>
+    </body>
+</html>

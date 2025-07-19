@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reading Comprehension Quiz</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            background: #1e1e2e;
+            color: white;
+        }
+        .container {
+            width: 95%;
+            max-width: 1200px;
+            background: #282a36;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.5);
+            text-align: left;
+        }
+        .question {
+            font-weight: bold;
+            font-size: 30px;
+            margin-bottom: 20px;
+        }
+        .options label {
+            display: block;
+            padding: 10px;
+        }
+        .btn {
+            background: #ff5555;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            cursor: pointer;
+            border-radius: 5px;
+            margin-top: 20px;
+            font-size: 18px;
+            display: block;
+        }
+        .btn:hover {
+            background: #ff79c6;
+        }
+
+        .result-screen {
+    display: none;
+    background: #44475a;
+    padding: 30px;
+    border-radius: 10px;
+    text-align: center;
+    width: 100%;
+  }
+
+  #resultScore {
+    font-size: 36px;
+    font-weight: bold;
+    color: #ffffff;
+    margin-top: 20px;
+  }
+
+  .result-screen p {
+    font-size: 20px;
+    font-weight: bold;
+    color: #f8f8f2;
+  }
+
+        #timer {
+            font-size: 22px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+      
+        .author {
+    font-size: 12px;
+    color: #bbb;
+    text-align: center;
+    position: absolute;
+    top: 10px;
+    width: 100%;
+    font-weight: bold;
+}
+
+
+
+label {
+  font-size: 22px; /* حجم نص الاختيار */
+  padding: 10px;
+  display: block;
+}
+
+input[type="radio"] {
+  transform: scale(1.5); /* تكبير حجم الدائرة */
+  margin-right: 10px;
+}
+
+
+  #passage {
+    font-size: 16px;     /* حجم الخط */
+    font-weight: bold;   /* خط عريض */
+  }
+
+
+
+  
+
+    </style>
+</head>
+<body>
+    <div class="container" id="startScreen">
+        <h1>📘 Tanta Drainage Training Center
+
+</h1>
+        <h2>Computer  Test</h2>
+        <p>Enter Course Name: <input type="text" id="courseName"></p>
+        <p>Enter Your Name: <input type="text" id="traineeName"></p>
+        <p>Enter Your Phone Number: <input type="text" id="traineePhone"></p>
+        <p>Enter Password: <input type="password" id="password"></p>
+        <button class="btn" onclick="startQuiz()">Start Quiz</button>
+    </div>
+
+    <div class="container" id="quizContainer" style="display: none;">
+        <h2 id="quizTitle">Reading Comprehension Quiz</h2>
+        <p class="author">Created by: Ahmed Amer</p>
+        <p>Date: <span id="date"></span></p>
+        <p id="timer">Time Remaining: 30:00</p>
+        <div id="passage">
+            <h3>Read the following passage carefully and answer the following questions:</h3>
+<p>
+    <strong>The Development of the Windows Operating System</strong><br>
+    The Windows operating system, developed by Microsoft, has played a major role in the history of personal computing. First introduced in 1985, Windows provided a graphical user interface (GUI) on top of MS-DOS, making it easier for users to interact with computers using windows, icons, and menus. Over time, versions like Windows 95, XP, 7, 10, and 11 introduced advanced features, better security, and improved user experiences.
+
+    Windows is widely used in homes, businesses, and government systems due to its compatibility with a wide range of software and hardware. Features like the Start menu, taskbar, file explorer, and built-in apps such as Paint and Notepad make Windows easy to use. Windows also supports multitasking, allowing users to run multiple applications at the same time.
+
+    Recent versions of Windows have focused on cloud integration, security updates, and accessibility. Windows Defender helps protect against malware, and features like BitLocker secure user data. As Windows continues to evolve, it remains one of the most widely used operating systems worldwide, helping people work, learn, and connect more efficiently.
+</p>
+
+                        </div>
+        <div id="quiz"></div>
+    </div>
+    
+    <div class="result-screen" id="resultScreen" style="display: none;">
+        <h2>Test Result</h2>
+        <p class="author">Created by: Ahmed Amer</p>
+        <p><strong>Course Name:</strong> <span id="resultCourse"></span></p>
+        <p><strong>Name:</strong> <span id="resultName"></span></p>
+        <p><strong>Phone Number:</strong> <span id="resultPhone"></span></p>
+        <p><strong>Test Date:</strong> <span id="resultDate"></span></p>
+        <p><strong>Start Time:</strong> <span id="resultStartTime"></span></p>
+        <p><strong>Time Taken:</strong> <span id="resultTime"></span></p>
+        <p><strong>Score:</strong> <span id="resultScore"></span></p>
+    </div>
+
+
+ 
+
+ 
+
+  </div>
+<div style="
+  position: fixed;
+  top: 40px;
+  right: 40px;
+  font-size: 50px;
+  font-weight: bold;
+  color: #ffd700;
+">
+  ✏️ 
+</div>
+
+
+<script>
+    // عند الضغط على أي مكان في الصفحة، أدخل وضع ملء الشاشة
+    document.addEventListener("click", () => {
+      const elem = document.documentElement; // أو document.getElementById("myForm")
+      if (document.fullscreenElement) return; // لا تفعل شيء إذا كنا بالفعل في ملء الشاشة
+
+      if (elem.requestFullscreen) {
+        elem.requestFullscreen();
+      } else if (elem.webkitRequestFullscreen) { /* Safari */
+        elem.webkitRequestFullscreen();
+      } else if (elem.msRequestFullscreen) { /* IE11 */
+        elem.msRequestFullscreen();
+      }
+    });
+  </script>
+
+    
+    <script>
+        document.getElementById("date").innerText = new Date().toLocaleDateString("en-US");
+    
+  const trueFalseQuestions = [
+  { q: "Windows 10 includes a built-in antivirus program called Windows Defender.", a: "true" },
+  { q: "The Windows operating system was developed by Apple Inc.", a: "false" },
+  { q: "You can use the Ctrl + Alt + Delete combination to open the Task Manager directly.", a: "false" },
+  { q: "The Recycle Bin stores files that have been permanently deleted.", a: "false" },
+  { q: "Windows allows users to create multiple user accounts on the same device.", a: "true" },
+  { q: "BitLocker is a feature in Windows used to encrypt hard drives.", a: "true" },
+  { q: "Windows 11 was released before Windows 10.", a: "false" },
+  { q: "You can use the Windows key + E shortcut to open File Explorer.", a: "true" },
+  { q: "Windows allows installing third-party software from the Microsoft Store only.", a: "false" },
+  { q: "The 'Snipping Tool' is used for taking screenshots in Windows.", a: "true" },
+   { q: "Windows allows users to customize the desktop background and theme.", a: "true" },
+  { q: "Task Manager in Windows shows CPU and memory usage in real time.", a: "true" },
+  { q: "The Command Prompt is used only for graphical applications.", a: "false" },
+  { q: "Safe Mode loads Windows with only essential drivers and services.", a: "true" },
+  { q: "You can change your screen resolution through File Explorer.", a: "false" },
+  { q: "Windows Firewall helps protect your device from unauthorized access.", a: "true" },
+  { q: "Notepad is a basic text editor included in all versions of Windows.", a: "true" },
+  { q: "The Control Panel is completely removed in Windows 11.", a: "false" },
+  { q: "The Windows key + D shortcut shows the desktop.", a: "true" },
+  { q: "The registry editor in Windows is used to manage user files.", a: "false" }
+];
+
+    
+const questions = [
+  { q: "Which key opens the Start menu in Windows?", a: "a", options: ["Windows key", "Ctrl", "Shift", "Alt"] },
+  { q: "What is the file manager called in Windows?", a: "b", options: ["My PC", "File Explorer", "Documents", "Taskbar"] },
+  { q: "Which shortcut locks the screen?", a: "c", options: ["Ctrl + S", "Alt + L", "Windows + L", "Shift + L"] },
+  { q: "Which tool is used to uninstall software?", a: "d", options: ["Task Manager", "File Explorer", "Command Prompt", "Control Panel"] },
+  { q: "What does the Task Manager do?", a: "a", options: ["Monitors processes", "Plays music", "Stores files", "Opens internet"] },
+  { q: "Which version introduced the Start menu again after its removal?", a: "c", options: ["Windows Vista", "Windows 8", "Windows 10", "Windows 11"] },
+  { q: "Which shortcut refreshes the active window?", a: "b", options: ["Ctrl + R", "F5", "Alt + F4", "Ctrl + Shift"] },
+  { q: "What is used to store deleted files before permanent deletion?", a: "a", options: ["Recycle Bin", "Trash Can", "Junk Box", "Deleted Items"] },
+  { q: "What is the purpose of Windows Update?", a: "b", options: ["Install games", "Fix bugs and improve security", "Play music", "Defragment hard drive"] },
+  { q: "Which program is used for typing documents?", a: "c", options: ["Paint", "Excel", "WordPad", "Snipping Tool"] },
+  { q: "Which built-in tool is used to capture screen images?", a: "a", options: ["Snipping Tool", "Task Manager", "Paint", "PowerShell"] },
+  { q: "Which key combination opens Task Manager?", a: "d", options: ["Ctrl + Alt + L", "Shift + Esc", "Alt + Del", "Ctrl + Shift + Esc"] },
+  { q: "What does 'BitLocker' do in Windows?", a: "c", options: ["Defrag disk", "Clean memory", "Encrypt data", "Install apps"] },
+  { q: "What does 'Alt + Tab' do?", a: "a", options: ["Switches windows", "Closes app", "Opens Start", "Minimizes window"] },
+  { q: "What is the purpose of Windows Defender?", a: "b", options: ["Backup files", "Protect against viruses", "Open files", "Install updates"] },
+  { q: "What is the extension for executable files?", a: "d", options: [".docx", ".jpg", ".mp3", ".exe"] },
+  { q: "Which Windows version is known for the 'Aero' interface?", a: "c", options: ["Windows XP", "Windows 8", "Windows 7", "Windows 11"] },
+  { q: "Where can you manage user accounts?", a: "b", options: ["File Explorer", "Settings", "Command Prompt", "Recycle Bin"] },
+  { q: "Which tool checks for disk errors?", a: "d", options: ["Disk Manager", "File Explorer", "Device Manager", "Check Disk"] },
+  { q: "Which key combination opens 'Run'?", a: "a", options: ["Windows + R", "Ctrl + R", "Alt + R", "Shift + R"] },
+  { q: "Which tool is used for restoring system files?", a: "c", options: ["File Explorer", "BitLocker", "System Restore", "Disk Cleanup"] },
+  { q: "Which feature helps save battery by reducing background activity?", a: "b", options: ["Safe Mode", "Battery Saver", "Sleep Mode", "Task Scheduler"] },
+  { q: "Which key opens the Quick Link menu?", a: "d", options: ["Ctrl + X", "Alt + Tab", "Shift + Esc", "Windows + X"] },
+  { q: "What is Cortana in Windows?", a: "a", options: ["Digital Assistant", "Game", "Photo Editor", "Antivirus"] },
+  { q: "Which application manages partitions and disks?", a: "c", options: ["Task Manager", "File Explorer", "Disk Management", "Windows Store"] },
+  { q: "Which file contains the list of installed drivers?", a: "b", options: ["boot.ini", "Device Manager", "regedit", "services.msc"] },
+  { q: "What does 'Ctrl + C' do?", a: "a", options: ["Copy", "Paste", "Cut", "Delete"] },
+  { q: "Where can you change screen resolution?", a: "d", options: ["Start menu", "Taskbar", "Control Panel", "Display Settings"] },
+  { q: "Which option allows you to connect to Wi-Fi?", a: "b", options: ["Bluetooth", "Network Settings", "Security Settings", "VPN"] },
+  { q: "Which feature allows remote access to another PC?", a: "c", options: ["File Explorer", "Command Prompt", "Remote Desktop", "Windows Update"] }
+];
+
+
+
+
+    
+        let currentTFQuestion = 0;
+        let tfCorrectAnswers = 0;
+        let currentQuestion = 0;
+        let correctAnswers = 0;
+        let timeLeft = 1800;
+        let timerInterval;
+        let startTime;
+    
+        function startQuiz() {
+    let name = document.getElementById("traineeName").value.trim();
+    let phone = document.getElementById("traineePhone").value.trim();
+    let password = document.getElementById("password").value;
+
+    if (!name) {
+        alert("❗ برجاء إدخال الاسم.");
+        return;
+    }
+
+    if (!phone) {
+        alert("❗ برجاء إدخال رقم التليفون.");
+        return;
+    }
+
+    if (password !== "1234") {
+        alert("❌ كلمة المرور غير صحيحة! الرجاء المحاولة مرة أخرى.");
+        return;
+    }
+
+    document.getElementById("startScreen").style.display = "none";
+    document.getElementById("quizContainer").style.display = "block";
+    startTime = new Date();
+    startTimer();
+    loadTFQuestion();
+
+    // تشغيل وضع ملء الشاشة
+    let elem = document.documentElement;
+    if (elem.requestFullscreen) {
+        elem.requestFullscreen();
+    } else if (elem.mozRequestFullScreen) {
+        elem.mozRequestFullScreen();
+    } else if (elem.webkitRequestFullscreen) {
+        elem.webkitRequestFullscreen();
+    } else if (elem.msRequestFullscreen) {
+        elem.msRequestFullscreen();
+    }
+}
+
+
+    
+        function startTimer() {
+            timerInterval = setInterval(() => {
+                let minutes = Math.floor(timeLeft / 60);
+                let seconds = timeLeft % 60;
+                document.getElementById("timer").innerText = `Time Remaining: ${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+                if (timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    showResult();
+                }
+                timeLeft--;
+            }, 1000);
+        }
+    
+        function loadTFQuestion() {
+            let quizDiv = document.getElementById("quiz");
+            if (currentTFQuestion < trueFalseQuestions.length) {
+                let q = trueFalseQuestions[currentTFQuestion];
+                quizDiv.innerHTML = `<p class='question'>${q.q}</p>` +
+                    `<label><input type='radio' name='answer' value='true'> True</label>` +
+                    `<label><input type='radio' name='answer' value='false'> False</label>` +
+                    `<button class='btn' onclick='nextTFQuestion()'>Next</button>`;
+            } else {
+                document.getElementById("passage").style.display = "none";
+                document.getElementById("quizTitle").innerText = "Choose the correct answer from a, b, c or d: (44 marks)";
+                loadQuestion();
+            }
+        }
+    
+        function nextTFQuestion() {
+            let selectedAnswer = document.querySelector("input[name='answer']:checked");
+            if (!selectedAnswer) return;
+            if (selectedAnswer.value === trueFalseQuestions[currentTFQuestion].a) {
+                tfCorrectAnswers++;
+            }
+            currentTFQuestion++;
+            loadTFQuestion();
+        }
+    
+        function loadQuestion() {
+            let quizDiv = document.getElementById("quiz");
+            let q = questions[currentQuestion];
+            quizDiv.innerHTML = `<p class='question'>${q.q}</p>` +
+                q.options.map((option, index) => `<label><input type='radio' name='answer' value='${String.fromCharCode(97 + index)}'> ${option}</label>`).join('') +
+                `<button class='btn' onclick='nextQuestion()'>${currentQuestion === questions.length - 1 ? "Finish" : "Next"}</button>`;
+        }
+    
+        function nextQuestion() {
+            let selectedAnswer = document.querySelector("input[name='answer']:checked");
+            if (!selectedAnswer) return;
+            if (selectedAnswer.value === questions[currentQuestion].a) {
+                correctAnswers++;
+            }
+            if (currentQuestion < questions.length - 1) {
+                currentQuestion++;
+                loadQuestion();
+            } else {
+                showResult();
+            }
+        }
+    
+let serverUrl = ""; // سيتم تحديثه تلقائيًا عند تحميل الصفحة
+
+// دالة لجلب رابط السيرفر المخزن في GitHub
+function fetchServerUrl() {
+fetch("https://raw.githubusercontent.com/etiqotwf/liveServer1/main/serverUrl.json")
+        .then(response => response.json())
+        .then(data => {
+            if (data.serverUrl) {
+                serverUrl = data.serverUrl;
+                console.log("✅ رابط السيرفر المحدث من GitHub:", serverUrl);
+            } else {
+                console.error("❌ لم يتم العثور على رابط السيرفر في المستودع.");
+                retryFetchServerUrl();
+            }
+        })
+        .catch(error => {
+            console.error("❌ خطأ في جلب رابط السيرفر من GitHub:", error);
+            retryFetchServerUrl();
+        });
+}
+
+// دالة لإعادة المحاولة عند الفشل
+function retryFetchServerUrl() {
+    if (retryCount < MAX_RETRIES) {
+        retryCount++;
+        console.log(`🔄 إعادة المحاولة (${retryCount}/${MAX_RETRIES}) بعد 3 ثوانٍ...`);
+        setTimeout(fetchServerUrl, 3000);
+    } else {
+        console.error("⛔ تم الوصول إلى الحد الأقصى من المحاولات، تعذر جلب رابط السيرفر.");
+    }
+}
+
+// تحميل رابط السيرفر عند فتح الصفحة
+fetchServerUrl();
+
+function showResult() {
+    clearInterval(timerInterval);
+
+    let endTime = new Date();
+    let timeTaken = Math.floor((endTime - startTime) / 1000);
+    let minutesTaken = Math.floor(timeTaken / 60);
+    let secondsTaken = timeTaken % 60;
+
+    let name = document.getElementById("traineeName").value || "Unknown";
+    let phone = document.getElementById("traineePhone").value || "Unknown";
+    let date = new Date().toLocaleDateString("en-US");
+    let course = document.getElementById("courseName").value || "Unknown";
+
+    let totalQuestions = trueFalseQuestions.length + questions.length;
+    let totalCorrectAnswers = tfCorrectAnswers + correctAnswers;
+
+    let resultData = {
+        name: name,
+        phone: phone,
+        date: date,
+        course: course,
+        startTime: startTime.toLocaleString("en-GB", {
+            timeZone: "Africa/Cairo",
+            year: "numeric",
+            month: "long",
+            day: "numeric",
+            hour: "numeric",
+            minute: "numeric",
+            second: "numeric",
+            hour12: true
+        }),
+        timeTaken: `${minutesTaken} min ${secondsTaken} sec`,
+        score: `${totalCorrectAnswers} / ${totalQuestions}`
+    };
+
+    // إرسال البيانات إلى السيرفر إذا تم تحميل الرابط
+    if (!serverUrl) {
+        console.log("⏳ انتظار تحميل رابط السيرفر...");
+        fetchServerUrl().then(() => {
+            if (serverUrl) {
+                sendDataToServer(resultData);
+            } else {
+                console.error("❌ لم يتم تحميل رابط السيرفر بعد.");
+                alert("⚠️ تعذر إرسال البيانات! تأكد من اتصال الإنترنت وأعد المحاولة.");
+            }
+        });
+    } else {
+        sendDataToServer(resultData);
+    }
+
+    // إرسال البيانات إلى Google Sheets
+    sendDataToGoogleSheet(resultData);
+
+    // تحديث واجهة المستخدم
+    document.getElementById("resultCourse").innerText = course;
+    document.getElementById("resultName").innerText = name;
+    document.getElementById("resultPhone").innerText = phone;
+    document.getElementById("resultDate").innerText = date;
+    document.getElementById("resultStartTime").innerText = startTime.toLocaleTimeString();
+    document.getElementById("resultTime").innerText = `${minutesTaken} min ${secondsTaken} sec`;
+    document.getElementById("resultScore").innerText = `${totalCorrectAnswers} / ${totalQuestions}`;
+
+    document.getElementById("quizContainer").style.display = "none";
+    document.getElementById("resultScreen").style.display = "block";
+}
+
+// إرسال البيانات إلى السيرفر الأساسي
+function sendDataToServer(resultData) {
+    fetch(`${serverUrl}/submit`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(resultData)
+    })
+    .then(response => response.json())
+    .then(data => console.log("✅ تم الإرسال إلى السيرفر بنجاح:", data))
+    .catch(error => console.error("❌ خطأ أثناء الإرسال إلى السيرفر:", error));
+}
+
+
+
+
+
+function sendDataToGoogleSheet(resultData) {
+    const formData = new URLSearchParams();
+    formData.append("course", resultData.course);
+    formData.append("name", resultData.name);
+    formData.append("phone", resultData.phone);
+    formData.append("date", resultData.date);
+    formData.append("startTime", resultData.startTime);
+    formData.append("timeTaken", resultData.timeTaken);
+    formData.append("score", resultData.score);
+    formData.append("course", resultData.course);
+
+
+    fetch("https://script.google.com/macros/s/AKfycbzdOkIPZ_VROXU7QmlrNSxbtVSvBoA1yT3im1xFCxlULAYg7j0zbNDx9rXBAXtVZkOuOg/exec", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+        },
+        body: formData.toString(),
+    })
+    .then(response => response.text())
+    .then(responseText => {
+        console.log("✅ تم الإرسال إلى Google Sheet:", responseText);
+    })
+    .catch(error => {
+        console.error("❌ خطأ في الإرسال إلى Google Sheet:", error);
+    });
+}
+
+
+
+
+    </script>
+    </body>
+</html>
