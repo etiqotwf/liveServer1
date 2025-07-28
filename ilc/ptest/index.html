@@ -681,9 +681,7 @@ const questions = [
 }
 
     
-  let score = 0;
-
-function nextTFQuestion() {
+  function nextTFQuestion() {
   const selectedAnswer = document.querySelector("input[name='answer']:checked");
   if (!selectedAnswer) {
     alert("Please select an answer");
@@ -697,20 +695,21 @@ function nextTFQuestion() {
 
   if (isAnswerKeyALetter) {
     if (selectedValue === q.a.toLowerCase()) {
-      score++;
+      tfCorrectAnswers++; // ✅ صحح هنا بدل score
     }
   } else {
     const selectedOptionIndex = selectedValue.charCodeAt(0) - 97;
     const selectedOptionText = q.options[selectedOptionIndex];
 
     if (selectedOptionText.trim().toLowerCase() === q.a.trim().toLowerCase()) {
-      score++;
+      tfCorrectAnswers++; // ✅ صحح هنا بدل score
     }
   }
 
   currentTFQuestion++;
   loadTFQuestion();
 }
+
 
 
 
