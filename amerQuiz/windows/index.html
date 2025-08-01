@@ -1,0 +1,1268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reading Comprehension Quiz</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            background: #1e1e2e;
+            color: white;
+        }
+        .container {
+            width: 95%;
+            max-width: 1200px;
+            background: #282a36;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.5);
+            text-align: left;
+        }
+        .question {
+            font-weight: bold;
+            font-size: 30px;
+            margin-bottom: 20px;
+        }
+        .options label {
+            display: block;
+            padding: 10px;
+        }
+        .btn {
+            background: #ff5555;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            cursor: pointer;
+            border-radius: 5px;
+            margin-top: 20px;
+            font-size: 18px;
+            display: block;
+        }
+        .btn:hover {
+            background: #ff79c6;
+        }
+
+        .result-screen {
+    display: none;
+    background: #44475a;
+    padding: 30px;
+    border-radius: 10px;
+    text-align: center;
+    width: 100%;
+  }
+
+  #resultScore {
+    font-size: 36px;
+    font-weight: bold;
+    color: #ffffff;
+    margin-top: 20px;
+  }
+
+  .result-screen p {
+    font-size: 20px;
+    font-weight: bold;
+    color: #f8f8f2;
+  }
+
+  #timer {
+    font-size: 28px;         /* حجم أكبر */
+    color: yellow;           /* اللون أصفر */
+    font-weight: bold;       /* خط عريض */
+    padding: 20px;
+    border-radius: 10px;
+    width: fit-content;
+    margin: 20px auto;
+  }
+
+      
+      .author {
+  font-size: 24px;        /* تكبير الخط */
+  color: #ffd700;         /* لون ذهبي مميز */
+  text-align: center;
+  font-weight: bold;      /* جعله عريض */
+  margin-bottom: 15px;
+  position: relative;     /* إزالة الوضع المطلق حتى يظهر في مكانه الطبيعي */
+  top: auto;
+}
+
+
+
+
+label {
+  font-size: 22px; /* حجم نص الاختيار */
+  padding: 10px;
+  display: block;
+}
+
+input[type="radio"] {
+  transform: scale(1.5); /* تكبير حجم الدائرة */
+  margin-right: 10px;
+}
+
+
+  #passage {
+    font-size: 16px;     /* حجم الخط */
+    font-weight: bold;   /* خط عريض */
+  }
+
+
+#startScreen p {
+  font-size: 22px;
+  font-weight: bold;
+}
+#startScreen input {
+  font-size: 20px;
+  font-weight: bold;
+  padding: 8px;
+}
+
+  
+
+#startScreen h1 {
+  font-size: 40px; /* حجم الخط */
+  font-weight: bold; /* عريض */
+  color: #ffd700; /* لون مميز مثل الذهبي (اختياري) */
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+
+
+
+    </style>
+</head>
+<body>
+
+<div style="position: absolute; top: 30px; right: 100px; display: flex; align-items: center;">
+  <div style="font-size: 50px; margin-right: 14px;"></div>
+  <div id="timer" style="font-size: 20px; color: #fffb00;"></div>
+</div>
+
+
+    <div class="container" id="startScreen">
+        <h1>📘 𝒯𝒽𝑒 𝐵𝓇𝒾𝓉𝒾𝓈𝒽 𝐼𝓃𝓉𝑒𝓇𝓃𝒶𝓉𝒾𝑜𝓃𝒶𝓁 𝐿𝑒𝒶𝓇𝓃𝒾𝓃𝑔 𝒞𝑒𝓃𝓉𝑒𝓇 (𝐼𝐿𝐶)
+
+</h1>
+        <h2></h2>
+<p>Course Name: <input type="text" id="courseName" value="Widows Test" readonly style="background-color: #f0f0f0; border: none;"></p>
+        <p>Enter Your Name: <input type="text" id="traineeName"></p>
+        <p>Enter Your Phone Number: <input type="text" id="traineePhone"></p>
+        <p>Enter Password: <input type="password" id="password"></p>
+        <button class="btn" onclick="startQuiz()">Start Quiz</button>
+    </div>
+
+    <div class="container" id="quizContainer" style="display: none;">
+        <h2 id="quizTitle">Placement Test</h2>
+        <p class="author">📘 𝒯𝒽𝑒 𝐵𝓇𝒾𝓉𝒾𝓈𝒽 𝐼𝓃𝓉𝑒𝓇𝓃𝒶𝓉𝒾𝑜𝓃𝒶𝓁 𝐿𝑒𝒶𝓇𝓃𝒾𝓃𝑔 𝒞𝑒𝓃𝓉𝑒𝓇 (𝐼𝐿𝐶)</p>
+        <p>Date: <span id="date"></span></p>
+        <p id="timer"> ----- </p>
+        <div id="passage">
+  <h3>Read the following passage carefully and answer the following questions:</h3>
+  <p style="font-size: 22px;">
+    
+                        </div>
+        <div id="quiz"></div>
+    </div>
+    
+    <div class="result-screen" id="resultScreen" style="display: none;">
+        <h2>Test Result</h2>
+        <p class="author">Created by: Ahmed Amer</p>
+        <p><strong>Course Name:</strong> <span id="resultCourse"></span></p>
+        <p><strong>Name:</strong> <span id="resultName"></span></p>
+        <p><strong>Phone Number:</strong> <span id="resultPhone"></span></p>
+        <p><strong>Test Date:</strong> <span id="resultDate"></span></p>
+        <p><strong>Start Time:</strong> <span id="resultStartTime"></span></p>
+        <p><strong>Time Taken:</strong> <span id="resultTime"></span></p>
+        <p><strong>Score:</strong> <span id="resultScore"></span></p>
+    </div>
+
+
+ 
+
+ 
+
+  </div>
+<div style="
+  position: fixed;
+  top: 40px;
+  right: 40px;
+  font-size: 60px;
+  font-weight: bold;
+  color: #ffd700;
+">
+  ✏️ 
+
+  
+</div>
+
+
+<script>
+    // عند الضغط على أي مكان في الصفحة، أدخل وضع ملء الشاشة
+    document.addEventListener("click", () => {
+      const elem = document.documentElement; // أو document.getElementById("myForm")
+      if (document.fullscreenElement) return; // لا تفعل شيء إذا كنا بالفعل في ملء الشاشة
+
+      if (elem.requestFullscreen) {
+        elem.requestFullscreen();
+      } else if (elem.webkitRequestFullscreen) { /* Safari */
+        elem.webkitRequestFullscreen();
+      } else if (elem.msRequestFullscreen) { /* IE11 */
+        elem.msRequestFullscreen();
+      }
+    });
+  </script>
+
+    
+    <script>
+        document.getElementById("date").innerText = new Date().toLocaleDateString("en-US");
+    
+    const trueFalseQuestions = [
+ 
+ {
+  passage: `<div style="margin-top: 120px;">
+  Passage 1:<br>
+  <div style="font-family: Segoe UI, Arial, sans-serif; background-color: #ffffff; color: #333; padding: 25px; border: 1px solid #ddd; border-radius: 10px; font-size: 18px;">
+    <strong style="font-size: 22px; color: #0056b3;">🖥️ Action: Rename Your Computer in Windows 10</strong><br><br>
+    <em><u>Why this is important:</u></em><br>
+    Giving your computer a meaningful name helps you easily identify it on a local network, especially when sharing files or using remote desktop connections. It also improves organization in environments with multiple devices. A clear device name reduces confusion during troubleshooting or system management.<br><br>
+    <strong style="font-size: 20px;">Steps to rename your PC:</strong><br>
+    <ol style="padding-left: 25px; margin-top: 10px;">
+      <li>➡️ Click on the <strong style="color: #0078d7;">Start</strong> button.</li>
+      <li>➡️ Select <strong>Settings ⚙️</strong>.</li>
+      <li>➡️ Go to <strong>System</strong>.</li>
+      <li>➡️ From the sidebar, choose <strong>About</strong>.</li>
+      <li>➡️ Click on the <strong style="background-color:#f0f0f0; padding: 3px 8px; border-radius: 5px;">Rename this PC</strong> button.</li>
+      <li>➡️ Type the new computer name.</li>
+      <li>➡️ Click <strong>Next</strong>, then <strong>Restart now</strong> to apply changes.</li>
+    </ol>
+  </div>
+</div><br>
+<b style="font-size: 17px;">Note:</b> This process helps in identifying your device on a network more easily.`,
+  
+  q: "Which option correctly describes the full process to rename your Windows 10 computer?",
+  a: "b",
+  options: [
+    "Use the Command Prompt and type rename-pc",
+    "Go to Settings > System > About > Rename this PC",
+    "Open Task Manager and rename it from there",
+    "Reinstall Windows with a new device name"
+  ]
+},
+
+
+
+{
+  passage: `<div style="margin-top: 120px;">
+  Passage 2:<br>
+  <div style="font-family: Segoe UI, Arial, sans-serif; background-color: #ffffff; color: #333; padding: 25px; border: 1px solid #ddd; border-radius: 10px; font-size: 18px;">
+    <strong style="font-size: 22px; color: #0056b3;">🖥️ Action: Change the Screen Resolution in Windows 10</strong><br><br>
+    <em><u>Why this is important:</u></em><br>
+    Adjusting your screen resolution helps ensure that text and images appear sharp and appropriately sized. This is especially useful when connecting to different monitors or fixing blurry displays. Choosing the recommended resolution also improves performance and user comfort.<br><br>
+    <strong style="font-size: 20px;">Steps to change screen resolution:</strong><br>
+    <ol style="padding-left: 25px; margin-top: 10px;">
+      <li>➡️ Right-click on the desktop.</li>
+      <li>➡️ Select <strong>Display settings</strong>.</li>
+      <li>➡️ Scroll down to the <strong>Display resolution</strong> section.</li>
+      <li>➡️ Click the dropdown and choose your preferred resolution.</li>
+      <li>➡️ Click <strong>Keep changes</strong> when prompted.</li>
+    </ol>
+  </div>
+</div><br>
+<b style="font-size: 17px;">Note:</b> Setting the correct resolution ensures a clearer and more comfortable viewing experience.`,
+  
+  q: "Which method correctly describes how to change screen resolution in Windows 10?",
+  a: "c",
+  options: [
+    "Use File Explorer to open display settings",
+    "Change resolution from the Task Manager",
+    "Right-click desktop > Display settings > Adjust resolution",
+    "Open the Microsoft Store and search for display settings"
+  ]
+},
+
+{
+  passage: `<div style="margin-top: 40px;">
+  Passage 3:<br>
+  <div style="font-family: Segoe UI, Arial, sans-serif; background-color: #ffffff; color: #333; padding: 25px; border: 1px solid #ddd; border-radius: 10px; font-size: 18px;">
+    <strong style="font-size: 22px; color: #0056b3;">🔒 Action: Create a Password for Your Windows Account</strong><br><br>
+    <em><u>Why this is important:</u></em><br>
+    Creating a strong password helps protect your computer and personal data from unauthorized access. It enhances your device’s security especially if it's shared or used in public spaces.<br><br>
+    <strong>Steps:</strong><br>
+    <ol>
+      <li>➡️ Go to <strong>Settings</strong> > <strong>Accounts</strong>.</li>
+      <li>➡️ Click <strong>Sign-in options</strong>.</li>
+      <li>➡️ Under <strong>Password</strong>, click <strong>Add</strong>.</li>
+      <li>➡️ Enter your new password and confirm it.</li>
+      <li>➡️ Click <strong>Finish</strong>.</li>
+    </ol>
+  </div>
+</div>`,
+  q: " What is the correct way to add a password to your Windows 10 account?",
+  a: "a",
+  options: [
+    "Go to Settings > Accounts > Sign-in options > Add Password",
+    "Open File Explorer and click Add Password",
+    "Go to Control Panel > Network and Internet > Password",
+    "Use the Task Manager to add a password"
+     ]
+},
+
+{
+  passage: `<div style="margin-top: 40px;">
+  Passage 4:<br>
+  <div style="font-family: Segoe UI, Arial, sans-serif; background-color: #ffffff; color: #333; padding: 25px; border: 1px solid #ddd; border-radius: 10px; font-size: 18px;">
+    <strong style="font-size: 22px; color: #0056b3;">🧹 Action: Free Up Disk Space Using Disk Cleanup</strong><br><br>
+    <em><u>Why this is important:</u></em><br>
+    Disk Cleanup helps remove unnecessary files from your computer like temporary files, system cache, and recycle bin contents. This improves performance and frees up space.<br><br>
+    <strong>Steps:</strong><br>
+    <ol>
+      <li>➡️ Search for <strong>Disk Cleanup</strong> in the Start menu.</li>
+      <li>➡️ Select the drive you want to clean.</li>
+      <li>➡️ Check file types to delete (e.g., Temp files, Recycle Bin).</li>
+      <li>➡️ Click <strong>OK</strong> and confirm deletion.</li>
+    </ol>
+  </div>
+</div>`,
+  q: " How can you use Disk Cleanup to free up space?",
+  a: "c",
+  options: [
+    "Open the browser and delete history",
+    "Go to Task Manager and end background tasks",
+    "Search Disk Cleanup > Select drive > Choose files > OK",
+    "Restart your PC and it cleans automatically"
+     ]
+},
+
+{
+  passage: `<div style="margin-top: 40px;">
+  Passage 5:<br>
+  <div style="font-family: Segoe UI, Arial, sans-serif; background-color: #ffffff; color: #333; padding: 25px; border: 1px solid #ddd; border-radius: 10px; font-size: 18px;">
+    <strong style="font-size: 22px; color: #0056b3;">🛑 Action: Shut Down the Computer Properly</strong><br><br>
+    <em><u>Why this is important:</u></em><br>
+    Properly shutting down your computer helps prevent data loss and hardware issues. It ensures all programs close safely.<br><br>
+    <strong>Steps:</strong><br>
+    <ol>
+      <li>➡️ Click the <strong>Start</strong> menu (Windows icon).</li>
+      <li>➡️ Select the <strong>Power</strong> button.</li>
+      <li>➡️ Choose <strong>Shut down</strong>.</li>
+    </ol>
+  </div>
+</div>`,
+  q: " What is the correct way to shut down a Windows computer properly?",
+  a: "c",
+  options: [
+    "Press and hold the power button until it turns off",
+    "Unplug the computer directly",
+    "Click Start > Power > Shut down",
+    "Close all windows and walk away"
+  ]
+},
+
+
+{
+  passage: `<div style="margin-top: 40px;">
+  Passage 6:<br>
+  <div style="font-family: Segoe UI, Arial, sans-serif; background-color: #ffffff; color: #333; padding: 25px; border: 1px solid #ddd; border-radius: 10px; font-size: 18px;">
+    <strong style="font-size: 22px; color: #0056b3;">📦 Action: Install a Program in Windows</strong><br><br>
+    <em><u>Why this is important:</u></em><br>
+    Installing software allows you to extend the functionality of your computer by adding tools, games, or productivity apps.<br><br>
+    <strong>Steps:</strong><br>
+    <ol>
+      <li>➡️ Download the installer (.exe or .msi file) from a trusted source.</li>
+      <li>➡️ Double-click the file to start setup.</li>
+      <li>➡️ Follow the on-screen instructions.</li>
+      <li>➡️ Click <strong>Install</strong> and wait for completion.</li>
+    </ol>
+  </div>
+</div>`,
+  q: " What is the correct process for installing a program?",
+  a: "d",
+  options: [
+    "Type app name in Word and press Enter",
+    "Use Calculator to run .exe file",
+    "Open Recycle Bin and install from there",
+    "Download setup file > Double-click > Follow instructions > Install"
+     ]
+},
+
+{
+  passage: `<div style="margin-top: 40px;">
+  Passage 7:<br>
+  <div style="font-family: Segoe UI, Arial, sans-serif; background-color: #ffffff; color: #333; padding: 25px; border: 1px solid #ddd; border-radius: 10px; font-size: 18px;">
+    <strong style="font-size: 22px; color: #0056b3;">🔄 Action: Restart Your Computer</strong><br><br>
+    <em><u>Why this is important:</u></em><br>
+    Restarting helps resolve many temporary issues and completes updates. It also improves system performance when done regularly.<br><br>
+    <strong>Steps:</strong><br>
+    <ol>
+      <li>➡️ Click <strong>Start</strong>.</li>
+      <li>➡️ Select <strong>Power</strong>.</li>
+      <li>➡️ Click <strong>Restart</strong>.</li>
+    </ol>
+  </div>
+</div>`,
+  q: " What is the correct way to restart your computer in Windows?",
+  a: "a",
+  options: [
+    "Click Start > Power > Restart",
+    "Open Paint and press Ctrl+R",
+    "Use the Print Screen button",
+    "Go to Recycle Bin and click Restart"
+     ]
+},
+
+{
+  passage: `<div style="margin-top: 40px;">
+  Passage 8:<br>
+  <div style="font-family: Segoe UI, Arial, sans-serif; background-color: #ffffff; color: #000; padding: 25px; border: 1px solid #ddd; border-radius: 10px; font-size: 18px;">
+    <strong style="font-size: 22px; color: #0056b3;">🗂️ Action: Create a new folder</strong><br><br>
+    <em><u>Why this is important:</u></em><br>
+    Organizing files into folders keeps your system neat and makes it easier to locate documents and data.<br><br>
+    <strong>Steps:</strong><br>
+    <ol>
+      <li>📁 Open the location (e.g., Desktop or Documents).</li>
+      <li>📌 Right-click on an empty space.</li>
+      <li>🆕 Select <strong>New</strong> > <strong>Folder</strong>.</li>
+      <li>✏️ Type a name for your new folder and press Enter.</li>
+    </ol>
+  </div>
+</div>`,
+  q: " How do you create a new folder in Windows?",
+  a: "c",
+  options: [
+    "Click on Control Panel > New Folder",
+    "Right-click Taskbar > Create Folder",
+    "Right-click in location > New > Folder > Name it",
+    "Click Start > Settings > Folder"
+  ]
+},
+{
+  passage: `<div style="margin-top: 40px;">
+  Passage 9:<br>
+  <div style="font-family: Segoe UI, Arial, sans-serif; background-color: #ffffff; color: #000; padding: 25px; border: 1px solid #ddd; border-radius: 10px; font-size: 18px;">
+    <strong style="font-size: 22px; color: #0056b3;">🖨️ Action: Print a document</strong><br><br>
+    <em><u>Why this is important:</u></em><br>
+    Printing is necessary for producing physical copies of your files for meetings, records, or sharing.<br><br>
+    <strong>Steps:</strong><br>
+    <ol>
+      <li>📄 Open the document you want to print.</li>
+      <li>🖱️ Press <strong>Ctrl + P</strong> or go to <strong>File > Print</strong>.</li>
+      <li>🖨️ Choose your printer and adjust settings if needed.</li>
+      <li>🟢 Click <strong>Print</strong>.</li>
+    </ol>
+  </div>
+</div>`,
+  q: " What is the shortcut to print a document in Windows?",
+  a: "a",
+  options: [
+    "Ctrl + P",
+    "Ctrl + V",
+    "Ctrl + Shift + P",
+    "Alt + PrintScreen"
+  ]
+},
+{
+  passage: `<div style="margin-top: 40px;">
+  Passage 10:<br>
+  <div style="font-family: Segoe UI, Arial, sans-serif; background-color: #ffffff; color: #000; padding: 25px; border: 1px solid #ddd; border-radius: 10px; font-size: 18px;">
+    <strong style="font-size: 22px; color: #0056b3;">🕵️ Action: Show hidden files and folders</strong><br><br>
+    <em><u>Why this is important:</u></em><br>
+    Some system files or app data are hidden by default. Enabling hidden files helps in troubleshooting and manual file access.<br><br>
+    <strong>Steps:</strong><br>
+    <ol>
+      <li>🧭 Open File Explorer.</li>
+      <li>🔍 Click <strong>View</strong> tab at the top.</li>
+      <li>✅ Check the box for <strong>Hidden items</strong>.</li>
+    </ol>
+  </div>
+</div>`,
+  q: " How do you show hidden files and folders in File Explorer?",
+  a: "d",
+  options: [
+    "Right-click Start > View Hidden",
+    "Go to Settings > Files > Show",
+    "Press Alt + H + D",
+    "View tab > Check Hidden items"
+  ]
+},
+{
+  passage: `<div style="margin-top: 40px;">
+  Passage 11:<br>
+  <div style="font-family: Segoe UI, Arial, sans-serif; background-color: #ffffff; color: #000; padding: 25px; border: 1px solid #ddd; border-radius: 10px; font-size: 18px;">
+    <strong style="font-size: 22px; color: #0056b3;">🗑️ Action: Empty Recycle Bin</strong><br><br>
+    <em><u>Why this is important:</u></em><br>
+    Emptying the Recycle Bin frees up disk space and permanently deletes unwanted files.<br><br>
+    <strong>Steps:</strong><br>
+    <ol>
+      <li>🖱️ Right-click on the <strong>Recycle Bin</strong> icon on the desktop.</li>
+      <li>🗑️ Select <strong>Empty Recycle Bin</strong>.</li>
+      <li>✔️ Confirm the action when prompted.</li>
+    </ol>
+  </div>
+</div>`,
+  q: " What does emptying the Recycle Bin do?",
+  a: "b",
+  options: [
+    "Saves files for backup",
+    "Permanently deletes items in it",
+    "Moves files to a USB",
+    "Restores files to their original folder"
+  ]
+},
+{
+  passage: `<div style="margin-top: 40px;">
+  Passage 12:<br>
+  <div style="font-family: Segoe UI, Arial, sans-serif; background-color: #ffffff; color: #000; padding: 25px; border: 1px solid #ddd; border-radius: 10px; font-size: 18px;">
+    <strong style="font-size: 22px; color: #0056b3;">🔐 Action: Lock your PC</strong><br><br>
+    <em><u>Why this is important:</u></em><br>
+    Locking your PC protects your data from unauthorized access when you step away.<br><br>
+    <strong>Steps:</strong><br>
+    <ol>
+      <li>🔒 Press <strong>Windows + L</strong> on your keyboard.</li>
+      <li>💤 Your screen will lock immediately.</li>
+    </ol>
+  </div>
+</div>`,
+  q: " What shortcut locks your Windows PC?",
+  a: "a",
+  options: [
+    "Windows + L",
+    "Ctrl + L",
+    "Alt + Shift + L",
+    "Windows + Shift + Esc"
+  ]
+},
+{
+  passage: `<div style="margin-top: 40px;">
+  Passage 13:<br>
+  <div style="font-family: Segoe UI, Arial, sans-serif; background-color: #ffffff; color: #000; padding: 25px; border: 1px solid #ddd; border-radius: 10px; font-size: 18px;">
+    <strong style="font-size: 22px; color: #0056b3;">🧹 Action: Clear temporary files</strong><br><br>
+    <em><u>Why this is important:</u></em><br>
+    Clearing temporary files helps free up space and improve performance.<br><br>
+    <strong>Steps:</strong><br>
+    <ol>
+      <li>⚙️ Go to <strong>Settings > System > Storage</strong>.</li>
+      <li>🧼 Click on <strong>Temporary files</strong>.</li>
+      <li>✅ Select what you want to delete and click <strong>Remove files</strong>.</li>
+    </ol>
+  </div>
+</div>`,
+  q: " How can you remove temporary files in Windows?",
+  a: "d",
+  options: [
+    "By restarting your PC",
+    "From Control Panel > Reset",
+    "Using Notepad",
+    "Settings > System > Storage > Temporary files"
+  ]
+},
+
+{
+  passage: `<div style="margin-top: 40px;">
+  Passage 14:<br>
+  <div style="font-family: Segoe UI, Arial, sans-serif; background-color: #ffffff; color: #000; padding: 25px; border: 1px solid #ddd; border-radius: 10px; font-size: 18px;">
+    <strong style="font-size: 22px;">🔍 Action: Use Windows Search</strong><br><br>
+    <u>Why this is important:</u><br>
+    Windows Search helps find files, settings, and apps quickly.<br><br>
+    <strong>Steps:</strong><br>
+    <ol>
+      <li>Click the Search bar or press <strong>Windows + S</strong>.</li>
+      <li>Type the name of the file, program, or setting.</li>
+    </ol>
+  </div>
+</div>`,
+  q: " What is the fastest way to search for files or apps in Windows?",
+  a: "d",
+  options: [
+    "Open Control Panel and search manually",
+    "Restart PC",
+    "Use File Explorer only",
+    "Click Search or press Windows + S"
+  ]
+},
+{
+  passage: `<div style="margin-top: 40px;">
+  Passage 15:<br>
+  <div style="font-family: Segoe UI, Arial, sans-serif; background-color: #ffffff; color: #000; padding: 25px; border: 1px solid #ddd; border-radius: 10px; font-size: 18px;">
+    <strong style="font-size: 22px;">📡 Action: Enable Bluetooth</strong><br><br>
+    <u>Why this is important:</u><br>
+    Bluetooth allows you to wirelessly connect to devices like headphones, mice, and smartphones.<br><br>
+    <strong>Steps:</strong><br>
+    <ol>
+      <li>Open <strong>Settings</strong>.</li>
+      <li>Click <strong>Devices > Bluetooth & other devices</strong>.</li>
+      <li>Toggle the <strong>Bluetooth switch</strong> to On.</li>
+    </ol>
+  </div>
+</div>`,
+  q: " How do you turn on Bluetooth in Windows?",
+  a: "b",
+  options: [
+    "Unplug all USBs and restart",
+    "Settings > Devices > Bluetooth & other devices > Toggle On",
+    "Hold F12 for 10 seconds",
+    "Use Word to write Bluetooth"
+  ]
+},
+
+{
+  passage: `<div style="margin-top: 40px;">
+  Passage 16:<br>
+  <div style="font-family: Segoe UI, Arial, sans-serif; background-color: #ffffff; color: #000000; padding: 25px; border: 1px solid #ddd; border-radius: 10px; font-size: 18px;">
+    <strong style="font-size: 22px; color: #0056b3;">🗑️ Action: Empty the Recycle Bin</strong><br><br>
+    <em><u>Why this is important:</u></em><br>
+    Deleting files sends them to the Recycle Bin, but they still occupy space. Emptying the bin frees up hard disk space.<br><br>
+    <strong>Steps:</strong><br>
+    <ol>
+      <li>➡️ Right-click the <strong>Recycle Bin</strong> icon on the desktop.</li>
+      <li>➡️ Choose <strong>Empty Recycle Bin</strong>.</li>
+      <li>➡️ Confirm the action when prompted.</li>
+    </ol>
+  </div>
+</div>`,
+  q: " What is the correct way to permanently delete files and free up disk space?",
+  a: "c",
+  options: [
+    "Drag files to desktop",
+    "Move files to Downloads folder",
+    "Empty the Recycle Bin",
+    "Disable system restore"
+  ]
+},
+
+{
+  passage: `<div style="margin-top: 40px;">
+  Passage 17:<br>
+  <div style="font-family: Segoe UI, Arial, sans-serif; background-color: #ffffff; color: #000000; padding: 25px; border: 1px solid #ddd; border-radius: 10px; font-size: 18px;">
+    <strong style="font-size: 22px; color: #0056b3;">💾 Action: Create a New Folder</strong><br><br>
+    <em><u>Why this is important:</u></em><br>
+    Organizing your files into folders makes it easier to manage documents, images, and other data efficiently.<br><br>
+    <strong>Steps:</strong><br>
+    <ol>
+      <li>➡️ Open <strong>File Explorer</strong>.</li>
+      <li>➡️ Go to the desired location (e.g., Desktop or Documents).</li>
+      <li>➡️ Right-click and choose <strong>New > Folder</strong>.</li>
+      <li>➡️ Name the folder and press Enter.</li>
+    </ol>
+  </div>
+</div>`,
+  q: " How can you create a new folder in Windows?",
+  a: "b",
+  options: [
+    "Click the Start menu and type folder",
+    "Right-click inside File Explorer and choose New > Folder",
+    "Go to Control Panel",
+    "Press F2 on the desktop"
+  ]
+},
+
+{
+  passage: `<div style="margin-top: 40px;">
+  Passage 18:<br>
+  <div style="font-family: Segoe UI, Arial, sans-serif; background-color: #ffffff; color: #000000; padding: 25px; border: 1px solid #ddd; border-radius: 10px; font-size: 18px;">
+    <strong style="font-size: 22px; color: #0056b3;">🖨️ Action: Set a Default Printer</strong><br><br>
+    <em><u>Why this is important:</u></em><br>
+    Setting a default printer ensures that print jobs automatically go to your preferred device without choosing each time.<br><br>
+    <strong>Steps:</strong><br>
+    <ol>
+      <li>➡️ Open <strong>Settings > Devices > Printers & scanners</strong>.</li>
+      <li>➡️ Click on your printer.</li>
+      <li>➡️ Choose <strong>Manage</strong>.</li>
+      <li>➡️ Click <strong>Set as default</strong>.</li>
+    </ol>
+  </div>
+</div>`,
+  q: " Where can you set your default printer in Windows?",
+  a: "a",
+  options: [
+    "Settings > Devices > Printers & scanners",
+    "Right-click on the desktop",
+    "In Task Manager",
+    "In Internet Explorer"
+  ]
+},
+
+{
+  passage: `<div style="margin-top: 40px;">
+  Passage 19:<br>
+  <div style="font-family: Segoe UI, Arial, sans-serif; background-color: #ffffff; color: #000000; padding: 25px; border: 1px solid #ddd; border-radius: 10px; font-size: 18px;">
+    <strong style="font-size: 22px; color: #0056b3;">🕔 Action: View System Uptime</strong><br><br>
+    <em><u>Why this is important:</u></em><br>
+    Knowing system uptime helps diagnose issues related to system stability, updates, or power management.<br><br>
+    <strong>Steps:</strong><br>
+    <ol>
+      <li>➡️ Press <strong>Ctrl + Shift + Esc</strong> to open Task Manager.</li>
+      <li>➡️ Go to the <strong>Performance</strong> tab.</li>
+      <li>➡️ Look for <strong>Uptime</strong> under the CPU section.</li>
+    </ol>
+  </div>
+</div>`,
+  q: " How can you check how long your computer has been running?",
+  a: "d",
+  options: [
+    "Through Control Panel > Clock",
+    "Open File Explorer > System32",
+    "Using Paint > Help",
+    "Task Manager > Performance > Uptime"
+  ]
+},
+
+{
+  passage: `<div style="margin-top: 40px;">
+  Passage 20:<br>
+  <div style="font-family: Segoe UI, Arial, sans-serif; background-color: #ffffff; color: #000000; padding: 25px; border: 1px solid #ddd; border-radius: 10px; font-size: 18px;">
+    <strong style="font-size: 22px; color: #0056b3;">🧠 Action: Use Windows Troubleshooter</strong><br><br>
+    <em><u>Why this is important:</u></em><br>
+    Windows Troubleshooter helps automatically detect and fix many common computer problems like audio, network, and updates.<br><br>
+    <strong>Steps:</strong><br>
+    <ol>
+      <li>➡️ Go to <strong>Settings > Update & Security</strong>.</li>
+      <li>➡️ Click on <strong>Troubleshoot</strong>.</li>
+      <li>➡️ Choose the relevant category (e.g., Network, Audio).</li>
+      <li>➡️ Click <strong>Run the troubleshooter</strong>.</li>
+    </ol>
+  </div>
+</div>`,
+  q: " What tool can you use to automatically fix common issues in Windows?",
+  a: "b",
+  options: [
+    "Notepad",
+    "Windows Troubleshooter",
+    "Paint",
+    "System Clock"
+  ]
+},
+
+
+
+];
+
+    
+const questions = [
+  
+  {
+    q: "21. Which key combination is used to copy a selected file or folder in Windows?",
+    a: "a",
+    options: [
+      "Ctrl + C",
+      "Ctrl + X",
+      "Ctrl + V",
+      "Ctrl + A"
+    ]
+  },
+  {
+    q: "22. Which of the following is the shortcut to paste files or folders in Windows?",
+    a: "b",
+    options: [
+      "Ctrl + C",
+      "Ctrl + V",
+      "Ctrl + X",
+      "Ctrl + Z"
+    ]
+  },
+  {
+    q: "23. What does pressing 'Ctrl + X' do in Windows Explorer?",
+    a: "c",
+    options: [
+      "Copies the file",
+      "Deletes the file",
+      "Cuts the file",
+      "Renames the file"
+    ]
+  },
+  {
+    q: "24. Which Windows feature allows you to see and manage connected drives and partitions?",
+    a: "d",
+    options: [
+      "Device Manager",
+      "Task Manager",
+      "Disk Cleanup",
+      "Disk Management"
+    ]
+  },
+  {
+    q: "25. What is the function of the Recycle Bin in Windows?",
+    a: "a",
+    options: [
+      "Stores deleted files temporarily",
+      "Formats drives",
+      "Saves backup copies",
+      "Deletes files permanently"
+    ]
+  },
+  {
+    q: "26. What happens when you press Shift + Delete on a file in Windows?",
+    a: "b",
+    options: [
+      "File is moved to Recycle Bin",
+      "File is permanently deleted",
+      "File is backed up",
+      "File is copied to another location"
+    ]
+  },
+  {
+    q: "27. What does right-clicking a file and choosing 'Send to > Compressed (zipped) folder' do?",
+    a: "d",
+    options: [
+      "Deletes the file",
+      "Copies the file to Desktop",
+      "Moves the file to Documents",
+      "Creates a zip file containing the original"
+    ]
+  },
+  {
+    q: "28. Which Windows utility helps in freeing up disk space by removing temporary files?",
+    a: "a",
+    options: [
+      "Disk Cleanup",
+      "Task Manager",
+      "Defragmenter",
+      "Resource Monitor"
+    ]
+  },
+  {
+    q: "29. What does pressing Windows + E open?",
+    a: "c",
+    options: [
+      "Edge Browser",
+      "Settings",
+      "File Explorer",
+      "Email"
+    ]
+  },
+  {
+    q: "30. How can you rename a selected file quickly using the keyboard?",
+    a: "b",
+    options: [
+      "F4",
+      "F2",
+      "Alt + R",
+      "Ctrl + R"
+    ]
+  },
+  {
+    q: "31. What is the default file manager in Windows?",
+    a: "a",
+    options: [
+      "File Explorer",
+      "My Computer",
+      "Finder",
+      "Document Manager"
+    ]
+  },
+  {
+    q: "32. What is the shortcut to open the Run dialog in Windows?",
+    a: "c",
+    options: [
+      "Ctrl + R",
+      "Alt + R",
+      "Windows + R",
+      "Shift + R"
+    ]
+  },
+  {
+    q: "33. Which command in Run dialog opens the Command Prompt?",
+    a: "d",
+    options: [
+      "prompt",
+      "cmd.exe",
+      "terminal",
+      "cmd"
+    ]
+  },
+  {
+    q: "34. What does the shortcut Alt + Tab do in Windows?",
+    a: "a",
+    options: [
+      "Switches between open windows",
+      "Opens Task Manager",
+      "Minimizes all windows",
+      "Closes current window"
+    ]
+  },
+  {
+    q: "35. What does pressing Ctrl + Z do in Windows Explorer?",
+    a: "b",
+    options: [
+      "Zoom in",
+      "Undo last action",
+      "Delete file",
+      "Redo last action"
+    ]
+  },
+  {
+    q: "36. How can you create a new folder using the keyboard in a file explorer window?",
+    a: "c",
+    options: [
+      "Ctrl + F",
+      "Ctrl + Shift + F",
+      "Ctrl + Shift + N",
+      "Alt + N"
+    ]
+  },
+  {
+    q: "37. Which file extension indicates a compressed file in Windows?",
+    a: "a",
+    options: [
+      ".zip",
+      ".docx",
+      ".exe",
+      ".txt"
+    ]
+  },
+  {
+    q: "38. What is the function of 'This PC' in Windows?",
+    a: "b",
+    options: [
+      "Shows only USB devices",
+      "Displays drives and common folders",
+      "Opens Settings",
+      "Launches Task Manager"
+    ]
+  },
+  {
+    q: "39. What does the shortcut Windows + D do?",
+    a: "d",
+    options: [
+      "Displays all files",
+      "Deletes selected file",
+      "Disables background apps",
+      "Shows desktop"
+    ]
+  },
+  {
+    q: "40. Which view mode in File Explorer displays file details like size and type?",
+    a: "c",
+    options: [
+      "Tiles",
+      "Large icons",
+      "Details",
+      "Content"
+    ]
+  },
+  
+
+
+];
+
+
+
+    
+        let currentTFQuestion = 0;
+        let tfCorrectAnswers = 0;
+        let currentQuestion = 0;
+        let correctAnswers = 0;
+        let timeLeft = 3600;
+        let timerInterval;
+        let startTime;
+    
+        function startQuiz() {
+    let name = document.getElementById("traineeName").value.trim();
+    let phone = document.getElementById("traineePhone").value.trim();
+    let password = document.getElementById("password").value;
+    let course = document.getElementById("courseName").value.trim(); // 🆕 قراءة اسم الكورس
+    let quizTitle = document.getElementById("quizTitle"); // 🆕 العنوان اللي هيتغير
+
+    if (!name) {
+        alert("❗ برجاء إدخال الاسم.");
+        return;
+    }
+
+    if (!phone) {
+        alert("❗ برجاء إدخال رقم التليفون.");
+        return;
+    }
+
+    if (password !== "1550") {
+        alert("❌ كلمة المرور غير صحيحة! الرجاء المحاولة مرة أخرى.");
+        return;
+    }
+
+    // 🆕 تغيير العنوان بناءً على اسم الكورس
+    quizTitle.textContent = course || "Placement Test";
+
+    document.getElementById("startScreen").style.display = "none";
+    document.getElementById("quizContainer").style.display = "block";
+    startTime = new Date();
+    startTimer();
+    loadTFQuestion();
+
+    // تشغيل وضع ملء الشاشة
+    let elem = document.documentElement;
+    if (elem.requestFullscreen) {
+        elem.requestFullscreen();
+    } else if (elem.mozRequestFullScreen) {
+        elem.mozRequestFullScreen();
+    } else if (elem.webkitRequestFullscreen) {
+        elem.webkitRequestFullscreen();
+    } else if (elem.msRequestFullscreen) {
+        elem.msRequestFullscreen();
+    }
+}
+
+
+
+    
+        function startTimer() {
+            timerInterval = setInterval(() => {
+                let minutes = Math.floor(timeLeft / 60);
+                let seconds = timeLeft % 60;
+                document.getElementById("timer").innerText = `Time Remaining: ${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+                if (timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    showResult();
+                }
+                timeLeft--;
+            }, 1000);
+        }
+    
+      function loadTFQuestion() {
+    let quizDiv = document.getElementById("quiz");
+    let passageDiv = document.getElementById("passage");
+
+    if (currentTFQuestion < trueFalseQuestions.length) {
+        let q = trueFalseQuestions[currentTFQuestion];
+
+        // عرض المقطع
+        passageDiv.innerHTML = `
+            <h3></h3>
+            <p style="font-size: 22px;">${q.passage}</p>
+        `;
+
+        // عرض السؤال والاختيارات
+        let questionHTML = `<p class='question'><strong>${currentTFQuestion + 1}- ${q.q}</strong></p>`;
+
+        q.options.forEach((option, index) => {
+    const letter = String.fromCharCode(97 + index); // "a", "b", ...
+    questionHTML += `
+        <label>
+            <input type='radio' name='answer' value='${letter}'>
+            ${option}
+        </label><br>
+    `;
+});
+
+        questionHTML += `<button class='btn' onclick='nextTFQuestion()'>Next</button>`;
+        quizDiv.innerHTML = questionHTML;
+    } else {
+        // الانتهاء من عرض كل الأسئلة
+        document.getElementById("passage").style.display = "none";
+        quizDiv.innerHTML = "<p>You've finished all reading questions.</p>";
+        loadQuestion(); // لو فيه مرحلة تانية
+    }
+}
+
+    
+  function nextTFQuestion() {
+  const selectedAnswer = document.querySelector("input[name='answer']:checked");
+  if (!selectedAnswer) {
+    alert("Please select an answer");
+    return;
+  }
+
+  const q = trueFalseQuestions[currentTFQuestion];
+  const selectedValue = selectedAnswer.value;
+
+  const isAnswerKeyALetter = q.a.length === 1 && ["a", "b", "c", "d"].includes(q.a.toLowerCase());
+
+  if (isAnswerKeyALetter) {
+    if (selectedValue === q.a.toLowerCase()) {
+      tfCorrectAnswers++; // ✅ صحح هنا بدل score
+    }
+  } else {
+    const selectedOptionIndex = selectedValue.charCodeAt(0) - 97;
+    const selectedOptionText = q.options[selectedOptionIndex];
+
+    if (selectedOptionText.trim().toLowerCase() === q.a.trim().toLowerCase()) {
+      tfCorrectAnswers++; // ✅ صحح هنا بدل score
+    }
+  }
+
+  currentTFQuestion++;
+  loadTFQuestion();
+}
+
+
+
+        function loadQuestion() {
+            let quizDiv = document.getElementById("quiz");
+            let q = questions[currentQuestion];
+            quizDiv.innerHTML = `<p class='question'>${q.q}</p>` +
+                q.options.map((option, index) => `<label><input type='radio' name='answer' value='${String.fromCharCode(97 + index)}'> ${option}</label>`).join('') +
+                `<button class='btn' onclick='nextQuestion()'>${currentQuestion === questions.length - 1 ? "Finish" : "Next"}</button>`;
+        }
+    
+        function nextQuestion() {
+            let selectedAnswer = document.querySelector("input[name='answer']:checked");
+            if (!selectedAnswer) return;
+            if (selectedAnswer.value === questions[currentQuestion].a) {
+                correctAnswers++;
+            }
+            if (currentQuestion < questions.length - 1) {
+                currentQuestion++;
+                loadQuestion();
+            } else {
+                showResult();
+            }
+        }
+    
+let serverUrl = ""; // سيتم تحديثه تلقائيًا عند تحميل الصفحة
+
+// دالة لجلب رابط السيرفر المخزن في GitHub
+function fetchServerUrl() {
+fetch("https://raw.githubusercontent.com/etiqotwf/liveServer1/main/serverUrl.json")
+        .then(response => response.json())
+        .then(data => {
+            if (data.serverUrl) {
+                serverUrl = data.serverUrl;
+                console.log("✅ رابط السيرفر المحدث من GitHub:", serverUrl);
+            } else {
+                console.error("❌ لم يتم العثور على رابط السيرفر في المستودع.");
+                retryFetchServerUrl();
+            }
+        })
+        .catch(error => {
+            console.error("❌ خطأ في جلب رابط السيرفر من GitHub:", error);
+            retryFetchServerUrl();
+        });
+}
+
+// دالة لإعادة المحاولة عند الفشل
+function retryFetchServerUrl() {
+    if (retryCount < MAX_RETRIES) {
+        retryCount++;
+        console.log(`🔄 إعادة المحاولة (${retryCount}/${MAX_RETRIES}) بعد 3 ثوانٍ...`);
+        setTimeout(fetchServerUrl, 3000);
+    } else {
+        console.error("⛔ تم الوصول إلى الحد الأقصى من المحاولات، تعذر جلب رابط السيرفر.");
+    }
+}
+
+// تحميل رابط السيرفر عند فتح الصفحة
+fetchServerUrl();
+
+function showResult() {
+    clearInterval(timerInterval);
+
+    let endTime = new Date();
+    let timeTaken = Math.floor((endTime - startTime) / 1000);
+    let minutesTaken = Math.floor(timeTaken / 60);
+    let secondsTaken = timeTaken % 60;
+
+    let name = document.getElementById("traineeName").value || "Unknown";
+    let phone = document.getElementById("traineePhone").value || "Unknown";
+    let date = new Date().toLocaleDateString("en-US");
+    let course = document.getElementById("courseName").value || "Unknown";
+
+    let totalQuestions = trueFalseQuestions.length + questions.length;
+    let totalCorrectAnswers = tfCorrectAnswers + correctAnswers;
+
+    let resultData = {
+        name: name,
+        phone: phone,
+        date: date,
+        course: course,
+        startTime: startTime.toLocaleString("en-GB", {
+            timeZone: "Africa/Cairo",
+            year: "numeric",
+            month: "long",
+            day: "numeric",
+            hour: "numeric",
+            minute: "numeric",
+            second: "numeric",
+            hour12: true
+        }),
+        timeTaken: `${minutesTaken} min ${secondsTaken} sec`,
+        score: `${totalCorrectAnswers} / ${totalQuestions}`
+    };
+
+    // إرسال البيانات إلى السيرفر إذا تم تحميل الرابط
+    if (!serverUrl) {
+        console.log("⏳ انتظار تحميل رابط السيرفر...");
+        fetchServerUrl().then(() => {
+            if (serverUrl) {
+                sendDataToServer(resultData);
+            } else {
+                console.error("❌ لم يتم تحميل رابط السيرفر بعد.");
+                alert("⚠️ تعذر إرسال البيانات! تأكد من اتصال الإنترنت وأعد المحاولة.");
+            }
+        });
+    } else {
+        sendDataToServer(resultData);
+    }
+
+    // إرسال البيانات إلى Google Sheets
+    sendDataToGoogleSheet(resultData);
+
+    // تحديث واجهة المستخدم
+    document.getElementById("resultCourse").innerText = course;
+    document.getElementById("resultName").innerText = name;
+    document.getElementById("resultPhone").innerText = phone;
+    document.getElementById("resultDate").innerText = date;
+    document.getElementById("resultStartTime").innerText = startTime.toLocaleTimeString();
+    document.getElementById("resultTime").innerText = `${minutesTaken} min ${secondsTaken} sec`;
+    document.getElementById("resultScore").innerText = `${totalCorrectAnswers} / ${totalQuestions}`;
+
+    document.getElementById("quizContainer").style.display = "none";
+    document.getElementById("resultScreen").style.display = "block";
+}
+
+// إرسال البيانات إلى السيرفر الأساسي
+function sendDataToServer(resultData) {
+    fetch(`${serverUrl}/submit`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(resultData)
+    })
+    .then(response => response.json())
+    .then(data => console.log("✅ تم الإرسال إلى السيرفر بنجاح:", data))
+    .catch(error => console.error("❌ خطأ أثناء الإرسال إلى السيرفر:", error));
+}
+
+
+
+
+
+function sendDataToGoogleSheet(resultData) {
+    const formData = new URLSearchParams();
+    formData.append("course", resultData.course);
+    formData.append("name", resultData.name);
+    formData.append("phone", resultData.phone);
+    formData.append("date", resultData.date);
+    formData.append("startTime", resultData.startTime);
+    formData.append("timeTaken", resultData.timeTaken);
+    formData.append("score", resultData.score);
+    formData.append("course", resultData.course);
+
+
+    fetch("https://script.google.com/macros/s/AKfycbxEYf2XYk1MT_yp_R9cMrw7xaWifGrN8D17woiDRoMxE05T4xZFQxVihdhP22TcPBypkQ/exec", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+        },
+        body: formData.toString(),
+    })
+    .then(response => response.text())
+    .then(responseText => {
+        console.log("✅ تم الإرسال إلى Google Sheet:", responseText);
+    })
+    .catch(error => {
+        console.error("❌ خطأ في الإرسال إلى Google Sheet:", error);
+    });
+}
+
+
+
+
+    </script>
+    </body>
+</html>
