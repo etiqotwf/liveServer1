@@ -59,7 +59,7 @@
     let chartRef = null;
 
    async function fetchCSVFromGitHub() {
-  const url = 'https://corsproxy.io/?https://raw.githubusercontent.com/etiqotwf/liveServer/main/public/logs/threats.csv';
+const url = '/logs/threats.csv';
 
   const response = await fetch(url);
   const text = await response.text();
