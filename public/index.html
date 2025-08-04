@@ -71,13 +71,15 @@
     let chartRef = null;
 
    async function fetchCSVFromGitHub() {
-  const url = 'https://corsproxy.io/?https://raw.githubusercontent.com/etiqotwf/liveServer1/main/public/logs/threats.csv';
+  const baseUrl = 'https://corsproxy.io/?https://raw.githubusercontent.com/etiqotwf/liveServer1/main/public/logs/threats.csv';
+  const nocacheUrl = `${baseUrl}?_=${Date.now()}`; // منع التخزين المؤقت
 
   try {
-    const response = await fetch(url);
+    const response = await fetch(nocacheUrl, {
+      cache: "no-store" // طلب تجاهل الكاش
+    });
     const text = await response.text();
 
-    // التأكد أن الملف ليس HTML
     if (text.includes('<html') || text.includes('There isn\'t a GitHub Pages site')) {
       console.error('❌ الملف الذي تم تحميله ليس CSV فعلي.');
       return [];
@@ -97,6 +99,7 @@
     return [];
   }
 }
+
 
 
 
