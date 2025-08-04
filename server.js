@@ -1,16 +1,17 @@
-// server.js
 import express from 'express';
 import bodyParser from 'body-parser';
 import cors from 'cors';
 import fs from 'fs';
 import path from 'path';
-import { exec, spawn } from 'child_process'; // ✅ هذا هو السطر المناسب
+import https from 'https';
+import { exec, spawn } from 'child_process';
 
 const app = express();
-const PORT = 3000;  
+const PORT = 3000;
 
-let serverUrl = ""; // سيتم تحديثه من ngrok
-const logPath = path.join('./logs', 'threats.csv');
+let serverUrl = "";
+const logDir = './public/logs';
+const logPath = path.join(logDir, 'threats.csv');
 const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
 
 if (!GITHUB_TOKEN) {
@@ -18,20 +19,20 @@ if (!GITHUB_TOKEN) {
     process.exit(1);
 }
 
-// ✅ إعداد الميدل وير
+// ✅ Middleware
 app.use(cors({ origin: "*" }));
 app.use(bodyParser.json());
 app.use(express.static('public'));
 
-// ✅ إنشاء مجلد وملف logs إذا لم يكن موجودًا
-if (!fs.existsSync('./logs')) {
-    fs.mkdirSync('./logs');
+// ✅ إنشاء مجلد logs داخل public إن لم يكن موجودًا
+if (!fs.existsSync(logDir)) {
+    fs.mkdirSync(logDir, { recursive: true });
 }
 if (!fs.existsSync(logPath)) {
     fs.writeFileSync(logPath, 'Timestamp,IP,Method,ThreatType\n');
 }
 
-// ✅ تسجيل التهديد
+// ✅ API لتسجيل التهديد
 app.post('/api/logs', (req, res) => {
     const { timestamp, ip, method, threatType } = req.body;
     const logLine = `${timestamp},${ip},${method},${threatType}\n`;
@@ -39,7 +40,7 @@ app.post('/api/logs', (req, res) => {
     res.status(200).json({ message: 'تم تسجيل التهديد' });
 });
 
-// ✅ عرض التهديدات
+// ✅ API لعرض التهديدات
 app.get('/api/logs', (req, res) => {
     if (!fs.existsSync(logPath)) return res.json([]);
     const data = fs.readFileSync(logPath, 'utf-8').trim().split('\n').slice(1);
@@ -50,24 +51,22 @@ app.get('/api/logs', (req, res) => {
     res.json(logs.reverse());
 });
 
-// ✅ تهديد سريع (بصيغة ثانية)
-import https from 'https';
-
+// ✅ API لعرض ملف CSV من GitHub
 app.get('/api/threats', (req, res) => {
-  const githubUrl = 'https://raw.githubusercontent.com/etiqotwf/liveServer/main/public/logs/threats.csv';
-  https.get(githubUrl, (githubRes) => {
-    let data = '';
-    githubRes.on('data', chunk => data += chunk);
-    githubRes.on('end', () => res.send(data));
-  }).on('error', (err) => {
-    console.error('❌ Error fetching CSV from GitHub:', err.message);
-    res.status(500).send('Error fetching data');
-  });
+    const githubUrl = 'https://raw.githubusercontent.com/etiqotwf/liveServer1/main/public/logs/threats.csv';
+    https.get(githubUrl, (githubRes) => {
+        let data = '';
+        githubRes.on('data', chunk => data += chunk);
+        githubRes.on('end', () => res.send(data));
+    }).on('error', (err) => {
+        console.error('❌ Error fetching CSV from GitHub:', err.message);
+        res.status(500).send('Error fetching data');
+    });
 });
 
 // ✅ تحميل التهديدات كـ CSV
 app.get('/download/csv', (req, res) => {
-    res.download(path.join('./logs', 'threats.csv'));
+    res.download(logPath);
 });
 
 // ✅ تحميل التهديدات كـ JSON
@@ -107,7 +106,7 @@ app.post("/submit", (req, res) => {
     res.json({ message: "✅ Data received successfully!", receivedData: { ...req.body, percentage } });
 });
 
-// ✅ جلب عنوان ngrok
+// ✅ API للحصول على ngrok URL
 app.get("/ngrok-url", (req, res) => {
     if (serverUrl) {
         res.json({ serverUrl });
@@ -116,7 +115,7 @@ app.get("/ngrok-url", (req, res) => {
     }
 });
 
-// ✅ بدء الخادم
+// ✅ بدء الخادم و ngrok
 app.listen(PORT, () => {
     console.log(`🚀 Server running at http://localhost:${PORT}`);
 
@@ -148,7 +147,7 @@ app.listen(PORT, () => {
     });
 });
 
-// ✅ معالجة استجابة ngrok
+// ✅ تحليل رد ngrok
 function processNgrokResponse(response) {
     try {
         const tunnels = JSON.parse(response);
@@ -157,7 +156,6 @@ function processNgrokResponse(response) {
         if (serverUrl) {
             console.log(`✅ Server is available at: 🔗 ${serverUrl}`);
             fs.writeFileSync("serverUrl.json", JSON.stringify({ serverUrl }));
-
             pushToGitHub();
         } else {
             console.log("⚠️ No ngrok URL found.");
@@ -167,7 +165,7 @@ function processNgrokResponse(response) {
     }
 }
 
-// ✅ تنفيذ أوامر Git
+// ✅ رفع الملفات إلى GitHub
 function runCommand(command, args, callback) {
     const process = spawn(command, args);
 
@@ -180,7 +178,6 @@ function runCommand(command, args, callback) {
     });
 }
 
-// ✅ رفع ملف إلى GitHub
 function pushToGitHub() {
     console.log("📤 Pushing updates to GitHub...");
 
@@ -193,7 +190,7 @@ function pushToGitHub() {
     });
 }
 
-// ✅ إضافة تهديد وتحديث GitHub تلقائيًا
+// ✅ API لإضافة تهديد وتحديث GitHub
 app.post('/api/add-threat', (req, res) => {
     const { ip, method, threatType } = req.body;
 
@@ -208,7 +205,6 @@ app.post('/api/add-threat', (req, res) => {
         fs.appendFileSync(logPath, newLine);
         console.log(`✅ Threat added: ${ip}, ${method}, ${threatType}`);
 
-        // 🔁 تحديث GitHub تلقائيًا
         pushToGitHub();
 
         res.status(200).json({ message: '✅ Threat added and pushed to GitHub' });
