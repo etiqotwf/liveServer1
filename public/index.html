@@ -11,6 +11,15 @@
     tr:nth-child(even) { background-color: #1a1a1a; }
     h1 { color: #0f0; }
     input, select, button { margin: 5px; padding: 5px; }
+
+
+.table-container {
+  max-height: 240px; /* تقريبا 5 صفوف */
+  overflow-y: auto;
+  border: 1px solid #333;
+}
+
+
   </style>
 </head>
 <body>
@@ -25,6 +34,7 @@
     <option value="attack vector">Attack</option>
   </select>
 
+  <div class="table-container">
   <table>
     <thead>
       <tr>
@@ -36,6 +46,8 @@
     </thead>
     <tbody id="logTableBody"></tbody>
   </table>
+</div>
+
 
   <canvas id="threatChart" width="400" height="100"></canvas>
 
