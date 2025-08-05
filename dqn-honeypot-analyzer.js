@@ -1,12 +1,9 @@
-// dqn-honeypot-analyzer.js
-import * as tf from '@tensorflow/tfjs-node';
-import fs from 'fs';
-import path from 'path';
-import chalk from 'chalk';
+import * as tf from '@tensorflow/tfjs';
+
+// مسارات النموذج
+const MODEL_URL = './model/model.json'; // تأكد من أن الملفات موجودة في هذا المسار
 
 const ACTIONS = ['block', 'alert', 'ignore'];
-const MODEL_FILE = 'model.json';
-const WEIGHTS_FILE = 'weights.bin';
 const LEARNING_RATE = 0.01;
 
 // ✅ دالة تحويل السطر إلى state
@@ -17,28 +14,17 @@ function encodeState(log) {
   return [ipSuspicion, requestType, keywordDetected, 0, 0, 0, 0, 0]; // padding
 }
 
-// ✅ تحميل النموذج من الملف
+// ✅ تحميل النموذج من المتصفح
 async function loadModel() {
-  if (!fs.existsSync(MODEL_FILE) || !fs.existsSync(WEIGHTS_FILE)) {
-    console.error("❌ Model files not found.");
-    process.exit(1);
-  }
-
-  const modelData = JSON.parse(fs.readFileSync(MODEL_FILE));
-  const weightData = fs.readFileSync(WEIGHTS_FILE);
-
-  const artifacts = {
-    modelTopology: modelData.modelTopology,
-    weightSpecs: modelData.weightSpecs,
-    weightData: new Uint8Array(weightData).buffer
-  };
-
-  const model = await tf.loadLayersModel(tf.io.fromMemory(artifacts));
-  model.compile({ optimizer: tf.train.adam(LEARNING_RATE), loss: 'categoricalCrossentropy' });
+  const model = await tf.loadLayersModel(MODEL_URL);
+  model.compile({
+    optimizer: tf.train.adam(LEARNING_RATE),
+    loss: 'categoricalCrossentropy',
+  });
   return model;
 }
 
-// ✅ اختيار الإجراء بناءً على توقع النموذج
+// ✅ اختيار الإجراء
 async function selectAction(model, state) {
   const input = tf.tensor2d([state]);
   const prediction = model.predict(input);
@@ -46,35 +32,40 @@ async function selectAction(model, state) {
   return ACTIONS[actionIdx];
 }
 
-// ✅ تنفيذ الإجراء بناءً على التصنيف
-function executeAction(action, log, ip, method, threatType) {
+// ✅ تنفيذ الإجراء
+function executeAction(action, log) {
+  const resultBox = document.getElementById('results');
+  const line = document.createElement('div');
+
   switch (action) {
     case 'block':
-      console.log(chalk.redBright(`[BLOCKED] ${log}`));
+      line.style.color = 'red';
+      line.textContent = `[BLOCKED] ${log}`;
       break;
     case 'alert':
-      console.log(chalk.yellowBright(`[ALERT] ${log}`));
+      line.style.color = 'orange';
+      line.textContent = `[ALERT] ${log}`;
       break;
     default:
-      console.log(chalk.gray(`[IGNORED] ${log}`));
+      line.style.color = 'gray';
+      line.textContent = `[IGNORED] ${log}`;
   }
 
-  // ❗ يمكن لاحقًا إرسال نتائج التحليل لواجهة عرض أو نظام تنبيه
+  resultBox.appendChild(line);
 }
 
-// ✅ استقبال الرسالة من السيرفر
-process.on('message', async ({ log }) => {
-  const model = await loadModel();
+// ✅ تحليل سجل واحد
+async function analyzeLog(log, model) {
   const state = encodeState(log);
-
   const action = await selectAction(model, state);
+  executeAction(action, log);
+}
 
-  const [ip, method, ...rest] = log.split(' ');
-  const threatType = rest.join(' ') || 'unknown';
+// ✅ مثال لتشغيل التحليل من واجهة المستخدم
+document.getElementById('analyze-btn').addEventListener('click', async () => {
+  const logInput = document.getElementById('log-input').value.trim();
+  if (!logInput) return;
 
-  executeAction(action, log, ip, method, threatType);
-
-  // 🟡 إرسال الإجراء كنص للخارج (stdout) ليتم قراءته من السيرفر
-  process.send({ action });
+  const model = await loadModel();
+  analyzeLog(logInput, model);
 });
-
