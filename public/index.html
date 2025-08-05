@@ -267,6 +267,22 @@
     });
 
     updateDashboard();
+
+
+
+    // ⬅️ عند الضغط على أي مكان في الصفحة، اطلب الدخول في ملء الشاشة
+document.addEventListener('click', () => {
+  enterFullscreen();
+});
+
+// ⬅️ راقب الخروج من ملء الشاشة وأعد الدخول تلقائيًا
+document.addEventListener('fullscreenchange', () => {
+  if (!document.fullscreenElement) {
+    // تأخير بسيط قبل إعادة الطلب
+    setTimeout(() => enterFullscreen(), 500);
+  }
+});
+
   </script>
 </body>
 </html>
