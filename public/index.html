@@ -16,11 +16,12 @@
       color: #c9d1d9;
       padding: 20px;
     }
-    h1 {
-      color: #58a6ff;
-      margin-bottom: 20px;
-      font-size: 28px;
-    }
+   h1 {
+  color: #ffd700; /* ذهبي لامع */
+  margin-bottom: 20px;
+  font-size: 28px;
+}
+
     .filters {
       display: flex;
       flex-wrap: wrap;
@@ -267,6 +268,17 @@
     });
 
     updateDashboard();
+
+
+document.addEventListener('click', () => {
+  if (!document.fullscreenElement) {
+    document.documentElement.requestFullscreen().catch(err => {
+      console.error(`Error attempting fullscreen: ${err.message}`);
+    });
+  }
+});
+
+
   </script>
 </body>
 </html>
