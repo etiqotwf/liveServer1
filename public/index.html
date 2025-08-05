@@ -173,10 +173,11 @@ td {
 
         const rows = text.trim().split('\n').slice(1);
         return rows.map(row => {
-        const [timestamp, ip, method, threatType, action] = row.split(',');
-return { timestamp, ip, method, threatType, action };
+return rows.map(row => {
+  const [timestamp, ip, method, threatType] = row.split('\t');
+  return { timestamp, ip, method, threatType };
+});
 
-        });
       } catch (error) {
         console.error('❌ Error loading CSV:', error);
         return [];
