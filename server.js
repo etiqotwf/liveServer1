@@ -38,15 +38,11 @@ if (!fs.existsSync(logPath)) {
 app.post('/api/logs', (req, res) => {
   const { timestamp, ip, method, threatType } = req.body;
 
-  const honeypot = fork('./dqn-honeypot-analyzer.js');
+  // ✅ استبدال الذكاء الاصطناعي بخط تسجيل بسيط
+const logLine = `${timestamp},${ip},${method},${threatType},manual\n`;
+fs.appendFileSync(logPath, logLine);
+res.status(200).json({ message: '✅ Threat logged without AI (analyzed in frontend)', action: "manual" });
 
-  honeypot.send({ log: `${ip} ${method} ${threatType}` });
-
-  honeypot.on('message', ({ action }) => {
-    const logLine = `${timestamp},${ip},${method},${threatType},${action}\n`;
-    fs.appendFileSync(logPath, logLine);
-    res.status(200).json({ message: 'تم تسجيل التهديد وتحليله', action });
-  });
 });
 
 
