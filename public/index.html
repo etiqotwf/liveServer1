@@ -2,249 +2,127 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Threat Dashboard</title>
+  <title>AI Metallic Dashboard</title>
   <style>
-    body { font-family: sans-serif; background: #111; color: #eee; padding: 20px; }
-    table { width: 100%; border-collapse: collapse; margin-top: 20px; }
-    th, td { border: 1px solid #444; padding: 10px; text-align: left; }
-    th { background-color: #222; }
-    tr:nth-child(even) { background-color: #1a1a1a; }
-    h1 { color: #0f0; }
-    input, select, button { margin: 5px; padding: 5px; }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #e0e0e0, #f5f5f5);
+      color: #333;
+      height: 100vh;
+      overflow: auto;
+      transition: background 0.5s ease;
+    }
 
-.table-container {
-  max-height: 240px; /* تقريبا 5 صفوف */
-  overflow-y: auto;
-  border: 1px solid #333;
-}
+    #container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 40px 20px;
+    }
 
+    h1 {
+      font-size: 3rem;
+      margin-bottom: 30px;
+      color: #1a1a1a;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    }
 
+    .card {
+      background: linear-gradient(145deg, #ffffff, #dcdcdc);
+      box-shadow: 0 6px 20px rgba(0,0,0,0.15), inset 0 1px 2px rgba(255,255,255,0.6);
+      border-radius: 20px;
+      padding: 30px;
+      width: 300px;
+      text-align: center;
+      margin: 20px;
+      color: #1a1a1a;
+      transition: transform 0.3s ease;
+    }
+
+    .card:hover {
+      transform: scale(1.05);
+      cursor: pointer;
+    }
+
+    .card-title {
+      font-size: 1.8rem;
+      margin-bottom: 10px;
+      color: #222;
+    }
+
+    .card-desc {
+      font-size: 1rem;
+      color: #666;
+    }
+
+    .dashboard {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 30px;
+    }
+
+    footer {
+      margin-top: 50px;
+      font-size: 0.9rem;
+      color: #aaa;
+    }
   </style>
 </head>
 <body>
 
-  <h1>Threat Monitoring Dashboard</h1>
+  <div id="container">
+    <h1>لوحة تحكم الذكاء الاصطناعي</h1>
 
-  <input type="text" id="filterIP" placeholder="Filter by IP">
-  <select id="filterType">
-    <option value="">All Threats</option>
-    <option value="malware detected">Malware</option>
-    <option value="scan attempt">Scan</option>
-    <option value="attack vector">Attack</option>
-  </select>
+    <div class="dashboard">
+      <div class="card">
+        <div class="card-title">تحليل التهديدات</div>
+        <div class="card-desc">تحليل سلوك التهديدات بالزمن الحقيقي.</div>
+      </div>
 
-  <div class="table-container">
-  <table>
-    <thead>
-      <tr>
-        <th>Timestamp</th>
-        <th>IP Address</th>
-        <th>Method</th>
-        <th>Threat Type</th>
-      </tr>
-    </thead>
-    <tbody id="logTableBody"></tbody>
-  </table>
-</div>
+      <div class="card">
+        <div class="card-title">التحكم في الحماية</div>
+        <div class="card-desc">إدارة قواعد الأمان التفاعلية.</div>
+      </div>
 
+      <div class="card">
+        <div class="card-title">تقارير الأداء</div>
+        <div class="card-desc">عرض الإحصائيات والنشاطات.</div>
+      </div>
+    </div>
 
-  <canvas id="threatChart" width="400" height="100"></canvas>
+    <footer>© 2025 AI Cyber Dashboard</footer>
+  </div>
 
-  <h3>Add Fake Threat</h3>
-  <form id="addForm">
-    <input type="text" name="ip" placeholder="IP" required>
-    <select name="method">
-      <option>GET</option><option>POST</option>
-    </select>
-    <select name="type">
-      <option value="malware detected">Malware</option>
-      <option value="scan attempt">Scan</option>
-      <option value="attack vector">Attack</option>
-    </select>
-    <button type="submit">Add</button>
-  </form>
-
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script>
-    let allLogs = [];
-    let chartRef = null;
-
-   async function fetchCSVFromGitHub() {
-  const baseUrl = 'https://corsproxy.io/?https://raw.githubusercontent.com/etiqotwf/liveServer1/main/public/logs/threats.csv';
-  const nocacheUrl = `${baseUrl}?_=${Date.now()}`; // منع التخزين المؤقت
-
-  try {
-    const response = await fetch(nocacheUrl, {
-      cache: "no-store" // طلب تجاهل الكاش
-    });
-    const text = await response.text();
-
-    if (text.includes('<html') || text.includes('There isn\'t a GitHub Pages site')) {
-      console.error('❌ الملف الذي تم تحميله ليس CSV فعلي.');
-      return [];
-    }
-
-    console.log('✅ تم تحميل البيانات:', text);
-
-    const rows = text.trim().split('\n').slice(1); // حذف العنوان
-    const logs = rows.map(row => {
-      const [timestamp, ip, method, threatType] = row.split(',');
-      return { timestamp, ip, method, threatType };
+    // الدخول في وضع ملء الشاشة عند الضغط في أي مكان
+    document.addEventListener('click', () => {
+      const elem = document.documentElement;
+      if (!document.fullscreenElement) {
+        elem.requestFullscreen().catch(err => {
+          console.log("Error attempting to enable full-screen mode:", err.message);
+        });
+      }
     });
 
-    return logs;
-  } catch (error) {
-    console.error('❌ حدث خطأ أثناء تحميل CSV:', error);
-    return [];
-  }
-}
-
-
-
-
-    function filterLogs(logs) {
-      const ipFilter = document.getElementById('filterIP').value.trim();
-      const typeFilter = document.getElementById('filterType').value;
-      return logs.filter(log =>
-        (!ipFilter || log.ip.includes(ipFilter)) &&
-        (!typeFilter || log.threatType === typeFilter)
-      );
-    }
-
-    function renderTable(logs) {
-      const tbody = document.getElementById('logTableBody');
-      tbody.innerHTML = '';
-      logs.forEach(log => {
-        const row = `<tr>
-          <td>${log.timestamp}</td>
-          <td>${log.ip}</td>
-          <td>${log.method}</td>
-          <td>${log.threatType}</td>
-        </tr>`;
-        tbody.innerHTML += row;
-      });
-    }
-
-    function drawThreatChart(logs) {
-      const filtered = filterLogs(logs);
-      const threatCounts = {};
-      filtered.forEach(t => {
-        threatCounts[t.threatType] = (threatCounts[t.threatType] || 0) + 1;
-      });
-
-      const labels = Object.keys(threatCounts);
-      const dataValues = Object.values(threatCounts);
-      const backgroundColors = [
-        'rgba(255, 99, 132, 0.6)', 'rgba(54, 162, 235, 0.6)', 'rgba(255, 206, 86, 0.6)'
-      ];
-      const borderColors = backgroundColors.map(c => c.replace('0.6', '1'));
-
-      const ctx = document.getElementById('threatChart').getContext('2d');
-      if (chartRef) chartRef.destroy();
-
-      chartRef = new Chart(ctx, {
-        type: 'bar',
-        data: {
-          labels,
-          datasets: [{
-            label: 'عدد التهديدات',
-            data: dataValues,
-            backgroundColor: backgroundColors,
-            borderColor: borderColors,
-            borderWidth: 1,
-            borderRadius: 8
-          }]
-        },
-        options: {
-          plugins: {
-            legend: { labels: { color: 'yellow' } },
-            title: {
-              display: true,
-              text: 'إحصائيات أنواع التهديدات',
-              color: 'yellow'
-            }
-          },
-          scales: {
-            x: { ticks: { color: 'yellow' }, grid: { display: false } },
-            y: { beginAtZero: true, ticks: { color: 'white' }, grid: { color: 'white' } }
-          }
+    // عند الخروج من ملء الشاشة ارجع للعنصر الرئيسي
+    document.addEventListener('fullscreenchange', () => {
+      if (!document.fullscreenElement) {
+        const mainSection = document.getElementById('container');
+        if (mainSection) {
+          mainSection.scrollIntoView({ behavior: 'smooth' });
         }
-      });
-    }
-
-    async function updateDashboard() {
-      const logs = await fetchCSVFromGitHub();
-      allLogs = logs;
-      renderTable(filterLogs(allLogs));
-      drawThreatChart(allLogs);
-    }
-
-    // أحداث الفلترة
-    document.getElementById('filterIP').addEventListener('input', () => {
-      renderTable(filterLogs(allLogs));
-      drawThreatChart(allLogs);
+      }
     });
-    document.getElementById('filterType').addEventListener('change', () => {
-      renderTable(filterLogs(allLogs));
-      drawThreatChart(allLogs);
-    });
-
-    // إضافة تهديد وهمي يدويًا
-   document.getElementById('addForm').addEventListener('submit', async (e) => {
-    e.preventDefault();
-    const form = e.target;
-    const newThreat = {
-      ip: form.ip.value,
-      method: form.method.value,
-      threatType: form.type.value
-    };
-
-    const res = await fetch('/api/add-threat', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(newThreat)
-    });
-
-    if (res.ok) {
-      form.reset();
-      updateDashboard(); // تحديث الجدول والرسم البياني
-    } else {
-      alert('❌ فشل في إرسال التهديد إلى السيرفر!');
-    }
-  });
-
-updateDashboard();
-
-
-
-function enterFullscreen() {
-  const elem = document.documentElement;
-
-  if (elem.requestFullscreen) {
-    elem.requestFullscreen();
-  } else if (elem.webkitRequestFullscreen) { // Safari
-    elem.webkitRequestFullscreen();
-  } else if (elem.msRequestFullscreen) { // IE11
-    elem.msRequestFullscreen();
-  }
-}
-
-// ⬅️ عند الضغط على أي مكان في الصفحة، اطلب الدخول في ملء الشاشة
-document.addEventListener('click', () => {
-  enterFullscreen();
-});
-
-// ⬅️ راقب الخروج من ملء الشاشة وأعد الدخول تلقائيًا
-document.addEventListener('fullscreenchange', () => {
-  if (!document.fullscreenElement) {
-    // تأخير بسيط قبل إعادة الطلب
-    setTimeout(() => enterFullscreen(), 500);
-  }
-});
-
-
-
   </script>
+
 </body>
 </html>
