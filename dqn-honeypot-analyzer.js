@@ -1,7 +1,7 @@
 import * as tf from '@tensorflow/tfjs';
 
 // مسارات النموذج
-const MODEL_URL = './model/model.json'; // تأكد من أن الملفات موجودة في هذا المسار
+const MODEL_URL = './model.json';
 
 const ACTIONS = ['block', 'alert', 'ignore'];
 const LEARNING_RATE = 0.01;
