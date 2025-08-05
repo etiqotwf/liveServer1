@@ -7,6 +7,8 @@
   <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+  <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.12.0/dist/tf.min.js"></script>
+
 
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -400,13 +402,9 @@ function actionIcon(action) {
   });
 
 
-  </script>
 
 
-<script type="module">
-  import * as tf from 'https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.12.0/dist/tf.min.js';
-
-  const MODEL_URL = './model.json';
+ const MODEL_URL = './model.json';
   const ACTIONS = ['block', 'alert', 'ignore'];
   const LEARNING_RATE = 0.01;
 
@@ -452,18 +450,18 @@ function actionIcon(action) {
     resultBox.appendChild(line);
   }
 
-  async function analyzeLog(log, model) {
-    const state = encodeState(log);
-    const action = await selectAction(model, state);
-    executeAction(action, log);
-  }
-
   document.getElementById('analyze-btn')?.addEventListener('click', async () => {
     const logInput = document.getElementById('log-input')?.value.trim();
     if (!logInput) return;
     const model = await loadModel();
     analyzeLog(logInput, model);
   });
+
+  async function analyzeLog(log, model) {
+    const state = encodeState(log);
+    const action = await selectAction(model, state);
+    executeAction(action, log);
+  }
 </script>
 
 </body>
