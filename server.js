@@ -5,6 +5,8 @@ import fs from 'fs';
 import path from 'path';
 import https from 'https';
 import { exec, spawn } from 'child_process';
+import { fork } from 'child_process';
+
 
 const app = express();
 const PORT = 3000;
@@ -34,19 +36,29 @@ if (!fs.existsSync(logPath)) {
 
 // ✅ API لتسجيل التهديد
 app.post('/api/logs', (req, res) => {
-    const { timestamp, ip, method, threatType } = req.body;
-    const logLine = `${timestamp},${ip},${method},${threatType}\n`;
+  const { timestamp, ip, method, threatType } = req.body;
+
+  const honeypot = fork('./dqn-honeypot-analyzer.js');
+
+  honeypot.send({ log: `${ip} ${method} ${threatType}` });
+
+  honeypot.on('message', ({ action }) => {
+    const logLine = `${timestamp},${ip},${method},${threatType},${action}\n`;
     fs.appendFileSync(logPath, logLine);
-    res.status(200).json({ message: 'تم تسجيل التهديد' });
+    res.status(200).json({ message: 'تم تسجيل التهديد وتحليله', action });
+  });
 });
+
 
 // ✅ API لعرض التهديدات
 app.get('/api/logs', (req, res) => {
     if (!fs.existsSync(logPath)) return res.json([]);
     const data = fs.readFileSync(logPath, 'utf-8').trim().split('\n').slice(1);
     const logs = data.map(line => {
-        const [timestamp, ip, method, threatType] = line.split(',');
-        return { timestamp, ip, method, threatType };
+        const [timestamp,ip,method,threatType,action
+] = line.split(',');
+        return { timestamp,ip,method,threatType,action
+ };
     });
     res.json(logs.reverse());
 });

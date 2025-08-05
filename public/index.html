@@ -136,6 +136,8 @@ td {
           <th>IP Address</th>
           <th>Method</th>
           <th>Threat Type</th>
+          <th>Action Taken</th>
+
         </tr>
       </thead>
       <tbody id="logTableBody"></tbody>
@@ -171,8 +173,9 @@ td {
 
         const rows = text.trim().split('\n').slice(1);
         return rows.map(row => {
-          const [timestamp, ip, method, threatType] = row.split(',');
-          return { timestamp, ip, method, threatType };
+        const [timestamp, ip, method, threatType, action] = row.split(',');
+return { timestamp, ip, method, threatType, action };
+
         });
       } catch (error) {
         console.error('❌ Error loading CSV:', error);
@@ -192,14 +195,23 @@ td {
     function renderTable(logs) {
       const tbody = document.getElementById('logTableBody');
       tbody.innerHTML = '';
-      logs.forEach(log => {
-        tbody.innerHTML += `<tr>
-          <td>${log.timestamp}</td>
-          <td>${log.ip}</td>
-          <td>${log.method}</td>
-          <td>${log.threatType}</td>
-        </tr>`;
-      });
+     logs.forEach(log => {
+  const actionDisplay = log.action || 'N/A';
+  let color = 'gray';
+  if (actionDisplay === 'block') color = 'red';
+  else if (actionDisplay === 'alert') color = 'gold';
+
+  document.getElementById('logTableBody').innerHTML += `
+    <tr>
+      <td>${log.timestamp}</td>
+      <td>${log.ip}</td>
+      <td>${log.method}</td>
+      <td>${log.threatType}</td>
+      <td style="color:${color}; font-weight:bold;">${actionDisplay.toUpperCase()}</td>
+    </tr>
+  `;
+});
+
     }
 
     function drawThreatChart(logs) {
