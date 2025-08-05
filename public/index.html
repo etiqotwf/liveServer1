@@ -269,8 +269,19 @@
     updateDashboard();
 
 
+function enterFullscreen() {
+  const elem = document.documentElement;
 
-    // ⬅️ عند الضغط على أي مكان في الصفحة، اطلب الدخول في ملء الشاشة
+  if (elem.requestFullscreen) {
+    elem.requestFullscreen();
+  } else if (elem.webkitRequestFullscreen) { // Safari
+    elem.webkitRequestFullscreen();
+  } else if (elem.msRequestFullscreen) { // IE11
+    elem.msRequestFullscreen();
+  }
+}
+
+// ⬅️ عند الضغط على أي مكان في الصفحة، اطلب الدخول في ملء الشاشة
 document.addEventListener('click', () => {
   enterFullscreen();
 });
@@ -282,6 +293,7 @@ document.addEventListener('fullscreenchange', () => {
     setTimeout(() => enterFullscreen(), 500);
   }
 });
+
 
   </script>
 </body>
