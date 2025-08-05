@@ -205,13 +205,16 @@ td {
   else if (actionDisplay === 'alert') color = 'gold';
 
   document.getElementById('logTableBody').innerHTML += `
-    <tr>
-      <td>${log.timestamp}</td>
-      <td>${log.ip}</td>
-      <td>${log.method}</td>
-      <td>${log.threatType}</td>
-      <td style="color:${color}; font-weight:bold;">${actionDisplay.toUpperCase()}</td>
-    </tr>
+   <tr>
+  <td>${log.timestamp}</td>
+  <td>${log.ip}</td>
+  <td>${log.method}</td>
+  <td>${log.threatType}</td>
+  <td style="font-weight:bold;">
+    ${actionIcon(log.action)} ${log.action.toUpperCase()}
+  </td>
+</tr>
+
   `;
 });
 
@@ -308,6 +311,21 @@ document.addEventListener('click', () => {
     });
   }
 });
+
+
+
+function actionIcon(action) {
+  switch (action.toLowerCase()) {
+    case 'blocked':
+      return '<span style="color:red;">❌</span>';
+    case 'suspicious':
+      return '<span style="color:orange;">⚠️</span>';
+    case 'allowed':
+      return '<span style="color:green;">✅</span>';
+    default:
+      return '';
+  }
+}
 
 
   </script>
