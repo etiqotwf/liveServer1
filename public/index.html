@@ -327,38 +327,6 @@ function actionIcon(action) {
   }
 }
 
-logs.forEach(log => {
-  const row = document.createElement('tr');
-
-  // أمثلة لأعمدة سابقة، أضف حسب تصميمك
-  const ipCell = document.createElement('td');
-  ipCell.textContent = log.ip || '';
-  row.appendChild(ipCell);
-
-  const dateCell = document.createElement('td');
-  dateCell.textContent = log.date || '';
-  row.appendChild(dateCell);
-
-  const actionTakenCell = document.createElement('td');
-  let icon = '';
-  const actionTaken = (log.actionTaken || '').trim().toLowerCase();
-
-  console.log('Action Taken:', actionTaken); // للتصحيح
-
-  if (actionTaken === 'blocked') {
-    icon = '❌';
-  } else if (actionTaken === 'monitored') {
-    icon = '👁️';
-  } else {
-    icon = '✔️';
-  }
-
-  actionTakenCell.textContent = icon;
-  row.appendChild(actionTakenCell);
-
-  tableBody.appendChild(row);
-});
-
 
   </script>
 </body>
