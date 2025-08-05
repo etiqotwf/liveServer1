@@ -192,7 +192,7 @@ td {
     function renderTable(logs) {
       const tbody = document.getElementById('logTableBody');
       tbody.innerHTML = '';
-      logs.forEach(log => {
+logs.slice(0, 4).forEach(log => {
         tbody.innerHTML += `<tr>
           <td>${log.timestamp}</td>
           <td>${log.ip}</td>
