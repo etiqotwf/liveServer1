@@ -172,11 +172,13 @@ td {
         if (text.includes('<html') || text.includes('There isn\'t a GitHub Pages site')) return [];
 
         const rows = text.trim().split('\n').slice(1);
-        return rows.map(row => {
-return rows.map(row => {
-  const [timestamp, ip, method, threatType] = row.split('\t');
-  return { timestamp, ip, method, threatType };
-});
+       return rows
+  .map(row => row.split(','))
+  .filter(parts => parts.length >= 4)  // تأكد من وجود القيم المطلوبة
+  .map(parts => {
+    const [timestamp, ip, method, threatType, action = ''] = parts;
+    return { timestamp, ip, method, threatType, action };
+  });
 
       } catch (error) {
         console.error('❌ Error loading CSV:', error);
