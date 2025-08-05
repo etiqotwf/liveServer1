@@ -315,15 +315,18 @@ document.addEventListener('click', () => {
 
 
 function actionIcon(action) {
+  if (!action) return '';
   switch (action.toLowerCase()) {
     case 'blocked':
       return '<span style="color:red;">❌</span>';
     case 'suspicious':
+    case 'alerted':
       return '<span style="color:orange;">⚠️</span>';
     case 'allowed':
+    case 'logged':
       return '<span style="color:green;">✅</span>';
     default:
-      return '';
+      return '<span style="color:gray;">ℹ️</span>'; // رمز افتراضي للمجهول
   }
 }
 
