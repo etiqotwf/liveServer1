@@ -494,3 +494,10 @@
 ⏳ Time Taken: 0 min 25 sec
 🏆 Score     : 20/50 (40.00%)
 -----------------------------------
+🧑 Name       : Mostafa talhaa 
+📞 Phone     : 01272431662
+📅 Date      : 8/4/2025
+⏰ Start Time: 4 August 2025 at 11:36:59 pm
+⏳ Time Taken: 5 min 53 sec
+🏆 Score     : 12/25 (48.00%)
+-----------------------------------
