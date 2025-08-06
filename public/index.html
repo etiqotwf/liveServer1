@@ -170,169 +170,178 @@ td {
   </form>
 
   <script>
-  let allLogs = [];
-  let chartRef = null;
+    let allLogs = [];
+    let chartRef = null;
 
-  async function fetchCSVFromGitHub() {
-    const baseUrl = 'https://corsproxy.io/?https://raw.githubusercontent.com/etiqotwf/liveServer1/main/public/logs/threats.csv';
-    const nocacheUrl = `${baseUrl}?_=${Date.now()}`;
-    try {
-      const response = await fetch(nocacheUrl, { cache: "no-store" });
-      const text = await response.text();
+    async function fetchCSVFromGitHub() {
+      const baseUrl = 'https://corsproxy.io/?https://raw.githubusercontent.com/etiqotwf/liveServer1/main/public/logs/threats.csv';
+      const nocacheUrl = `${baseUrl}?_=${Date.now()}`;
+      try {
+        const response = await fetch(nocacheUrl, { cache: "no-store" });
+        const text = await response.text();
 
-      if (text.includes('<html') || text.includes('There isn\'t a GitHub Pages site')) return [];
+        if (text.includes('<html') || text.includes('There isn\'t a GitHub Pages site')) return [];
 
-      const rows = text.trim().split('\n').slice(1);
-      return rows
-        .map(row => row.split(','))
-        .filter(parts => parts.length >= 5)
-        .map(parts => {
-          const [timestamp, ip, method, threatType, keyword = '', action = ''] = parts;
-          return { timestamp, ip, method, threatType, keyword, action };
-        });
+        const rows = text.trim().split('\n').slice(1);
+       return rows
+  .map(row => row.split(','))
+  .filter(parts => parts.length >= 4)  // تأكد من وجود القيم المطلوبة
+  .map(parts => {
+    const [timestamp, ip, method, threatType, action = ''] = parts;
+    return { timestamp, ip, method, threatType, action };
+  });
 
-    } catch (error) {
-      console.error('❌ Error loading CSV:', error);
-      return [];
-    }
-  }
-
-  function filterLogs(logs) {
-    const ipFilter = document.getElementById('filterIP').value.trim();
-    const typeFilter = document.getElementById('filterType').value;
-    return logs.filter(log =>
-      (!ipFilter || log.ip.includes(ipFilter)) &&
-      (!typeFilter || log.threatType === typeFilter)
-    );
-  }
-
-  function renderTable(logs) {
-    const tbody = document.getElementById('logTableBody');
-    tbody.innerHTML = '';
-    logs.forEach(log => {
-      const row = document.createElement('tr');
-      row.innerHTML = `
-        <td>${log.timestamp}</td>
-        <td>${log.ip}</td>
-        <td>${log.method}</td>
-        <td>${log.threatType}</td>
-        <td style="font-weight:bold;">
-          ${actionIcon(log.action)} ${log.action?.toUpperCase() || 'N/A'} – ${log.keyword || 'N/A'}
-        </td>
-      `;
-      tbody.appendChild(row);
-    });
-  }
-
-  function drawThreatChart(logs) {
-    const filtered = filterLogs(logs);
-    const threatCounts = {};
-    filtered.forEach(t => {
-      threatCounts[t.threatType] = (threatCounts[t.threatType] || 0) + 1;
-    });
-
-    const labels = Object.keys(threatCounts);
-    const dataValues = Object.values(threatCounts);
-    const ctx = document.getElementById('threatChart').getContext('2d');
-
-    if (chartRef) chartRef.destroy();
-
-    chartRef = new Chart(ctx, {
-      type: 'bar',
-      data: {
-        labels,
-        datasets: [{
-          label: 'Threat Count',
-          data: dataValues,
-          backgroundColor: ['#d32f2f', '#fbc02d', '#1976d2'],
-          borderRadius: 8
-        }]
-      },
-      options: {
-        plugins: {
-          legend: { labels: { color: '#fff' } },
-          title: {
-            display: true,
-            text: 'Threat Type Statistics',
-            color: '#58a6ff'
-          }
-        },
-        scales: {
-          x: { ticks: { color: '#ccc' }, grid: { display: false } },
-          y: { beginAtZero: true, ticks: { color: '#ccc' }, grid: { color: '#333' } }
-        }
+      } catch (error) {
+        console.error('❌ Error loading CSV:', error);
+        return [];
       }
-    });
-  }
-
-  async function updateDashboard() {
-    const logs = await fetchCSVFromGitHub();
-    allLogs = logs;
-    renderTable(filterLogs(allLogs));
-    drawThreatChart(allLogs);
-  }
-
-  document.getElementById('filterIP').addEventListener('input', () => {
-    renderTable(filterLogs(allLogs));
-    drawThreatChart(allLogs);
-  });
-
-  document.getElementById('filterType').addEventListener('change', () => {
-    renderTable(filterLogs(allLogs));
-    drawThreatChart(allLogs);
-  });
-
-  document.getElementById('addForm').addEventListener('submit', async (e) => {
-    e.preventDefault();
-    const form = e.target;
-    const newThreat = {
-      ip: form.ip.value,
-      method: form.method.value,
-      threatType: form.type.value
-    };
-
-    const res = await fetch('/api/add-threat', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(newThreat)
-    });
-
-    if (res.ok) {
-      form.reset();
-      updateDashboard();
-    } else {
-      alert('❌ Failed to send threat to server.');
     }
-  });
 
-  updateDashboard();
+    function filterLogs(logs) {
+      const ipFilter = document.getElementById('filterIP').value.trim();
+      const typeFilter = document.getElementById('filterType').value;
+      return logs.filter(log =>
+        (!ipFilter || log.ip.includes(ipFilter)) &&
+        (!typeFilter || log.threatType === typeFilter)
+      );
+    }
 
-  document.addEventListener('click', () => {
-    if (!document.fullscreenElement) {
-      document.documentElement.requestFullscreen().catch(err => {
-        console.error(`Error attempting fullscreen: ${err.message}`);
+    function renderTable(logs) {
+      const tbody = document.getElementById('logTableBody');
+      tbody.innerHTML = '';
+     logs.forEach(log => {
+  const actionDisplay = log.action || 'N/A';
+  let color = 'gray';
+  if (actionDisplay === 'block') color = 'red';
+  else if (actionDisplay === 'alert') color = 'gold';
+
+  document.getElementById('logTableBody').innerHTML += `
+   <tr>
+  <td>${log.timestamp}</td>
+  <td>${log.ip}</td>
+  <td>${log.method}</td>
+  <td>${log.threatType}</td>
+  <td style="font-weight:bold;">
+    ${actionIcon(log.action)} ${log.action.toUpperCase()}
+  </td>
+</tr>
+
+  `;
+});
+
+    }
+
+    function drawThreatChart(logs) {
+      const filtered = filterLogs(logs);
+      const threatCounts = {};
+      filtered.forEach(t => {
+        threatCounts[t.threatType] = (threatCounts[t.threatType] || 0) + 1;
+      });
+
+      const labels = Object.keys(threatCounts);
+      const dataValues = Object.values(threatCounts);
+      const ctx = document.getElementById('threatChart').getContext('2d');
+
+      if (chartRef) chartRef.destroy();
+
+      chartRef = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels,
+          datasets: [{
+            label: 'Threat Count',
+            data: dataValues,
+            backgroundColor: ['#d32f2f', '#fbc02d', '#1976d2'],
+            borderRadius: 8
+          }]
+        },
+        options: {
+          plugins: {
+            legend: { labels: { color: '#fff' } },
+            title: {
+              display: true,
+              text: 'Threat Type Statistics',
+              color: '#58a6ff'
+            }
+          },
+          scales: {
+            x: { ticks: { color: '#ccc' }, grid: { display: false } },
+            y: { beginAtZero: true, ticks: { color: '#ccc' }, grid: { color: '#333' } }
+          }
+        }
       });
     }
-  });
 
-  function actionIcon(action) {
-    if (!action) return '';
-    switch (action.toLowerCase()) {
-      case 'blocked':
-        return '<span style="color:red;">❌</span>';
-      case 'suspicious':
-      case 'alerted':
-        return '<span style="color:orange;">⚠️</span>';
-      case 'allowed':
-      case 'logged':
-        return '<span style="color:green;">✅</span>';
-      default:
-        return '<span style="color:gray;">ℹ️</span>';
+    async function updateDashboard() {
+      const logs = await fetchCSVFromGitHub();
+      allLogs = logs;
+      renderTable(filterLogs(allLogs));
+      drawThreatChart(allLogs);
     }
-  }
 
-  // DQN & AI Model Setup
-  const MODEL_URL = './model.json';
+    document.getElementById('filterIP').addEventListener('input', () => {
+      renderTable(filterLogs(allLogs));
+      drawThreatChart(allLogs);
+    });
+
+    document.getElementById('filterType').addEventListener('change', () => {
+      renderTable(filterLogs(allLogs));
+      drawThreatChart(allLogs);
+    });
+
+    document.getElementById('addForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const form = e.target;
+      const newThreat = {
+        ip: form.ip.value,
+        method: form.method.value,
+        threatType: form.type.value
+      };
+
+      const res = await fetch('/api/add-threat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(newThreat)
+      });
+
+      if (res.ok) {
+        form.reset();
+        updateDashboard();
+      } else {
+        alert('❌ Failed to send threat to server.');
+      }
+    });
+
+    updateDashboard();
+
+
+document.addEventListener('click', () => {
+  if (!document.fullscreenElement) {
+    document.documentElement.requestFullscreen().catch(err => {
+      console.error(`Error attempting fullscreen: ${err.message}`);
+    });
+  }
+});
+
+
+
+function actionIcon(action) {
+  if (!action) return '';
+  switch (action.toLowerCase()) {
+    case 'blocked':
+      return '<span style="color:red;">❌</span>';
+    case 'suspicious':
+    case 'alerted':
+      return '<span style="color:orange;">⚠️</span>';
+    case 'allowed':
+    case 'logged':
+      return '<span style="color:green;">✅</span>';
+    default:
+      return '<span style="color:gray;">ℹ️</span>'; // رمز افتراضي للمجهول
+  }
+}
+
+ const MODEL_URL = './model.json';
   const ACTIONS = ['block', 'alert', 'ignore'];
   const LEARNING_RATE = 0.01;
 
@@ -359,75 +368,25 @@ td {
     return ACTIONS[actionIdx];
   }
 
-  // Random Log Generator
-  const ATTACK_TYPES = [
-    { type: 'malware detected', methods: ['POST', 'GET'], keywords: ['Trojan.exe', 'virus_payload', 'malicious.exe'] },
-    { type: 'scan attempt', methods: ['GET'], keywords: ['nmap scan', 'port scan', 'banner grab'] },
-    { type: 'attack vector', methods: ['POST'], keywords: ['SQL injection', 'XSS payload', 'buffer overflow'] }
-  ];
-
-  function getRandomIP() {
-    return `${Math.floor(Math.random() * 256)}.${Math.floor(Math.random() * 256)}.${Math.floor(Math.random() * 256)}.${Math.floor(Math.random() * 256)}`;
+  function executeAction(action, log) {
+    const line = document.createElement('div');
+    const resultBox = document.getElementById('logTableBody');
+    switch (action) {
+      case 'block':
+        line.style.color = 'red';
+        line.textContent = `[BLOCKED] ${log}`;
+        break;
+      case 'alert':
+        line.style.color = 'orange';
+        line.textContent = `[ALERT] ${log}`;
+        break;
+      default:
+        line.style.color = 'gray';
+        line.textContent = `[IGNORED] ${log}`;
+    }
+    resultBox.appendChild(line);
   }
 
-  function generateRandomLog() {
-    const attack = ATTACK_TYPES[Math.floor(Math.random() * ATTACK_TYPES.length)];
-    const ip = getRandomIP();
-    const method = attack.methods[Math.floor(Math.random() * attack.methods.length)];
-    const keyword = attack.keywords[Math.floor(Math.random() * attack.keywords.length)];
-    const threatType = attack.type;
-    const timestamp = new Date().toISOString();
-
-    return {
-      timestamp,
-      ip,
-      method,
-      threatType,
-      keyword,
-      raw: `${timestamp} ${ip} ${method} ${threatType} ${keyword}`
-    };
-  }
-
-  // زر Generate
-  document.getElementById('generate-btn').addEventListener('click', async () => {
-    const log = generateRandomLog();
-    document.getElementById('log-input').value = log.raw;
-
-    const model = await loadModel();
-    const state = encodeState(log.raw);
-    const action = await selectAction(model, state);
-
-    const analyzedLog = {
-      timestamp: log.timestamp,
-      ip: log.ip,
-      method: log.method,
-      threatType: log.threatType,
-      keyword: log.keyword,
-      action
-    };
-
-    allLogs.unshift(analyzedLog);
-    prependLogToTable(analyzedLog);
-    drawThreatChart(allLogs);
-  });
-
-  // إضافة سجل في أول الجدول
-  function prependLogToTable(log) {
-    const tbody = document.getElementById('logTableBody');
-    const row = document.createElement('tr');
-    row.innerHTML = `
-      <td>${log.timestamp}</td>
-      <td>${log.ip}</td>
-      <td>${log.method}</td>
-      <td>${log.threatType}</td>
-      <td style="font-weight:bold;">
-        ${actionIcon(log.action)} ${log.action?.toUpperCase() || 'N/A'} – ${log.keyword || 'N/A'}
-      </td>
-    `;
-    tbody.prepend(row);
-  }
-
-  // زر Analyze يدوي
   document.getElementById('analyze-btn')?.addEventListener('click', async () => {
     const logInput = document.getElementById('log-input')?.value.trim();
     if (!logInput) return;
@@ -435,28 +394,83 @@ td {
     analyzeLog(logInput, model);
   });
 
-  async function analyzeLog(logText, model) {
-    const state = encodeState(logText);
+  async function analyzeLog(log, model) {
+    const state = encodeState(log);
     const action = await selectAction(model, state);
-
-    const timestamp = new Date().toISOString();
-    const [ip, method, typeKeyword] = logText.split(' ').slice(1); // مبسط مؤقتًا
-    const threatType = /malware|attack|scan/.exec(logText)?.[0] || 'unknown';
-    const keyword = logText.split(' ').pop();
-
-    const analyzedLog = {
-      timestamp,
-      ip: ip || '0.0.0.0',
-      method: method || 'GET',
-      threatType,
-      keyword,
-      action
-    };
-
-    allLogs.unshift(analyzedLog);
-    prependLogToTable(analyzedLog);
-    drawThreatChart(allLogs);
+    executeAction(action, log);
   }
-</script>
+
+
+
+  // توليد عشوائي للهجمات
+const ATTACK_TYPES = [
+  { type: 'malware detected', methods: ['POST', 'GET'], keywords: ['Trojan.exe', 'virus_payload', 'malicious.exe'] },
+  { type: 'scan attempt', methods: ['GET'], keywords: ['nmap scan', 'port scan', 'banner grab'] },
+  { type: 'attack vector', methods: ['POST'], keywords: ['SQL injection', 'XSS payload', 'buffer overflow'] }
+];
+
+function getRandomIP() {
+  return `${Math.floor(Math.random() * 256)}.${Math.floor(Math.random() * 256)}.${Math.floor(Math.random() * 256)}.${Math.floor(Math.random() * 256)}`;
+}
+
+function generateRandomLog() {
+  const attack = ATTACK_TYPES[Math.floor(Math.random() * ATTACK_TYPES.length)];
+  const ip = getRandomIP();
+  const method = attack.methods[Math.floor(Math.random() * attack.methods.length)];
+  const keyword = attack.keywords[Math.floor(Math.random() * attack.keywords.length)];
+  const threatType = attack.type;
+  const timestamp = new Date().toISOString();
+
+  return {
+    timestamp,
+    ip,
+    method,
+    threatType,
+    keyword,
+    raw: `${timestamp} ${ip} ${method} ${threatType} ${keyword}`
+  };
+}
+
+// عند الضغط على زر Generate
+document.getElementById('generate-btn').addEventListener('click', async () => {
+  const log = generateRandomLog();
+  document.getElementById('log-input').value = log.raw;
+
+  const model = await loadModel();
+  const state = encodeState(log.raw);
+  const action = await selectAction(model, state);
+
+  // إنشاء كائن اللوج وتحليله
+  const analyzedLog = {
+    timestamp: log.timestamp,
+    ip: log.ip,
+    method: log.method,
+    threatType: log.threatType,
+    action
+  };
+
+  // أضف في بداية الجدول
+  prependLogToTable(analyzedLog);
+
+  // حدّث الرسم البياني
+  allLogs.unshift(analyzedLog); // أضف في أول قائمة allLogs
+  drawThreatChart(allLogs);
+});
+
+// إضافة صف في أول الجدول
+function prependLogToTable(log) {
+  const tbody = document.getElementById('logTableBody');
+  const newRow = document.createElement('tr');
+  newRow.innerHTML = `
+    <td>${log.timestamp}</td>
+    <td>${log.ip}</td>
+    <td>${log.method}</td>
+    <td>${log.threatType}</td>
+    <td style="font-weight:bold;">${actionIcon(log.action)} ${log.action.toUpperCase()}</td>
+  `;
+  tbody.prepend(newRow);
+}
+
+  </script>
 </body>
 </html>
