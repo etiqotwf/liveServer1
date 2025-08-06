@@ -206,23 +206,30 @@ td {
       );
     }
 
-   function renderTable(logs) {
-  const tableBody = document.querySelector('#logTable tbody');
-  tableBody.innerHTML = '';
+    function renderTable(logs) {
+      const tbody = document.getElementById('logTableBody');
+      tbody.innerHTML = '';
+     logs.forEach(log => {
+  const actionDisplay = log.action || 'N/A';
+  let color = 'gray';
+  if (actionDisplay === 'block') color = 'red';
+  else if (actionDisplay === 'alert') color = 'gold';
 
-  logs.forEach(log => {
-    const row = document.createElement('tr');
-    row.innerHTML = `
-      <td>${log.timestamp}</td>
-      <td>${log.ip}</td>
-      <td>${log.method}</td>
-      <td style="text-transform:capitalize;">${log.threatType}</td>
-      <td style="font-weight:bold;">${actionIcon(log.action)}</td>
-    `;
-    tableBody.appendChild(row);
-  });
-}
+  document.getElementById('logTableBody').innerHTML += `
+   <tr>
+  <td>${log.timestamp}</td>
+  <td>${log.ip}</td>
+  <td>${log.method}</td>
+  <td>${log.threatType}</td>
+  <td style="font-weight:bold;">
+    ${actionIcon(log.action)} ${log.action.toUpperCase()}
+  </td>
+</tr>
 
+  `;
+});
+
+    }
 
     function drawThreatChart(logs) {
       const filtered = filterLogs(logs);
@@ -482,20 +489,20 @@ function threatTypeIcon(threatType) {
 }
 
 function prependLogToTable(log) {
-  const tableBody = document.querySelector('#logTable tbody');
-  const row = document.createElement('tr');
+  const tbody = document.getElementById('logTableBody');
+  const newRow = document.createElement('tr');
 
-  row.innerHTML = `
+  console.log('Threat Type:', log.threatType); // للتحقق
+
+  newRow.innerHTML = `
     <td>${log.timestamp}</td>
     <td>${log.ip}</td>
     <td>${log.method}</td>
-    <td style="text-transform:capitalize;">${log.threatType}</td>
-    <td style="font-weight:bold;">${actionIcon(log.action)}</td>
+    <td style="font-weight:bold;">${threatTypeIcon(log.threatType)}</td>
+    <td style="font-weight:bold;">${actionIcon(log.action)} ${log.action.toUpperCase()}</td>
   `;
-
-  tableBody.insertBefore(row, tableBody.firstChild);
+  tbody.prepend(newRow);
 }
-
 
 
   </script>
