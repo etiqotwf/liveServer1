@@ -401,36 +401,8 @@ function actionIcon(action) {
   }
 
 
-  const ATTACK_TYPES = [
-  { type: 'malware detected', methods: ['POST', 'GET'], keywords: ['Trojan.exe', 'virus_payload', 'malicious.exe'] },
-  { type: 'scan attempt', methods: ['GET'], keywords: ['nmap scan', 'port scan', 'banner grab'] },
-  { type: 'attack vector', methods: ['POST'], keywords: ['SQL injection', 'XSS payload', 'buffer overflow'] }
-];
 
-function getRandomIP() {
-  const parts = [];
-  for (let i = 0; i < 4; i++) {
-    parts.push(Math.floor(Math.random() * 256));
-  }
-  return parts.join('.');
-}
-
-function generateRandomLog() {
-  const attack = ATTACK_TYPES[Math.floor(Math.random() * ATTACK_TYPES.length)];
-  const ip = getRandomIP();
-  const method = attack.methods[Math.floor(Math.random() * attack.methods.length)];
-  const keyword = attack.keywords[Math.floor(Math.random() * attack.keywords.length)];
-  const logLine = `${new Date().toISOString()} ${ip} ${method} ${attack.type} ${keyword}`;
-  return logLine;
-}
-
-document.getElementById('generate-btn').addEventListener('click', () => {
-  const logLine = generateRandomLog();
-  document.getElementById('log-input').value = logLine;
-});
-
-
-// توليد عشوائي للهجمات
+  // توليد عشوائي للهجمات
 const ATTACK_TYPES = [
   { type: 'malware detected', methods: ['POST', 'GET'], keywords: ['Trojan.exe', 'virus_payload', 'malicious.exe'] },
   { type: 'scan attempt', methods: ['GET'], keywords: ['nmap scan', 'port scan', 'banner grab'] },
@@ -498,7 +470,6 @@ function prependLogToTable(log) {
   `;
   tbody.prepend(newRow);
 }
-
 
   </script>
 </body>
