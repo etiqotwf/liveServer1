@@ -254,7 +254,7 @@ td {
             backgroundColor: ['#d32f2f', '#fbc02d', '#1976d2'],
             borderRadius: 8
           }]
-        },
+        },ذ
         options: {
           plugins: {
             legend: { labels: { color: '#fff' } },
@@ -326,18 +326,24 @@ document.addEventListener('click', () => {
 
 
 function actionIcon(action) {
-  if (!action) return '';
+  if (!action) return '<span style="color:gray;">ℹ️</span> ℹ️ INFO';
   switch (action.toLowerCase()) {
     case 'blocked':
-      return '<span style="color:red;">❌</span>';
+    case 'block':
+      return '<span style="color:red;">❌</span> BLOCKED';
     case 'suspicious':
     case 'alerted':
-      return '<span style="color:orange;">⚠️</span>';
+    case 'alert':
+      return '<span style="color:orange;">⚠️</span> ALERTED';
     case 'allowed':
     case 'logged':
-      return '<span style="color:green;">✅</span>';
+    case 'log':
+      return '<span style="color:green;">✅</span> LOGGED';
+    case 'ignore':
+    case 'ignored':
+      return '<span style="color:gray;">ℹ️</span> IGNORED';
     default:
-      return '<span style="color:gray;">ℹ️</span>'; // رمز افتراضي للمجهول
+      return '<span style="color:gray;">ℹ️</span> INFO';
   }
 }
 
@@ -394,11 +400,25 @@ function actionIcon(action) {
     analyzeLog(logInput, model);
   });
 
-  async function analyzeLog(log, model) {
-    const state = encodeState(log);
-    const action = await selectAction(model, state);
-    executeAction(action, log);
-  }
+  async function analyzeLog(rawLog, model) {
+  const state = encodeState(rawLog);
+  const action = await selectAction(model, state);
+
+  // تحليل السطر الخام إلى عناصر منفصلة
+  const [timestamp, ip, method, threatType] = rawLog.split(' ');
+
+  const analyzedLog = {
+    timestamp: timestamp || new Date().toISOString(),
+    ip: ip || '0.0.0.0',
+    method: method || 'GET',
+    threatType: threatType || 'unknown threat',
+    action
+  };
+
+  prependLogToTable(analyzedLog);
+  allLogs.unshift(analyzedLog);
+  drawThreatChart(allLogs);
+}
 
 
 
