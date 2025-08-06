@@ -503,7 +503,7 @@ function prependLogToTable(log) {
     <td>${log.timestamp}</td>
     <td>${log.ip}</td>
     <td>${log.method}</td>
-    <td style="font-weight:bold;">${threatTypeIcon(log.threatType)}</td>
+<td style="font-weight:bold;">${log.threatType}</td>
 <td style="font-weight:bold;">${actionIcon(log.action)}</td>
   `;
   tbody.prepend(newRow);
