@@ -404,14 +404,20 @@ function actionIcon(action) {
   const state = encodeState(rawLog);
   const action = await selectAction(model, state);
 
-  // تحليل السطر الخام إلى عناصر منفصلة
-  const [timestamp, ip, method, threatType] = rawLog.split(' ');
+  const parts = rawLog.split(' ');
+  const timestamp = parts[0] || new Date().toISOString();
+  const ip = parts[1] || '0.0.0.0';
+  const method = parts[2] || 'GET';
+
+  // استخراج نوع الهجوم الحقيقي من rawLog
+  const attackTypes = ['malware detected', 'scan attempt', 'attack vector'];
+  const matchedType = attackTypes.find(type => rawLog.toLowerCase().includes(type)) || 'unknown threat';
 
   const analyzedLog = {
-    timestamp: timestamp || new Date().toISOString(),
-    ip: ip || '0.0.0.0',
-    method: method || 'GET',
-    threatType: threatType || 'unknown threat',
+    timestamp,
+    ip,
+    method,
+    threatType: matchedType,
     action
   };
 
@@ -419,6 +425,7 @@ function actionIcon(action) {
   allLogs.unshift(analyzedLog);
   drawThreatChart(allLogs);
 }
+
 
 
 
@@ -452,6 +459,7 @@ function generateRandomLog() {
 }
 
 // عند الضغط على زر Generate
+// عند الضغط على زر Generate
 document.getElementById('generate-btn').addEventListener('click', async () => {
   const log = generateRandomLog();
   document.getElementById('log-input').value = log.raw;
@@ -460,20 +468,16 @@ document.getElementById('generate-btn').addEventListener('click', async () => {
   const state = encodeState(log.raw);
   const action = await selectAction(model, state);
 
-  // إنشاء كائن اللوج وتحليله
   const analyzedLog = {
     timestamp: log.timestamp,
     ip: log.ip,
     method: log.method,
-    threatType: log.threatType,
+    threatType: log.threatType, // ✅ هذا موجود مسبقًا بشكل صحيح
     action
   };
 
-  // أضف في بداية الجدول
   prependLogToTable(analyzedLog);
-
-  // حدّث الرسم البياني
-  allLogs.unshift(analyzedLog); // أضف في أول قائمة allLogs
+  allLogs.unshift(analyzedLog);
   drawThreatChart(allLogs);
 });
 
