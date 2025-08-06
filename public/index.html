@@ -457,6 +457,22 @@ document.getElementById('generate-btn').addEventListener('click', async () => {
   drawThreatChart(allLogs);
 });
 
+
+function threatTypeIcon(threatType) {
+  const type = threatType.toLowerCase();
+  switch (type) {
+    case 'malware detected':
+      return '❌ BLOCKED';
+    case 'scan attempt':
+      return '✅ LOGGED';
+    case 'attack vector':
+      return '⚠️ ALERTED';
+    default:
+      return 'ℹ️ INFO';
+  }
+}
+
+
 // إضافة صف في أول الجدول
 function prependLogToTable(log) {
   const tbody = document.getElementById('logTableBody');
@@ -465,11 +481,12 @@ function prependLogToTable(log) {
     <td>${log.timestamp}</td>
     <td>${log.ip}</td>
     <td>${log.method}</td>
-    <td>${log.threatType}</td>
+    <td style="font-weight:bold;">${threatTypeIcon(log.threatType)}</td>
     <td style="font-weight:bold;">${actionIcon(log.action)} ${log.action.toUpperCase()}</td>
   `;
   tbody.prepend(newRow);
 }
+
 
   </script>
 </body>
