@@ -207,29 +207,21 @@ td {
     }
 
     function renderTable(logs) {
-      const tbody = document.getElementById('logTableBody');
-      tbody.innerHTML = '';
-     logs.forEach(log => {
-  const actionDisplay = log.action || 'N/A';
-  let color = 'gray';
-  if (actionDisplay === 'block') color = 'red';
-  else if (actionDisplay === 'alert') color = 'gold';
+  const tableBody = document.querySelector('#logTable tbody');
+  tableBody.innerHTML = ''; // Clear table first
 
-  document.getElementById('logTableBody').innerHTML += `
-   <tr>
-  <td>${log.timestamp}</td>
-  <td>${log.ip}</td>
-  <td>${log.method}</td>
-  <td>${log.threatType}</td>
-  <td style="font-weight:bold;">
-    ${actionIcon(log.action)} ${log.action.toUpperCase()}
-  </td>
-</tr>
-
-  `;
-});
-
-    }
+  logs.forEach(log => {
+    const row = document.createElement('tr');
+    row.innerHTML = `
+      <td>${log.timestamp}</td>
+      <td>${log.ip}</td>
+      <td>${log.method}</td>
+      <td style="text-transform:capitalize;">${log.attackType}</td>
+      <td style="font-weight:bold;">${actionIcon(log.action)}</td>
+    `;
+    tableBody.appendChild(row);
+  });
+}
 
     function drawThreatChart(logs) {
       const filtered = filterLogs(logs);
@@ -489,20 +481,20 @@ function threatTypeIcon(threatType) {
 }
 
 function prependLogToTable(log) {
-  const tbody = document.getElementById('logTableBody');
-  const newRow = document.createElement('tr');
+  const tableBody = document.querySelector('#logTable tbody');
+  const row = document.createElement('tr');
 
-  console.log('Threat Type:', log.threatType); // للتحقق
-
-  newRow.innerHTML = `
+  row.innerHTML = `
     <td>${log.timestamp}</td>
     <td>${log.ip}</td>
     <td>${log.method}</td>
-    <td style="font-weight:bold;">${threatTypeIcon(log.threatType)}</td>
-    <td style="font-weight:bold;">${actionIcon(log.action)} ${log.action.toUpperCase()}</td>
+    <td style="text-transform:capitalize;">${log.attackType}</td>
+    <td style="font-weight:bold;">${actionIcon(log.action)}</td>
   `;
-  tbody.prepend(newRow);
+
+  tableBody.insertBefore(row, tableBody.firstChild);
 }
+
 
 
   </script>
