@@ -187,31 +187,15 @@ td {
   .map(row => row.split(','))
   .filter(parts => parts.length >= 4)  // تأكد من وجود القيم المطلوبة
   .map(parts => {
-  let [timestamp, ip, method, threatTypeRaw, actionRaw = ''] = parts;
+    const [timestamp, ip, method, threatType, action = ''] = parts;
+    return { timestamp, ip, method, threatType, action };
+  });
 
-  // تنظيف القيم
-  let threatType = threatTypeRaw.trim().toLowerCase();
-  let action = actionRaw.trim().toLowerCase();
-
-  // قائمة الكلمات غير المسموح بها في threatType
-  const invalidThreatValues = ['blocked', 'block', 'alerted', 'alert', 'logged', 'allowed', 'ignore', 'ignored', ''];
-
-  // لو threatType فيه كلمة من الإجراءات نحذفه أو نضع قيمة افتراضية
-  if (invalidThreatValues.includes(threatType)) {
-    threatType = 'unknown threat';
-  }
-
-  // إزالة التكرار في action مثل "blocked blocked"
-  action = [...new Set(action.split(' '))].join(' ');
-
-  return {
-    timestamp,
-    ip,
-    method,
-    threatType,
-    action
-  };
-})
+      } catch (error) {
+        console.error('❌ Error loading CSV:', error);
+        return [];
+      }
+    }
 
     function filterLogs(logs) {
       const ipFilter = document.getElementById('filterIP').value.trim();
