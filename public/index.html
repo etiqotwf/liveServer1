@@ -206,9 +206,9 @@ td {
       );
     }
 
-    function renderTable(logs) {
+   function renderTable(logs) {
   const tableBody = document.querySelector('#logTable tbody');
-  tableBody.innerHTML = ''; // Clear table first
+  tableBody.innerHTML = '';
 
   logs.forEach(log => {
     const row = document.createElement('tr');
@@ -216,12 +216,13 @@ td {
       <td>${log.timestamp}</td>
       <td>${log.ip}</td>
       <td>${log.method}</td>
-      <td style="text-transform:capitalize;">${log.attackType}</td>
+      <td style="text-transform:capitalize;">${log.threatType}</td>
       <td style="font-weight:bold;">${actionIcon(log.action)}</td>
     `;
     tableBody.appendChild(row);
   });
 }
+
 
     function drawThreatChart(logs) {
       const filtered = filterLogs(logs);
@@ -488,7 +489,7 @@ function prependLogToTable(log) {
     <td>${log.timestamp}</td>
     <td>${log.ip}</td>
     <td>${log.method}</td>
-    <td style="text-transform:capitalize;">${log.attackType}</td>
+    <td style="text-transform:capitalize;">${log.threatType}</td>
     <td style="font-weight:bold;">${actionIcon(log.action)}</td>
   `;
 
