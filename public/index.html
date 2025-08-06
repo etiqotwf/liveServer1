@@ -326,34 +326,19 @@ document.addEventListener('click', () => {
 
 
 function actionIcon(action) {
-  const type = action.trim().toLowerCase();
-
-  switch (type) {
+  if (!action) return '';
+  switch (action.toLowerCase()) {
     case 'blocked':
-      return '❌ BLOCKED';
-    case 'logged':
-      return '✅ LOGGED';
+      return '<span style="color:red;">❌</span>';
+    case 'suspicious':
     case 'alerted':
-      return '⚠️ ALERTED';
-    case 'ignore':
-    case 'ignored':
-      return 'ℹ️ IGNORE';
+      return '<span style="color:orange;">⚠️</span>';
+    case 'allowed':
+    case 'logged':
+      return '<span style="color:green;">✅</span>';
     default:
-      return 'ℹ️ UNKNOWN';
+      return '<span style="color:gray;">ℹ️</span>'; // رمز افتراضي للمجهول
   }
-}
-
-function prependLogToTable(log) {
-  const tbody = document.getElementById('logTableBody');
-  const newRow = document.createElement('tr');
-  newRow.innerHTML = `
-    <td>${log.timestamp}</td>
-    <td>${log.ip}</td>
-    <td>${log.method}</td>
-    <td>${log.threatType}</td>
-    <td style="font-weight:bold;">${actionIcon(log.action)}</td>
-  `;
-  tbody.prepend(newRow);
 }
 
  const MODEL_URL = './model.json';
@@ -483,6 +468,21 @@ function threatTypeIcon(threatType) {
   return 'ℹ️ INFO';
 }
 
+function prependLogToTable(log) {
+  const tbody = document.getElementById('logTableBody');
+  const newRow = document.createElement('tr');
+
+  console.log('Threat Type:', log.threatType); // للتحقق
+
+  newRow.innerHTML = `
+    <td>${log.timestamp}</td>
+    <td>${log.ip}</td>
+    <td>${log.method}</td>
+    <td style="font-weight:bold;">${threatTypeIcon(log.threatType)}</td>
+    <td style="font-weight:bold;">${actionIcon(log.action)} ${log.action.toUpperCase()}</td>
+  `;
+  tbody.prepend(newRow);
+}
 
 
   </script>
