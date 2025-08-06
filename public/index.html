@@ -411,7 +411,8 @@ function actionIcon(action) {
 
   // استخراج نوع الهجوم الحقيقي من rawLog
   const attackTypes = ['malware detected', 'scan attempt', 'attack vector'];
-  const matchedType = attackTypes.find(type => rawLog.toLowerCase().includes(type)) || 'unknown threat';
+const matchedType = attackTypes.find(type => rawLog.toLowerCase().includes(type)) || 'unknown threat';
+
 
   const analyzedLog = {
     timestamp,
@@ -503,7 +504,7 @@ function prependLogToTable(log) {
     <td>${log.ip}</td>
     <td>${log.method}</td>
     <td style="font-weight:bold;">${threatTypeIcon(log.threatType)}</td>
-    <td style="font-weight:bold;">${actionIcon(log.action)} ${log.action.toUpperCase()}</td>
+<td>${actionIcon(log.action)}</td>  // لأن actionIcon أصلاً يحتوي على النص المناسب
   `;
   tbody.prepend(newRow);
 }
