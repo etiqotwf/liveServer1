@@ -120,6 +120,7 @@ td {
 <div style="margin-top: 30px;">
   <h3>Manual Log Analyzer (AI)</h3>
   <input type="text" id="log-input" placeholder="Enter raw log line..." style="width: 60%; padding: 10px;" />
+  <button id="generate-btn" style="padding: 10px 15px; background-color:#007bff;">Generate</button>
   <button id="analyze-btn" style="padding: 10px 15px;">Analyze</button>
 </div>
 
@@ -398,6 +399,106 @@ function actionIcon(action) {
     const action = await selectAction(model, state);
     executeAction(action, log);
   }
+
+
+  const ATTACK_TYPES = [
+  { type: 'malware detected', methods: ['POST', 'GET'], keywords: ['Trojan.exe', 'virus_payload', 'malicious.exe'] },
+  { type: 'scan attempt', methods: ['GET'], keywords: ['nmap scan', 'port scan', 'banner grab'] },
+  { type: 'attack vector', methods: ['POST'], keywords: ['SQL injection', 'XSS payload', 'buffer overflow'] }
+];
+
+function getRandomIP() {
+  const parts = [];
+  for (let i = 0; i < 4; i++) {
+    parts.push(Math.floor(Math.random() * 256));
+  }
+  return parts.join('.');
+}
+
+function generateRandomLog() {
+  const attack = ATTACK_TYPES[Math.floor(Math.random() * ATTACK_TYPES.length)];
+  const ip = getRandomIP();
+  const method = attack.methods[Math.floor(Math.random() * attack.methods.length)];
+  const keyword = attack.keywords[Math.floor(Math.random() * attack.keywords.length)];
+  const logLine = `${new Date().toISOString()} ${ip} ${method} ${attack.type} ${keyword}`;
+  return logLine;
+}
+
+document.getElementById('generate-btn').addEventListener('click', () => {
+  const logLine = generateRandomLog();
+  document.getElementById('log-input').value = logLine;
+});
+
+
+// توليد عشوائي للهجمات
+const ATTACK_TYPES = [
+  { type: 'malware detected', methods: ['POST', 'GET'], keywords: ['Trojan.exe', 'virus_payload', 'malicious.exe'] },
+  { type: 'scan attempt', methods: ['GET'], keywords: ['nmap scan', 'port scan', 'banner grab'] },
+  { type: 'attack vector', methods: ['POST'], keywords: ['SQL injection', 'XSS payload', 'buffer overflow'] }
+];
+
+function getRandomIP() {
+  return `${Math.floor(Math.random() * 256)}.${Math.floor(Math.random() * 256)}.${Math.floor(Math.random() * 256)}.${Math.floor(Math.random() * 256)}`;
+}
+
+function generateRandomLog() {
+  const attack = ATTACK_TYPES[Math.floor(Math.random() * ATTACK_TYPES.length)];
+  const ip = getRandomIP();
+  const method = attack.methods[Math.floor(Math.random() * attack.methods.length)];
+  const keyword = attack.keywords[Math.floor(Math.random() * attack.keywords.length)];
+  const threatType = attack.type;
+  const timestamp = new Date().toISOString();
+
+  return {
+    timestamp,
+    ip,
+    method,
+    threatType,
+    keyword,
+    raw: `${timestamp} ${ip} ${method} ${threatType} ${keyword}`
+  };
+}
+
+// عند الضغط على زر Generate
+document.getElementById('generate-btn').addEventListener('click', async () => {
+  const log = generateRandomLog();
+  document.getElementById('log-input').value = log.raw;
+
+  const model = await loadModel();
+  const state = encodeState(log.raw);
+  const action = await selectAction(model, state);
+
+  // إنشاء كائن اللوج وتحليله
+  const analyzedLog = {
+    timestamp: log.timestamp,
+    ip: log.ip,
+    method: log.method,
+    threatType: log.threatType,
+    action
+  };
+
+  // أضف في بداية الجدول
+  prependLogToTable(analyzedLog);
+
+  // حدّث الرسم البياني
+  allLogs.unshift(analyzedLog); // أضف في أول قائمة allLogs
+  drawThreatChart(allLogs);
+});
+
+// إضافة صف في أول الجدول
+function prependLogToTable(log) {
+  const tbody = document.getElementById('logTableBody');
+  const newRow = document.createElement('tr');
+  newRow.innerHTML = `
+    <td>${log.timestamp}</td>
+    <td>${log.ip}</td>
+    <td>${log.method}</td>
+    <td>${log.threatType}</td>
+    <td style="font-weight:bold;">${actionIcon(log.action)} ${log.action.toUpperCase()}</td>
+  `;
+  tbody.prepend(newRow);
+}
+
 
   </script>
 </body>
