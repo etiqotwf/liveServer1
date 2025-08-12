@@ -443,6 +443,56 @@ input[type="radio"] {
   ]
 },
 
+{
+  passage: `<div style="margin-top: 120px;">
+  <div style="font-family: Segoe UI, Arial, sans-serif; background-color: #f9fbff; color: #333; padding: 25px; border: 2px solid #cce0ff; border-radius: 15px; font-size: 18px; box-shadow: 0 4px 10px rgba(0,0,0,0.05);">
+    <strong style="font-size: 24px; color: #0056b3;">🖥️ Action: Monitor & Control High Resource Usage in Windows using <span style="color:#0078d7;">PowerShell</span></strong><br><br>
+    <em><u style="color:#0056b3;">Why this is important:</u></em><br>
+    Sometimes applications consume too much CPU ⚡ or RAM 🧠, slowing down your PC. Using PowerShell, you can automatically detect and stop non-essential processes that exceed your defined limits — keeping your system responsive and fast 🚀.<br><br>
+    
+    <strong style="font-size: 20px; color:#004080;">⚙️ Steps to create a CPU & RAM usage limiter:</strong><br>
+    <ol style="padding-left: 25px; margin-top: 10px; line-height: 1.8;">
+      <li>➡️ <strong>Open</strong> <span style="color: #0078d7;">PowerShell</span> as Administrator 👨‍💻.</li>
+      <li>➡️ Define your limits for CPU (in seconds) and RAM (in bytes or MB). Example:<br>
+        <code style="background-color:#eef5ff; padding: 8px 12px; border-radius: 8px; display: block; margin-top: 5px; font-size: 16px; color:#333;">
+# Set the CPU usage limit (in seconds of processor time)
+$cpuLimit = 20      
+
+# Set the RAM usage limit (in bytes) - here 500MB
+$ramLimit = 500MB
+        </code>
+      </li>
+      <li>➡️ Get all running processes and filter only those exceeding the limits ⏳💾:</li>
+      <li>➡️ Exclude critical Windows system processes to avoid crashing the OS ⚠️:</li>
+      <li>➡️ Stop the remaining processes forcefully:<br>
+        <code style="background-color:#eef5ff; padding: 8px 12px; border-radius: 8px; display: block; margin-top: 5px; font-size: 16px; color:#333;">
+Get-Process |
+    Where-Object {
+        $_.CPU -gt $cpuLimit -or $_.WorkingSet -gt $ramLimit
+    } |
+    Where-Object {
+        $_.ProcessName -notmatch "^(System|Idle|svchost|explorer|services|wininit|winlogon)$"
+    } |
+    Stop-Process -Force
+        </code>
+      </li>
+      <li>➡️ Save your script as <strong style="color:#0078d7;">LimitResources.ps1</strong> 📄.</li>
+      <li>➡️ (Optional) Schedule it via <strong>Task Scheduler</strong> to run automatically at set intervals ⏰.</li>
+    </ol>
+  </div>
+</div><br>
+<b style="font-size: 17px; color:#cc0000;">Note:</b> <span style="color:#333;">Be careful with process filtering — stopping essential system tasks may crash Windows!</span>`,
+
+  q: "Which PowerShell script step ensures that important Windows processes are not accidentally stopped?",
+  a: "c",
+  options: [
+    "Setting the CPU usage limit",
+    "Defining the RAM limit",
+    "Filtering out system processes like System, Idle, and svchost",
+    "Saving the script as a .ps1 file"
+  ]
+},
+
 
 {
   passage: `<div style="margin-top: 40px;">
