@@ -229,6 +229,154 @@ input[type="radio"] {
         document.getElementById("date").innerText = new Date().toLocaleDateString("en-US");
     
     const trueFalseQuestions = [
+
+
+    {
+  passage: `<div style="margin-top: 120px;">
+  <div style="font-family: Segoe UI, Arial, sans-serif; background-color: #f9fbff; color: #333; padding: 25px; border: 2px solid #cce0ff; border-radius: 15px; font-size: 18px; box-shadow: 0 4px 10px rgba(0,0,0,0.05);">
+    <strong style="font-size: 24px; color: #0056b3;">🛡️ Action: Schedule a Windows Defender <span style="color:#0078d7;">Quick Scan</span> using <span style="color:#0078d7;">Task Scheduler</span> & <span style="color:#0078d7;">PowerShell</span></strong><br><br>
+    <em><u style="color:#0056b3;">Why this is important:</u></em><br>
+    Regular antivirus scans help catch threats early 🕵️‍♂️. Automating a Quick Scan ensures your PC is checked on a schedule without manual effort 🗓️.<br><br>
+
+    <strong style="font-size: 20px; color:#004080;">⚙️ Steps to create an automated Defender Quick Scan:</strong><br>
+    <ol style="padding-left: 25px; margin-top: 10px; line-height: 1.8;">
+      <li>➡️ <strong>Open</strong> <span style="color: #0078d7;">PowerShell</span> as Administrator 👨‍💻.</li>
+      <li>➡️ Create a script with the scan command:<br>
+        <code style="background-color:#eef5ff; padding: 8px 12px; border-radius: 8px; display: block; margin-top: 5px; font-size: 16px; color:#333;">
+          Start-MpScan -ScanType QuickScan
+        </code>
+      </li>
+      <li>➡️ Save the script as <strong style="color:#0078d7;">QuickScan.ps1</strong> 📄.</li>
+      <li>➡️ Open <strong style="color:#0078d7;">Task Scheduler</strong> 📅 from the Start menu.</li>
+      <li>➡️ Click <strong>Create Basic Task</strong> and name it (e.g., <em>"Defender Quick Scan"</em>).</li>
+      <li>➡️ Choose a trigger time ⏰ (daily, weekly, etc.).</li>
+      <li>➡️ For the action, select <strong>Start a Program</strong> and enter:<br>
+        <code style="background-color:#eef5ff; padding: 8px 12px; border-radius: 8px; display: block; margin-top: 5px; font-size: 16px; color:#333;">
+          powershell.exe -ExecutionPolicy Bypass -File "C:\\path\\QuickScan.ps1"
+        </code>
+      </li>
+      <li>➡️ Finish ✅ and run the task to test 🖱️.</li>
+    </ol>
+  </div>
+</div><br>
+<b style="font-size: 17px; color:#cc0000;">Note:</b> <span style="color:#333;">You can view scan history in <em>Windows Security → Virus & threat protection</em>.</span>`,
+  
+  q: "Which sequence of steps correctly schedules a Windows Defender Quick Scan using PowerShell and Task Scheduler?",
+  a: "b",
+  options: [
+    "Open Command Prompt and delete the Windows Defender service",
+    "Create a PowerShell script with Start-MpScan, then schedule it via Task Scheduler",
+    "Disable Windows Defender real-time protection to speed up scans",
+    "Run a manual scan from Windows Security every few weeks"
+  ]
+},
+
+
+{
+  passage: `<div style="margin-top: 120px;">
+  <div style="font-family: Segoe UI, Arial, sans-serif; background-color: #fffaf5; color: #333; padding: 25px; border: 2px solid #ffd9b3; border-radius: 15px; font-size: 18px; box-shadow: 0 4px 10px rgba(0,0,0,0.05);">
+    <strong style="font-size: 24px; color: #cc6600;">📄 Action: Apply Consistent Formatting using <span style="color:#ff8000;">Styles</span> in Microsoft Word</strong><br><br>
+    <em><u style="color:#cc6600;">Why this is important:</u></em><br>
+    Using <strong>Styles</strong> in Word ensures consistency across large documents 📚, allows quick re-formatting 🎨, and enables structured navigation through the <strong>Navigation Pane</strong> 🔍.<br><br>
+
+    <strong style="font-size: 20px; color:#804000;">⚙️ Professional steps to use Styles effectively:</strong><br>
+    <ol style="padding-left: 25px; margin-top: 10px; line-height: 1.8;">
+      <li>➡️ Open <strong>Microsoft Word</strong> and write your content 🖥️.</li>
+      <li>➡️ Select a section title (e.g., <em>“Chapter 1: Introduction”</em>).</li>
+      <li>➡️ From the <strong>Home</strong> tab, apply <span style="color:#ff8000;">Heading 1</span> style.</li>
+      <li>➡️ For sub-sections, use <span style="color:#ff8000;">Heading 2</span> or <span style="color:#ff8000;">Heading 3</span>.</li>
+      <li>➡️ Modify styles if needed (right-click → Modify) to match your preferred font, color, and spacing.</li>
+      <li>➡️ Open the <strong>Navigation Pane</strong> (View → Navigation Pane) to jump easily between sections.</li>
+    </ol>
+  </div>
+</div><br>
+<b style="font-size: 17px; color:#cc0000;">Note:</b> <span style="color:#333;">Consistent use of Styles improves readability and makes it easier to navigate large documents.</span>`,
+  
+  q: "Why is applying heading styles (Heading 1, Heading 2, etc.) considered a professional best practice in Microsoft Word?",
+  a: "b",
+  options: [
+    "Because bold text alone is visually clear for readers",
+    "Because heading styles ensure consistency, allow quick formatting updates, and enable structured navigation through the Navigation Pane",
+    "Because manually adjusting font size is more flexible in every situation",
+    "Because heading styles permanently lock sections of text"
+  ]
+},
+
+
+{
+  passage: `<div style="margin-top: 120px;">
+  <div style="font-family: Segoe UI, Arial, sans-serif; background-color: #f5fbff; color: #333; padding: 25px; border: 2px solid #b3e0ff; border-radius: 15px; font-size: 18px; box-shadow: 0 4px 10px rgba(0,0,0,0.05);">
+    <strong style="font-size: 24px; color: #006699;">📊 Action: Use <span style="color:#0099cc;">IF</span> with <span style="color:#0099cc;">AND</span> Function in Excel</strong><br><br>
+    <em><u style="color:#006699;">Why this is important:</u></em><br>
+    Combining <strong>IF</strong> with <strong>AND</strong> allows you to test multiple conditions simultaneously ✅. This is especially useful in grading systems 🎓, employee evaluations 👨‍💼, or financial decision-making 💰.<br><br>
+
+    <strong style="font-size: 20px; color:#004466;">⚙️ Example: Grading System</strong><br>
+    Suppose you have a student’s score in cell <code>A2</code>. The student passes only if:<br>
+    - The score is greater than or equal to 50<br>
+    - AND attendance in cell <code>B2</code> is greater than or equal to 75%<br><br>
+
+    <strong>Formula:</strong><br>
+    <code style="background-color:#e6f7ff; padding: 8px 12px; border-radius: 8px; display: block; margin-top: 5px; font-size: 16px; color:#333;">
+      =IF(AND(A2>=50, B2>=75), "Pass", "Fail")
+    </code><br>
+
+    ✅ If both conditions are true → Result is <strong>Pass</strong>.<br>
+    ❌ If either condition is false → Result is <strong>Fail</strong>.
+  </div>
+</div><br>
+<b style="font-size: 17px; color:#cc0000;">Note:</b> <span style="color:#333;">Using IF + AND improves decision-making logic by handling multiple conditions in a single formula.</span>`,
+  
+  q: "Which formula correctly checks if a student passes when the score in A2 is at least 50 AND the attendance in B2 is at least 75%?",
+  a: "b",
+  options: [
+    "=IF(A2>=50 OR B2>=75, \"Pass\", \"Fail\")",
+    "=IF(AND(A2>=50, B2>=75), \"Pass\", \"Fail\")",
+    "=IF(A2>=50, \"Pass\", \"Fail\")",
+    "=IF(B2>=75, \"Pass\", \"Fail\")"
+  ]
+},
+
+
+
+{
+  passage: `<div style="margin-top: 120px;">
+  <div style="font-family: Segoe UI, Arial, sans-serif; background-color: #fff9f5; color: #333; padding: 25px; border: 2px solid #ffcc99; border-radius: 15px; font-size: 18px; box-shadow: 0 4px 10px rgba(0,0,0,0.05);">
+    <strong style="font-size: 24px; color: #cc6600;">📊 Action: Apply <span style="color:#ff8000;">Animations</span> in PowerPoint</strong><br><br>
+    <em><u style="color:#cc6600;">Why this is important:</u></em><br>
+    Using animations in PowerPoint makes your presentations more engaging 🎯, helps control the flow of information 📑, and captures audience attention 👀.<br><br>
+
+    <strong style="font-size: 20px; color:#804000;">⚙️ Example: Sequential Animations</strong><br>
+    Suppose you have a slide with three elements (Title, Image, and Text). You want them to appear one after the other when presenting:<br>
+    - Title → <strong>Fade In</strong><br>
+    - Image → <strong>Fly In from Left</strong><br>
+    - Text → <strong>Zoom</strong><br><br>
+
+    <strong>Steps:</strong><br>
+    <ol style="padding-left: 25px; margin-top: 10px; line-height: 1.8;">
+      <li>➡️ Select the element (e.g., Title) and go to the <strong>Animations</strong> tab.</li>
+      <li>➡️ Choose an Entrance effect (e.g., <em>Fade In</em>).</li>
+      <li>➡️ Repeat for the Image and Text with different effects.</li>
+      <li>➡️ Open <strong>Animation Pane</strong> to arrange the order (Title → Image → Text).</li>
+      <li>➡️ Set the Start option to <strong>On Click</strong> for each element so they appear sequentially.</li>
+    </ol><br>
+
+    ✅ Result: Elements appear one after another with different animations, controlled by mouse clicks.
+  </div>
+</div><br>
+<b style="font-size: 17px; color:#cc0000;">Note:</b> <span style="color:#333;">Animation Pane in PowerPoint gives full control over timing and order of effects, ensuring a professional presentation flow.</span>`,
+  
+  q: "How can you make three objects (Title, Image, Text) appear one after another with different animations in PowerPoint?",
+  a: "b",
+  options: [
+    "Apply the same animation to all objects without using Animation Pane",
+    "Assign different animations, then arrange order in Animation Pane and set them to On Click",
+    "Insert transitions instead of animations for each element",
+    "Manually show each object by copying them to separate slides"
+  ]
+},
+
+
+
  
  {
   passage: `<div style="margin-top: 120px;">

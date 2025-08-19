@@ -805,7 +805,9 @@ const questions = [
 }
 
     
-  function nextTFQuestion() {
+  let score = 0;
+
+function nextTFQuestion() {
   const selectedAnswer = document.querySelector("input[name='answer']:checked");
   if (!selectedAnswer) {
     alert("Please select an answer");
@@ -819,14 +821,14 @@ const questions = [
 
   if (isAnswerKeyALetter) {
     if (selectedValue === q.a.toLowerCase()) {
-      tfCorrectAnswers++; // ✅ صحح هنا بدل score
+      score++;
     }
   } else {
     const selectedOptionIndex = selectedValue.charCodeAt(0) - 97;
     const selectedOptionText = q.options[selectedOptionIndex];
 
     if (selectedOptionText.trim().toLowerCase() === q.a.trim().toLowerCase()) {
-      tfCorrectAnswers++; // ✅ صحح هنا بدل score
+      score++;
     }
   }
 
@@ -989,7 +991,7 @@ function sendDataToGoogleSheet(resultData) {
     formData.append("course", resultData.course);
 
 
-    fetch("https://script.google.com/macros/s/AKfycbxEYf2XYk1MT_yp_R9cMrw7xaWifGrN8D17woiDRoMxE05T4xZFQxVihdhP22TcPBypkQ/exec", {
+    fetch("https://script.google.com/macros/s/AKfycbybhyNx3uPAoAjGlvHe_jumSp_NKeOIIwoAPHWOqzUukmlmtoTlE5wF8Y_w17l5m9FS/exec", {
         method: "POST",
         headers: {
             "Content-Type": "application/x-www-form-urlencoded",
