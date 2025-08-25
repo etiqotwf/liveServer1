@@ -677,7 +677,7 @@ export async function archiveFolder(folderPath) {
     let folderName = path.basename(folderPath);
 
     // ✅ تحويل الاسم العربي إلى إنجليزي آمن
-let cleanFolderName = transliterate(folderName).replace(/[^a-zA-Z0-9-_]/g, "");
+let cleanFolderName = transliterate(folderName).replace(/[^a-zA-Z0-9_-]/g, "");
     if (!cleanFolderName) cleanFolderName = "ArchivedFolder";
 
     const zipPath = path.join(archiveDir, `${cleanFolderName}.zip`);
@@ -1390,7 +1390,7 @@ async function createPdfFromImages() {
         {
             type: 'input',
             name: 'folderName',
-            message: 'Enter the folder name (inside Desktop) containing files:',
+            message: 'Enter the folder name (inside Desktop) containing images or PDFs:',
             default: 'scanner_output'
         },
         {
@@ -1403,7 +1403,6 @@ async function createPdfFromImages() {
 
     const folderPath = path.join(desktopPath, answers.folderName);
 
-    // إنشاء المجلد لو مش موجود
     if (!fs.existsSync(folderPath)) {
         fs.mkdirSync(folderPath, { recursive: true });
         console.log(`✅ Created folder: ${folderPath}`);
@@ -1411,48 +1410,46 @@ async function createPdfFromImages() {
 
     const outputPdfPath = path.join(folderPath, answers.outputFileName);
 
-    // تصفية الملفات لتكون فقط صور أو PDF
-    const files = fs
-        .readdirSync(folderPath)
-        .filter((file) => /\.(jpe?g|png|pdf)$/i.test(file))
-        .map((file) => path.join(folderPath, file));
+    const files = fs.readdirSync(folderPath);
 
-    if (files.length === 0) {
-        console.log("⚠️ No images or PDFs found in this folder.");
+    const imageFiles = files.filter(file => /\.(jpe?g|png)$/i.test(file)).sort();
+    const pdfFiles = files.filter(file => /\.pdf$/i.test(file)).sort();
+
+    if (imageFiles.length === 0 && pdfFiles.length === 0) {
+        console.log("⚠️ No images or PDF files found in this folder.");
         return;
     }
 
     try {
         const pdfDoc = await PDFDocument.create();
 
-        for (const filePath of files) {
-            const fileExt = path.extname(filePath).toLowerCase();
-
-            if (fileExt === '.pdf') {
-                // دمج PDF
-                const existingPdfBytes = fs.readFileSync(filePath);
-                const srcDoc = await PDFDocument.load(existingPdfBytes);
-                const copiedPages = await pdfDoc.copyPages(srcDoc, srcDoc.getPageIndices());
-
-                copiedPages.forEach((page) => pdfDoc.addPage(page));
+        // دمج الصور
+        for (const imgFile of imageFiles) {
+            const imgPath = path.join(folderPath, imgFile);
+            const imgBytes = fs.readFileSync(imgPath);
+            let img;
+            if (imgFile.toLowerCase().endsWith(".png")) {
+                img = await pdfDoc.embedPng(imgBytes);
             } else {
-                // دمج صورة
-                const imgBytes = fs.readFileSync(filePath);
-                let img;
-                if (fileExt === '.png') {
-                    img = await pdfDoc.embedPng(imgBytes);
-                } else {
-                    img = await pdfDoc.embedJpg(imgBytes);
-                }
-
-                const page = pdfDoc.addPage([img.width, img.height]);
-                page.drawImage(img, {
-                    x: 0,
-                    y: 0,
-                    width: img.width,
-                    height: img.height,
-                });
+                img = await pdfDoc.embedJpg(imgBytes);
             }
+
+            const page = pdfDoc.addPage([img.width, img.height]);
+            page.drawImage(img, {
+                x: 0,
+                y: 0,
+                width: img.width,
+                height: img.height,
+            });
+        }
+
+        // دمج ملفات PDF
+        for (const pdfFile of pdfFiles) {
+            const pdfPath = path.join(folderPath, pdfFile);
+            const existingPdfBytes = fs.readFileSync(pdfPath);
+            const existingPdf = await PDFDocument.load(existingPdfBytes);
+            const copiedPages = await pdfDoc.copyPages(existingPdf, existingPdf.getPageIndices());
+            copiedPages.forEach((page) => pdfDoc.addPage(page));
         }
 
         const pdfBytes = await pdfDoc.save();
@@ -1462,7 +1459,6 @@ async function createPdfFromImages() {
         console.error("❌ Error creating PDF:", err.message);
     }
 }
-
 
 
 
