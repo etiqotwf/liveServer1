@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>ICDL - 12 Groups Schedule (10 Weeks)</title>
+<style>
+
+
+* {
+  direction: ltr !important;
+  unicode-bidi: plaintext !important;
+}
+
+body {
+  font-family: "Arial", "Segoe UI", Tahoma, sans-serif;
+  text-align: left;
+}
+
+html, body {
+  font-variant-numeric: lining-nums; /* يخلي الأرقام دايمًا 123 مش ١٢٣ */
+}
+
+  
+  :root{
+    --font-size: 14pt;
+  }
+  body{
+    font-family: "Arial", "Segoe UI", Tahoma, sans-serif;
+    direction: ltr;
+    margin: 16px;
+    color:#222;
+    font-size: var(--font-size);
+  }
+  h1 { text-align:center; font-size:22pt; margin-bottom:6px; }
+  .meta { text-align:center; margin-bottom:12px; color:#444; }
+  table{ width:100%; border-collapse:collapse; margin-bottom:18px; page-break-inside:avoid; }
+  th, td { border:1px solid #555; padding:8px 6px; text-align:center; vertical-align:middle; }
+  th{ background:#2e7d32; color:#fff; font-weight:700; font-size:13pt; }
+  .legend { display:flex; flex-wrap:wrap; gap:10px; align-items:center; margin-bottom:12px; }
+  .colorbox{ width:18px; height:14px; display:inline-block; margin-right:8px; border:1px solid #666; vertical-align:middle; }
+  .small { font-size:11pt; color:#333; }
+  .summary { margin-top:18px; border-top:2px solid #ddd; padding-top:12px; font-size:13pt; }
+  #printBtn { position: fixed; left: 16px; bottom: 16px; background:#1976d2; color:#fff; border:none; padding:10px 14px; border-radius:6px; cursor:pointer; box-shadow:0 2px 6px rgba(0,0,0,0.2); }
+  @media print{
+    #printBtn { display:none; }
+    body { margin:6mm; }
+    th, td { page-break-inside:avoid; }
+  }
+
+
+.main-title {
+  text-align: center;
+  font-size: 34pt;
+  font-weight: bold;
+  margin-bottom: 25px;
+  background: linear-gradient(90deg, #1976d2, #da4a26); /* تدرج أزرق جميل */
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  line-height: 1.3;
+}
+
+h2 {
+  text-align: center;
+  font-size: 22pt;
+  margin-bottom: 20px;
+  color: #2c3e50;
+}
+
+.instructions {
+  margin: 15px auto;
+  max-width: 800px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  overflow: hidden;
+  font-size: 14pt;
+}
+
+.toggle-btn {
+  width: 100%;
+  background: #1976d2;
+  color: white;
+  padding: 12px 16px;
+  text-align: right;
+  border: none;
+  outline: none;
+  font-size: 16pt;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.toggle-btn:hover {
+  background: #1565c0;
+}
+
+.content {
+  display: none;
+  padding: 12px 16px;
+  background: #f9f9f9;
+  line-height: 1.6;
+  direction: rtl;
+}
+
+
+
+</style>
+</head>
+<body>
+
+<body>
+
+<body>
+
+<body>
+
+<h1 class="main-title">
+  International Learning Center (ILC 🎓)
+</h1>
+
+<h2>📅 ICDL Schedule — 12 Groups (10 Weeks)</h2>
+<div class="meta">Training Days: Sunday → Thursday · Time: 3:00 – 6:00 PM · 3 sessions per day</div>
+
+
+<body>
+
+<div class="instructions">
+  <button class="toggle-btn">📘  التعليمات الخاصة بالكورس اضغط على الزر لرؤية التعليمات</button>
+  <div class="content">
+    <ul>
+      <li>1- عدد السيشن الواجب حضوره لكل طالب 12 سيشن</li>
+      <li>2- يمكن للطالب الحضور في أكثر من جروب حسب إرادته وحسب تعليمات المعهد</li>
+      <li>3- يمكن للطالب ضغط المدة بحضور أكثر من كلاس بشرط موافقة المعهد وسماح الكلاس</li>
+      <li>4- لابد عدم تجاوز مدة الكورس الكلية لاستيفاء عدد السيشن المقرر</li>
+      <li>5- سوف يتم عمل اختبارات نهاية الكورس وذلك بعد استيفاء مدة الكورس المقررة</li>
+    </ul>
+  </div>
+</div>
+
+
+<script>
+  document.querySelector('.toggle-btn').addEventListener('click', function(){
+    const content = document.querySelector('.content');
+    content.style.display = content.style.display === 'block' ? 'none' : 'block';
+  });
+</script>
+
+
+<div id="legend" class="legend small"></div>
+
+<table id="scheduleTable" aria-label="Schedule table">
+  <thead>
+    <tr>
+      <th>Week / Day</th>
+      <th>3:00 – 4:00</th>
+      <th>4:00 – 5:00</th>
+      <th>5:00 – 6:00</th>
+    </tr>
+  </thead>
+  <tbody id="tbody"></tbody>
+</table>
+
+<div id="summary" class="summary"></div>
+
+<button id="printBtn" onclick="window.print()">🖨️ Save as PDF / Print</button>
+
+<script>
+(function(){
+  // Settings
+  const groups = Array.from({length:12}, (_,i) => 'G' + (i+1));
+  const colors = [
+    '#FFCDD2','#BBDEFB','#C8E6C9','#FFF9C4','#FFCCBC','#D1C4E9',
+    '#B2EBF2','#F0F4C3','#FFECB3','#FFE0B2','#DCEDC8','#F8BBD0'
+  ];
+  const weeks = 10;
+  const daysPerWeek = 5; // Sunday - Thursday
+  const slotsPerDay = 3;
+  const perGroupTarget = 12; 
+
+  // ✅ Start date: Sunday 31 August 2025
+  let startDate = new Date(2025, 7, 31); // month index starts from 0 -> 7 = August
+
+  const dayNames = ['Sunday','Monday','Tuesday','Wednesday','Thursday'];
+
+  // build legend
+  const legend = document.getElementById('legend');
+  groups.forEach((g,i)=>{
+    const span = document.createElement('div');
+    span.className = 'small';
+    span.innerHTML = `<span class="colorbox" style="background:${colors[i]}"></span> ${g}`;
+    legend.appendChild(span);
+  });
+
+  // remaining counts
+  const remaining = {};
+  groups.forEach(g => remaining[g] = perGroupTarget);
+
+  function chooseGroup(todayChosenSet, prevDaySet){
+    let cand = groups.filter(g => remaining[g] > 0 && !todayChosenSet.has(g) && !prevDaySet.has(g));
+    if(cand.length === 0){
+      cand = groups.filter(g => remaining[g] > 0 && !todayChosenSet.has(g));
+    }
+    if(cand.length === 0){
+      return null;
+    }
+    cand.sort((a,b) => (remaining[b] - remaining[a]) || a.localeCompare(b));
+    return cand[0];
+  }
+
+  const schedule = [];
+  let prevDaySet = new Set();
+
+  for(let w=1; w<=weeks; w++){
+    for(let d=0; d<daysPerWeek; d++){
+      const daySlots = [];
+      const todaySet = new Set();
+
+      // calculate current date
+      const thisDate = new Date(startDate);
+      thisDate.setDate(startDate.getDate() + (w-1)*7 + d);
+
+      for(let s=0; s<slotsPerDay; s++){
+        const remainingSum = Object.values(remaining).reduce((a,b)=>a+b,0);
+        if(remainingSum === 0){
+          daySlots.push('—');
+          continue;
+        }
+        const pick = chooseGroup(todaySet, prevDaySet);
+        if(!pick){
+          daySlots.push('—');
+          continue;
+        }
+        remaining[pick]--;
+        todaySet.add(pick);
+        daySlots.push(pick);
+      }
+      schedule.push({week:w, dayIndex:d, dayName: dayNames[d], date: thisDate, slots: daySlots});
+      prevDaySet = todaySet;
+    }
+  }
+
+  // render table
+  const tbody = document.getElementById('tbody');
+  schedule.forEach(day=>{
+    const tr = document.createElement('tr');
+    const tdDay = document.createElement('td');
+    const dateStr = day.date.toLocaleDateString('en-GB', { day:'2-digit', month:'short', year:'numeric' });
+    tdDay.innerHTML = `Week ${day.week} — ${day.dayName} (${dateStr})`;
+    tr.appendChild(tdDay);
+    day.slots.forEach(slot=>{
+      const td = document.createElement('td');
+      if(slot === '—' || slot === null){
+        td.textContent = '—';
+      }else{
+        const idx = groups.indexOf(slot);
+        td.textContent = slot;
+        td.style.background = colors[idx % colors.length];
+      }
+      tr.appendChild(td);
+    });
+    tbody.appendChild(tr);
+  });
+
+  // summary
+  const actualCounts = {};
+  groups.forEach(g=> actualCounts[g] = 0);
+  schedule.forEach(day=>{
+    day.slots.forEach(s=>{
+      if(s && s !== '—') actualCounts[s]++;
+    });
+  });
+
+  const summaryDiv = document.getElementById('summary');
+  const startStr = schedule[0].date.toLocaleDateString('en-GB',{day:'2-digit',month:'long',year:'numeric'});
+  const endStr = schedule[schedule.length-1].date.toLocaleDateString('en-GB',{day:'2-digit',month:'long',year:'numeric'});
+
+  let html = `<h3>📊 Summary — Number of sessions per group</h3>`;
+  html += `<p><strong>Course Duration:</strong> ${startStr} → ${endStr}</p>`;
+  html += '<div style="display:flex;flex-wrap:wrap;gap:10px;">';
+  groups.forEach((g,i)=>{
+    html += `<div style="min-width:160px;padding:6px;border:1px solid #ddd;border-radius:6px;background:#fafafa;">
+      <span class="colorbox" style="background:${colors[i]}"></span>
+      <strong style="margin-right:8px">${g}</strong> — ${actualCounts[g]} / ${perGroupTarget} sessions
+    </div>`;
+  });
+  html += '</div>';
+  summaryDiv.innerHTML = html;
+
+})();
+</script>
+
+</body>
+</html>
