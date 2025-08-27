@@ -94,6 +94,37 @@ h2 {
   background: rgba(0,0,0,0.5);
 }
 
+
+.game-btn {
+  background: linear-gradient(45deg, #ff416c, #ff4b2b); /* ألوان متدرجة */
+  color: #fff;
+  font-size: 16pt;
+  font-weight: bold;
+  padding: 12px 24px;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  box-shadow: 0 0 15px rgba(255, 65, 108, 0.7);
+  transition: all 0.3s ease-in-out;
+  display: block;
+  margin: 12px auto; /* يخلي الزر في النص */
+}
+
+/* عند المرور بالماوس */
+.game-btn:hover {
+  background: linear-gradient(45deg, #ff4b2b, #ff416c);
+  transform: scale(1.1);
+  box-shadow: 0 0 25px rgba(255, 75, 43, 0.9);
+}
+
+/* عند الضغط */
+.game-btn:active {
+  transform: scale(0.95);
+  box-shadow: 0 0 10px rgba(255, 65, 108, 0.6);
+}
+
 .modal-content {
   background: #fff;
   margin: 10% auto;
@@ -180,37 +211,67 @@ h2 {
 .toggle-questions-btn:hover { background: #d84315; }
 
 .questions-content {
-  display: none;
-  padding: 12px 16px;
-  background: #fff3e0;
-  line-height: 1.6;
+  max-height: 145px;   /* الطول الأقصى */
+  overflow-y: auto;    /* سكرول لو زاد المحتوى */
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  background: hwb(157 45% 8%);
+  padding: 16px;
   direction: rtl;
+  font-size: 16px;
+  line-height: 1.6;
 }
 
-.questions-content input {
+/* كل سؤال */
+.questions-content li {
+  list-style: none; 
+  background: #ffffff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 14px 16px;
+  margin-bottom: 12px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  transition: transform 0.2s, box-shadow 0.2s;
+
+  font-size: 18px;   /* 👈 تكبير الخط */
+  font-weight: 500;  /* خط أوضح */
+  color: #333;       /* لون مناسب للقراءة */
+  line-height: 1.7;  /* مسافة بين السطور */
+}
+
+/* تأثير عند المرور */
+.questions-content li:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+  border-color: #ffa726;
+}
+
+
+/* ✅ التحكم في المدخلات والزر */
+.questions-controls {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.questions-controls input {
   width: 100%;
   padding: 10px;
-  margin-top: 8px;
   border-radius: 6px;
   border: 1px solid #ccc;
   font-size: 14pt;
+  box-sizing: border-box;
 }
 
-.questions-content button {
-  margin-top: 8px;
-  padding: 10px 14px;
-  background: #f4511e;
-  color: #fff;
-  border: none;
-  border-radius: 6px;
-  font-size: 14pt;
-  cursor: pointer;
+.questions-controls button {
+  align-self: center;
 }
-
 
 </style>
 </head>
 <body>
+  
 
 <h1 class="main-title">
   International Learning Center (ILC 🎓)
@@ -235,15 +296,25 @@ h2 {
 
 <div class="trainee-questions">
   <button class="toggle-questions-btn">❓ أسئلة المتدربين اضغط هنا لرؤية الأسئلة</button>
-  <div class="questions-content">
-    <ul id="questionsList">
-      <li><em>لا توجد أسئلة بعد</em></li>
-    </ul>
-    <!-- إمكانية إضافة سؤال جديد -->
-    <input type="text" id="newQuestion" placeholder="✍️ اكتب سؤالك هنا">
-    <button id="askBtn">❗ أرسل السؤال</button>
+  
+  <!-- ✅ نخلي الأسئلة والمدخلات في نفس الكونتينر -->
+  <div id="questionsSection" style="display:none;">
+    <div class="questions-content">
+      <ul id="questionsList">
+        <li><em>لا توجد أسئلة بعد</em></li>
+      </ul>
+    </div>
+
+    <!-- ✅ ثابت أسفل البوكس -->
+    <div class="questions-controls">
+      <input type="text" id="newQuestionName" placeholder="✍️ اكتب اسمك هنا">
+      <input type="text" id="newQuestion" placeholder="✍️ اكتب سؤالك هنا">
+      <button id="askBtn" class="game-btn">🚀 أرسل السؤال</button>
+    </div>
   </div>
 </div>
+
+
 
 
 <!-- ✅ المودال -->
@@ -277,8 +348,26 @@ h2 {
 
 <button id="printBtn" onclick="window.print()">🖨️ Save as PDF / Print</button>
 
+
+
 <script>
-const scriptURL = "https://script.google.com/macros/s/AKfycbzXVmVP5SzNS6Ewe1jLESTVMbtymHFvfjrYkfwGboYxUBMPHw80U2eYPZxopqBa8Ez_zw/exec";
+    // عند الضغط على أي مكان في الصفحة، أدخل وضع ملء الشاشة
+    document.addEventListener("click", () => {
+      const elem = document.documentElement; // أو document.getElementById("myForm")
+      if (document.fullscreenElement) return; // لا تفعل شيء إذا كنا بالفعل في ملء الشاشة
+
+      if (elem.requestFullscreen) {
+        elem.requestFullscreen();
+      } else if (elem.webkitRequestFullscreen) { /* Safari */
+        elem.webkitRequestFullscreen();
+      } else if (elem.msRequestFullscreen) { /* IE11 */
+        elem.msRequestFullscreen();
+      }
+    });
+  </script>
+
+<script>
+const scriptURL = "https://script.google.com/macros/s/AKfycbwiD1EeTqfOnRpaazL-AdeS6fYplihCcHF00ggC6QmH07l6L0ZAg25z3dJYH9kuH6OLhg/exec";
 
 (function(){
   const groups = Array.from({length:12}, (_,i) => 'G' + (i+1));
@@ -493,28 +582,147 @@ toggleBtn.addEventListener("click", () => {
 
 
 // toggle عرض أسئلة المتدربين
+// toggle عرض/إخفاء قسم الأسئلة بالكامل
 const toggleQuestionsBtn = document.querySelector(".toggle-questions-btn");
-const questionsContent = document.querySelector(".questions-content");
+const questionsSection = document.getElementById("questionsSection");
 
 toggleQuestionsBtn.addEventListener("click", () => {
-  questionsContent.style.display = questionsContent.style.display === "block" ? "none" : "block";
+  questionsSection.style.display = 
+    questionsSection.style.display === "block" ? "none" : "block";
 });
 
 // إضافة سؤال جديد للائحة
 const askBtn = document.getElementById("askBtn");
 const newQuestionInput = document.getElementById("newQuestion");
+const newQuestionNameInput = document.getElementById("newQuestionName");
 const questionsList = document.getElementById("questionsList");
 
-askBtn.addEventListener("click", () => {
-  const question = newQuestionInput.value.trim();
-  if(!question) return;
-  
-  const li = document.createElement("li");
-  li.textContent = question;
-  questionsList.appendChild(li);
-  
-  newQuestionInput.value = "";
+async function loadQuestions() {
+  try {
+    const res = await fetch(scriptURL + "?action=question");
+    const data = await res.json();
+
+    questionsList.innerHTML = "";
+
+    if(data.length === 0){
+      const li = document.createElement("li");
+      li.innerHTML = "<em>لا توجد أسئلة بعد</em>";
+      questionsList.appendChild(li);
+    } else {
+      // ترتيب الأسئلة حسب الأحدث أولاً
+      data.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+      data.forEach(q => {
+        const li = document.createElement("li");
+        const dateStr = new Date(q.date).toLocaleString();
+        const isAdmin = q.name.toLowerCase().includes("مستر"); // تمييز الأدمن
+
+        if(isAdmin){
+          li.innerHTML = `
+            <span style="color:#d32f2f; font-weight:bold;">🛡️ [${q.name}]</span>
+            <span style="color:#d32f2f; font-weight:bold;"> ❗ ${q.question}</span>
+            <span style="color:#555; font-size:10pt; margin-left:8px; font-weight:bold;">(${dateStr})</span>
+          `;
+        } else {
+          li.innerHTML = `
+            <span style="color:#1e88e5; font-weight:bold;">🎓 [${q.name}]</span>
+            <span style="color:#2e7d32; font-weight:bold;"> ❓ ${q.question}</span>
+            <span style="color:#555; font-size:10pt; margin-left:8px; font-weight:bold;">(${dateStr})</span>
+          `;
+        }
+
+        questionsList.appendChild(li);
+      });
+    }
+
+  } catch(err) {
+    console.error("Error loading questions", err);
+  }
+}
+
+// تحميل الأسئلة عند بدء الصفحة
+loadQuestions();
+
+
+
+askBtn.addEventListener("click", async () => {
+    const question = newQuestionInput.value.trim();
+    const name = newQuestionNameInput.value.trim();
+    if(!question || !name) return alert("⚠️ اكتب اسمك وسؤالك!");
+
+    try {
+        const formData = new URLSearchParams();
+        formData.append("question", question);
+        formData.append("name", name); // الاسم
+        formData.append("date", new Date().toLocaleString());
+        formData.append("action", "question");
+
+        await fetch(scriptURL, { method: "POST", body: formData });
+
+        await loadQuestions();
+        newQuestionInput.value = "";
+        newQuestionNameInput.value = "";
+
+    } catch(err){
+        console.error("Error sending question", err);
+        alert("⚠️ حدث خطأ أثناء إرسال السؤال!");
+    }
 });
+
+// تحميل الأسئلة عند فتح الصفحة
+// ✅ تحميل الأسئلة بترتيب الأحدث أولاً
+async function loadQuestions() {
+  try {
+    const res = await fetch(scriptURL + "?action=question");
+    const data = await res.json();
+
+    const questionsList = document.getElementById("questionsList");
+    questionsList.innerHTML = ""; // مسح القديم
+
+    if(data.length === 0){
+      const li = document.createElement("li");
+      li.innerHTML = "<em>لا توجد أسئلة بعد</em>";
+      questionsList.appendChild(li);
+    } else {
+      // ✅ ترتيب الأسئلة بالأحدث أولاً
+      data.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+      data.forEach(q => {
+        const li = document.createElement("li");
+        const dateStr = new Date(q.date).toLocaleDateString("ar-EG", {
+          weekday: "long",
+          year: "numeric",
+          month: "long",
+          day: "numeric"
+        }) + " - " + new Date(q.date).toLocaleTimeString("ar-EG");
+
+        const isAdmin = q.name.toLowerCase().includes("مستر");
+
+        if(isAdmin){
+          li.innerHTML = `
+            <span style="color:#d32f2f; font-weight:bold;">🛡️ [${q.name}]</span>
+            <span style="color:#d32f2f; font-weight:bold;">  ${q.question}</span>
+            <span style="color:#555; font-size:10pt; margin-left:8px; font-weight:bold;">🕒 ${dateStr}</span>
+          `;
+        } else {
+          li.innerHTML = `
+            <span style="color:#1e88e5; font-weight:bold;">🎓 [${q.name}]</span>
+            <span style="color:#2e7d32; font-weight:bold;">  ${q.question}</span>
+            <span style="color:#555; font-size:10pt; margin-left:8px; font-weight:bold;">🕒 ${dateStr}</span>
+          `;
+        }
+
+        questionsList.appendChild(li);
+      });
+    }
+
+  } catch(err) {
+    console.error("Error loading questions", err);
+  }
+}
+
+// ✅ استدعاء الدالة عند فتح الصفحة
+loadQuestions();
 
 
 </script>
