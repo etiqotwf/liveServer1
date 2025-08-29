@@ -8,7 +8,7 @@
 <div class="news-ticker">
   <div class="ticker-title">📢 آخر التحديثات:</div>
   <div class="ticker-content">
-    <span>🔔 التسجيل في الجروبات متاح الآن .. ⚡ برجاء الالتزام بالمواعيد المحددة .. ✅ كل مجموعة لا تتعدى 10 طلاب فقط .. 🎓 نتمنى لكم التوفيق 🌟</span>
+    <span>⚡ برجاء الالتزام بالمواعيد المحددة .. ✅ كل مجموعة لا تتعدى 10 طلاب فقط .. 🔔 التسجيل في الجروبات متاح الآن .. 🎓 نتمنى لكم التوفيق 🌟</span>
   </div>
 </div>
 
@@ -26,7 +26,8 @@
   white-space: nowrap;
   padding: 10px 0;
   box-shadow: 0 2px 6px rgba(0,0,0,0.25);
-  margin-bottom: 15px;
+  margin-bottom: 20px; /* مسافة بعد الشريط */
+  margin-top: 20px;    /* ✅ مسافة من أعلى الصفحة */
   border-radius: 6px;
 }
 
@@ -43,17 +44,18 @@
 .ticker-content {
   display: inline-block;
   white-space: nowrap;
-  padding-left: 100%; /* يبدأ خارج الشاشة */
-  animation: ticker 18s linear infinite; /* السرعة */
+  padding-right: 100%; /* يبدأ من اليمين */
+  animation: ticker 18s linear infinite;
+  direction: rtl; /* ✅ النص العربي يبدأ صح */
 }
 
 .ticker-content span {
-  padding-right: 100%; /* مسافة كافية بين التكرارات */
+  padding-left: 100%;
   display: inline-block;
 }
 
 @keyframes ticker {
-  0% { transform: translateX(0); }
+  0% { transform: translateX(100%); }
   100% { transform: translateX(-100%); }
 }
 </style>
