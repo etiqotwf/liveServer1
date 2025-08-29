@@ -45,9 +45,9 @@
 .ticker-content {
   display: inline-block;
   white-space: nowrap;
-  padding-left: 100%; /* يبدأ خارج الشاشة */
-    direction: rtl;       /* عكس اتجاه الكتابة */
-  animation: ticker 18s linear infinite; /* السرعة */
+  animation: ticker 30s linear infinite; /* زودت المدة عشان يمشي براحه */
+  padding-left: 100%;
+  direction: rtl;
 }
 
 .ticker-content span {
@@ -57,8 +57,8 @@
 
 /* الحركة */
 @keyframes ticker {
-  0%   { transform: translateX(-100%); }  /* كان يمشي من +100% */
-  100% { transform: translateX(100%); }   /* لعكس الاتجاه */
+  0%   { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
 }
 </style>
 
