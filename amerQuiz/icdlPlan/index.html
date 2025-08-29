@@ -427,8 +427,7 @@ const scriptURL = "https://script.google.com/macros/s/AKfycbwq_yEcR4ihNZlub3OEJ8
     studentNameInput.value="";
     modal.style.display="block";
   }
-
-  document.getElementById("saveBtn").addEventListener("click", async ()=> {
+document.getElementById("saveBtn").addEventListener("click", async ()=> {
   const name = studentNameInput.value.trim();
   if(!name || !currentGroup) return;
 
@@ -438,8 +437,9 @@ const scriptURL = "https://script.google.com/macros/s/AKfycbwq_yEcR4ihNZlub3OEJ8
   saveBtn.style.opacity = 0.6; // لتوضيح أنه تم التعطيل
 
   try {
-    const res = await fetch(scriptURL + "?action=get");
-    const data = await res.json();
+    // التحقق من امتلاء المجموعة
+    const resCheck = await fetch(scriptURL + "?action=get");
+    const data = await resCheck.json();
 
     const grouped = {};
     data.forEach(row=>{
@@ -455,18 +455,26 @@ const scriptURL = "https://script.google.com/macros/s/AKfycbwq_yEcR4ihNZlub3OEJ8
       return;
     }
 
+    // تجهيز البيانات للإرسال
     const formData = new URLSearchParams();
     formData.append("name", name);
     formData.append("group", currentGroup);
     formData.append("date", new Date().toLocaleString());
 
-    await fetch(scriptURL, { method: "POST", body: formData });
+    // إرسال الطلب
+    const res = await fetch(scriptURL, { method: "POST", body: formData });
+    const result = await res.json(); // قراءة رد السيرفر
 
-    alert("✅ تم الحفظ بنجاح!");
-    await loadMembers();
+    if(result.status === "ok"){
+      alert("✅ " + result.message);
+      await loadMembers();
+    } else {
+      alert("❌ خطأ: " + result.message);
+    }
 
   } catch(err){
     console.error("Error saving member", err);
+    alert("⚠️ حدث خطأ في الاتصال بالسيرفر");
   }
 
   modal.style.display="none";
@@ -476,8 +484,13 @@ const scriptURL = "https://script.google.com/macros/s/AKfycbwq_yEcR4ihNZlub3OEJ8
   saveBtn.style.opacity = 1;
 });
 
-  document.getElementById("cancelBtn").addEventListener("click",()=>{ modal.style.display="none"; });
-  window.onclick=function(e){ if(e.target===modal){ modal.style.display="none"; } };
+document.getElementById("cancelBtn").addEventListener("click",()=>{
+  modal.style.display="none";
+});
+
+window.onclick=function(e){
+  if(e.target===modal){ modal.style.display="none"; }
+};
 
   // ✅ جلب الأعضاء وعرض الكروت
   async function loadMembers(){
