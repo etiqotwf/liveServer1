@@ -28,7 +28,7 @@
   padding: 10px 0;
   box-shadow: 0 2px 6px rgba(0,0,0,0.25);
   margin-bottom: 15px;
-    margin-top: 20px;    /* ✅ مسافة من أعلى الصفحة */
+  margin-top: 20px;    /* ✅ مسافة من أعلى الصفحة */
   border-radius: 6px;
 }
 
@@ -36,9 +36,10 @@
 .ticker-title {
   background: rgba(0,0,0,0.25);
   padding: 6px 14px;
-    margin-left: 10px;
+  margin-left: 10px;
   flex-shrink: 0;
   border-radius: 4px;
+  animation: toggleTitle 50s linear infinite; /* متزامنة مع مدة الحركة */
 }
 
 /* النص المتحرك */
@@ -60,7 +61,16 @@
   0%   { transform: translateX(-100%); }
   100% { transform: translateX(100%); }
 }
+
+/* إخفاء وظهور العنوان */
+@keyframes toggleTitle {
+  0%   { opacity: 0; }   /* يختفي في بداية مرور النص */
+  20%  { opacity: 0; }   /* يفضل مختفي أثناء ما النص بيتحرك */
+  40%  { opacity: 1; }   /* يبدأ يظهر بعد مرور النص */
+  100% { opacity: 1; }   /* يفضل ظاهر لغاية بداية الدورة الجاية */
+}
 </style>
+
 
 
 <title>ICDL - 12 Groups Schedule (10 Weeks)</title>
