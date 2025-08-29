@@ -3,6 +3,63 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<!-- ✅ شريط الأخبار -->
+<div class="news-ticker">
+  <div class="ticker-title">📢 آخر التحديثات:</div>
+  <div class="ticker-content">
+    <span>🔔 التسجيل في الجروبات متاح الآن .. ⚡ برجاء الالتزام بالمواعيد المحددة .. ✅ كل مجموعة لا تتعدى 10 طلاب فقط .. 🎓 نتمنى لكم التوفيق 🌟</span>
+  </div>
+</div>
+
+<style>
+/* 🌟 شريط الأخبار */
+.news-ticker {
+  width: 100%;
+  background: linear-gradient(90deg, #1976d2, #da4a26);
+  color: #fff;
+  font-size: 15pt;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  white-space: nowrap;
+  padding: 10px 0;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.25);
+  margin-bottom: 15px;
+  border-radius: 6px;
+}
+
+/* عنوان الشريط (ثابت) */
+.ticker-title {
+  background: rgba(0,0,0,0.25);
+  padding: 6px 14px;
+  margin-right: 10px;
+  flex-shrink: 0;
+  border-radius: 4px;
+}
+
+/* النص المتحرك */
+.ticker-content {
+  display: inline-block;
+  white-space: nowrap;
+  padding-left: 100%; /* يبدأ خارج الشاشة */
+  animation: ticker 18s linear infinite; /* السرعة */
+}
+
+.ticker-content span {
+  padding-right: 100%; /* مسافة كافية بين التكرارات */
+  display: inline-block;
+}
+
+@keyframes ticker {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-100%); }
+}
+</style>
+
+
+
 <title>ICDL - 12 Groups Schedule (10 Weeks)</title>
 <style>
 * {
