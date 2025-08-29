@@ -428,48 +428,42 @@ const scriptURL = "https://script.google.com/macros/s/AKfycbwq_yEcR4ihNZlub3OEJ8
     modal.style.display="block";
   }
 
-  document.getElementById("saveBtn").addEventListener("click", async ()=> {
+document.getElementById("saveBtn").addEventListener("click", async ()=> {
   const name = studentNameInput.value.trim();
   if(!name || !currentGroup) return;
 
-  // تعطيل الزر مباشرة بعد الضغط
   const saveBtn = document.getElementById("saveBtn");
   saveBtn.disabled = true;
-  saveBtn.style.opacity = 0.6; // لتوضيح أنه تم التعطيل
+  saveBtn.style.opacity = 0.6;
 
   try {
-    const res = await fetch(scriptURL + "?action=get");
-    const data = await res.json();
-
-    const grouped = {};
-    data.forEach(row=>{
-      if(!grouped[row.group]) grouped[row.group]=[];
-      grouped[row.group].push(row.name);
+    const res = await fetch(scriptURL, {
+      method: "POST",
+      body: new URLSearchParams({
+        name: name,
+        group: currentGroup,
+        date: new Date().toLocaleString()
+      })
     });
 
-    if(grouped[currentGroup] && grouped[currentGroup].length >= 10){
-      alert(`⚠️ هذه المجموعة ${currentGroup} مكتملة، لا يمكن إضافة متدرب جديد`);
-      modal.style.display="none";
-      saveBtn.disabled = false;
-      saveBtn.style.opacity = 1;
-      return;
+    const data = await res.json(); // نقرأ الرد JSON
+
+    if (data.status === "ok") {
+      alert("✅ " + data.message);   // تم الحفظ
+      await loadMembers();
+    } else {
+      alert("❌ خطأ: " + data.message); // رسالة خطأ من السيرفر
     }
-
-    const formData = new URLSearchParams();
-    formData.append("name", name);
-    formData.append("group", currentGroup);
-    formData.append("date", new Date().toLocaleString());
-
-    await fetch(scriptURL, { method: "POST", body: formData });
-
-    alert("✅ تم الحفظ بنجاح!");
-    await loadMembers();
 
   } catch(err){
     console.error("Error saving member", err);
+    alert("⚠️ حدث خطأ في الاتصال بالسيرفر");
   }
 
   modal.style.display="none";
+  saveBtn.disabled = false;
+  saveBtn.style.opacity = 1;
+});
 
   // إعادة تفعيل الزر عند فتح المودال مرة أخرى
   saveBtn.disabled = false;
