@@ -36,7 +36,7 @@
 .ticker-title {
   background: rgba(0,0,0,0.25);
   padding: 6px 14px;
-  margin-right: 10px;
+    margin-left: 10px;
   flex-shrink: 0;
   border-radius: 4px;
 }
@@ -46,6 +46,7 @@
   display: inline-block;
   white-space: nowrap;
   padding-left: 100%; /* يبدأ خارج الشاشة */
+    direction: rtl;       /* عكس اتجاه الكتابة */
   animation: ticker 18s linear infinite; /* السرعة */
 }
 
@@ -54,9 +55,10 @@
   display: inline-block;
 }
 
+/* الحركة */
 @keyframes ticker {
-  0% { transform: translateX(0); }
-  100% { transform: translateX(-100%); }
+  0%   { transform: translateX(-100%); }  /* كان يمشي من +100% */
+  100% { transform: translateX(100%); }   /* لعكس الاتجاه */
 }
 </style>
 
