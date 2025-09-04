@@ -132,16 +132,16 @@ input[type="radio"] {
         <p>Date: <span id="date"></span></p>
         <p id="timer">Time Remaining: 30:00</p>
         <div id="passage">
-           <h3>Read the following passage carefully and answer the following questions:</h3>
-            <p>
-                <strong>The Evolution of Information Technology in Computers
+            <h3>Read the following passage carefully and answer the following questions:</h3>
+<p>
+    <strong>Understanding Microsoft Word</strong><br>
+    Microsoft Word is a widely used word processing application developed by Microsoft. It allows users to create, format, and edit text-based documents easily. First released in 1983, Word has evolved to become one of the essential tools for students, professionals, and businesses around the world.
 
-                </strong><br>
-                Young people leave their parents' homes at different ages in different parts of the world. In the United States, a lot of college students do not live at home. They often choose to go to college in different cities – away from their parents. At college, many live in university housing. After college, most people prefer to live in their own homes. They often live alone, but some people rent apartments with others. These people are called roommates.
-                <p> Information Technology (IT) has transformed the world of computers over the years. In the early days, computers were large and slow, used mainly for calculations. Over time, technology advanced, making computers smaller, faster, and more powerful. The rise of the internet changed how people communicate, work, and store data. Today, IT plays a key role in every field, from education to business. Cloud computing, artificial intelligence, and cybersecurity are shaping the future of IT, making computers smarter and more efficient than ever.
-                    As technology continues to evolve, IT is becoming more integrated into daily life. Mobile devices, smart homes, and automation have revolutionized the way people interact with computers. Businesses rely on IT for data management, cybersecurity, and digital marketing. With the development of machine learning and blockchain technology, the IT industry is constantly growing, creating new opportunities and challenges. The future of IT promises even more advancements, making the digital world faster, safer, and more innovative.
-                    
-                    </p>
+    With Word, users can type and structure documents using headings, bullet points, tables, images, and charts. It includes features like spell check, grammar check, auto-correct, and thesaurus to enhance writing accuracy. Word also offers templates for letters, resumes, reports, and more.
+
+    In recent versions, Word has embraced cloud integration through OneDrive, enabling users to collaborate in real time and access documents across devices. Tools like Mail Merge simplify mass communication, while Review tools allow for tracking changes and commenting on documents. As technology advances, Microsoft Word continues to improve with new features, making it a powerful and user-friendly platform for document creation.
+</p>
+
                         </div>
         <div id="quiz"></div>
     </div>
@@ -196,62 +196,63 @@ input[type="radio"] {
     <script>
         document.getElementById("date").innerText = new Date().toLocaleDateString("en-US");
     
-    const trueFalseQuestions = [
-    { q: "Quantum computing is expected to replace classical computers in all fields within the next decade.", a: "false" },
-    { q: "Machine learning and artificial intelligence rely heavily on big data for improving accuracy.", a: "true" },
-    { q: "Blockchain technology is primarily used for securing online financial transactions.", a: "true" },
-    { q: "Cybersecurity threats are decreasing due to advancements in encryption and firewalls.", a: "false" },
-    { q: "Cloud computing eliminates the need for physical data centers in large enterprises.", a: "false" },
-    { q: "Edge computing improves processing speed by reducing dependence on centralized cloud servers.", a: "true" }
+   const trueFalseQuestions = [
+  { q: "Microsoft Word is used primarily for creating and editing text documents.", a: "true" },
+  { q: "You can insert tables, images, and charts into a Word document.", a: "true" },
+  { q: "The shortcut Ctrl + S is used to save the document in Word.", a: "true" },
+  { q: "The Review tab in Word includes spell check and track changes tools.", a: "true" },
+  { q: "Microsoft Word cannot open PDF files.", a: "false" },
+  { q: "Headers and footers can be added to every page in Word.", a: "true" },
+  { q: "Word documents cannot include hyperlinks.", a: "false" },
+  { q: "You can change line spacing in Word from the Home tab.", a: "true" },
+  { q: "Microsoft Word only runs on Windows and cannot be used on Mac.", a: "false" },
+  { q: "Track Changes allows users to suggest edits without changing the original text.", a: "true" },
+  { q: "Word has a built-in dictionary and thesaurus.", a: "true" },
+  { q: "Ctrl + B is the shortcut for italic text in Word.", a: "false" },
+  { q: "Word allows users to collaborate on documents in real-time through OneDrive.", a: "true" },
+  { q: "You cannot add page numbers automatically in Word.", a: "false" },
+  { q: "The default file extension for Word documents is .docx.", a: "true" },
+  { q: "SmartArt in Word is used to insert mathematical equations.", a: "false" },
+  { q: "You can use Word to create mail merge documents.", a: "true" },
+  { q: "Word cannot check for grammatical errors.", a: "false" },
+  { q: "Watermarks can be added to Word documents from the Design tab.", a: "true" },
+  { q: "The Navigation Pane helps you move between document headings quickly.", a: "true" }
 ];
 
     
 const questions = [
-    { q: "Which function in Excel is used to find the highest value in a range?", a: "c", options: ["SUM", "AVERAGE", "MAX", "COUNT"] },
-    { q: "Which keyboard shortcut is used to paste content in Microsoft Word?", a: "b", options: ["Ctrl + X", "Ctrl + V", "Ctrl + P", "Ctrl + C"] },
-    { q: "Which file extension is associated with Microsoft PowerPoint presentations?", a: "a", options: [".pptx", ".xlsx", ".docx", ".mdb"] },
-    { q: "Which function in Excel is used to search for a value in the first column and return a corresponding value?", a: "c", options: ["INDEX", "MATCH", "VLOOKUP", "FIND"] },
-    { q: "Which feature in Excel is used to apply automatic formatting based on cell values?", a: "b", options: ["Data Validation", "Conditional Formatting", "Goal Seek", "Scenario Manager"] },
-    { q: "In Windows, which key combination is used to open Task Manager?", a: "c", options: ["Ctrl + Shift + Esc", "Alt + Tab", "Ctrl + Alt + Delete", "Win + R"] },
-    { q: "Which Excel feature allows you to apply different formatting based on cell values?", a: "d", options: ["Data Validation", "Sorting", "Pivot Table", "Conditional Formatting"] },
-    { q: "Which shortcut key is used to undo an action in Microsoft applications?", a: "a", options: ["Ctrl + Z", "Ctrl + Y", "Ctrl + U", "Ctrl + A"] },
-    { q: "Which software is primarily used for managing databases?", a: "b", options: ["Excel", "Access", "PowerPoint", "OneNote"] },
-    { q: "Which chart type is best for showing trends over time in Excel?", a: "a", options: ["Line Chart", "Pie Chart", "Bar Chart", "Scatter Plot"] },
-    { q: "Which command is used to insert a new slide in PowerPoint?", a: "d", options: ["Ctrl + S", "Ctrl + X", "Ctrl + M", "Ctrl + P"] },
-    { q: "Which Windows feature allows you to restore the system to a previous state?", a: "c", options: ["Task Scheduler", "File Explorer", "System Restore", "Device Manager"] },
-    { q: "In Excel, which symbol is used for absolute cell referencing?", a: "b", options: ["&", "$", "#", "*"] },
-    { q: "Which option in Word is used to check spelling and grammar?", a: "d", options: ["Page Layout", "Track Changes", "Review", "Spelling & Grammar"] },
-    { q: "Which keyboard shortcut is used to save a document?", a: "a", options: ["Ctrl + S", "Ctrl + N", "Ctrl + O", "Ctrl + Q"] },
-    { q: "Which feature in PowerPoint allows animations between slides?", a: "b", options: ["Animations", "Transitions", "Slide Show", "Design"] },
-    { q: "What is the default file format for Excel workbooks?", a: "c", options: [".pptx", ".docx", ".xlsx", ".pdf"] },
-    { q: "Which feature in Word is used to merge multiple letters with a data source?", a: "d", options: ["Page Layout", "Table of Contents", "References", "Mail Merge"] },
-    { q: "Which function in Excel is used to count non-empty cells?", a: "a", options: ["COUNTA", "COUNTBLANK", "COUNTIF", "COUNT"] },
-    { q: "Which shortcut is used to bold text in Word?", a: "b", options: ["Ctrl + I", "Ctrl + B", "Ctrl + U", "Ctrl + E"] },
-    { q: "Which function in Excel is used to count only numeric values in a range?", a: "c", options: ["COUNTA", "COUNTBLANK", "COUNT", "SUM"] },
-    { q: "Which keyboard shortcut is used to fill cells automatically in Excel?", a: "a", options: ["Ctrl + D", "Ctrl + R", "Ctrl + Shift + L", "Ctrl + E"] },
-    { q: "Which Microsoft Office application is used for email management?", a: "c", options: ["Word", "Excel", "Outlook", "Access"] },
-    { q: "Which Windows key combination is used to minimize all open windows?", a: "d", options: ["Win + D", "Alt + Tab", "Ctrl + M", "Win + M"] },
-    { q: "Which function in Excel is used to join text from multiple cells?", a: "b", options: ["SPLIT", "CONCATENATE", "JOIN", "MERGE"] },
-    { q: "Which option in Word helps to create a table of contents?", a: "c", options: ["Track Changes", "Spelling & Grammar", "References", "Mail Merge"] },
-    { q: "Which feature in PowerPoint allows you to rehearse your presentation timing?", a: "a", options: ["Rehearse Timings", "Slide Master", "Animations", "Record Slide Show"] },
-    { q: "Which Windows feature is used to uninstall programs?", a: "b", options: ["Device Manager", "Control Panel", "Task Manager", "Command Prompt"] },
-    { q: "Which function in Excel is used to search for a value in a table?", a: "d", options: ["IF", "COUNTIF", "INDEX", "VLOOKUP"] },
-    { q: "Which option in Word is used to track changes made in a document?", a: "a", options: ["Track Changes", "Page Layout", "Table of Contents", "Review"] },
-    { q: "Which shortcut key is used to insert a new worksheet in Excel?", a: "c", options: ["Ctrl + S", "Ctrl + X", "Shift + F11", "Ctrl + M"] },
-    { q: "Which function is used to extract text from the right side of a cell in Excel?", a: "b", options: ["LEFT", "RIGHT", "MID", "FIND"] },
-    { q: "Which feature in Excel allows you to freeze specific rows and columns?", a: "b", options: ["Consolidate", "Freeze Panes", "Split", "Protect Sheet"] },
-    { q: "Which option in PowerPoint is used to add speaker notes?", a: "b", options: ["Slide Sorter", "Notes Pane", "Master Slide", "Outline View"] },
-    { q: "Which Windows tool is used to check disk errors?", a: "d", options: ["Device Manager", "Disk Cleanup", "Task Scheduler", "Check Disk"] },
-    { q: "Which Excel function is used to return the current date and time?", a: "a", options: ["NOW()", "TODAY()", "DATE()", "TIME()"] },
-    { q: "Which feature in Word is used to split a document into sections?", a: "c", options: ["Columns", "Styles", "Page Breaks", "Footnotes"] },
-    { q: "Which keyboard shortcut is used to insert a hyperlink in Office applications?", a: "d", options: ["Ctrl + S", "Ctrl + P", "Ctrl + K", "Ctrl + H"] },
-    { q: "Which function in Excel is used to calculate the average of a range?", a: "b", options: ["SUM", "AVERAGE", "COUNT", "PRODUCT"] },
-    { q: "Which Windows command is used to view the IP address of a computer?", a: "a", options: ["ipconfig", "ping", "netstat", "tracert"] },
-    { q: "Which Excel function is used to extract a portion of text from a cell?", a: "c", options: ["LEFT", "RIGHT", "MID", "EXTRACT"] },
-    { q: "Which feature in Excel is used to apply automatic formatting based on cell values?", a: "b", options: ["Data Validation", "Conditional Formatting", "Goal Seek", "Scenario Manager"] },
-    { q: "Which feature in Word allows automatic numbering of pages?", a: "b", options: ["Headers", "Page Numbers", "Footnotes", "Track Changes"] },
-    { q: "Which PowerPoint feature allows you to change the appearance of all slides at once?", a: "d", options: ["Themes", "Transitions", "Slide Show", "Slide Master"] }
+  { q: "What is the default file extension for Microsoft Word documents?", a: "a", options: [".docx", ".xlsx", ".pptx", ".pdf"] },
+  { q: "Which tab contains the Font group?", a: "b", options: ["Insert", "Home", "Design", "Review"] },
+  { q: "What does Ctrl + C do in Word?", a: "a", options: ["Copy", "Paste", "Cut", "Undo"] },
+  { q: "Which shortcut is used to save a Word document?", a: "b", options: ["Ctrl + P", "Ctrl + S", "Ctrl + N", "Ctrl + Z"] },
+  { q: "Which feature helps to detect grammar and spelling mistakes?", a: "c", options: ["AutoFormat", "Format Painter", "Spelling & Grammar", "Mail Merge"] },
+  { q: "Which tab allows you to insert pictures, shapes, and charts?", a: "a", options: ["Insert", "Design", "Layout", "Review"] },
+  { q: "What does Ctrl + B do?", a: "b", options: ["Underline", "Bold", "Italic", "Align"] },
+  { q: "Which tool helps copy formatting from one section to another?", a: "c", options: ["SmartArt", "Text Box", "Format Painter", "Header"] },
+  { q: "Which option is used to add footnotes?", a: "d", options: ["References", "Layout", "Insert", "References"] },
+  { q: "Where can you find the option to change page orientation?", a: "a", options: ["Layout", "Home", "Review", "Insert"] },
+  { q: "What is the function of 'Track Changes'?", a: "c", options: ["Insert comments", "Check spelling", "Monitor edits", "Add citations"] },
+  { q: "Which key combination makes text italic?", a: "d", options: ["Ctrl + B", "Ctrl + U", "Ctrl + A", "Ctrl + I"] },
+  { q: "How do you insert a page number?", a: "b", options: ["Home > Page Number", "Insert > Page Number", "Layout > Numbering", "Design > Page Number"] },
+  { q: "Which feature is used to send a document to many people with personalized details?", a: "c", options: ["SmartArt", "Macros", "Mail Merge", "Template"] },
+  { q: "Which file extension is NOT related to Word?", a: "d", options: [".doc", ".dotx", ".docx", ".xlsx"] },
+  { q: "Which feature allows real-time collaboration in Word?", a: "a", options: ["Share via OneDrive", "Export as PDF", "Smart Lookup", "Print Layout"] },
+  { q: "Which tab lets you apply themes to a document?", a: "b", options: ["Insert", "Design", "References", "Review"] },
+  { q: "What is the purpose of the 'References' tab?", a: "c", options: ["Insert images", "Check grammar", "Manage citations and bibliography", "Mail merge letters"] },
+  { q: "What does Ctrl + Z do in Word?", a: "a", options: ["Undo", "Redo", "Cut", "Select all"] },
+  { q: "Which menu contains 'Header and Footer'?", a: "b", options: ["Home", "Insert", "Layout", "View"] },
+  { q: "Which tab contains the 'Table of Contents' option?", a: "d", options: ["Home", "Insert", "Design", "References"] },
+  { q: "How can you check word count in a document?", a: "c", options: ["View tab", "Layout tab", "Status bar or Review tab", "Insert tab"] },
+  { q: "Which feature allows inserting predefined content blocks?", a: "b", options: ["Track Changes", "Quick Parts", "Format Painter", "Text Box"] },
+  { q: "Which command is used to open a new blank document?", a: "a", options: ["Ctrl + N", "Ctrl + A", "Ctrl + M", "Ctrl + O"] },
+  { q: "Which view mode displays the document as printed?", a: "d", options: ["Web Layout", "Outline", "Draft", "Print Layout"] },
+  { q: "Which feature helps remove background from an image?", a: "c", options: ["Crop", "Rotate", "Remove Background", "Picture Styles"] },
+  { q: "Which tab helps in adjusting margins?", a: "b", options: ["Insert", "Layout", "Home", "Review"] },
+  { q: "What is the function of the 'Design' tab?", a: "a", options: ["Apply document styles", "Track changes", "Insert objects", "Review text"] },
+  { q: "Which shortcut aligns text to the center?", a: "c", options: ["Ctrl + L", "Ctrl + R", "Ctrl + E", "Ctrl + J"] },
+  { q: "Which option in Word helps in finding synonyms?", a: "d", options: ["Translate", "Spell Check", "Word Count", "Thesaurus"] }
 ];
+
 
 
 

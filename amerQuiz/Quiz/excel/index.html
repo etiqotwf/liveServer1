@@ -132,16 +132,11 @@ input[type="radio"] {
         <p>Date: <span id="date"></span></p>
         <p id="timer">Time Remaining: 30:00</p>
         <div id="passage">
-           <h3>Read the following passage carefully and answer the following questions:</h3>
-            <p>
-                <strong>The Evolution of Information Technology in Computers
-
-                </strong><br>
-                Young people leave their parents' homes at different ages in different parts of the world. In the United States, a lot of college students do not live at home. They often choose to go to college in different cities – away from their parents. At college, many live in university housing. After college, most people prefer to live in their own homes. They often live alone, but some people rent apartments with others. These people are called roommates.
-                <p> Information Technology (IT) has transformed the world of computers over the years. In the early days, computers were large and slow, used mainly for calculations. Over time, technology advanced, making computers smaller, faster, and more powerful. The rise of the internet changed how people communicate, work, and store data. Today, IT plays a key role in every field, from education to business. Cloud computing, artificial intelligence, and cybersecurity are shaping the future of IT, making computers smarter and more efficient than ever.
-                    As technology continues to evolve, IT is becoming more integrated into daily life. Mobile devices, smart homes, and automation have revolutionized the way people interact with computers. Businesses rely on IT for data management, cybersecurity, and digital marketing. With the development of machine learning and blockchain technology, the IT industry is constantly growing, creating new opportunities and challenges. The future of IT promises even more advancements, making the digital world faster, safer, and more innovative.
-                    
-                    </p>
+            <h3>Read the following passage carefully and answer the following questions:</h3>
+  <p>
+    <strong>The Role of Microsoft Excel in Data Management</strong><br><br>
+    Microsoft Excel is one of the most powerful spreadsheet applications widely used in business, education, and personal finance. It allows users to organize data into rows and columns, apply formulas for calculations, and create charts to visualize information. Excel's functions such as SUM, AVERAGE, and IF make data analysis easier and more efficient. With tools like PivotTables and conditional formatting, users can summarize large datasets and highlight important trends. Excel also supports automation through Macros and integration with other Microsoft Office tools, making it essential in many professional environments.
+  </p>
                         </div>
         <div id="quiz"></div>
     </div>
@@ -196,61 +191,181 @@ input[type="radio"] {
     <script>
         document.getElementById("date").innerText = new Date().toLocaleDateString("en-US");
     
-    const trueFalseQuestions = [
-    { q: "Quantum computing is expected to replace classical computers in all fields within the next decade.", a: "false" },
-    { q: "Machine learning and artificial intelligence rely heavily on big data for improving accuracy.", a: "true" },
-    { q: "Blockchain technology is primarily used for securing online financial transactions.", a: "true" },
-    { q: "Cybersecurity threats are decreasing due to advancements in encryption and firewalls.", a: "false" },
-    { q: "Cloud computing eliminates the need for physical data centers in large enterprises.", a: "false" },
-    { q: "Edge computing improves processing speed by reducing dependence on centralized cloud servers.", a: "true" }
+   const trueFalseQuestions = [
+  { q: "Microsoft Excel is used to create and manage spreadsheets.", a: "true" },
+  { q: "The SUM function is used to subtract values in Excel.", a: "false" },
+  { q: "You can insert charts into an Excel worksheet.", a: "true" },
+  { q: "Excel only works with numbers and cannot handle text.", a: "false" },
+  { q: "PivotTables are used to summarize large data sets in Excel.", a: "true" },
+  { q: "In Excel, the formula always starts with an equals sign (=).", a: "true" },
+  { q: "Conditional formatting changes cell appearance based on its value.", a: "true" },
+  { q: "Excel does not support macros or automation.", a: "false" },
+  { q: "You can use the IF function for logical tests in Excel.", a: "true" },
+  { q: "Excel is not compatible with other Microsoft Office programs.", a: "false" },
+  { q: "The AVERAGE function calculates the mean of a range of numbers.", a: "true" },
+  { q: "You can freeze rows and columns in Excel for easier viewing.", a: "true" },
+  { q: "Excel does not allow printing of spreadsheets.", a: "false" },
+  { q: "Filtering helps you display only specific data in a worksheet.", a: "true" },
+  { q: "The VLOOKUP function is used to find values in a table.", a: "true" },
+  { q: "You can insert images into Excel sheets.", a: "true" },
+  { q: "Formulas can be copied to other cells using the fill handle.", a: "true" },
+  { q: "Excel cannot be used to create graphs.", a: "false" },
+  { q: "Merging cells in Excel combines multiple cells into one.", a: "true" },
+  { q: "You must be connected to the internet to use Excel.", a: "false" }
 ];
 
     
 const questions = [
-    { q: "Which function in Excel is used to find the highest value in a range?", a: "c", options: ["SUM", "AVERAGE", "MAX", "COUNT"] },
-    { q: "Which keyboard shortcut is used to paste content in Microsoft Word?", a: "b", options: ["Ctrl + X", "Ctrl + V", "Ctrl + P", "Ctrl + C"] },
-    { q: "Which file extension is associated with Microsoft PowerPoint presentations?", a: "a", options: [".pptx", ".xlsx", ".docx", ".mdb"] },
-    { q: "Which function in Excel is used to search for a value in the first column and return a corresponding value?", a: "c", options: ["INDEX", "MATCH", "VLOOKUP", "FIND"] },
-    { q: "Which feature in Excel is used to apply automatic formatting based on cell values?", a: "b", options: ["Data Validation", "Conditional Formatting", "Goal Seek", "Scenario Manager"] },
-    { q: "In Windows, which key combination is used to open Task Manager?", a: "c", options: ["Ctrl + Shift + Esc", "Alt + Tab", "Ctrl + Alt + Delete", "Win + R"] },
-    { q: "Which Excel feature allows you to apply different formatting based on cell values?", a: "d", options: ["Data Validation", "Sorting", "Pivot Table", "Conditional Formatting"] },
-    { q: "Which shortcut key is used to undo an action in Microsoft applications?", a: "a", options: ["Ctrl + Z", "Ctrl + Y", "Ctrl + U", "Ctrl + A"] },
-    { q: "Which software is primarily used for managing databases?", a: "b", options: ["Excel", "Access", "PowerPoint", "OneNote"] },
-    { q: "Which chart type is best for showing trends over time in Excel?", a: "a", options: ["Line Chart", "Pie Chart", "Bar Chart", "Scatter Plot"] },
-    { q: "Which command is used to insert a new slide in PowerPoint?", a: "d", options: ["Ctrl + S", "Ctrl + X", "Ctrl + M", "Ctrl + P"] },
-    { q: "Which Windows feature allows you to restore the system to a previous state?", a: "c", options: ["Task Scheduler", "File Explorer", "System Restore", "Device Manager"] },
-    { q: "In Excel, which symbol is used for absolute cell referencing?", a: "b", options: ["&", "$", "#", "*"] },
-    { q: "Which option in Word is used to check spelling and grammar?", a: "d", options: ["Page Layout", "Track Changes", "Review", "Spelling & Grammar"] },
-    { q: "Which keyboard shortcut is used to save a document?", a: "a", options: ["Ctrl + S", "Ctrl + N", "Ctrl + O", "Ctrl + Q"] },
-    { q: "Which feature in PowerPoint allows animations between slides?", a: "b", options: ["Animations", "Transitions", "Slide Show", "Design"] },
-    { q: "What is the default file format for Excel workbooks?", a: "c", options: [".pptx", ".docx", ".xlsx", ".pdf"] },
-    { q: "Which feature in Word is used to merge multiple letters with a data source?", a: "d", options: ["Page Layout", "Table of Contents", "References", "Mail Merge"] },
-    { q: "Which function in Excel is used to count non-empty cells?", a: "a", options: ["COUNTA", "COUNTBLANK", "COUNTIF", "COUNT"] },
-    { q: "Which shortcut is used to bold text in Word?", a: "b", options: ["Ctrl + I", "Ctrl + B", "Ctrl + U", "Ctrl + E"] },
-    { q: "Which function in Excel is used to count only numeric values in a range?", a: "c", options: ["COUNTA", "COUNTBLANK", "COUNT", "SUM"] },
-    { q: "Which keyboard shortcut is used to fill cells automatically in Excel?", a: "a", options: ["Ctrl + D", "Ctrl + R", "Ctrl + Shift + L", "Ctrl + E"] },
-    { q: "Which Microsoft Office application is used for email management?", a: "c", options: ["Word", "Excel", "Outlook", "Access"] },
-    { q: "Which Windows key combination is used to minimize all open windows?", a: "d", options: ["Win + D", "Alt + Tab", "Ctrl + M", "Win + M"] },
-    { q: "Which function in Excel is used to join text from multiple cells?", a: "b", options: ["SPLIT", "CONCATENATE", "JOIN", "MERGE"] },
-    { q: "Which option in Word helps to create a table of contents?", a: "c", options: ["Track Changes", "Spelling & Grammar", "References", "Mail Merge"] },
-    { q: "Which feature in PowerPoint allows you to rehearse your presentation timing?", a: "a", options: ["Rehearse Timings", "Slide Master", "Animations", "Record Slide Show"] },
-    { q: "Which Windows feature is used to uninstall programs?", a: "b", options: ["Device Manager", "Control Panel", "Task Manager", "Command Prompt"] },
-    { q: "Which function in Excel is used to search for a value in a table?", a: "d", options: ["IF", "COUNTIF", "INDEX", "VLOOKUP"] },
-    { q: "Which option in Word is used to track changes made in a document?", a: "a", options: ["Track Changes", "Page Layout", "Table of Contents", "Review"] },
-    { q: "Which shortcut key is used to insert a new worksheet in Excel?", a: "c", options: ["Ctrl + S", "Ctrl + X", "Shift + F11", "Ctrl + M"] },
-    { q: "Which function is used to extract text from the right side of a cell in Excel?", a: "b", options: ["LEFT", "RIGHT", "MID", "FIND"] },
-    { q: "Which feature in Excel allows you to freeze specific rows and columns?", a: "b", options: ["Consolidate", "Freeze Panes", "Split", "Protect Sheet"] },
-    { q: "Which option in PowerPoint is used to add speaker notes?", a: "b", options: ["Slide Sorter", "Notes Pane", "Master Slide", "Outline View"] },
-    { q: "Which Windows tool is used to check disk errors?", a: "d", options: ["Device Manager", "Disk Cleanup", "Task Scheduler", "Check Disk"] },
-    { q: "Which Excel function is used to return the current date and time?", a: "a", options: ["NOW()", "TODAY()", "DATE()", "TIME()"] },
-    { q: "Which feature in Word is used to split a document into sections?", a: "c", options: ["Columns", "Styles", "Page Breaks", "Footnotes"] },
-    { q: "Which keyboard shortcut is used to insert a hyperlink in Office applications?", a: "d", options: ["Ctrl + S", "Ctrl + P", "Ctrl + K", "Ctrl + H"] },
-    { q: "Which function in Excel is used to calculate the average of a range?", a: "b", options: ["SUM", "AVERAGE", "COUNT", "PRODUCT"] },
-    { q: "Which Windows command is used to view the IP address of a computer?", a: "a", options: ["ipconfig", "ping", "netstat", "tracert"] },
-    { q: "Which Excel function is used to extract a portion of text from a cell?", a: "c", options: ["LEFT", "RIGHT", "MID", "EXTRACT"] },
-    { q: "Which feature in Excel is used to apply automatic formatting based on cell values?", a: "b", options: ["Data Validation", "Conditional Formatting", "Goal Seek", "Scenario Manager"] },
-    { q: "Which feature in Word allows automatic numbering of pages?", a: "b", options: ["Headers", "Page Numbers", "Footnotes", "Track Changes"] },
-    { q: "Which PowerPoint feature allows you to change the appearance of all slides at once?", a: "d", options: ["Themes", "Transitions", "Slide Show", "Slide Master"] }
+  {
+    q: "Which of the following functions is used to calculate the sum of a range in Excel?",
+    a: "a",
+    options: ["SUM", "AVERAGE", "IF", "COUNT"]
+  },
+  {
+    q: "What is the default file extension for an Excel file?",
+    a: "b",
+    options: [".docx", ".xlsx", ".pptx", ".xlsm"]
+  },
+  {
+    q: "Which tab in Excel is used to insert charts?",
+    a: "c",
+    options: ["File", "Review", "Insert", "View"]
+  },
+  {
+    q: "Which feature allows you to view only specific data based on conditions?",
+    a: "d",
+    options: ["Formatting", "Sorting", "Merging", "Filtering"]
+  },
+  {
+    q: "What symbol is used to start a formula in Excel?",
+    a: "a",
+    options: ["=", "+", "#", "@"] 
+  },
+  {
+    q: "Which function returns the average of selected values?",
+    a: "b",
+    options: ["MAX", "AVERAGE", "SUM", "IF"]
+  },
+  {
+    q: "What does the VLOOKUP function do?",
+    a: "d",
+    options: ["Validates data", "Formats text", "Sorts columns", "Searches vertically in a table"]
+  },
+  {
+    q: "Which of the following is a valid cell reference?",
+    a: "a",
+    options: ["A1", "1A", "AA", "Row3"]
+  },
+  {
+    q: "What is the purpose of the fill handle?",
+    a: "b",
+    options: ["To copy text", "To copy formulas/data", "To resize cells", "To delete content"]
+  },
+  {
+    q: "Which chart type is best for showing data trends over time?",
+    a: "c",
+    options: ["Pie chart", "Bar chart", "Line chart", "Column chart"]
+  },
+  {
+    q: "Which tool is used to group and summarize large amounts of data?",
+    a: "d",
+    options: ["Data Validation", "AutoCorrect", "Macro", "PivotTable"]
+  },
+  {
+    q: "Which keyboard shortcut saves an Excel file?",
+    a: "a",
+    options: ["Ctrl + S", "Ctrl + O", "Ctrl + P", "Ctrl + N"]
+  },
+  {
+    q: "Which Excel function counts the number of cells with numbers?",
+    a: "c",
+    options: ["COUNTA", "SUM", "COUNT", "AVERAGE"]
+  },
+  {
+    q: "What does conditional formatting do?",
+    a: "d",
+    options: ["Saves settings", "Creates new sheets", "Inserts charts", "Changes cell appearance based on values"]
+  },
+  {
+    q: "Which tab contains the Freeze Panes option?",
+    a: "b",
+    options: ["Insert", "View", "Data", "Home"]
+  },
+  {
+    q: "Which function returns the highest number in a range?",
+    a: "a",
+    options: ["MAX", "SUM", "MIN", "RANK"]
+  },
+  {
+    q: "Which option is used to combine multiple cells into one?",
+    a: "c",
+    options: ["Split Cells", "Wrap Text", "Merge Cells", "Insert Table"]
+  },
+  {
+    q: "What does the IF function do?",
+    a: "d",
+    options: ["Sums values", "Finds text", "Sorts data", "Performs logical tests"]
+  },
+  {
+    q: "Which function rounds a number to the nearest integer?",
+    a: "a",
+    options: ["ROUND", "SUM", "INT", "NOW"]
+  },
+  {
+    q: "Which of the following is not a valid chart type in Excel?",
+    a: "c",
+    options: ["Pie", "Bar", "Sketch", "Line"]
+  },
+  {
+    q: "To print a spreadsheet, you should go to which tab?",
+    a: "b",
+    options: ["Insert", "File", "Formulas", "Data"]
+  },
+  {
+    q: "What does a red triangle in the corner of a cell mean?",
+    a: "d",
+    options: ["Formula error", "Cell locked", "Data invalid", "Comment exists"]
+  },
+  {
+    q: "Which formula would add A1 and B1?",
+    a: "a",
+    options: ["=A1+B1", "=SUM(A1:B1)", "=A1&B1", "=A1*B1"]
+  },
+  {
+    q: "How do you create a new worksheet?",
+    a: "c",
+    options: ["Right-click > Rename", "File > Save As", "Click '+' at the bottom", "Insert > Table"]
+  },
+  {
+    q: "Which of the following is used to restrict what users can type into a cell?",
+    a: "d",
+    options: ["Wrap Text", "Merge Cells", "Freeze Panes", "Data Validation"]
+  },
+  {
+    q: "How many rows are there in a standard Excel worksheet?",
+    a: "a",
+    options: ["1,048,576", "65,536", "1,000,000", "500,000"]
+  },
+  {
+    q: "Which function gives the current date in Excel?",
+    a: "b",
+    options: ["TIME()", "TODAY()", "DATE()", "NOW()"]
+  },
+  {
+    q: "Which tab is used to apply cell styles and fonts?",
+    a: "a",
+    options: ["Home", "Data", "Insert", "View"]
+  },
+  {
+    q: "Which of these allows repeating a calculation on different rows automatically?",
+    a: "c",
+    options: ["Macro", "Validation", "Drag Fill Handle", "Chart"]
+  },
+  {
+    q: "Excel is mainly used for:",
+    a: "d",
+    options: ["Presentations", "Typing documents", "Editing PDFs", "Calculations and data analysis"]
+  }
 ];
 
 

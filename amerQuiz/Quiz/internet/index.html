@@ -132,16 +132,11 @@ input[type="radio"] {
         <p>Date: <span id="date"></span></p>
         <p id="timer">Time Remaining: 30:00</p>
         <div id="passage">
-           <h3>Read the following passage carefully and answer the following questions:</h3>
-            <p>
-                <strong>The Evolution of Information Technology in Computers
-
-                </strong><br>
-                Young people leave their parents' homes at different ages in different parts of the world. In the United States, a lot of college students do not live at home. They often choose to go to college in different cities – away from their parents. At college, many live in university housing. After college, most people prefer to live in their own homes. They often live alone, but some people rent apartments with others. These people are called roommates.
-                <p> Information Technology (IT) has transformed the world of computers over the years. In the early days, computers were large and slow, used mainly for calculations. Over time, technology advanced, making computers smaller, faster, and more powerful. The rise of the internet changed how people communicate, work, and store data. Today, IT plays a key role in every field, from education to business. Cloud computing, artificial intelligence, and cybersecurity are shaping the future of IT, making computers smarter and more efficient than ever.
-                    As technology continues to evolve, IT is becoming more integrated into daily life. Mobile devices, smart homes, and automation have revolutionized the way people interact with computers. Businesses rely on IT for data management, cybersecurity, and digital marketing. With the development of machine learning and blockchain technology, the IT industry is constantly growing, creating new opportunities and challenges. The future of IT promises even more advancements, making the digital world faster, safer, and more innovative.
-                    
-                    </p>
+            <h3>Read the following passage carefully and answer the questions:</h3>
+  <p>
+    <strong>The Internet and Its Impact on Modern Life</strong><br>
+    The Internet is a global network that connects millions of computers and devices across the world. It allows people to communicate instantly, access vast amounts of information, and perform various tasks online such as shopping, studying, and working. Over the past few decades, the Internet has transformed how people live and interact. It has made education more accessible, businesses more efficient, and social communication faster than ever before. However, it's important to use the Internet responsibly and be aware of online safety.
+  </p>
                         </div>
         <div id="quiz"></div>
     </div>
@@ -197,63 +192,330 @@ input[type="radio"] {
         document.getElementById("date").innerText = new Date().toLocaleDateString("en-US");
     
     const trueFalseQuestions = [
-    { q: "Quantum computing is expected to replace classical computers in all fields within the next decade.", a: "false" },
-    { q: "Machine learning and artificial intelligence rely heavily on big data for improving accuracy.", a: "true" },
-    { q: "Blockchain technology is primarily used for securing online financial transactions.", a: "true" },
-    { q: "Cybersecurity threats are decreasing due to advancements in encryption and firewalls.", a: "false" },
-    { q: "Cloud computing eliminates the need for physical data centers in large enterprises.", a: "false" },
-    { q: "Edge computing improves processing speed by reducing dependence on centralized cloud servers.", a: "true" }
+    { q: "The Internet connects computers and devices all around the world.", a: "true" },
+  { q: "You cannot study or work using the Internet.", a: "false" },
+  { q: "Online shopping is one of the tasks made possible by the Internet.", a: "true" },
+  { q: "The Internet has had no impact on modern education.", a: "false" },
+  { q: "Communication is faster now because of the Internet.", a: "true" },
+  { q: "Businesses cannot benefit from the Internet.", a: "false" },
+  { q: "The Internet can be used to access a large amount of information.", a: "true" },
+  { q: "Using the Internet responsibly is important.", a: "true" },
+  { q: "The Internet is only used for entertainment.", a: "false" },
+  { q: "You can use the Internet to connect with people in different countries.", a: "true" },
+  { q: "The Internet is a private local network.", a: "false" },
+  { q: "Social media platforms are part of the Internet.", a: "true" },
+  { q: "Internet safety is not important.", a: "false" },
+  { q: "Emails and video calls are forms of Internet communication.", a: "true" },
+  { q: "Wi-Fi is one of the ways we connect to the Internet.", a: "true" },
+  { q: "You cannot download files from the Internet.", a: "false" },
+  { q: "Hackers use the Internet for cyberattacks.", a: "true" },
+  { q: "The Internet was invented in the 2000s.", a: "false" },
+  { q: "Children should learn about Internet safety.", a: "true" },
+  { q: "Search engines help you find information online.", a: "true" }
 ];
-
     
 const questions = [
-    { q: "Which function in Excel is used to find the highest value in a range?", a: "c", options: ["SUM", "AVERAGE", "MAX", "COUNT"] },
-    { q: "Which keyboard shortcut is used to paste content in Microsoft Word?", a: "b", options: ["Ctrl + X", "Ctrl + V", "Ctrl + P", "Ctrl + C"] },
-    { q: "Which file extension is associated with Microsoft PowerPoint presentations?", a: "a", options: [".pptx", ".xlsx", ".docx", ".mdb"] },
-    { q: "Which function in Excel is used to search for a value in the first column and return a corresponding value?", a: "c", options: ["INDEX", "MATCH", "VLOOKUP", "FIND"] },
-    { q: "Which feature in Excel is used to apply automatic formatting based on cell values?", a: "b", options: ["Data Validation", "Conditional Formatting", "Goal Seek", "Scenario Manager"] },
-    { q: "In Windows, which key combination is used to open Task Manager?", a: "c", options: ["Ctrl + Shift + Esc", "Alt + Tab", "Ctrl + Alt + Delete", "Win + R"] },
-    { q: "Which Excel feature allows you to apply different formatting based on cell values?", a: "d", options: ["Data Validation", "Sorting", "Pivot Table", "Conditional Formatting"] },
-    { q: "Which shortcut key is used to undo an action in Microsoft applications?", a: "a", options: ["Ctrl + Z", "Ctrl + Y", "Ctrl + U", "Ctrl + A"] },
-    { q: "Which software is primarily used for managing databases?", a: "b", options: ["Excel", "Access", "PowerPoint", "OneNote"] },
-    { q: "Which chart type is best for showing trends over time in Excel?", a: "a", options: ["Line Chart", "Pie Chart", "Bar Chart", "Scatter Plot"] },
-    { q: "Which command is used to insert a new slide in PowerPoint?", a: "d", options: ["Ctrl + S", "Ctrl + X", "Ctrl + M", "Ctrl + P"] },
-    { q: "Which Windows feature allows you to restore the system to a previous state?", a: "c", options: ["Task Scheduler", "File Explorer", "System Restore", "Device Manager"] },
-    { q: "In Excel, which symbol is used for absolute cell referencing?", a: "b", options: ["&", "$", "#", "*"] },
-    { q: "Which option in Word is used to check spelling and grammar?", a: "d", options: ["Page Layout", "Track Changes", "Review", "Spelling & Grammar"] },
-    { q: "Which keyboard shortcut is used to save a document?", a: "a", options: ["Ctrl + S", "Ctrl + N", "Ctrl + O", "Ctrl + Q"] },
-    { q: "Which feature in PowerPoint allows animations between slides?", a: "b", options: ["Animations", "Transitions", "Slide Show", "Design"] },
-    { q: "What is the default file format for Excel workbooks?", a: "c", options: [".pptx", ".docx", ".xlsx", ".pdf"] },
-    { q: "Which feature in Word is used to merge multiple letters with a data source?", a: "d", options: ["Page Layout", "Table of Contents", "References", "Mail Merge"] },
-    { q: "Which function in Excel is used to count non-empty cells?", a: "a", options: ["COUNTA", "COUNTBLANK", "COUNTIF", "COUNT"] },
-    { q: "Which shortcut is used to bold text in Word?", a: "b", options: ["Ctrl + I", "Ctrl + B", "Ctrl + U", "Ctrl + E"] },
-    { q: "Which function in Excel is used to count only numeric values in a range?", a: "c", options: ["COUNTA", "COUNTBLANK", "COUNT", "SUM"] },
-    { q: "Which keyboard shortcut is used to fill cells automatically in Excel?", a: "a", options: ["Ctrl + D", "Ctrl + R", "Ctrl + Shift + L", "Ctrl + E"] },
-    { q: "Which Microsoft Office application is used for email management?", a: "c", options: ["Word", "Excel", "Outlook", "Access"] },
-    { q: "Which Windows key combination is used to minimize all open windows?", a: "d", options: ["Win + D", "Alt + Tab", "Ctrl + M", "Win + M"] },
-    { q: "Which function in Excel is used to join text from multiple cells?", a: "b", options: ["SPLIT", "CONCATENATE", "JOIN", "MERGE"] },
-    { q: "Which option in Word helps to create a table of contents?", a: "c", options: ["Track Changes", "Spelling & Grammar", "References", "Mail Merge"] },
-    { q: "Which feature in PowerPoint allows you to rehearse your presentation timing?", a: "a", options: ["Rehearse Timings", "Slide Master", "Animations", "Record Slide Show"] },
-    { q: "Which Windows feature is used to uninstall programs?", a: "b", options: ["Device Manager", "Control Panel", "Task Manager", "Command Prompt"] },
-    { q: "Which function in Excel is used to search for a value in a table?", a: "d", options: ["IF", "COUNTIF", "INDEX", "VLOOKUP"] },
-    { q: "Which option in Word is used to track changes made in a document?", a: "a", options: ["Track Changes", "Page Layout", "Table of Contents", "Review"] },
-    { q: "Which shortcut key is used to insert a new worksheet in Excel?", a: "c", options: ["Ctrl + S", "Ctrl + X", "Shift + F11", "Ctrl + M"] },
-    { q: "Which function is used to extract text from the right side of a cell in Excel?", a: "b", options: ["LEFT", "RIGHT", "MID", "FIND"] },
-    { q: "Which feature in Excel allows you to freeze specific rows and columns?", a: "b", options: ["Consolidate", "Freeze Panes", "Split", "Protect Sheet"] },
-    { q: "Which option in PowerPoint is used to add speaker notes?", a: "b", options: ["Slide Sorter", "Notes Pane", "Master Slide", "Outline View"] },
-    { q: "Which Windows tool is used to check disk errors?", a: "d", options: ["Device Manager", "Disk Cleanup", "Task Scheduler", "Check Disk"] },
-    { q: "Which Excel function is used to return the current date and time?", a: "a", options: ["NOW()", "TODAY()", "DATE()", "TIME()"] },
-    { q: "Which feature in Word is used to split a document into sections?", a: "c", options: ["Columns", "Styles", "Page Breaks", "Footnotes"] },
-    { q: "Which keyboard shortcut is used to insert a hyperlink in Office applications?", a: "d", options: ["Ctrl + S", "Ctrl + P", "Ctrl + K", "Ctrl + H"] },
-    { q: "Which function in Excel is used to calculate the average of a range?", a: "b", options: ["SUM", "AVERAGE", "COUNT", "PRODUCT"] },
-    { q: "Which Windows command is used to view the IP address of a computer?", a: "a", options: ["ipconfig", "ping", "netstat", "tracert"] },
-    { q: "Which Excel function is used to extract a portion of text from a cell?", a: "c", options: ["LEFT", "RIGHT", "MID", "EXTRACT"] },
-    { q: "Which feature in Excel is used to apply automatic formatting based on cell values?", a: "b", options: ["Data Validation", "Conditional Formatting", "Goal Seek", "Scenario Manager"] },
-    { q: "Which feature in Word allows automatic numbering of pages?", a: "b", options: ["Headers", "Page Numbers", "Footnotes", "Track Changes"] },
-    { q: "Which PowerPoint feature allows you to change the appearance of all slides at once?", a: "d", options: ["Themes", "Transitions", "Slide Show", "Slide Master"] }
+ {
+    q: "What does the Internet connect?",
+    a: "b",
+    options: [
+      "Only mobile phones",
+      "Millions of computers and devices worldwide",
+      "Only TVs and radios",
+      "Printers and scanners"
+    ]
+  },
+  {
+    q: "Which of the following is a use of the Internet?",
+    a: "a",
+    options: [
+      "Sending emails",
+      "Cooking food",
+      "Driving a car",
+      "Watering plants"
+    ]
+  },
+  {
+    q: "Which service allows you to find information online?",
+    a: "d",
+    options: [
+      "Word processor",
+      "Antivirus",
+      "Bluetooth",
+      "Search engine"
+    ]
+  },
+  {
+    q: "What is a common way to connect to the Internet at home?",
+    a: "c",
+    options: [
+      "Scanner",
+      "CD-ROM",
+      "Wi-Fi",
+      "Fax"
+    ]
+  },
+  {
+    q: "What does WWW stand for?",
+    a: "b",
+    options: [
+      "World Weather Watch",
+      "World Wide Web",
+      "Wireless Web Window",
+      "Web With Wi-Fi"
+    ]
+  },
+  {
+    q: "Which device is necessary to connect to the Internet?",
+    a: "a",
+    options: [
+      "Modem",
+      "Projector",
+      "Printer",
+      "Keyboard"
+    ]
+  },
+  {
+    q: "Which of the following is a web browser?",
+    a: "c",
+    options: [
+      "Excel",
+      "Word",
+      "Google Chrome",
+      "Notepad"
+    ]
+  },
+  {
+    q: "What is an email?",
+    a: "b",
+    options: [
+      "A printed letter",
+      "Electronic mail",
+      "A mobile call",
+      "An online game"
+    ]
+  },
+  {
+    q: "What do you need to access a website?",
+    a: "d",
+    options: [
+      "A flash drive",
+      "A webcam",
+      "A firewall",
+      "A web address (URL)"
+    ]
+  },
+  {
+    q: "Which one is a danger of the Internet?",
+    a: "c",
+    options: [
+      "Faster communication",
+      "Online education",
+      "Cyberbullying",
+      "Saving files"
+    ]
+  },
+  {
+    q: "Which one of these is a social media site?",
+    a: "b",
+    options: [
+      "Google Docs",
+      "Facebook",
+      "Excel",
+      "Zoom"
+    ]
+  },
+  {
+    q: "Which type of file can be downloaded from the Internet?",
+    a: "a",
+    options: [
+      "PDF",
+      "Notebook",
+      "Book",
+      "Screen"
+    ]
+  },
+  {
+    q: "To protect your device on the Internet, you should use:",
+    a: "d",
+    options: [
+      "Scissors",
+      "Paint",
+      "Calculator",
+      "Antivirus software"
+    ]
+  },
+  {
+    q: "Which action is unsafe on the Internet?",
+    a: "b",
+    options: [
+      "Using strong passwords",
+      "Sharing passwords with strangers",
+      "Installing updates",
+      "Logging out of accounts"
+    ]
+  },
+  {
+    q: "What is phishing?",
+    a: "c",
+    options: [
+      "Catching fish",
+      "Creating websites",
+      "Tricking users into giving personal information",
+      "Making online surveys"
+    ]
+  },
+  {
+    q: "Which of these helps you protect your privacy online?",
+    a: "d",
+    options: [
+      "Clicking random links",
+      "Using public Wi-Fi without protection",
+      "Using weak passwords",
+      "Avoiding suspicious emails"
+    ]
+  },
+  {
+    q: "Which is a video conferencing app?",
+    a: "c",
+    options: [
+      "Photoshop",
+      "Google Earth",
+      "Zoom",
+      "FileZilla"
+    ]
+  },
+  {
+    q: "The Internet was first developed for:",
+    a: "a",
+    options: [
+      "Military communication",
+      "Banking",
+      "Video games",
+      "Agriculture"
+    ]
+  },
+  {
+    q: "Cloud storage means:",
+    a: "b",
+    options: [
+      "Saving data on paper",
+      "Saving data online",
+      "Storing files in folders",
+      "Using CDs to store data"
+    ]
+  },
+  {
+    q: "Which of these is not an Internet browser?",
+    a: "c",
+    options: [
+      "Firefox",
+      "Edge",
+      "Excel",
+      "Safari"
+    ]
+  },
+  {
+    q: "Which protocol is used for web pages?",
+    a: "d",
+    options: [
+      "FTP",
+      "IP",
+      "SMTP",
+      "HTTP"
+    ]
+  },
+  {
+    q: "To search for images, you can use:",
+    a: "a",
+    options: [
+      "Google Images",
+      "Microsoft Word",
+      "File Explorer",
+      "Paint"
+    ]
+  },
+  {
+    q: "Which of these is NOT a use of the Internet?",
+    a: "c",
+    options: [
+      "Education",
+      "Communication",
+      "Ironing clothes",
+      "Entertainment"
+    ]
+  },
+  {
+    q: "Which of these is a safe online behavior?",
+    a: "b",
+    options: [
+      "Sharing bank details",
+      "Not clicking unknown links",
+      "Using your name as password",
+      "Downloading from unknown sites"
+    ]
+  },
+  {
+    q: "The main function of a firewall is to:",
+    a: "a",
+    options: [
+      "Protect the computer from threats",
+      "Print documents",
+      "Install apps",
+      "Open websites"
+    ]
+  },
+  {
+    q: "Which of these is a video sharing website?",
+    a: "d",
+    options: [
+      "Gmail",
+      "Google Maps",
+      "Dropbox",
+      "YouTube"
+    ]
+  },
+  {
+    q: "Which device is needed to view websites?",
+    a: "b",
+    options: [
+      "TV",
+      "Computer or smartphone",
+      "Microwave",
+      "Camera"
+    ]
+  },
+  {
+    q: "You can read digital news online using:",
+    a: "c",
+    options: [
+      "MS Paint",
+      "Excel",
+      "Web browser",
+      "Antivirus"
+    ]
+  },
+  {
+    q: "Which file format is commonly used for web pages?",
+    a: "d",
+    options: [
+      "DOC",
+      "XLS",
+      "PDF",
+      "HTML"
+    ]
+  },
+  {
+    q: "Which is an example of an email service?",
+    a: "a",
+    options: [
+      "Gmail",
+      "Zoom",
+      "WhatsApp",
+      "TikTok"
+    ]
+  }
 ];
-
-
 
 
     

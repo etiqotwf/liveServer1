@@ -133,15 +133,10 @@ input[type="radio"] {
         <p id="timer">Time Remaining: 30:00</p>
         <div id="passage">
            <h3>Read the following passage carefully and answer the following questions:</h3>
-            <p>
-                <strong>The Evolution of Information Technology in Computers
-
-                </strong><br>
-                Young people leave their parents' homes at different ages in different parts of the world. In the United States, a lot of college students do not live at home. They often choose to go to college in different cities – away from their parents. At college, many live in university housing. After college, most people prefer to live in their own homes. They often live alone, but some people rent apartments with others. These people are called roommates.
-                <p> Information Technology (IT) has transformed the world of computers over the years. In the early days, computers were large and slow, used mainly for calculations. Over time, technology advanced, making computers smaller, faster, and more powerful. The rise of the internet changed how people communicate, work, and store data. Today, IT plays a key role in every field, from education to business. Cloud computing, artificial intelligence, and cybersecurity are shaping the future of IT, making computers smarter and more efficient than ever.
-                    As technology continues to evolve, IT is becoming more integrated into daily life. Mobile devices, smart homes, and automation have revolutionized the way people interact with computers. Businesses rely on IT for data management, cybersecurity, and digital marketing. With the development of machine learning and blockchain technology, the IT industry is constantly growing, creating new opportunities and challenges. The future of IT promises even more advancements, making the digital world faster, safer, and more innovative.
-                    
-                    </p>
+  <p>
+    <strong>The Role of Information Technology in Modern Life</strong><br>
+    Information Technology (IT) plays a crucial role in our daily lives. From communication to business, education, and healthcare, IT enables us to access and share information quickly and efficiently. It has transformed how organizations work, making operations faster and more accurate. Cloud computing, data analytics, and cybersecurity are examples of key IT developments. Understanding the basics of IT helps individuals stay relevant in a digital world and opens up new career opportunities in various sectors.
+  </p>
                         </div>
         <div id="quiz"></div>
     </div>
@@ -196,61 +191,331 @@ input[type="radio"] {
     <script>
         document.getElementById("date").innerText = new Date().toLocaleDateString("en-US");
     
-    const trueFalseQuestions = [
-    { q: "Quantum computing is expected to replace classical computers in all fields within the next decade.", a: "false" },
-    { q: "Machine learning and artificial intelligence rely heavily on big data for improving accuracy.", a: "true" },
-    { q: "Blockchain technology is primarily used for securing online financial transactions.", a: "true" },
-    { q: "Cybersecurity threats are decreasing due to advancements in encryption and firewalls.", a: "false" },
-    { q: "Cloud computing eliminates the need for physical data centers in large enterprises.", a: "false" },
-    { q: "Edge computing improves processing speed by reducing dependence on centralized cloud servers.", a: "true" }
+     const trueFalseQuestions = [
+      { q: "Information Technology is only used in the business sector.", a: "false" },
+  { q: "Cloud computing allows data to be stored and accessed over the internet.", a: "true" },
+  { q: "Emails are a form of IT-based communication.", a: "true" },
+  { q: "Cybersecurity is not part of Information Technology.", a: "false" },
+  { q: "IT helps organizations work more efficiently.", a: "true" },
+  { q: "IT has no impact on the education system.", a: "false" },
+  { q: "Mobile applications are considered part of Information Technology.", a: "true" },
+  { q: "Storing data in the cloud requires physical space on your device.", a: "false" },
+  { q: "A computer virus is a type of cybersecurity threat.", a: "true" },
+  { q: "Data analytics helps organizations make informed decisions.", a: "true" },
+  { q: "IT professionals do not need to learn programming.", a: "false" },
+  { q: "Hardware is the physical part of a computer.", a: "true" },
+  { q: "A spreadsheet application is an example of IT software.", a: "true" },
+  { q: "IT cannot be used for online shopping.", a: "false" },
+  { q: "The Internet is an important component of Information Technology.", a: "true" },
+  { q: "Information systems do not help in decision-making.", a: "false" },
+  { q: "IT skills are only useful for software engineers.", a: "false" },
+  { q: "Smartphones are IT devices.", a: "true" },
+  { q: "IT has made remote work possible.", a: "true" },
+  { q: "Artificial Intelligence is unrelated to Information Technology.", a: "false" }
 ];
 
     
 const questions = [
-    { q: "Which function in Excel is used to find the highest value in a range?", a: "c", options: ["SUM", "AVERAGE", "MAX", "COUNT"] },
-    { q: "Which keyboard shortcut is used to paste content in Microsoft Word?", a: "b", options: ["Ctrl + X", "Ctrl + V", "Ctrl + P", "Ctrl + C"] },
-    { q: "Which file extension is associated with Microsoft PowerPoint presentations?", a: "a", options: [".pptx", ".xlsx", ".docx", ".mdb"] },
-    { q: "Which function in Excel is used to search for a value in the first column and return a corresponding value?", a: "c", options: ["INDEX", "MATCH", "VLOOKUP", "FIND"] },
-    { q: "Which feature in Excel is used to apply automatic formatting based on cell values?", a: "b", options: ["Data Validation", "Conditional Formatting", "Goal Seek", "Scenario Manager"] },
-    { q: "In Windows, which key combination is used to open Task Manager?", a: "c", options: ["Ctrl + Shift + Esc", "Alt + Tab", "Ctrl + Alt + Delete", "Win + R"] },
-    { q: "Which Excel feature allows you to apply different formatting based on cell values?", a: "d", options: ["Data Validation", "Sorting", "Pivot Table", "Conditional Formatting"] },
-    { q: "Which shortcut key is used to undo an action in Microsoft applications?", a: "a", options: ["Ctrl + Z", "Ctrl + Y", "Ctrl + U", "Ctrl + A"] },
-    { q: "Which software is primarily used for managing databases?", a: "b", options: ["Excel", "Access", "PowerPoint", "OneNote"] },
-    { q: "Which chart type is best for showing trends over time in Excel?", a: "a", options: ["Line Chart", "Pie Chart", "Bar Chart", "Scatter Plot"] },
-    { q: "Which command is used to insert a new slide in PowerPoint?", a: "d", options: ["Ctrl + S", "Ctrl + X", "Ctrl + M", "Ctrl + P"] },
-    { q: "Which Windows feature allows you to restore the system to a previous state?", a: "c", options: ["Task Scheduler", "File Explorer", "System Restore", "Device Manager"] },
-    { q: "In Excel, which symbol is used for absolute cell referencing?", a: "b", options: ["&", "$", "#", "*"] },
-    { q: "Which option in Word is used to check spelling and grammar?", a: "d", options: ["Page Layout", "Track Changes", "Review", "Spelling & Grammar"] },
-    { q: "Which keyboard shortcut is used to save a document?", a: "a", options: ["Ctrl + S", "Ctrl + N", "Ctrl + O", "Ctrl + Q"] },
-    { q: "Which feature in PowerPoint allows animations between slides?", a: "b", options: ["Animations", "Transitions", "Slide Show", "Design"] },
-    { q: "What is the default file format for Excel workbooks?", a: "c", options: [".pptx", ".docx", ".xlsx", ".pdf"] },
-    { q: "Which feature in Word is used to merge multiple letters with a data source?", a: "d", options: ["Page Layout", "Table of Contents", "References", "Mail Merge"] },
-    { q: "Which function in Excel is used to count non-empty cells?", a: "a", options: ["COUNTA", "COUNTBLANK", "COUNTIF", "COUNT"] },
-    { q: "Which shortcut is used to bold text in Word?", a: "b", options: ["Ctrl + I", "Ctrl + B", "Ctrl + U", "Ctrl + E"] },
-    { q: "Which function in Excel is used to count only numeric values in a range?", a: "c", options: ["COUNTA", "COUNTBLANK", "COUNT", "SUM"] },
-    { q: "Which keyboard shortcut is used to fill cells automatically in Excel?", a: "a", options: ["Ctrl + D", "Ctrl + R", "Ctrl + Shift + L", "Ctrl + E"] },
-    { q: "Which Microsoft Office application is used for email management?", a: "c", options: ["Word", "Excel", "Outlook", "Access"] },
-    { q: "Which Windows key combination is used to minimize all open windows?", a: "d", options: ["Win + D", "Alt + Tab", "Ctrl + M", "Win + M"] },
-    { q: "Which function in Excel is used to join text from multiple cells?", a: "b", options: ["SPLIT", "CONCATENATE", "JOIN", "MERGE"] },
-    { q: "Which option in Word helps to create a table of contents?", a: "c", options: ["Track Changes", "Spelling & Grammar", "References", "Mail Merge"] },
-    { q: "Which feature in PowerPoint allows you to rehearse your presentation timing?", a: "a", options: ["Rehearse Timings", "Slide Master", "Animations", "Record Slide Show"] },
-    { q: "Which Windows feature is used to uninstall programs?", a: "b", options: ["Device Manager", "Control Panel", "Task Manager", "Command Prompt"] },
-    { q: "Which function in Excel is used to search for a value in a table?", a: "d", options: ["IF", "COUNTIF", "INDEX", "VLOOKUP"] },
-    { q: "Which option in Word is used to track changes made in a document?", a: "a", options: ["Track Changes", "Page Layout", "Table of Contents", "Review"] },
-    { q: "Which shortcut key is used to insert a new worksheet in Excel?", a: "c", options: ["Ctrl + S", "Ctrl + X", "Shift + F11", "Ctrl + M"] },
-    { q: "Which function is used to extract text from the right side of a cell in Excel?", a: "b", options: ["LEFT", "RIGHT", "MID", "FIND"] },
-    { q: "Which feature in Excel allows you to freeze specific rows and columns?", a: "b", options: ["Consolidate", "Freeze Panes", "Split", "Protect Sheet"] },
-    { q: "Which option in PowerPoint is used to add speaker notes?", a: "b", options: ["Slide Sorter", "Notes Pane", "Master Slide", "Outline View"] },
-    { q: "Which Windows tool is used to check disk errors?", a: "d", options: ["Device Manager", "Disk Cleanup", "Task Scheduler", "Check Disk"] },
-    { q: "Which Excel function is used to return the current date and time?", a: "a", options: ["NOW()", "TODAY()", "DATE()", "TIME()"] },
-    { q: "Which feature in Word is used to split a document into sections?", a: "c", options: ["Columns", "Styles", "Page Breaks", "Footnotes"] },
-    { q: "Which keyboard shortcut is used to insert a hyperlink in Office applications?", a: "d", options: ["Ctrl + S", "Ctrl + P", "Ctrl + K", "Ctrl + H"] },
-    { q: "Which function in Excel is used to calculate the average of a range?", a: "b", options: ["SUM", "AVERAGE", "COUNT", "PRODUCT"] },
-    { q: "Which Windows command is used to view the IP address of a computer?", a: "a", options: ["ipconfig", "ping", "netstat", "tracert"] },
-    { q: "Which Excel function is used to extract a portion of text from a cell?", a: "c", options: ["LEFT", "RIGHT", "MID", "EXTRACT"] },
-    { q: "Which feature in Excel is used to apply automatic formatting based on cell values?", a: "b", options: ["Data Validation", "Conditional Formatting", "Goal Seek", "Scenario Manager"] },
-    { q: "Which feature in Word allows automatic numbering of pages?", a: "b", options: ["Headers", "Page Numbers", "Footnotes", "Track Changes"] },
-    { q: "Which PowerPoint feature allows you to change the appearance of all slides at once?", a: "d", options: ["Themes", "Transitions", "Slide Show", "Slide Master"] }
+  {
+    q: "What does IT stand for?",
+    a: "a",
+    options: [
+      "Information Technology",
+      "International Transport",
+      "Internet Tools",
+      "Intelligent Technology"
+    ]
+  },
+  {
+    q: "Which device is used to store data permanently?",
+    a: "c",
+    options: [
+      "RAM",
+      "Monitor",
+      "Hard Drive",
+      "Mouse"
+    ]
+  },
+  {
+    q: "What is the main purpose of an operating system?",
+    a: "b",
+    options: [
+      "Design graphics",
+      "Manage hardware and software resources",
+      "Connect to the internet",
+      "Play videos"
+    ]
+  },
+  {
+    q: "Which of the following is a programming language?",
+    a: "a",
+    options: [
+      "Python",
+      "Excel",
+      "PowerPoint",
+      "Access"
+    ]
+  },
+  {
+    q: "Which tool is used for video conferencing?",
+    a: "c",
+    options: [
+      "Photoshop",
+      "Notepad",
+      "Zoom",
+      "Paint"
+    ]
+  },
+  {
+    q: "Which of the following is not an output device?",
+    a: "d",
+    options: [
+      "Printer",
+      "Monitor",
+      "Speaker",
+      "Keyboard"
+    ]
+  },
+  {
+    q: "What is the function of a router?",
+    a: "b",
+    options: [
+      "Store data",
+      "Connect networks",
+      "Display images",
+      "Type text"
+    ]
+  },
+  {
+    q: "Which part of the computer is considered the 'brain'?",
+    a: "a",
+    options: [
+      "CPU",
+      "Hard Disk",
+      "Keyboard",
+      "RAM"
+    ]
+  },
+  {
+    q: "Which of these is a file extension for a text file?",
+    a: "d",
+    options: [
+      ".jpg",
+      ".mp3",
+      ".exe",
+      ".txt"
+    ]
+  },
+  {
+    q: "Which application is used to create databases?",
+    a: "b",
+    options: [
+      "Word",
+      "Access",
+      "Excel",
+      "Outlook"
+    ]
+  },
+  {
+    q: "Which is the best example of a web browser?",
+    a: "a",
+    options: [
+      "Google Chrome",
+      "Windows",
+      "MS Word",
+      "Excel"
+    ]
+  },
+  {
+    q: "Firewall is used for:",
+    a: "c",
+    options: [
+      "Speeding up the internet",
+      "Cleaning viruses",
+      "Network security",
+      "Editing documents"
+    ]
+  },
+  {
+    q: "Which software is used for spreadsheets?",
+    a: "b",
+    options: [
+      "PowerPoint",
+      "Excel",
+      "Word",
+      "Access"
+    ]
+  },
+  {
+    q: "What type of device is a scanner?",
+    a: "a",
+    options: [
+      "Input",
+      "Output",
+      "Storage",
+      "Processing"
+    ]
+  },
+  {
+    q: "Which of the following is a cloud storage service?",
+    a: "d",
+    options: [
+      "Chrome",
+      "Access",
+      "Excel",
+      "Google Drive"
+    ]
+  },
+  {
+    q: "Which key is used to copy selected text?",
+    a: "c",
+    options: [
+      "Ctrl + V",
+      "Ctrl + Z",
+      "Ctrl + C",
+      "Ctrl + P"
+    ]
+  },
+  {
+    q: "Which one is NOT an example of application software?",
+    a: "d",
+    options: [
+      "Word",
+      "Excel",
+      "PowerPoint",
+      "BIOS"
+    ]
+  },
+  {
+    q: "What is phishing?",
+    a: "b",
+    options: [
+      "Improving computer speed",
+      "Attempt to steal personal data",
+      "Fixing software bugs",
+      "Backing up files"
+    ]
+  },
+  {
+    q: "Which of the following is a social media platform?",
+    a: "a",
+    options: [
+      "Facebook",
+      "Google Drive",
+      "Word",
+      "Excel"
+    ]
+  },
+  {
+    q: "What does URL stand for?",
+    a: "c",
+    options: [
+      "Universal Routing Location",
+      "Unified Resource Locator",
+      "Uniform Resource Locator",
+      "Unique Resource Link"
+    ]
+  },
+  {
+    q: "Which device connects the computer to the internet?",
+    a: "d",
+    options: [
+      "Printer",
+      "Scanner",
+      "Monitor",
+      "Modem"
+    ]
+  },
+  {
+    q: "RAM is considered a type of:",
+    a: "b",
+    options: [
+      "Permanent memory",
+      "Volatile memory",
+      "Storage device",
+      "Input device"
+    ]
+  },
+  {
+    q: "Which of these is an antivirus software?",
+    a: "a",
+    options: [
+      "Avast",
+      "PowerPoint",
+      "Excel",
+      "Windows"
+    ]
+  },
+  {
+    q: "The main page of a website is called:",
+    a: "c",
+    options: [
+      "Link",
+      "File",
+      "Homepage",
+      "Dashboard"
+    ]
+  },
+  {
+    q: "Which of these is a cloud-based email service?",
+    a: "d",
+    options: [
+      "MS Word",
+      "Excel",
+      "Outlook Express",
+      "Gmail"
+    ]
+  },
+  {
+    q: "Which one is a portable storage device?",
+    a: "b",
+    options: [
+      "Hard Disk",
+      "USB Flash Drive",
+      "Motherboard",
+      "Router"
+    ]
+  },
+  {
+    q: "Which protocol is used to transfer web pages?",
+    a: "a",
+    options: [
+      "HTTP",
+      "FTP",
+      "SMTP",
+      "IP"
+    ]
+  },
+  {
+    q: "What does PDF stand for?",
+    a: "c",
+    options: [
+      "Public Document Format",
+      "Picture Document File",
+      "Portable Document Format",
+      "Printed Data File"
+    ]
+  },
+  {
+    q: "What is the full form of ICT?",
+    a: "a",
+    options: [
+      "Information and Communication Technology",
+      "Internet and Computer Tools",
+      "Interactive Cyber Technology",
+      "Intelligent Computing Terminology"
+    ]
+  },
+  {
+    q: "Which one is NOT a programming language?",
+    a: "d",
+    options: [
+      "Python",
+      "Java",
+      "C++",
+      "Google"
+    ]
+  }
 ];
 
 
