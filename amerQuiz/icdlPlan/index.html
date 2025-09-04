@@ -13,6 +13,38 @@
   </div>
 </div>
 
+<!-- ✅ بوكس Material -->
+<a href="https://etiqotwf.github.io/liveServer1/amerQuiz/icdlGroups" target="_blank" class="material-box">
+  📦 Material
+</a>
+
+<style>
+.material-box {
+  display: block;
+  width: 220px;
+  margin: 25px auto;
+  padding: 18px 24px;
+  text-align: center;
+  font-size: 20px;
+  font-weight: bold;
+  color: #fff;
+  background: linear-gradient(45deg, #1976d2, #42a5f5);
+  border-radius: 14px;
+  text-decoration: none;
+  box-shadow: 0 6px 14px rgba(0,0,0,0.25);
+  transition: all 0.3s ease-in-out;
+  letter-spacing: 1px;
+}
+
+.material-box:hover {
+  background: linear-gradient(45deg, #1565c0, #1e88e5);
+  transform: scale(1.08);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.35);
+}
+</style>
+
+
+
 <style>
 /* 🌟 شريط الأخبار */
 .news-ticker {
@@ -440,62 +472,50 @@ h2 {
 const scriptURL = "https://script.google.com/macros/s/AKfycbwq_yEcR4ihNZlub3OEJ8Dq9t8qQE8TKdbLq7h-HGvzVFq8g5KPV3H3UeqlT75UpZDpQQ/exec";
 
 (function(){
-  const groups = Array.from({length:8}, (_,i) => 'G' + (i+1));
-const colors = ['#FFCDD2','#BBDEFB','#C8E6C9','#FFF9C4',
-                '#FFCCBC','#D1C4E9','#B2EBF2','#F0F4C3'];
-const weeks = 7, daysPerWeek = 5, slotsPerDay = 3; 
-let startDate = new Date(2025, 7, 31);
-const dayNames = ['Sunday','Monday','Tuesday','Wednesday','Thursday'];
+  const groups = Array.from({length:12}, (_,i) => 'G' + (i+1));
+  const colors = ['#FFCDD2','#BBDEFB','#C8E6C9','#FFF9C4','#FFCCBC','#D1C4E9',
+                  '#B2EBF2','#F0F4C3','#FFECB3','#FFE0B2','#DCEDC8','#F8BBD0'];
+  const weeks = 10, daysPerWeek = 5, slotsPerDay = 3;
+  let startDate = new Date(2025, 7, 31);
+  const dayNames = ['Sunday','Monday','Tuesday','Wednesday','Thursday'];
 
-const tbody=document.getElementById('tbody');
+  const tbody=document.getElementById('tbody');
 
-// ✅ تجهيز التوزيع بحيث كل مجموعة تاخد 12 سيشن فقط
-const maxSessions = 12;
-let groupCount = {};
-groups.forEach(g => groupCount[g] = 0);
-
-const groupDistribution = [];
-let idxGroup = 0;
-
-while (groupDistribution.length < weeks * daysPerWeek * slotsPerDay 
-       && Object.values(groupCount).some(c => c < maxSessions)) {
-  let g = groups[idxGroup % groups.length];
-  if (groupCount[g] < maxSessions) {
-    groupDistribution.push(g);
-    groupCount[g]++;
-  }
-  idxGroup++;
-}
-
-// إنشاء الجدول
-let idx = 0;
-outer: for(let w=1; w<=weeks; w++){
-  for(let d=0; d<daysPerWeek; d++){
-    // لو خلصنا كل السيشن نوقف فوراً
-    if (idx >= groupDistribution.length) break outer;
-
-    const tr = document.createElement('tr');
-    const thisDate = new Date(startDate);
-    thisDate.setDate(startDate.getDate() + (w-1)*7 + d);
-    const tdDay = document.createElement('td');
-    tdDay.innerHTML = `Week ${w} — ${dayNames[d]} (${thisDate.toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'})})`;
-    tr.appendChild(tdDay);
-
-    for(let s=0; s<slotsPerDay; s++){
-      if (idx >= groupDistribution.length) break; // نوقف لما نخلص
-
-      const g = groupDistribution[idx++];
-      const td = document.createElement('td');
-      td.textContent = g;
-      td.style.background = colors[groups.indexOf(g)];
-      td.style.cursor = "pointer";
-      td.addEventListener("click", ()=>openModal(g));
-      tr.appendChild(td);
+  // ✅ توزيع ثابت للجروبات
+  const groupDistribution = [];
+  for(let i=0;i<12;i++){
+    for(let j=0;j<12;j++){
+      groupDistribution.push(groups[j]); // كل مجموعة تتكرر 12 مرة متتابعة
     }
-    tbody.appendChild(tr);
   }
-}
+  // نضيف أي جلسات ناقصة إذا لزم
+  while(groupDistribution.length < weeks * daysPerWeek * slotsPerDay){
+    groupDistribution.push(groups[groupDistribution.length % groups.length]);
+  }
 
+  // إنشاء الجدول
+  let idx = 0;
+  for(let w=1; w<=weeks; w++){
+    for(let d=0; d<daysPerWeek; d++){
+      const tr = document.createElement('tr');
+      const thisDate = new Date(startDate);
+      thisDate.setDate(startDate.getDate() + (w-1)*7 + d);
+      const tdDay = document.createElement('td');
+      tdDay.innerHTML = `Week ${w} — ${dayNames[d]} (${thisDate.toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'})})`;
+      tr.appendChild(tdDay);
+
+      for(let s=0; s<slotsPerDay; s++){
+        const g = groupDistribution[idx++];
+        const td = document.createElement('td');
+        td.textContent = g;
+        td.style.background = colors[groups.indexOf(g)];
+        td.style.cursor = "pointer";
+        td.addEventListener("click", ()=>openModal(g));
+        tr.appendChild(td);
+      }
+      tbody.appendChild(tr);
+    }
+  }
 
   // ✅ modal handling
   const modal=document.getElementById("nameModal");
