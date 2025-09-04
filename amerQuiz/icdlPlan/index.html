@@ -13,16 +13,23 @@
   </div>
 </div>
 
-<!-- ✅ بوكس Material -->
-<a href="https://etiqotwf.github.io/liveServer1/amerQuiz/icdlGroups" target="_blank" class="material-box">
-  📦 Material
-</a>
+<!-- ✅ بوكس Material مع إظهار الباسورد -->
+<div class="material-container">
+  <a href="https://etiqotwf.github.io/liveServer1/amerQuiz/icdlGroups" target="_blank" class="material-box">
+    📦 Material
+  </a>
+  <div class="password-text">🔑 Password: 1550</div>
+</div>
 
 <style>
+.material-container {
+  text-align: center;
+  margin: 30px auto;
+}
+
 .material-box {
-  display: block;
+  display: inline-block;
   width: 220px;
-  margin: 25px auto;
   padding: 18px 24px;
   text-align: center;
   font-size: 20px;
@@ -41,7 +48,23 @@
   transform: scale(1.08);
   box-shadow: 0 8px 20px rgba(0,0,0,0.35);
 }
+
+.password-text {
+  margin-top: 12px;
+  font-size: 18px;
+  font-weight: bold;
+  color: #444;
+  opacity: 0;
+  transform: translateY(-10px);
+  transition: all 0.3s ease-in-out;
+}
+
+.material-container:hover .password-text {
+  opacity: 1;
+  transform: translateY(0);
+}
 </style>
+
 
 
 
