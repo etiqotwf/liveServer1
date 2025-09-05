@@ -463,6 +463,36 @@ h2 {
 .prev-btn { left: 10px; }
 .next-btn { right: 10px; }
 
+.carousel-wrapper {
+  display: flex;
+  gap: 20px; /* المسافة بين البوكس وباقي العناصر */
+  align-items: flex-start; /* لمحاذاة العناصر من الأعلى */
+  flex-wrap: nowrap; /* منع الالتفاف فوق بعض */
+}
+
+/* بوكس الصور */
+.image-carousel {
+  flex: 0 0 35%; /* ياخد 35% من عرض الشاشة */
+  min-width: 150px; /* لا يقل عن 150px */
+  border-radius: 12px;
+  box-shadow: 0 6px 15px rgba(0,0,0,0.3);
+  overflow: hidden;
+}
+
+/* باقي المحتوى */
+.page-content {
+  flex: 1 1 0; /* ياخد باقي المساحة */
+}
+
+/* للشاشات الصغيرة */
+@media screen and (max-width: 480px) {
+  .image-carousel {
+    flex: 0 0 40%; /* يصغر نسبياً */
+  }
+  .page-content {
+    flex: 1 1 60%; /* يبقى جنب البوكس */
+  }
+}
 
 
 </style>
