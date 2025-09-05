@@ -5,21 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 
 
-<!-- ✅ شريط الأخبار -->
-<div class="news-ticker">
-  <div class="ticker-title">📢 آخر التحديثات:</div>
-  <div class="ticker-content">
-    <span>🔔  ⚡ برجاء الالتزام بالمواعيد المحددة .. ✅ لا يمكن التسجل فى مجموعه واحده مرتين ولا فى مجموعتين مختلفتين بنفس الاسم .. 🎓 التسجيل في الجروبات متاح الآن .. 🌟</span>
-  </div>
-</div>
-
-<!-- ✅ بوكس Material مع إظهار الباسورد -->
-<div class="material-container">
-  <a href="https://etiqotwf.github.io/liveServer1/amerQuiz/icdlGroups" target="_blank" class="material-box">
-    📦 Material
-  </a>
-  <div class="password-text">🔑 Password: 1550</div>
-</div>
 
 <style>
 .material-container {
@@ -393,14 +378,69 @@ h2 {
   align-self: center;
 }
 
+
+.toggle-questions-btn {
+  position: relative; /* مهم علشان الـ badge يتموضع داخله */
+  width: 100%;
+  background: #f4511e;
+  color: white;
+  padding: 12px 16px;
+  text-align: right;
+  border: none;
+  outline: none;
+  font-size: 20pt;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+/* الحاوية: الظرف + الدائرة */
+.notification {
+  display: inline-flex;
+  align-items: left;
+  gap: 6px;
+  margin-right: 10px;
+}
+
+/* أيقونة الظرف */
+.notification .icon {
+  font-size: 20pt;
+}
+
+/* الدائرة */
+#questions-badge {
+  display: none; /* يبدأ مخفي */
+  background: #ffeb3b;  /* أصفر فاتح */
+  color: #000;          /* النص بالأسود */
+  font-weight: bold;
+  font-size: 20px;
+  border-radius: 50%;
+  padding: 4px 8px;
+  box-shadow: 0 0 6px rgba(0,0,0,0.3);
+}
+
+
+
 </style>
 </head>
 <body>
   
 
+<!-- ✅ شريط الأخبار -->
+<div class="news-ticker">
+  <div class="ticker-title">📢 آخر التحديثات:</div>
+  <div class="ticker-content">
+    <span>🔔  ⚡ برجاء الالتزام بالمواعيد المحددة .. ✅ لا يمكن التسجل فى مجموعه واحده مرتين ولا فى مجموعتين مختلفتين بنفس الاسم .. 🎓 التسجيل في الجروبات متاح الآن .. 🌟</span>
+  </div>
+</div>
+
+
+
+
 <h1 class="main-title">
   International Learning Center (ILC 🎓)
 </h1>
+
+
 
 <h2>📅 ICDL Schedule — 12 Groups (10 Weeks)</h2>
 <div class="meta">Training Days: Sunday → Thursday · Time: 3:00 – 6:00 PM · 3 sessions per day</div>
@@ -420,17 +460,22 @@ h2 {
 
 
 <div class="trainee-questions">
-  <button class="toggle-questions-btn">❓ أسئلة المتدربين اضغط هنا لرؤية الأسئلة</button>
-  
-  <!-- ✅ نخلي الأسئلة والمدخلات في نفس الكونتينر -->
-  <div id="questionsSection" style="display:none;">
+<button class="toggle-questions-btn">
+  ❓ أسئلة المتدربين اضغط هنا لرؤية الأسئلة
+  <span class="notification">
+    <span class="icon">✉️</span>
+    <span id="questions-badge">0</span>
+  </span>
+</button>
+
+
+  <div id="questionsSection" style="display:none; margin-top:10px;">
     <div class="questions-content">
       <ul id="questionsList">
         <li><em>لا توجد أسئلة بعد</em></li>
       </ul>
     </div>
 
-    <!-- ✅ ثابت أسفل البوكس -->
     <div class="questions-controls">
       <input type="text" id="newQuestionName" placeholder="✍️ اكتب اسمك هنا">
       <input type="text" id="newQuestion" placeholder="✍️ اكتب سؤالك هنا">
@@ -440,6 +485,14 @@ h2 {
 </div>
 
 
+
+<!-- ✅ بوكس Material مع إظهار الباسورد -->
+<div class="material-container">
+  <a href="https://etiqotwf.github.io/liveServer1/amerQuiz/icdlGroups" target="_blank" class="material-box">
+    📦 Material
+  </a>
+  <div class="password-text">🔑 Password: 1550</div>
+</div>
 
 
 <!-- ✅ المودال -->
@@ -492,7 +545,7 @@ h2 {
   </script>
 
 <script>
-const scriptURL = "https://script.google.com/macros/s/AKfycbwq_yEcR4ihNZlub3OEJ8Dq9t8qQE8TKdbLq7h-HGvzVFq8g5KPV3H3UeqlT75UpZDpQQ/exec";
+const scriptURL = "https://script.google.com/macros/s/AKfycbw-AmgYb01A6a5Ld5qDwBsm6Q9XPDgwsz3nFB-KBONXlBTnFykkddOkEJHlcJ-47iH3IQ/exec";
 
 (function(){
   const groups = Array.from({length:12}, (_,i) => 'G' + (i+1));
@@ -719,22 +772,21 @@ toggleBtn.addEventListener("click", () => {
 
 
 
-// toggle عرض أسئلة المتدربين
-// toggle عرض/إخفاء قسم الأسئلة بالكامل
-const toggleQuestionsBtn = document.querySelector(".toggle-questions-btn");
-const questionsSection = document.getElementById("questionsSection");
 
-toggleQuestionsBtn.addEventListener("click", () => {
-  questionsSection.style.display = 
-    questionsSection.style.display === "block" ? "none" : "block";
-});
 
 // إضافة سؤال جديد للائحة
+// عناصر DOM
+const toggleQuestionsBtn = document.querySelector(".toggle-questions-btn");
+const questionsSection = document.getElementById("questionsSection");
 const askBtn = document.getElementById("askBtn");
 const newQuestionInput = document.getElementById("newQuestion");
 const newQuestionNameInput = document.getElementById("newQuestionName");
 const questionsList = document.getElementById("questionsList");
 
+let lastSeenCount = 0;     // آخر عدد أسئلة شافه المستخدم
+let questionsOpened = false; // هل المستخدم فتح الأسئلة
+
+// ✅ تحميل الأسئلة
 async function loadQuestions() {
   try {
     const res = await fetch(scriptURL + "?action=question");
@@ -742,29 +794,37 @@ async function loadQuestions() {
 
     questionsList.innerHTML = "";
 
-    if(data.length === 0){
+    if (data.length === 0) {
       const li = document.createElement("li");
       li.innerHTML = "<em>لا توجد أسئلة بعد</em>";
       questionsList.appendChild(li);
     } else {
-      // ترتيب الأسئلة حسب الأحدث أولاً
       data.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+      // ✅ مقارنة عدد الأسئلة الحالي باللي شافه المستخدم آخر مرة
+      const badge = document.getElementById("questions-badge");
+      if (data.length > lastSeenCount && !questionsOpened) {
+        badge.style.display = "inline-block";
+        badge.textContent = data.length - lastSeenCount; // عدد الأسئلة الجديدة
+      } else {
+        badge.style.display = "none";
+      }
 
       data.forEach(q => {
         const li = document.createElement("li");
         const dateStr = new Date(q.date).toLocaleString();
-        const isAdmin = q.name.toLowerCase().includes("مستر"); // تمييز الأدمن
+        const isAdmin = q.name.toLowerCase().includes("مستر");
 
-        if(isAdmin){
+        if (isAdmin) {
           li.innerHTML = `
             <span style="color:#d32f2f; font-weight:bold;">🛡️ [${q.name}]</span>
-            <span style="color:#d32f2f; font-weight:bold;"> ❗ ${q.question}</span>
+            <span style="color:#d32f2f; font-weight:bold;"> ${q.question}</span>
             <span style="color:#555; font-size:10pt; margin-left:8px; font-weight:bold;">(${dateStr})</span>
           `;
         } else {
           li.innerHTML = `
             <span style="color:#1e88e5; font-weight:bold;">🎓 [${q.name}]</span>
-            <span style="color:#2e7d32; font-weight:bold;"> ❓ ${q.question}</span>
+            <span style="color:#2e7d32; font-weight:bold;"> ${q.question}</span>
             <span style="color:#555; font-size:10pt; margin-left:8px; font-weight:bold;">(${dateStr})</span>
           `;
         }
@@ -773,14 +833,29 @@ async function loadQuestions() {
       });
     }
 
-  } catch(err) {
+  } catch (err) {
     console.error("Error loading questions", err);
   }
 }
 
-// تحميل الأسئلة عند بدء الصفحة
-loadQuestions();
+// ✅ عند الضغط على زر "أسئلة المتدربين"
+toggleQuestionsBtn.addEventListener("click", () => {
+  const isHidden = questionsSection.style.display === "none";
 
+  if (isHidden) {
+    questionsSection.style.display = "block";
+    questionsOpened = true;
+    lastSeenCount = questionsList.querySelectorAll("li").length;
+    document.getElementById("questions-badge").style.display = "none";
+  } else {
+    questionsSection.style.display = "none";
+  }
+});
+
+// تحميل الأسئلة عند فتح الصفحة
+loadQuestions();
+// تحديث دوري كل 15 ثانية
+setInterval(loadQuestions, 15000);
 
 
 askBtn.addEventListener("click", async () => {
@@ -809,58 +884,6 @@ askBtn.addEventListener("click", async () => {
 
 // تحميل الأسئلة عند فتح الصفحة
 // ✅ تحميل الأسئلة بترتيب الأحدث أولاً
-async function loadQuestions() {
-  try {
-    const res = await fetch(scriptURL + "?action=question");
-    const data = await res.json();
-
-    const questionsList = document.getElementById("questionsList");
-    questionsList.innerHTML = ""; // مسح القديم
-
-    if(data.length === 0){
-      const li = document.createElement("li");
-      li.innerHTML = "<em>لا توجد أسئلة بعد</em>";
-      questionsList.appendChild(li);
-    } else {
-      // ✅ ترتيب الأسئلة بالأحدث أولاً
-      data.sort((a, b) => new Date(b.date) - new Date(a.date));
-
-      data.forEach(q => {
-        const li = document.createElement("li");
-        const dateStr = new Date(q.date).toLocaleDateString("ar-EG", {
-          weekday: "long",
-          year: "numeric",
-          month: "long",
-          day: "numeric"
-        }) + " - " + new Date(q.date).toLocaleTimeString("ar-EG");
-
-        const isAdmin = q.name.toLowerCase().includes("مستر");
-
-        if(isAdmin){
-          li.innerHTML = `
-            <span style="color:#d32f2f; font-weight:bold;">🛡️ [${q.name}]</span>
-            <span style="color:#d32f2f; font-weight:bold;">  ${q.question}</span>
-            <span style="color:#555; font-size:10pt; margin-left:8px; font-weight:bold;">🕒 ${dateStr}</span>
-          `;
-        } else {
-          li.innerHTML = `
-            <span style="color:#1e88e5; font-weight:bold;">🎓 [${q.name}]</span>
-            <span style="color:#2e7d32; font-weight:bold;">  ${q.question}</span>
-            <span style="color:#555; font-size:10pt; margin-left:8px; font-weight:bold;">🕒 ${dateStr}</span>
-          `;
-        }
-
-        questionsList.appendChild(li);
-      });
-    }
-
-  } catch(err) {
-    console.error("Error loading questions", err);
-  }
-}
-
-// ✅ استدعاء الدالة عند فتح الصفحة
-loadQuestions();
 
 
 </script>
