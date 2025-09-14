@@ -231,6 +231,337 @@ input[type="radio"] {
     const trueFalseQuestions = [
 
 
+
+{
+  "passage": `<div style="margin-top: 40px; max-width: 1100px; margin-left:auto; margin-right:auto; position: relative;">
+
+  <!-- Emoji Sticky Animation -->
+  <div id="emoji-character" style="
+    position: sticky;
+    top: 20px;
+    float: right;
+    font-size: 64px;
+    margin-left: auto;
+    display: block;
+    z-index: 10;
+  ">🧑‍💻</div>
+
+  <!-- Main Container -->
+  <div style="font-family: 'Segoe UI', Arial, sans-serif; background: linear-gradient(135deg, #f7fbff, #ffffff); color: #222; padding: 34px; border: 1px solid #dfefff; border-radius: 22px; font-size: 18px; line-height:1.7; box-shadow: 0 10px 28px rgba(0,0,0,0.08); position: relative; z-index: 5;">
+    
+    <strong style="font-size: 28px; color: #003b70; display:block; margin-bottom:18px;">
+      ⚡ Professional Advanced Tasks: Integrated IT Skills
+    </strong>
+    
+    <p style="margin-bottom:20px; color:#214b77;">
+      <em><u style="color:#0056b3;">Advanced Challenge (Each card):</u></em><br>
+      Each card now includes: Steps, a multiple-choice question (A–D), the correct answer with a detailed explanation, a practical example, and a small training table. Cards are enlarged to fit the content.
+    </p>
+
+    <!-- Cards Grid (larger cards) -->
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 28px; align-items: start;">
+
+      <!-- Word -->
+      <div class="task-card" style="--color:#0078d7; padding:30px; min-height:520px;">
+        <h3>Task 1: Microsoft Word</h3>
+        <p><strong>Steps:</strong><br>
+        Create a thesis with sections, cross-references, footnotes, and bibliography.</p>
+
+        <p><strong>Question:</strong><br>
+        Which feature lets you add citations and automatically build a bibliography?</p>
+        <ul>
+          <li>A) Track Changes</li>
+          <li>B) Cross-reference</li>
+          <li>C) Footnotes</li>
+          <li>D) References → Manage Sources</li>
+        </ul>
+
+        <div class="explanation" style="background:#f0f6ff; padding:14px; border-radius:10px; margin-top:12px; border-left:6px solid var(--color);">
+          <h4 style="margin:0 0 8px 0;">Answer & Explanation</h4>
+          <p style="margin:0 0 8px 0;"><strong>Correct:</strong> D) References → Manage Sources.</p>
+          <p style="margin:0 0 8px 0;">
+            Explanation: Use the References tab → "Manage Sources" / "Insert Citation" to add structured bibliographic entries (Book, Article, etc.). Word stores the sources and can automatically generate a bibliography in styles like APA or MLA. Footnotes are for in-page notes, cross-references link to figures/sections, and Track Changes is for editing history.
+          </p>
+
+          <p style="margin:0 0 8px 0;"><strong>Practical example (step-by-step):</strong></p>
+          <ol style="margin:0 0 8px 18px;">
+            <li>Open References → Click "Insert Citation" → "Add New Source".</li>
+            <li>Choose Type: Book → fill Author, Title, Year → OK.</li>
+            <li>Place cursor where citation should appear → References → Insert Citation → select the source.</li>
+            <li>When ready, put cursor at end → References → Bibliography → choose APA style.</li>
+          </ol>
+
+          <p style="margin:0 0 8px 0;"><strong>Training table:</strong></p>
+          <table border="1" style="border-collapse:collapse; width:100%; text-align:left; font-size:14px;">
+            <tr style="background:#eaf4ff;"><th style="padding:6px;">Action</th><th style="padding:6px;">Location</th><th style="padding:6px;">Example</th></tr>
+            <tr><td style="padding:6px;">Add source</td><td style="padding:6px;">References → Add New Source</td><td style="padding:6px;">Book: "Web Dev Basics", 2020</td></tr>
+            <tr><td style="padding:6px;">Insert citation</td><td style="padding:6px;">References → Insert Citation</td><td style="padding:6px;">(Smith, 2020)</td></tr>
+            <tr><td style="padding:6px;">Generate bibliography</td><td style="padding:6px;">References → Bibliography</td><td style="padding:6px;">APA formatted list</td></tr>
+          </table>
+        </div>
+      </div>
+
+      <!-- Excel -->
+      <div class="task-card" style="--color:#00b294; padding:30px; min-height:520px;">
+        <h3>Task 2: Microsoft Excel</h3>
+        <p><strong>Steps:</strong><br>
+        Summarize sales data with PivotTables, slicers and dashboards.</p>
+
+        <p><strong>Question:</strong><br>
+        Which Excel feature is best to filter data interactively in a PivotTable?</p>
+        <ul>
+          <li>A) Data Validation</li>
+          <li>B) Slicer</li>
+          <li>C) Conditional Formatting</li>
+          <li>D) Find & Replace</li>
+        </ul>
+
+        <div class="explanation" style="background:#f0fff4; padding:14px; border-radius:10px; margin-top:12px; border-left:6px solid var(--color);">
+          <h4 style="margin:0 0 8px 0;">Answer & Explanation</h4>
+          <p style="margin:0 0 8px 0;"><strong>Correct:</strong> B) Slicer.</p>
+          <p style="margin:0 0 8px 0;">
+            Explanation: Slicers provide a visual, clickable way to filter PivotTable data by fields (e.g., Region, Product). They are more user-friendly than manual filters and work well in dashboards.
+          </p>
+
+          <p style="margin:0 0 8px 0;"><strong>Practical example (step-by-step):</strong></p>
+          <ol style="margin:0 0 8px 18px;">
+            <li>Select the data range → Insert → PivotTable → create PivotTable.</li>
+            <li>Add fields (Rows: Product, Values: Sum of Sales).</li>
+            <li>With PivotTable selected → Insert → Slicer → choose "Region".</li>
+            <li>Click the slicer buttons to filter the PivotTable and charts instantly.</li>
+          </ol>
+
+          <p style="margin:0 0 8px 0;"><strong>Sample data:</strong></p>
+          <pre style="background:#fff; padding:8px; border-radius:6px; overflow:auto; font-size:13px;">Date,Product,Region,Sales
+2025-09-01,Laptop,North,5000
+2025-09-01,Printer,South,2000
+2025-09-02,Scanner,East,1500</pre>
+
+          <p style="margin:0 0 8px 0;"><strong>Training table:</strong></p>
+          <table border="1" style="border-collapse:collapse; width:100%; text-align:left; font-size:14px;">
+            <tr style="background:#f0fff7;"><th style="padding:6px;">Action</th><th style="padding:6px;">Location</th><th style="padding:6px;">Result</th></tr>
+            <tr><td style="padding:6px;">Create PivotTable</td><td style="padding:6px;">Insert → PivotTable</td><td style="padding:6px;">Aggregated sales by product</td></tr>
+            <tr><td style="padding:6px;">Add Slicer</td><td style="padding:6px;">Insert → Slicer</td><td style="padding:6px;">Interactive Region filter</td></tr>
+            <tr><td style="padding:6px;">Insert Chart</td><td style="padding:6px;">PivotChart</td><td style="padding:6px;">Visual KPI for dashboard</td></tr>
+          </table>
+        </div>
+      </div>
+
+      <!-- Access -->
+      <div class="task-card" style="--color:#e81123; padding:30px; min-height:520px;">
+        <h3>Task 3: Microsoft Access</h3>
+        <p><strong>Steps:</strong><br>
+        Create tables, set relationships and generate reports for staff data.</p>
+
+        <p><strong>Question:</strong><br>
+        What is the main purpose of setting a primary key in a table?</p>
+        <ul>
+          <li>A) To sort records automatically</li>
+          <li>B) To uniquely identify each record</li>
+          <li>C) To speed up queries only</li>
+          <li>D) To create a form design</li>
+        </ul>
+
+        <div class="explanation" style="background:#fff5f5; padding:14px; border-radius:10px; margin-top:12px; border-left:6px solid var(--color);">
+          <h4 style="margin:0 0 8px 0;">Answer & Explanation</h4>
+          <p style="margin:0 0 8px 0;"><strong>Correct:</strong> B) To uniquely identify each record.</p>
+          <p style="margin:0 0 8px 0;">
+            Explanation: A primary key ensures each row is unique (no duplicates) and is used to create relationships between tables (one-to-many). It also helps indexing and data integrity.
+          </p>
+
+          <p style="margin:0 0 8px 0;"><strong>Practical example (step-by-step):</strong></p>
+          <ol style="margin:0 0 8px 18px;">
+            <li>Create table "Employees" with fields: EmployeeID (AutoNumber), Name (Text), DeptID (Number).</li>
+            <li>Set EmployeeID as Primary Key (right-click field → Primary Key).</li>
+            <li>Create table "Departments" with DeptID (Primary Key) and DeptName.</li>
+            <li>Design relationship: Employees.DeptID → Departments.DeptID.</li>
+          </ol>
+
+          <p style="margin:0 0 8px 0;"><strong>Training table:</strong></p>
+          <table border="1" style="border-collapse:collapse; width:100%; text-align:left; font-size:14px;">
+            <tr style="background:#ffecec;"><th style="padding:6px;">Field</th><th style="padding:6px;">Type</th><th style="padding:6px;">Example</th></tr>
+            <tr><td style="padding:6px;">EmployeeID</td><td style="padding:6px;">AutoNumber (PK)</td><td style="padding:6px;">1001</td></tr>
+            <tr><td style="padding:6px;">Name</td><td style="padding:6px;">Short Text</td><td style="padding:6px;">Ahmed Ali</td></tr>
+            <tr><td style="padding:6px;">DeptID</td><td style="padding:6px;">Number (FK)</td><td style="padding:6px;">10</td></tr>
+          </table>
+        </div>
+      </div>
+
+      <!-- PowerPoint -->
+      <div class="task-card" style="--color:#ffb900; padding:30px; min-height:520px;">
+        <h3>Task 4: PowerPoint</h3>
+        <p><strong>Steps:</strong><br>
+        Build an interactive pitch deck with transitions, hyperlinks and embedded media.</p>
+
+        <p><strong>Question:</strong><br>
+        Which action makes a slide element link to another slide?</p>
+        <ul>
+          <li>A) Animation</li>
+          <li>B) Transition</li>
+          <li>C) Hyperlink</li>
+          <li>D) Theme</li>
+        </ul>
+
+        <div class="explanation" style="background:#fffaf0; padding:14px; border-radius:10px; margin-top:12px; border-left:6px solid var(--color);">
+          <h4 style="margin:0 0 8px 0;">Answer & Explanation</h4>
+          <p style="margin:0 0 8px 0;"><strong>Correct:</strong> C) Hyperlink.</p>
+          <p style="margin:0 0 8px 0;">
+            Explanation: Use Insert → Link / Hyperlink (or right-click → Link) and choose "Place in This Document" to point to a specific slide. Animations and transitions are visual effects, while theme changes the design.
+          </p>
+
+          <p style="margin:0 0 8px 0;"><strong>Practical example (step-by-step):</strong></p>
+          <ol style="margin:0 0 8px 18px;">
+            <li>Create two slides: Slide 1 (Menu), Slide 5 (Details).</li>
+            <li>On Slide 1, add text "Go to Details" → select text → Insert → Link → Place in This Document → Slide 5 → OK.</li>
+            <li>In Slide Show mode, clicking the text navigates to Slide 5.</li>
+          </ol>
+
+          <p style="margin:0 0 8px 0;"><strong>Training table:</strong></p>
+          <table border="1" style="border-collapse:collapse; width:100%; text-align:left; font-size:14px;">
+            <tr style="background:#fff8e6;"><th style="padding:6px;">Element</th><th style="padding:6px;">Action</th><th style="padding:6px;">Result</th></tr>
+            <tr><td style="padding:6px;">Button/Text</td><td style="padding:6px;">Insert → Link → Place in This Document</td><td style="padding:6px;">Jump to specific slide</td></tr>
+            <tr><td style="padding:6px;">Video</td><td style="padding:6px;">Insert → Video → Embed</td><td style="padding:6px;">Play within slide</td></tr>
+            <tr><td style="padding:6px;">Transition</td><td style="padding:6px;">Animations/Transitions tab</td><td style="padding:6px;">Slide movement effects</td></tr>
+          </table>
+        </div>
+      </div>
+
+      <!-- Windows -->
+      <div class="task-card" style="--color:#605e5c; padding:30px; min-height:520px;">
+        <h3>Task 5: Windows</h3>
+        <p><strong>Steps:</strong><br>
+        Manage users, create backup folders and schedule automated backups.</p>
+
+        <p><strong>Question:</strong><br>
+        Which Windows tool is used to run a daily backup at 8 PM?</p>
+        <ul>
+          <li>A) Device Manager</li>
+          <li>B) Task Scheduler</li>
+          <li>C) Event Viewer</li>
+          <li>D) Control Panel → Power Options</li>
+        </ul>
+
+        <div class="explanation" style="background:#f6f6f8; padding:14px; border-radius:10px; margin-top:12px; border-left:6px solid var(--color);">
+          <h4 style="margin:0 0 8px 0;">Answer & Explanation</h4>
+          <p style="margin:0 0 8px 0;"><strong>Correct:</strong> B) Task Scheduler.</p>
+          <p style="margin:0 0 8px 0;">
+            Explanation: Task Scheduler allows creating tasks triggered at specific times (daily, weekly) to run programs or scripts (e.g., backup commands). Device Manager manages drivers, Event Viewer shows logs, and Power Options manages power settings.
+          </p>
+
+          <p style="margin:0 0 8px 0;"><strong>Practical example (step-by-step):</strong></p>
+          <ol style="margin:0 0 8px 18px;">
+            <li>Create backup folder: C:\Backup\Documents.</li>
+            <li>Create a small backup script using Robocopy (save as backup.bat):</li>
+            <pre style="background:#fff; padding:8px; border-radius:6px; overflow:auto; font-size:13px;">robocopy "C:\Users\Me\Documents" "C:\Backup\Documents" /MIR /XO</pre>
+            <li>Open Task Scheduler → Create Basic Task → Name: DailyBackup → Trigger: Daily 8:00 PM → Action: Start a program → program: backup.bat → Finish.</li>
+          </ol>
+
+          <p style="margin:0 0 8px 0;"><strong>Training table:</strong></p>
+          <table border="1" style="border-collapse:collapse; width:100%; text-align:left; font-size:14px;">
+            <tr style="background:#f0f0f2;"><th style="padding:6px;">Setting</th><th style="padding:6px;">Location</th><th style="padding:6px;">Example</th></tr>
+            <tr><td style="padding:6px;">Backup script</td><td style="padding:6px;">C:\Scripts\backup.bat</td><td style="padding:6px;">robocopy command</td></tr>
+            <tr><td style="padding:6px;">Scheduler trigger</td><td style="padding:6px;">Task Scheduler</td><td style="padding:6px;">Daily @ 20:00</td></tr>
+            <tr><td style="padding:6px;">Action</td><td style="padding:6px;">Start a program</td><td style="padding:6px;">backup.bat</td></tr>
+          </table>
+        </div>
+      </div>
+
+      <!-- IT -->
+      <div class="task-card" style="--color:#107c10; padding:30px; min-height:520px;">
+        <h3>Task 6: IT & Internet</h3>
+        <p><strong>Steps:</strong><br>
+        Configure VPN, browser security extensions and test secure connections.</p>
+
+        <p><strong>Question:</strong><br>
+        Why is a VPN important for remote employees?</p>
+        <ul>
+          <li>A) To increase internet speed</li>
+          <li>B) To block pop-ups</li>
+          <li>C) To encrypt traffic and secure data</li>
+          <li>D) To install software remotely</li>
+        </ul>
+
+        <div class="explanation" style="background:#f0fff4; padding:14px; border-radius:10px; margin-top:12px; border-left:6px solid var(--color);">
+          <h4 style="margin:0 0 8px 0;">Answer & Explanation</h4>
+          <p style="margin:0 0 8px 0;"><strong>Correct:</strong> C) To encrypt traffic and secure data.</p>
+          <p style="margin:0 0 8px 0;">
+            Explanation: A VPN creates an encrypted tunnel between the user's device and the company network, protecting data from eavesdropping especially on public networks. It does not inherently increase speed or block pop-ups.
+          </p>
+
+          <p style="margin:0 0 8px 0;"><strong>Practical example (step-by-step):</strong></p>
+          <ol style="margin:0 0 8px 18px;">
+            <li>Install the company VPN client (e.g., OpenVPN, Cisco AnyConnect).</li>
+            <li>Open client → Enter company VPN credentials → Connect.</li>
+            <li>Verify connection: visit <code>https://whatismyip.com</code> (shows company exit IP) and access internal site (e.g., intranet.company.local).</li>
+          </ol>
+
+          <p style="margin:0 0 8px 0;"><strong>Training table:</strong></p>
+          <table border="1" style="border-collapse:collapse; width:100%; text-align:left; font-size:14px;">
+            <tr style="background:#eaffef;"><th style="padding:6px;">Tool</th><th style="padding:6px;">Purpose</th><th style="padding:6px;">Example</th></tr>
+            <tr><td style="padding:6px;">VPN client</td><td style="padding:6px;">Encrypt & access internal network</td><td style="padding:6px;">Cisco AnyConnect</td></tr>
+            <tr><td style="padding:6px;">Browser extension</td><td style="padding:6px;">Block trackers/ads</td><td style="padding:6px;">uBlock Origin</td></tr>
+            <tr><td style="padding:6px;">HTTPS check</td><td style="padding:6px;">Ensure secure connection</td><td style="padding:6px;">Lock icon in address bar</td></tr>
+          </table>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<style>
+.task-card {
+  background:#ffffff; 
+  border-left:8px solid var(--color); 
+  border-radius:16px; 
+  padding:22px; 
+  box-shadow:0 8px 26px rgba(0,0,0,0.07);
+  transition: transform 0.28s, box-shadow 0.28s;
+  position: relative;
+  overflow: visible;
+}
+.task-card h3 {
+  color: var(--color);
+  font-size:22px;
+  margin-bottom:12px;
+}
+.task-card:hover {
+  transform: translateY(-10px) scale(1.02);
+  box-shadow: 0 28px 60px rgba(0, 0, 0, 0.18);
+}
+ul {
+  list-style: none;
+  padding-left: 0;
+  margin:8px 0 12px 0;
+}
+ul li {
+  margin-bottom: 8px;
+  padding-left: 8px;
+}
+.explanation h4 { font-size:16px; color:#0b3b66; }
+table, th, td {
+  border:1px solid #d6e6ff;
+}
+th {
+  background:#f5fbff;
+}
+</style>`,
+  "q": "Which advanced sequence of IT tasks demonstrates an integrated professional workflow?",
+  "a": "b",
+  "options": [
+    "Do random tasks in separate tools without relation",
+    "Word (report) → Excel (dashboard) → Access (database) → PowerPoint (presentation) → Windows (automation) → IT & Internet (security)",
+    "Only open apps without doing anything advanced",
+    "Shut down the computer without saving"
+  ]
+},
+
+
+
+
+
+
+
    {
   "passage": `<div style="margin-top: 60px; max-width: 1000px; margin-left:auto; margin-right:auto; position: relative;">
 
@@ -308,9 +639,10 @@ input[type="radio"] {
   margin-bottom:10px;
 }
 .task-card:hover {
-  transform: translateY(-8px) scale(1.02);
-  box-shadow:0 8px 20px rgba(0,0,0,0.15);
+  transform: translateY(-12px) scale(1.07);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.2);
 }
+
 </style>`,
   "q": "Which sequence of steps best represents creating a professional report in Word?",
   "a": "b",
