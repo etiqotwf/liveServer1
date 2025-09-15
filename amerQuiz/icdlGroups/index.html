@@ -232,6 +232,224 @@ input[type="radio"] {
 
 
 
+
+{
+  "passage": `<div style="margin-top: 40px; max-width: 1100px; margin-left:auto; margin-right:auto; position: relative;">
+
+  <!-- Emoji Sticky Animation -->
+  <div id="emoji-character" style="
+    position: sticky;
+    top: 20px;
+    float: right;
+    font-size: 64px;
+    margin-left: auto;
+    display: block;
+    z-index: 10;
+  ">🧑‍💻</div>
+
+  <!-- Main Container -->
+  <div style="font-family: 'Segoe UI', Arial, sans-serif; background: linear-gradient(135deg, #f7fbff, #ffffff); color: #222; padding: 34px; border: 1px solid #dfefff; border-radius: 22px; font-size: 18px; line-height:1.7; box-shadow: 0 10px 28px rgba(0,0,0,0.08); position: relative; z-index: 5;">
+    
+    <strong style="font-size: 28px; color: #003b70; display:block; margin-bottom:18px;">
+      ⚡ Practical IT Tasks: Intermediate Level
+    </strong>
+    
+    <p style="margin-bottom:20px; color:#214b77;">
+      <em><u style="color:#0056b3;">Intermediate Challenge (Each card):</u></em><br>
+      Each card includes: clear steps, a multiple-choice question, the correct answer with explanation, a simple example, and a short practice table. Content is simplified to match intermediate students.
+    </p>
+
+    <!-- Cards Grid (medium level tasks) -->
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 28px; align-items: start;">
+
+      <!-- Word -->
+      <div class="task-card" style="--color:#0078d7; padding:30px; min-height:460px;">
+        <h3>Task 1: Microsoft Word</h3>
+        <p><strong>Steps:</strong><br>
+        Create a school report with a title, headings, and insert a picture.</p>
+
+        <p><strong>Question:</strong><br>
+        Which feature is best for creating consistent titles and headings?</p>
+        <ul>
+          <li>A) Bold/Italic only</li>
+          <li>B) Styles (Heading 1, Heading 2)</li>
+          <li>C) Page Break</li>
+          <li>D) Track Changes</li>
+        </ul>
+
+        <div class="explanation" style="background:#f0f6ff; padding:14px; border-radius:10px; margin-top:12px; border-left:6px solid var(--color);">
+          <h4>Answer & Explanation</h4>
+          <p><strong>Correct:</strong> B) Styles (Heading 1, Heading 2).</p>
+          <p>Explanation: Styles make the report professional, allow automatic table of contents, and keep formatting consistent.</p>
+        </div>
+      </div>
+
+      <!-- Excel -->
+      <div class="task-card" style="--color:#00b294; padding:30px; min-height:460px;">
+        <h3>Task 2: Microsoft Excel</h3>
+        <p><strong>Steps:</strong><br>
+        Make a student grade sheet and calculate averages.</p>
+
+        <p><strong>Question:</strong><br>
+        Which function quickly calculates the average grade?</p>
+        <ul>
+          <li>A) =SUM()</li>
+          <li>B) =IF()</li>
+          <li>C) =AVERAGE()</li>
+          <li>D) =MAX()</li>
+        </ul>
+
+        <div class="explanation" style="background:#f0fff4; padding:14px; border-radius:10px; margin-top:12px; border-left:6px solid var(--color);">
+          <h4>Answer & Explanation</h4>
+          <p><strong>Correct:</strong> C) =AVERAGE().</p>
+          <p>Explanation: The AVERAGE function calculates the mean of selected numbers, which is ideal for grades.</p>
+        </div>
+      </div>
+
+      <!-- Access -->
+      <div class="task-card" style="--color:#e81123; padding:30px; min-height:460px;">
+        <h3>Task 3: Microsoft Access</h3>
+        <p><strong>Steps:</strong><br>
+        Create a simple database of students with ID, Name, and Grade.</p>
+
+        <p><strong>Question:</strong><br>
+        Why do we set the StudentID as a primary key?</p>
+        <ul>
+          <li>A) To decorate the table</li>
+          <li>B) To uniquely identify each student</li>
+          <li>C) To sort names alphabetically</li>
+          <li>D) To calculate grades automatically</li>
+        </ul>
+
+        <div class="explanation" style="background:#fff5f5; padding:14px; border-radius:10px; margin-top:12px; border-left:6px solid var(--color);">
+          <h4>Answer & Explanation</h4>
+          <p><strong>Correct:</strong> B) To uniquely identify each student.</p>
+          <p>Explanation: Primary key ensures no two students have the same ID, which keeps the data organized.</p>
+        </div>
+      </div>
+
+      <!-- PowerPoint -->
+      <div class="task-card" style="--color:#ffb900; padding:30px; min-height:460px;">
+        <h3>Task 4: PowerPoint</h3>
+        <p><strong>Steps:</strong><br>
+        Create a short presentation with slide titles and pictures.</p>
+
+        <p><strong>Question:</strong><br>
+        Which feature makes text or pictures move onto the slide?</p>
+        <ul>
+          <li>A) Transition</li>
+          <li>B) Animation</li>
+          <li>C) Hyperlink</li>
+          <li>D) Theme</li>
+        </ul>
+
+        <div class="explanation" style="background:#fffaf0; padding:14px; border-radius:10px; margin-top:12px; border-left:6px solid var(--color);">
+          <h4>Answer & Explanation</h4>
+          <p><strong>Correct:</strong> B) Animation.</p>
+          <p>Explanation: Animations control how objects (text, images) appear or move, while transitions apply to the whole slide.</p>
+        </div>
+      </div>
+
+      <!-- Windows -->
+      <div class="task-card" style="--color:#605e5c; padding:30px; min-height:460px;">
+        <h3>Task 5: Windows</h3>
+        <p><strong>Steps:</strong><br>
+        Create a new folder and organize documents.</p>
+
+        <p><strong>Question:</strong><br>
+        Which shortcut quickly creates a new folder in Windows?</p>
+        <ul>
+          <li>A) Ctrl + N</li>
+          <li>B) Ctrl + Shift + N</li>
+          <li>C) Alt + Tab</li>
+          <li>D) Ctrl + C</li>
+        </ul>
+
+        <div class="explanation" style="background:#f6f6f8; padding:14px; border-radius:10px; margin-top:12px; border-left:6px solid var(--color);">
+          <h4>Answer & Explanation</h4>
+          <p><strong>Correct:</strong> B) Ctrl + Shift + N.</p>
+          <p>Explanation: This shortcut creates a new folder instantly without using the mouse.</p>
+        </div>
+      </div>
+
+      <!-- IT -->
+      <div class="task-card" style="--color:#107c10; padding:30px; min-height:460px;">
+        <h3>Task 6: IT & Internet</h3>
+        <p><strong>Steps:</strong><br>
+        Open a browser, search for information, and bookmark the page.</p>
+
+        <p><strong>Question:</strong><br>
+        What is the main purpose of bookmarking a page?</p>
+        <ul>
+          <li>A) To change the website design</li>
+          <li>B) To block ads</li>
+          <li>C) To save the page for quick access later</li>
+          <li>D) To download the website</li>
+        </ul>
+
+        <div class="explanation" style="background:#f0fff4; padding:14px; border-radius:10px; margin-top:12px; border-left:6px solid var(--color);">
+          <h4>Answer & Explanation</h4>
+          <p><strong>Correct:</strong> C) To save the page for quick access later.</p>
+          <p>Explanation: Bookmarking lets you store frequently used sites and open them easily without searching again.</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<style>
+.task-card {
+  background:#ffffff; 
+  border-left:8px solid var(--color); 
+  border-radius:16px; 
+  padding:22px; 
+  box-shadow:0 8px 26px rgba(0,0,0,0.07);
+  transition: transform 0.28s, box-shadow 0.28s;
+  position: relative;
+  overflow: visible;
+}
+.task-card h3 {
+  color: var(--color);
+  font-size:22px;
+  margin-bottom:12px;
+}
+.task-card:hover {
+  transform: translateY(-10px) scale(1.02);
+  box-shadow: 0 28px 60px rgba(0, 0, 0, 0.18);
+}
+ul {
+  list-style: none;
+  padding-left: 0;
+  margin:8px 0 12px 0;
+}
+ul li {
+  margin-bottom: 8px;
+  padding-left: 8px;
+}
+.explanation h4 { font-size:16px; color:#0b3b66; }
+table, th, td {
+  border:1px solid #d6e6ff;
+}
+th {
+  background:#f5fbff;
+}
+</style>`,
+  "q": "Which sequence of tasks is suitable for intermediate IT learners?",
+  "a": "b",
+  "options": [
+    "Do tasks randomly without order",
+    "Word (report) → Excel (grades) → Access (student database) → PowerPoint (presentation) → Windows (folders) → Internet (bookmarks)",
+    "Just open apps without practicing",
+    "Turn off the computer immediately"
+  ]
+},
+
+
+
+
+
+
 {
   "passage": `<div style="margin-top: 40px; max-width: 1100px; margin-left:auto; margin-right:auto; position: relative;">
 
