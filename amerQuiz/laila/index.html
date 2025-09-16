@@ -230,6 +230,938 @@ input[type="radio"] {
     
     const trueFalseQuestions = [
 
+
+{
+  "passage": `<div style="margin-top: 120px;">
+  <div style="font-family: Segoe UI, Arial, sans-serif; background-color: #f9fbff; color: #333; padding: 25px; border: 2px solid #cce0ff; border-radius: 15px; font-size: 18px; box-shadow: 0 4px 10px rgba(0,0,0,0.05);">
+    
+    <strong style="font-size: 24px; color: #0056b3;">💻 Variables in <span style="color:#0078d7;">JavaScript</span> (var, let, const)</strong><br><br>
+
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 20px;">
+      
+      <!-- Card 1 -->
+      <div style="background:#fff; border-left:6px solid #0078d7; border-radius:12px; padding:20px; box-shadow:0 4px 12px rgba(0,0,0,0.1); word-wrap:break-word; overflow-wrap:break-word; transition:transform 0.3s ease, box-shadow 0.3s ease;" 
+           onmouseover="this.style.transform='scale(1.05)'; this.style.boxShadow='0 8px 20px rgba(0,0,0,0.2)';" 
+           onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='0 4px 12px rgba(0,0,0,0.1)';">
+        <h3 style="color:#0078d7; font-size:20px; margin-bottom:8px;">1. var 🔄</h3>
+        <p>Can be re-declared and re-assigned. Has Function Scope.</p>
+        <pre style="background:#f4f4f4; padding:10px; border-radius:8px; font-size:14px; overflow-x:auto;">
+var userName = 'Ali';
+console.log(userName); // Ali
+
+var userName = 'Omar'; // ✅ Re-declaration allowed
+console.log(userName); // Omar
+
+userName = 'Ahmed'; // ✅ Re-assignment allowed
+console.log(userName); // Ahmed
+        </pre>
+      </div>
+
+      <!-- Card 2 -->
+      <div style="background:#fff; border-left:6px solid #00b294; border-radius:12px; padding:20px; box-shadow:0 4px 12px rgba(0,0,0,0.1); word-wrap:break-word; overflow-wrap:break-word; transition:transform 0.3s ease, box-shadow 0.3s ease;" 
+           onmouseover="this.style.transform='scale(1.05)'; this.style.boxShadow='0 8px 20px rgba(0,0,0,0.2)';" 
+           onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='0 4px 12px rgba(0,0,0,0.1)';">
+        <h3 style="color:#00b294; font-size:20px; margin-bottom:8px;">2. let 🧩</h3>
+        <p>Cannot be re-declared in the same scope, but can be re-assigned. Has Block Scope.</p>
+        <pre style="background:#f4f4f4; padding:10px; border-radius:8px; font-size:14px; overflow-x:auto;">
+let userAge = 25;
+console.log(userAge); // 25
+
+// let userAge = 30; ❌ Error: re-declaration not allowed
+userAge = 30; // ✅ Re-assignment allowed
+console.log(userAge); // 30
+        </pre>
+      </div>
+
+      <!-- Card 3 -->
+      <div style="background:#fff; border-left:6px solid #e81123; border-radius:12px; padding:20px; box-shadow:0 4px 12px rgba(0,0,0,0.1); word-wrap:break-word; overflow-wrap:break-word; transition:transform 0.3s ease, box-shadow 0.3s ease;" 
+           onmouseover="this.style.transform='scale(1.05)'; this.style.boxShadow='0 8px 20px rgba(0,0,0,0.2)';" 
+           onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='0 4px 12px rgba(0,0,0,0.1)';">
+        <h3 style="color:#e81123; font-size:20px; margin-bottom:8px;">3. const ⚙️</h3>
+        <p>Cannot be re-declared or re-assigned after initialization.</p>
+        <pre style="background:#f4f4f4; padding:10px; border-radius:8px; font-size:14px; overflow-x:auto;">
+const PI = 3.14;
+console.log(PI); // 3.14
+
+// PI = 3.1415; ❌ Error: assignment to constant not allowed
+        </pre>
+      </div>
+
+      <!-- Card 4 -->
+      <div style="background:#fff; border-left:6px solid #ffb900; border-radius:12px; padding:20px; box-shadow:0 4px 12px rgba(0,0,0,0.1); word-wrap:break-word; overflow-wrap:break-word; transition:transform 0.3s ease, box-shadow 0.3s ease;" 
+           onmouseover="this.style.transform='scale(1.05)'; this.style.boxShadow='0 8px 20px rgba(0,0,0,0.2)';" 
+           onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='0 4px 12px rgba(0,0,0,0.1)';">
+        <h3 style="color:#ffb900; font-size:20px; margin-bottom:8px;">4. Scope 🎭</h3>
+        <p>Difference between Function Scope and Block Scope.</p>
+        <pre style="background:#f4f4f4; padding:10px; border-radius:8px; font-size:14px; overflow-x:auto;">
+if (true) {
+  var x = 10; // Function Scope
+  let y = 20; // Block Scope
+}
+console.log(x); // ✅ Works
+// console.log(y); ❌ Error: y is not defined
+        </pre>
+      </div>
+
+      <!-- Card 5 -->
+      <div style="background:#fff; border-left:6px solid #605e5c; border-radius:12px; padding:20px; box-shadow:0 4px 12px rgba(0,0,0,0.1); word-wrap:break-word; overflow-wrap:break-word; transition:transform 0.3s ease, box-shadow 0.3s ease;" 
+           onmouseover="this.style.transform='scale(1.05)'; this.style.boxShadow='0 8px 20px rgba(0,0,0,0.2)';" 
+           onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='0 4px 12px rgba(0,0,0,0.1)';">
+        <h3 style="color:#605e5c; font-size:20px; margin-bottom:8px;">5. Naming Rules 🖱️</h3>
+        <p>Some basic rules for naming variables.</p>
+        <pre style="background:#f4f4f4; padding:10px; border-radius:8px; font-size:14px; overflow-x:auto;">
+let camelCaseExample = '✔️ Valid Variable Name';
+let dollarSign = 100; // ✅ Allowed
+let _score = 50;      // ✅ Allowed
+// let 1number = 10; ❌ Error: cannot start with a number
+// let let = 'error'; ❌ Error: reserved keyword
+        </pre>
+      </div>
+
+    </div>
+
+    <br>
+    <strong style="font-size:20px; color:#004080;">📊 Summary:</strong>
+    <table border="1" cellpadding="8" style="border-collapse: collapse; width:100%; text-align:center; margin-top:10px;">
+      <tr style="background:#e6f0ff;">
+        <th>Keyword</th><th>Re-declaration</th><th>Re-assignment</th><th>Scope</th>
+      </tr>
+      <tr><td>var</td><td>✔️</td><td>✔️</td><td>Function Scope</td></tr>
+      <tr><td>let</td><td>❌</td><td>✔️</td><td>Block Scope</td></tr>
+      <tr><td>const</td><td>❌</td><td>❌</td><td>Block Scope</td></tr>
+    </table>
+
+    <br>
+    <strong style="font-size:20px; color:#004080;">💡 Tips:</strong><br>
+    ✅ Use <b>let</b> for most cases<br>
+    ✅ Use <b>const</b> for constants<br>
+    ⚠️ Avoid <b>var</b> unless necessary<br>
+
+  </div>
+</div><br>
+
+<b style="font-size: 17px; color:#cc0000;">Tip:</b> 
+<span style="color:#333;">Open <b>F12 → Console</b> in your browser and try the code step by step ✅.</span>`,
+
+  "q": "Which keyword prevents both re-declaration and re-assignment of a variable?",
+  "a": "c",
+  "options": [
+    "var",
+    "let",
+    "const",
+    "None of the above"
+  ]
+},
+
+{
+  "passage": `<div style="margin-top: 120px;">
+  <div style="font-family: Segoe UI, Arial, sans-serif; background-color: #f9fbff; color: #333; padding: 25px; border: 2px solid #cce0ff; border-radius: 15px; font-size: 18px; box-shadow: 0 4px 10px rgba(0,0,0,0.05);">
+    
+    <strong style="font-size: 24px; color: #0056b3;">💻 Data Types & Operators in <span style="color:#0078d7;">JavaScript</span></strong><br><br>
+
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 20px;">
+      
+      <!-- Card 1 -->
+      <div style="background:#fff; border-left:6px solid #0078d7; border-radius:12px; padding:20px; box-shadow:0 4px 12px rgba(0,0,0,0.1); word-wrap:break-word; overflow-wrap:break-word; transition:transform 0.3s ease, box-shadow 0.3s ease;" 
+           onmouseover="this.style.transform='scale(1.05)'; this.style.boxShadow='0 8px 20px rgba(0,0,0,0.2)';" 
+           onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='0 4px 12px rgba(0,0,0,0.1)';">
+        <h3 style="color:#0078d7; font-size:20px; margin-bottom:8px;">1. Primitive Data Types 🔤</h3>
+        <p>JavaScript has simple built-in types called <b>primitives</b>. These include <code>string</code>, <code>number</code>, <code>boolean</code>, <code>null</code>, <code>undefined</code>, <code>symbol</code>, and <code>bigint</code>. They are immutable and represent single values.</p>
+        <pre style="background:#f4f4f4; padding:10px; border-radius:8px; font-size:14px; overflow-x:auto;">
+let name = "Kareem";    // string
+let age = 25;           // number
+let isAdult = true;     // boolean
+let salary = null;      // null
+let score;              // undefined
+let bigNumber = 12345678901234567890n; // bigint
+        </pre>
+      </div>
+
+      <!-- Card 2 -->
+      <div style="background:#fff; border-left:6px solid #00b294; border-radius:12px; padding:20px; box-shadow:0 4px 12px rgba(0,0,0,0.1); word-wrap:break-word; overflow-wrap:break-word; transition:transform 0.3s ease, box-shadow 0.3s ease;" 
+           onmouseover="this.style.transform='scale(1.05)'; this.style.boxShadow='0 8px 20px rgba(0,0,0,0.2)';" 
+           onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='0 4px 12px rgba(0,0,0,0.1)';">
+        <h3 style="color:#00b294; font-size:20px; margin-bottom:8px;">2. Reference Data Types 📦</h3>
+        <p>Reference types store collections or more complex data. Examples include <b>objects</b>, <b>arrays</b>, and <b>functions</b>. Unlike primitives, they are mutable and stored by reference.</p>
+        <pre style="background:#f4f4f4; padding:10px; border-radius:8px; font-size:14px; overflow-x:auto;">
+let person = { name: "Ali", age: 30 };   // object
+let numbers = [1, 2, 3, 4];             // array
+function greet() { return "Hello!"; }   // function
+
+console.log(person.name); // Ali
+console.log(numbers[0]);  // 1
+console.log(greet());     // Hello!
+        </pre>
+      </div>
+
+      <!-- Card 3 -->
+      <div style="background:#fff; border-left:6px solid #e81123; border-radius:12px; padding:20px; box-shadow:0 4px 12px rgba(0,0,0,0.1); word-wrap:break-word; overflow-wrap:break-word; transition:transform 0.3s ease, box-shadow 0.3s ease;" 
+           onmouseover="this.style.transform='scale(1.05)'; this.style.boxShadow='0 8px 20px rgba(0,0,0,0.2)';" 
+           onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='0 4px 12px rgba(0,0,0,0.1)';">
+        <h3 style="color:#e81123; font-size:20px; margin-bottom:8px;">3. Arithmetic & Assignment ➕</h3>
+        <p>Arithmetic operators perform calculations. Assignment operators store or update values. Combined operators like <code>+=</code> simplify updates.</p>
+        <pre style="background:#f4f4f4; padding:10px; border-radius:8px; font-size:14px; overflow-x:auto;">
+let x = 10;
+let y = 3;
+
+console.log(x + y); // 13
+console.log(x - y); // 7
+console.log(x * y); // 30
+console.log(x / y); // 3.333...
+
+x += 5;  // same as x = x + 5
+console.log(x); // 15
+        </pre>
+      </div>
+
+      <!-- Card 4 -->
+      <div style="background:#fff; border-left:6px solid #ffb900; border-radius:12px; padding:20px; box-shadow:0 4px 12px rgba(0,0,0,0.1); word-wrap:break-word; overflow-wrap:break-word; transition:transform 0.3s ease, box-shadow 0.3s ease;" 
+           onmouseover="this.style.transform='scale(1.05)'; this.style.boxShadow='0 8px 20px rgba(0,0,0,0.2)';" 
+           onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='0 4px 12px rgba(0,0,0,0.1)';">
+        <h3 style="color:#ffb900; font-size:20px; margin-bottom:8px;">4. Comparison & Logical ⚖️</h3>
+        <p>Comparison operators compare values. Logical operators combine conditions. Remember that <code>===</code> checks both value and type.</p>
+        <pre style="background:#f4f4f4; padding:10px; border-radius:8px; font-size:14px; overflow-x:auto;">
+let a = 5, b = "5";
+
+console.log(a == b);  // true (only value)
+console.log(a === b); // false (value + type)
+
+console.log(a > 3 && a < 10); // true
+console.log(a > 10 || a < 2); // false
+console.log(!(a === 5));      // false
+        </pre>
+      </div>
+
+      <!-- Card 5 -->
+      <div style="background:#fff; border-left:6px solid #605e5c; border-radius:12px; padding:20px; box-shadow:0 4px 12px rgba(0,0,0,0.1); word-wrap:break-word; overflow-wrap:break-word; transition:transform 0.3s ease, box-shadow 0.3s ease;" 
+           onmouseover="this.style.transform='scale(1.05)'; this.style.boxShadow='0 8px 20px rgba(0,0,0,0.2)';" 
+           onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='0 4px 12px rgba(0,0,0,0.1)';">
+        <h3 style="color:#605e5c; font-size:20px; margin-bottom:8px;">5. Type Operators 🔍</h3>
+        <p>JavaScript provides operators to check the type of values or instances. <code>typeof</code> returns the type of a variable. <code>instanceof</code> checks if an object belongs to a certain class.</p>
+        <pre style="background:#f4f4f4; padding:10px; border-radius:8px; font-size:14px; overflow-x:auto;">
+console.log(typeof "Hello"); // string
+console.log(typeof 42);      // number
+console.log(typeof true);    // boolean
+
+let arr = [];
+console.log(arr instanceof Array); // true
+console.log(arr instanceof Object); // true
+        </pre>
+      </div>
+
+    </div>
+
+    <br>
+    <strong style="font-size:20px; color:#004080;">📊 Summary:</strong>
+    <table border="1" cellpadding="8" style="border-collapse: collapse; width:100%; text-align:center; margin-top:10px;">
+      <tr style="background:#e6f0ff;">
+        <th>Category</th><th>Examples</th>
+      </tr>
+      <tr><td>Primitive Types</td><td>string, number, boolean, null, undefined, symbol, bigint</td></tr>
+      <tr><td>Reference Types</td><td>objects, arrays, functions</td></tr>
+      <tr><td>Operators</td><td>Arithmetic (+, -, *), Comparison (==, ===), Logical (&&, ||, !), Type (typeof, instanceof)</td></tr>
+    </table>
+
+    <br>
+    <strong style="font-size:20px; color:#004080;">💡 Tips:</strong><br>
+    ✅ Always use <b>===</b> instead of <b>==</b> for strict comparison<br>
+    ✅ Use <b>typeof</b> to debug variable types<br>
+    ✅ Remember objects & arrays are reference types<br>
+
+  </div>
+</div><br>
+
+<b style="font-size: 17px; color:#cc0000;">Tip:</b> 
+<span style="color:#333;">Open <b>F12 → Console</b> in your browser and try the code step by step ✅.</span>`,
+  
+  "q": "Which operator checks both value and type in JavaScript?",
+  "a": "c",
+  "options": [
+    "==",
+    "=",
+    "===",
+    "!="
+  ]
+},
+
+{
+  "passage": `<div style="margin-top: 120px;">
+  <div style="font-family: Segoe UI, Arial, sans-serif; background-color: #f9fbff; color: #333; padding: 25px; border: 2px solid #cce0ff; border-radius: 15px; font-size: 18px; box-shadow: 0 4px 10px rgba(0,0,0,0.05);">
+    
+    <strong style="font-size: 24px; color: #0056b3;">⚡ Control Flow in <span style="color:#0078d7;">JavaScript</span></strong><br><br>
+
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 20px;">
+      
+      <!-- Card 1 -->
+      <div style="background:#fff; border-left:6px solid #0078d7; border-radius:12px; padding:20px; box-shadow:0 4px 12px rgba(0,0,0,0.1); transition:transform 0.3s ease, box-shadow 0.3s ease;" 
+           onmouseover="this.style.transform='scale(1.05)'; this.style.boxShadow='0 8px 20px rgba(0,0,0,0.2)';" 
+           onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='0 4px 12px rgba(0,0,0,0.1)';">
+        <h3 style="color:#0078d7; font-size:20px; margin-bottom:8px;">1. If / Else Statements 🛤️</h3>
+        <p>The <b>if</b> statement allows you to execute code only when a condition is true. Use <b>else if</b> for multiple conditions and <b>else</b> for fallback.</p>
+        <pre style="background:#f4f4f4; padding:10px; border-radius:8px; font-size:14px; overflow-x:auto;">
+let score = 85;
+
+if (score >= 90) {
+  console.log("Excellent!");
+} else if (score >= 75) {
+  console.log("Good Job!");
+} else {
+  console.log("Keep Practicing!");
+}
+        </pre>
+      </div>
+
+      <!-- Card 2 -->
+      <div style="background:#fff; border-left:6px solid #00b294; border-radius:12px; padding:20px; box-shadow:0 4px 12px rgba(0,0,0,0.1); transition:transform 0.3s ease, box-shadow 0.3s ease;" 
+           onmouseover="this.style.transform='scale(1.05)'; this.style.boxShadow='0 8px 20px rgba(0,0,0,0.2)';" 
+           onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='0 4px 12px rgba(0,0,0,0.1)';">
+        <h3 style="color:#00b294; font-size:20px; margin-bottom:8px;">2. Switch Statement 🔀</h3>
+        <p>The <b>switch</b> statement is a cleaner way to check one value against many possible cases.</p>
+        <pre style="background:#f4f4f4; padding:10px; border-radius:8px; font-size:14px; overflow-x:auto;">
+let day = "Monday";
+
+switch(day) {
+  case "Monday":
+    console.log("Start of the week");
+    break;
+  case "Friday":
+    console.log("Weekend is near!");
+    break;
+  default:
+    console.log("Just another day");
+}
+        </pre>
+      </div>
+
+      <!-- Card 3 -->
+      <div style="background:#fff; border-left:6px solid #e81123; border-radius:12px; padding:20px; box-shadow:0 4px 12px rgba(0,0,0,0.1); transition:transform 0.3s ease, box-shadow 0.3s ease;" 
+           onmouseover="this.style.transform='scale(1.05)'; this.style.boxShadow='0 8px 20px rgba(0,0,0,0.2)';" 
+           onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='0 4px 12px rgba(0,0,0,0.1)';">
+        <h3 style="color:#e81123; font-size:20px; margin-bottom:8px;">3. For Loop 🔁</h3>
+        <p>The <b>for</b> loop is used when you know how many times you want to repeat something. It has 3 parts: initialization, condition, and update.</p>
+        <pre style="background:#f4f4f4; padding:10px; border-radius:8px; font-size:14px; overflow-x:auto;">
+for (let i = 1; i <= 5; i++) {
+  console.log("Iteration:", i);
+}
+        </pre>
+      </div>
+
+      <!-- Card 4 -->
+      <div style="background:#fff; border-left:6px solid #ffb900; border-radius:12px; padding:20px; box-shadow:0 4px 12px rgba(0,0,0,0.1); transition:transform 0.3s ease, box-shadow 0.3s ease;" 
+           onmouseover="this.style.transform='scale(1.05)'; this.style.boxShadow='0 8px 20px rgba(0,0,0,0.2)';" 
+           onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='0 4px 12px rgba(0,0,0,0.1)';">
+        <h3 style="color:#ffb900; font-size:20px; margin-bottom:8px;">4. While & Do...While 🔄</h3>
+        <p>Use <b>while</b> when you don’t know how many times to loop in advance. <b>do...while</b> runs the block at least once, even if the condition is false.</p>
+        <pre style="background:#f4f4f4; padding:10px; border-radius:8px; font-size:14px; overflow-x:auto;">
+let n = 1;
+
+while (n <= 3) {
+  console.log("While loop:", n);
+  n++;
+}
+
+do {
+  console.log("Do-While loop runs once:", n);
+  n++;
+} while (n < 3);
+        </pre>
+      </div>
+
+      <!-- Card 5 -->
+      <div style="background:#fff; border-left:6px solid #605e5c; border-radius:12px; padding:20px; box-shadow:0 4px 12px rgba(0,0,0,0.1); transition:transform 0.3s ease, box-shadow 0.3s ease;" 
+           onmouseover="this.style.transform='scale(1.05)'; this.style.boxShadow='0 8px 20px rgba(0,0,0,0.2)';" 
+           onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='0 4px 12px rgba(0,0,0,0.1)';">
+        <h3 style="color:#605e5c; font-size:20px; margin-bottom:8px;">5. Break & Continue ⏹️</h3>
+        <p>The <b>break</b> statement exits the loop completely. The <b>continue</b> statement skips to the next iteration.</p>
+        <pre style="background:#f4f4f4; padding:10px; border-radius:8px; font-size:14px; overflow-x:auto;">
+for (let i = 1; i <= 5; i++) {
+  if (i === 3) continue; // skip 3
+  if (i === 5) break;   // stop loop at 5
+  console.log(i);
+}
+// Output: 1, 2, 4
+        </pre>
+      </div>
+
+    </div>
+
+    <br>
+    <strong style="font-size:20px; color:#004080;">📊 Summary:</strong>
+    <table border="1" cellpadding="8" style="border-collapse: collapse; width:100%; text-align:center; margin-top:10px;">
+      <tr style="background:#e6f0ff;">
+        <th>Feature</th><th>Description</th>
+      </tr>
+      <tr><td>If/Else</td><td>Runs code only when conditions are true</td></tr>
+      <tr><td>Switch</td><td>Compares one value to many cases</td></tr>
+      <tr><td>For Loop</td><td>Repeats with known number of iterations</td></tr>
+      <tr><td>While / Do-While</td><td>Repeats until condition is false</td></tr>
+      <tr><td>Break / Continue</td><td>Exit loop or skip current iteration</td></tr>
+    </table>
+
+    <br>
+    <strong style="font-size:20px; color:#004080;">💡 Tips:</strong><br>
+    ✅ Use <b>if/else</b> for flexible conditions<br>
+    ✅ Use <b>switch</b> for cleaner multiple-choice logic<br>
+    ✅ Always be careful with <b>while</b> loops to avoid infinite loops<br>
+    ✅ Use <b>break</b> and <b>continue</b> wisely inside loops<br>
+
+  </div>
+</div><br>
+
+<b style="font-size: 17px; color:#cc0000;">Quiz:</b> 
+<span style="color:#333;">Which loop guarantees execution at least once, even if the condition is false?</span>`,
+  
+  "q": "Which loop guarantees execution at least once in JavaScript?",
+  "a": "b",
+  "options": [
+    "for",
+    "do...while",
+    "while",
+    "switch"
+  ]
+},
+
+
+{
+  "passage": `<div style="margin-top: 120px;">
+  <div style="font-family: Segoe UI, Arial, sans-serif; background-color: #f9fbff; color: #333; padding: 25px; border: 2px solid #cce0ff; border-radius: 15px; font-size: 18px; box-shadow: 0 4px 10px rgba(0,0,0,0.05);">
+    
+    <strong style="font-size: 24px; color: #0056b3;">🗂️ Objects in <span style="color:#0078d7;">JavaScript</span></strong><br><br>
+
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 20px;">
+      
+      <!-- Card 1 -->
+      <div style="background:#fff; border-left:6px solid #0078d7; border-radius:12px; padding:20px; box-shadow:0 4px 12px rgba(0,0,0,0.1); transition:transform 0.3s ease, box-shadow 0.3s ease;" 
+           onmouseover="this.style.transform='scale(1.05)'; this.style.boxShadow='0 8px 20px rgba(0,0,0,0.2)';" 
+           onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='0 4px 12px rgba(0,0,0,0.1)';">
+        <h3 style="color:#0078d7; font-size:20px; margin-bottom:8px;">1. What is an Object? 📦</h3>
+        <p>An <b>object</b> is a collection of key-value pairs. Keys are called <b>properties</b>, and values can be strings, numbers, arrays, functions, or even other objects.</p>
+        <pre style="background:#f4f4f4; padding:10px; border-radius:8px; font-size:14px; overflow-x:auto;">
+let person = {
+  name: "Alice",
+  age: 30,
+  isStudent: false
+};
+console.log(person.name); // Alice
+        </pre>
+      </div>
+
+      <!-- Card 2 -->
+      <div style="background:#fff; border-left:6px solid #00b294; border-radius:12px; padding:20px; box-shadow:0 4px 12px rgba(0,0,0,0.1); transition:transform 0.3s ease, box-shadow 0.3s ease;" 
+           onmouseover="this.style.transform='scale(1.05)'; this.style.boxShadow='0 8px 20px rgba(0,0,0,0.2)';" 
+           onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='0 4px 12px rgba(0,0,0,0.1)';">
+        <h3 style="color:#00b294; font-size:20px; margin-bottom:8px;">2. Creating Objects 🛠️</h3>
+        <p>You can create objects using object literals, the <b>new Object()</b> constructor, or more advanced ways like classes and functions.</p>
+        <pre style="background:#f4f4f4; padding:10px; border-radius:8px; font-size:14px; overflow-x:auto;">
+let car = { brand: "Toyota", year: 2020 };
+
+let user = new Object();
+user.name = "Bob";
+user.age = 40;
+        </pre>
+      </div>
+
+      <!-- Card 3 -->
+      <div style="background:#fff; border-left:6px solid #e81123; border-radius:12px; padding:20px; box-shadow:0 4px 12px rgba(0,0,0,0.1); transition:transform 0.3s ease, box-shadow 0.3s ease;" 
+           onmouseover="this.style.transform='scale(1.05)'; this.style.boxShadow='0 8px 20px rgba(0,0,0,0.2)';" 
+           onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='0 4px 12px rgba(0,0,0,0.1)';">
+        <h3 style="color:#e81123; font-size:20px; margin-bottom:8px;">3. Accessing Properties 🔑</h3>
+        <p>You can access object properties using <b>dot notation</b> or <b>bracket notation</b>.</p>
+        <pre style="background:#f4f4f4; padding:10px; border-radius:8px; font-size:14px; overflow-x:auto;">
+let book = { title: "JavaScript 101", pages: 200 };
+
+console.log(book.title);     // JavaScript 101
+console.log(book["pages"]);  // 200
+        </pre>
+      </div>
+
+      <!-- Card 4 -->
+      <div style="background:#fff; border-left:6px solid #ffb900; border-radius:12px; padding:20px; box-shadow:0 4px 12px rgba(0,0,0,0.1); transition:transform 0.3s ease, box-shadow 0.3s ease;" 
+           onmouseover="this.style.transform='scale(1.05)'; this.style.boxShadow='0 8px 20px rgba(0,0,0,0.2)';" 
+           onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='0 4px 12px rgba(0,0,0,0.1)';">
+        <h3 style="color:#ffb900; font-size:20px; margin-bottom:8px;">4. Methods in Objects ⚙️</h3>
+        <p>A function inside an object is called a <b>method</b>. It can use the keyword <b>this</b> to refer to the object itself.</p>
+        <pre style="background:#f4f4f4; padding:10px; border-radius:8px; font-size:14px; overflow-x:auto;">
+let dog = {
+  name: "Buddy",
+  bark: function() {
+    console.log(this.name + " says Woof!");
+  }
+};
+
+dog.bark(); // Buddy says Woof!
+        </pre>
+      </div>
+
+      <!-- Card 5 -->
+      <div style="background:#fff; border-left:6px solid #605e5c; border-radius:12px; padding:20px; box-shadow:0 4px 12px rgba(0,0,0,0.1); transition:transform 0.3s ease, box-shadow 0.3s ease;" 
+           onmouseover="this.style.transform='scale(1.05)'; this.style.boxShadow='0 8px 20px rgba(0,0,0,0.2)';" 
+           onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='0 4px 12px rgba(0,0,0,0.1)';">
+        <h3 style="color:#605e5c; font-size:20px; margin-bottom:8px;">5. Object Methods 🧰</h3>
+        <p>JavaScript provides built-in methods like <b>Object.keys</b>, <b>Object.values</b>, and <b>Object.entries</b> to work with objects.</p>
+        <pre style="background:#f4f4f4; padding:10px; border-radius:8px; font-size:14px; overflow-x:auto;">
+let user = { name: "Sam", age: 25 };
+
+console.log(Object.keys(user));   // ["name", "age"]
+console.log(Object.values(user)); // ["Sam", 25]
+        </pre>
+      </div>
+
+    </div>
+
+    <br>
+    <strong style="font-size:20px; color:#004080;">📊 Summary:</strong>
+    <table border="1" cellpadding="8" style="border-collapse: collapse; width:100%; text-align:center; margin-top:10px;">
+      <tr style="background:#e6f0ff;">
+        <th>Feature</th><th>Description</th>
+      </tr>
+      <tr><td>Object</td><td>Collection of key-value pairs</td></tr>
+      <tr><td>Creation</td><td>Literal, new Object(), or classes</td></tr>
+      <tr><td>Access</td><td>Dot or bracket notation</td></tr>
+      <tr><td>Method</td><td>Function inside an object</td></tr>
+      <tr><td>Utilities</td><td>Object.keys, Object.values, Object.entries</td></tr>
+    </table>
+
+    <br>
+    <strong style="font-size:20px; color:#004080;">💡 Tips:</strong><br>
+    ✅ Use objects to group related data<br>
+    ✅ Dot notation is cleaner, but brackets are useful for dynamic keys<br>
+    ✅ Use <b>this</b> in methods to refer to the object<br>
+    ✅ Object utilities make iteration easier<br>
+
+  </div>
+</div><br>
+
+<b style="font-size: 17px; color:#cc0000;">Quiz:</b> 
+<span style="color:#333;">Which method returns all the property names of an object?</span>`,
+
+  "q": "Which method returns all the property names of an object in JavaScript?",
+  "a": "a",
+  "options": [
+    "Object.keys()",
+    "Object.values()",
+    "Object.entries()",
+    "Object.assign()"
+  ]
+},
+
+
+{
+  "passage": `<div style="margin-top: 120px;">
+  <div style="font-family: Segoe UI, Arial, sans-serif; background-color: #f9fbff; color: #333; padding: 25px; border: 2px solid #cce0ff; border-radius: 15px; font-size: 18px; box-shadow: 0 4px 10px rgba(0,0,0,0.05);">
+    
+    <strong style="font-size: 24px; color: #0056b3;">📚 Arrays in <span style="color:#0078d7;">JavaScript</span></strong><br><br>
+
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 20px;">
+      
+      <!-- Card 1 -->
+      <div style="background:#fff; border-left:6px solid #0078d7; border-radius:12px; padding:20px; box-shadow:0 4px 12px rgba(0,0,0,0.1); transition:transform 0.3s ease, box-shadow 0.3s ease;" 
+           onmouseover="this.style.transform='scale(1.05)'; this.style.boxShadow='0 8px 20px rgba(0,0,0,0.2)';" 
+           onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='0 4px 12px rgba(0,0,0,0.1)';">
+        <h3 style="color:#0078d7; font-size:20px; margin-bottom:8px;">1. What is an Array? 📦</h3>
+        <p>An <b>array</b> is a special type of object that stores multiple values in an ordered list. Each value has an index starting from 0.</p>
+        <pre style="background:#f4f4f4; padding:10px; border-radius:8px; font-size:14px; overflow-x:auto;">
+let fruits = ["Apple", "Banana", "Cherry"];
+console.log(fruits[0]); // Apple
+        </pre>
+      </div>
+
+      <!-- Card 2 -->
+      <div style="background:#fff; border-left:6px solid #00b294; border-radius:12px; padding:20px; box-shadow:0 4px 12px rgba(0,0,0,0.1); transition:transform 0.3s ease, box-shadow 0.3s ease;" 
+           onmouseover="this.style.transform='scale(1.05)'; this.style.boxShadow='0 8px 20px rgba(0,0,0,0.2)';" 
+           onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='0 4px 12px rgba(0,0,0,0.1)';">
+        <h3 style="color:#00b294; font-size:20px; margin-bottom:8px;">2. Array Properties & Length 📏</h3>
+        <p>Arrays have a <b>length</b> property that tells how many items they contain.</p>
+        <pre style="background:#f4f4f4; padding:10px; border-radius:8px; font-size:14px; overflow-x:auto;">
+let numbers = [10, 20, 30, 40];
+console.log(numbers.length); // 4
+        </pre>
+      </div>
+
+      <!-- Card 3 -->
+      <div style="background:#fff; border-left:6px solid #e81123; border-radius:12px; padding:20px; box-shadow:0 4px 12px rgba(0,0,0,0.1); transition:transform 0.3s ease, box-shadow 0.3s ease;" 
+           onmouseover="this.style.transform='scale(1.05)'; this.style.boxShadow='0 8px 20px rgba(0,0,0,0.2)';" 
+           onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='0 4px 12px rgba(0,0,0,0.1)';">
+        <h3 style="color:#e81123; font-size:20px; margin-bottom:8px;">3. Adding & Removing Items ➕➖</h3>
+        <p>Use <b>push()</b> to add to the end, <b>pop()</b> to remove from the end, <b>unshift()</b> to add to the start, and <b>shift()</b> to remove from the start.</p>
+        <pre style="background:#f4f4f4; padding:10px; border-radius:8px; font-size:14px; overflow-x:auto;">
+let animals = ["Dog", "Cat"];
+animals.push("Elephant"); // ["Dog", "Cat", "Elephant"]
+animals.shift();          // ["Cat", "Elephant"]
+        </pre>
+      </div>
+
+      <!-- Card 4 -->
+      <div style="background:#fff; border-left:6px solid #ffb900; border-radius:12px; padding:20px; box-shadow:0 4px 12px rgba(0,0,0,0.1); transition:transform 0.3s ease, box-shadow 0.3s ease;" 
+           onmouseover="this.style.transform='scale(1.05)'; this.style.boxShadow='0 8px 20px rgba(0,0,0,0.2)';" 
+           onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='0 4px 12px rgba(0,0,0,0.1)';">
+        <h3 style="color:#ffb900; font-size:20px; margin-bottom:8px;">4. Iterating Arrays 🔄</h3>
+        <p>You can loop through arrays using <b>for</b>, <b>for...of</b>, or methods like <b>forEach()</b>.</p>
+        <pre style="background:#f4f4f4; padding:10px; border-radius:8px; font-size:14px; overflow-x:auto;">
+let colors = ["Red", "Green", "Blue"];
+
+for (let color of colors) {
+  console.log(color);
+}
+        </pre>
+      </div>
+
+      <!-- Card 5 -->
+      <div style="background:#fff; border-left:6px solid #605e5c; border-radius:12px; padding:20px; box-shadow:0 4px 12px rgba(0,0,0,0.1); transition:transform 0.3s ease, box-shadow 0.3s ease;" 
+           onmouseover="this.style.transform='scale(1.05)'; this.style.boxShadow='0 8px 20px rgba(0,0,0,0.2)';" 
+           onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='0 4px 12px rgba(0,0,0,0.1)';">
+        <h3 style="color:#605e5c; font-size:20px; margin-bottom:8px;">5. Useful Array Methods 🧰</h3>
+        <p>Arrays have powerful methods: <b>map()</b>, <b>filter()</b>, <b>reduce()</b>, <b>find()</b>, and <b>includes()</b>.</p>
+        <pre style="background:#f4f4f4; padding:10px; border-radius:8px; font-size:14px; overflow-x:auto;">
+let nums = [1, 2, 3, 4];
+
+let doubled = nums.map(n => n * 2); // [2, 4, 6, 8]
+let evens = nums.filter(n => n % 2 === 0); // [2, 4]
+        </pre>
+      </div>
+
+    </div>
+
+    <br>
+    <strong style="font-size:20px; color:#004080;">📊 Summary:</strong>
+    <table border="1" cellpadding="8" style="border-collapse: collapse; width:100%; text-align:center; margin-top:10px;">
+      <tr style="background:#e6f0ff;">
+        <th>Feature</th><th>Description</th>
+      </tr>
+      <tr><td>Array</td><td>Ordered collection of values</td></tr>
+      <tr><td>Length</td><td>Number of elements in the array</td></tr>
+      <tr><td>push / pop</td><td>Add/remove items at the end</td></tr>
+      <tr><td>shift / unshift</td><td>Add/remove items at the start</td></tr>
+      <tr><td>map / filter / reduce</td><td>Transform, filter, or combine data</td></tr>
+    </table>
+
+    <br>
+    <strong style="font-size:20px; color:#004080;">💡 Tips:</strong><br>
+    ✅ Arrays start at index 0<br>
+    ✅ Use <b>for...of</b> for clean iteration<br>
+    ✅ Use <b>map()</b> when you want to transform every element<br>
+    ✅ <b>filter()</b> is great for extracting subsets<br>
+
+  </div>
+</div><br>
+
+<b style="font-size: 17px; color:#cc0000;">Quiz:</b> 
+<span style="color:#333;">Which array method is used to create a new array by transforming each element?</span>`,
+
+  "q": "Which array method creates a new array by transforming each element?",
+  "a": "a",
+  "options": [
+    "map()",
+    "filter()",
+    "reduce()",
+    "forEach()"
+  ]
+},
+
+
+{
+  "passage": `<div style="margin-top: 120px;">
+  <div style="font-family: Segoe UI, Arial, sans-serif; background-color: #f9fbff; color: #333; padding: 25px; border: 2px solid #cce0ff; border-radius: 15px; font-size: 18px; box-shadow: 0 4px 10px rgba(0,0,0,0.05);">
+    
+    <strong style="font-size: 24px; color: #0056b3;">📚 Advanced Functions in <span style="color:#0078d7;">JavaScript</span></strong><br><br>
+
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 20px;">
+      
+      <!-- Card 1 -->
+      <div style="background:#fff; border-left:6px solid #0078d7; border-radius:12px; padding:20px; box-shadow:0 4px 12px rgba(0,0,0,0.1); transition:transform 0.3s ease, box-shadow 0.3s ease;" 
+           onmouseover="this.style.transform='scale(1.05)'; this.style.boxShadow='0 8px 20px rgba(0,0,0,0.2)';" 
+           onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='0 4px 12px rgba(0,0,0,0.1)';">
+        <h3 style="color:#0078d7; font-size:20px; margin-bottom:8px;">1. Arrow Functions ➡️</h3>
+        <p>Arrow functions provide a shorter syntax for writing functions and automatically bind <b>this</b> from their surrounding context.</p>
+        <pre style="background:#f4f4f4; padding:10px; border-radius:8px; font-size:14px; overflow-x:auto;">
+// Regular function
+function add(a, b) {
+  return a + b;
+}
+
+// Arrow function
+const addArrow = (a, b) => a + b;
+
+console.log(addArrow(2, 3)); // 5
+        </pre>
+      </div>
+
+      <!-- Card 2 -->
+      <div style="background:#fff; border-left:6px solid #00b294; border-radius:12px; padding:20px; box-shadow:0 4px 12px rgba(0,0,0,0.1); transition:transform 0.3s ease, box-shadow 0.3s ease;" 
+           onmouseover="this.style.transform='scale(1.05)'; this.style.boxShadow='0 8px 20px rgba(0,0,0,0.2)';" 
+           onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='0 4px 12px rgba(0,0,0,0.1)';">
+        <h3 style="color:#00b294; font-size:20px; margin-bottom:8px;">2. Callbacks 🔔</h3>
+        <p>A <b>callback function</b> is a function passed as an argument to another function, to be executed later.</p>
+        <pre style="background:#f4f4f4; padding:10px; border-radius:8px; font-size:14px; overflow-x:auto;">
+function greet(name, callback) {
+  console.log("Hello " + name);
+  callback();
+}
+
+function sayBye() {
+  console.log("Goodbye!");
+}
+
+greet("Ali", sayBye);
+// Output:
+// Hello Ali
+// Goodbye!
+        </pre>
+      </div>
+
+      <!-- Card 3 -->
+      <div style="background:#fff; border-left:6px solid #e81123; border-radius:12px; padding:20px; box-shadow:0 4px 12px rgba(0,0,0,0.1); transition:transform 0.3s ease, box-shadow 0.3s ease;" 
+           onmouseover="this.style.transform='scale(1.05)'; this.style.boxShadow='0 8px 20px rgba(0,0,0,0.2)';" 
+           onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='0 4px 12px rgba(0,0,0,0.1)';">
+        <h3 style="color:#e81123; font-size:20px; margin-bottom:8px;">3. Higher-Order Functions 🚀</h3>
+        <p>A <b>higher-order function</b> is a function that takes another function as an argument or returns a function.</p>
+        <pre style="background:#f4f4f4; padding:10px; border-radius:8px; font-size:14px; overflow-x:auto;">
+function multiplier(factor) {
+  return function(number) {
+    return number * factor;
+  };
+}
+
+let double = multiplier(2);
+console.log(double(5)); // 10
+        </pre>
+      </div>
+
+      <!-- Card 4 -->
+      <div style="background:#fff; border-left:6px solid #ffb900; border-radius:12px; padding:20px; box-shadow:0 4px 12px rgba(0,0,0,0.1); transition:transform 0.3s ease, box-shadow 0.3s ease;" 
+           onmouseover="this.style.transform='scale(1.05)'; this.style.boxShadow='0 8px 20px rgba(0,0,0,0.2)';" 
+           onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='0 4px 12px rgba(0,0,0,0.1)';">
+        <h3 style="color:#ffb900; font-size:20px; margin-bottom:8px;">4. Array Methods with Callbacks 🔄</h3>
+        <p>Many array methods like <b>map()</b>, <b>filter()</b>, and <b>forEach()</b> use callbacks to process elements.</p>
+        <pre style="background:#f4f4f4; padding:10px; border-radius:8px; font-size:14px; overflow-x:auto;">
+let numbers = [1, 2, 3, 4];
+
+let squares = numbers.map(n => n * n);
+console.log(squares); // [1, 4, 9, 16]
+
+let evens = numbers.filter(n => n % 2 === 0);
+console.log(evens); // [2, 4]
+        </pre>
+      </div>
+
+    </div>
+
+    <br>
+    <strong style="font-size:20px; color:#004080;">📊 Summary:</strong>
+    <table border="1" cellpadding="8" style="border-collapse: collapse; width:100%; text-align:center; margin-top:10px;">
+      <tr style="background:#e6f0ff;">
+        <th>Feature</th><th>Description</th>
+      </tr>
+      <tr><td>Arrow Function</td><td>Short syntax, binds "this" from parent scope</td></tr>
+      <tr><td>Callback</td><td>A function passed to another function to be executed later</td></tr>
+      <tr><td>Higher-Order Function</td><td>A function that takes/returns other functions</td></tr>
+      <tr><td>map / filter</td><td>Examples of built-in higher-order functions</td></tr>
+    </table>
+
+    <br>
+    <strong style="font-size:20px; color:#004080;">💡 Tips:</strong><br>
+    ✅ Use arrow functions for shorter, cleaner code<br>
+    ✅ Callbacks are essential for async operations<br>
+    ✅ Higher-order functions make your code flexible & reusable<br>
+    ✅ Practice with array methods like <b>map()</b>, <b>filter()</b>, and <b>reduce()</b><br>
+
+  </div>
+</div><br>
+
+<b style="font-size: 17px; color:#cc0000;">Quiz:</b> 
+<span style="color:#333;">Which type of function takes another function as an argument or returns a function?</span>`,
+  "q": "Which type of function takes another function as an argument or returns a function?",
+  "a": "c",
+  "options": [
+    "Arrow Function",
+    "Callback Function",
+    "Higher-Order Function",
+    "Anonymous Function"
+  ]
+},
+
+
+
+{
+  "passage": `<div style="margin-top: 120px;">
+  <div style="font-family: Segoe UI, Arial, sans-serif; background-color: #f9fbff; color: #333; padding: 25px; border: 2px solid #cce0ff; border-radius: 15px; font-size: 18px; box-shadow: 0 4px 10px rgba(0,0,0,0.05);">
+    
+    <strong style="font-size: 24px; color: #0056b3;">📚 Excel-like Functions in <span style="color:#0078d7;">JavaScript</span></strong><br><br>
+
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 20px;">
+      
+      <!-- Card 1 -->
+      <div style="background:#fff; border-left:6px solid #0078d7; border-radius:12px; padding:20px; box-shadow:0 4px 12px rgba(0,0,0,0.1); transition:transform 0.3s ease, box-shadow 0.3s ease;" 
+           onmouseover="this.style.transform='scale(1.05)'; this.style.boxShadow='0 8px 20px rgba(0,0,0,0.2)';" 
+           onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='0 4px 12px rgba(0,0,0,0.1)';">
+        <h3 style="color:#0078d7; font-size:20px; margin-bottom:8px;">1. SUM ➕</h3>
+        <p>The <b>sumCells</b> function works like Excel’s <b>SUM()</b>. It calculates the total of multiple values.</p>
+        <pre style="background:#f4f4f4; padding:10px; border-radius:8px; font-size:14px; overflow-x:auto;">
+function sumCells(a, b, c) {
+  return a + b + c;
+}
+
+console.log(sumCells(10, 20, 30)); // 60
+        </pre>
+      </div>
+
+      <!-- Card 2 -->
+      <div style="background:#fff; border-left:6px solid #00b294; border-radius:12px; padding:20px; box-shadow:0 4px 12px rgba(0,0,0,0.1); transition:transform 0.3s ease, box-shadow 0.3s ease;" 
+           onmouseover="this.style.transform='scale(1.05)'; this.style.boxShadow='0 8px 20px rgba(0,0,0,0.2)';" 
+           onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='0 4px 12px rgba(0,0,0,0.1)';">
+        <h3 style="color:#00b294; font-size:20px; margin-bottom:8px;">2. NOW ⏰</h3>
+        <p>The <b>now()</b> function mimics Excel’s <b>NOW()</b>. It returns the current date and time in a readable format.</p>
+        <pre style="background:#f4f4f4; padding:10px; border-radius:8px; font-size:14px; overflow-x:auto;">
+function now() {
+  return new Date().toLocaleString('en-US');
+}
+
+console.log("📅 Current:", now());
+        </pre>
+      </div>
+
+      <!-- Card 3 -->
+      <div style="background:#fff; border-left:6px solid #e81123; border-radius:12px; padding:20px; box-shadow:0 4px 12px rgba(0,0,0,0.1); transition:transform 0.3s ease, box-shadow 0.3s ease;" 
+           onmouseover="this.style.transform='scale(1.05)'; this.style.boxShadow='0 8px 20px rgba(0,0,0,0.2)';" 
+           onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='0 4px 12px rgba(0,0,0,0.1)';">
+        <h3 style="color:#e81123; font-size:20px; margin-bottom:8px;">3. IF Condition ✔️❌</h3>
+        <p>This function replicates Excel’s <b>IF()</b>. It checks a condition and returns <b>yes</b> or <b>no</b>.</p>
+        <pre style="background:#f4f4f4; padding:10px; border-radius:8px; font-size:14px; overflow-x:auto;">
+function checkCondition(a, b) {
+  return a > b ? "yes" : "no";
+}
+
+console.log(checkCondition(10, 5)); // yes
+        </pre>
+      </div>
+
+      <!-- Card 4 -->
+      <div style="background:#fff; border-left:6px solid #ffb900; border-radius:12px; padding:20px; box-shadow:0 4px 12px rgba(0,0,0,0.1); transition:transform 0.3s ease, box-shadow 0.3s ease;" 
+           onmouseover="this.style.transform='scale(1.05)'; this.style.boxShadow='0 8px 20px rgba(0,0,0,0.2)';" 
+           onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='0 4px 12px rgba(0,0,0,0.1)';">
+        <h3 style="color:#ffb900; font-size:20px; margin-bottom:8px;">4. IF with AND 🔗</h3>
+        <p>Similar to Excel’s <b>IF(AND(...))</b>, it returns <b>yes</b> if all conditions are true.</p>
+        <pre style="background:#f4f4f4; padding:10px; border-radius:8px; font-size:14px; overflow-x:auto;">
+function checkMultipleConditions(a, b, c) {
+  return (a > b && a > c) ? "yes" : "no";
+}
+
+console.log(checkMultipleConditions(10, 5, 3)); // yes
+        </pre>
+      </div>
+
+      <!-- Card 5 -->
+      <div style="background:#fff; border-left:6px solid #605e5c; border-radius:12px; padding:20px; box-shadow:0 4px 12px rgba(0,0,0,0.1); transition:transform 0.3s ease, box-shadow 0.3s ease;" 
+           onmouseover="this.style.transform='scale(1.05)'; this.style.boxShadow='0 8px 20px rgba(0,0,0,0.2)';" 
+           onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='0 4px 12px rgba(0,0,0,0.1)';">
+        <h3 style="color:#605e5c; font-size:20px; margin-bottom:8px;">5. IF with OR 🔀</h3>
+        <p>Replicates Excel’s <b>IF(OR(...))</b>. It returns <b>yes</b> if at least one condition is true.</p>
+        <pre style="background:#f4f4f4; padding:10px; border-radius:8px; font-size:14px; overflow-x:auto;">
+function checkOrCondition(a, b, c) {
+  return (a > b || a > c) ? "yes" : "no";
+}
+
+console.log(checkOrCondition(10, 20, 5)); // yes
+        </pre>
+      </div>
+
+      <!-- Card 6 -->
+      <div style="background:#fff; border-left:6px solid #0078d7; border-radius:12px; padding:20px; box-shadow:0 4px 12px rgba(0,0,0,0.1); transition:transform 0.3s ease, box-shadow 0.3s ease;" 
+           onmouseover="this.style.transform='scale(1.05)'; this.style.boxShadow='0 8px 20px rgba(0,0,0,0.2)';" 
+           onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='0 4px 12px rgba(0,0,0,0.1)';">
+        <h3 style="color:#0078d7; font-size:20px; margin-bottom:8px;">6. Gender Detection (Odd/Even) 👤</h3>
+        <p>Extracts digits from an ID and determines <b>male</b> or <b>female</b> like Excel formulas with <b>ISODD</b>.</p>
+        <pre style="background:#f4f4f4; padding:10px; border-radius:8px; font-size:14px; overflow-x:auto;">
+function checkGender(id) {
+  let num = parseInt(id.substring(2, 4));
+  return num % 2 !== 0 ? "male" : "female";
+}
+
+console.log(checkGender("123456789")); // male
+        </pre>
+      </div>
+
+      <!-- Card 7 -->
+      <div style="background:#fff; border-left:6px solid #00b294; border-radius:12px; padding:20px; box-shadow:0 4px 12px rgba(0,0,0,0.1); transition:transform 0.3s ease, box-shadow 0.3s ease;" 
+           onmouseover="this.style.transform='scale(1.05)'; this.style.boxShadow='0 8px 20px rgba(0,0,0,0.2)';" 
+           onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='0 4px 12px rgba(0,0,0,0.1)';">
+        <h3 style="color:#00b294; font-size:20px; margin-bottom:8px;">7. IF with ELSE 🔄</h3>
+        <p>Similar to Excel’s <b>IF...ELSE</b>, it checks a condition and provides an alternative result.</p>
+        <pre style="background:#f4f4f4; padding:10px; border-radius:8px; font-size:14px; overflow-x:auto;">
+function checkGender(value) {
+  let num = parseInt(value.substring(2, 4));
+  if (num % 2 !== 0) {
+    return "male";
+  } else {
+    return "female";
+  }
+}
+
+console.log(checkGender("123456")); // male
+        </pre>
+      </div>
+
+      <!-- Card 8 -->
+      <div style="background:#fff; border-left:6px solid #e81123; border-radius:12px; padding:20px; box-shadow:0 4px 12px rgba(0,0,0,0.1); transition:transform 0.3s ease, box-shadow 0.3s ease;" 
+           onmouseover="this.style.transform='scale(1.05)'; this.style.boxShadow='0 8px 20px rgba(0,0,0,0.2)';" 
+           onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='0 4px 12px rgba(0,0,0,0.1)';">
+        <h3 style="color:#e81123; font-size:20px; margin-bottom:8px;">8. Looping through Values 🔁</h3>
+        <p>Using a loop to process multiple values, similar to handling a range of cells in Excel.</p>
+        <pre style="background:#f4f4f4; padding:10px; border-radius:8px; font-size:14px; overflow-x:auto;">
+let values = ["123456", "987654", "456789"];
+
+function checkGender(value) {
+  let num = parseInt(value.substring(2, 4));
+  return num % 2 !== 0 ? "male" : "female";
+}
+
+for (let v of values) {
+  console.log(v, "→", checkGender(v));
+}
+        </pre>
+      </div>
+
+    </div>
+
+    <br>
+    <strong style="font-size:20px; color:#004080;">📊 Summary:</strong>
+    <table border="1" cellpadding="8" style="border-collapse: collapse; width:100%; text-align:center; margin-top:10px;">
+      <tr style="background:#e6f0ff;">
+        <th>Function</th><th>Description</th>
+      </tr>
+      <tr><td>SUM</td><td>Add multiple values</td></tr>
+      <tr><td>NOW</td><td>Get current date & time</td></tr>
+      <tr><td>IF</td><td>Return result based on condition</td></tr>
+      <tr><td>IF AND / OR</td><td>Check multiple conditions</td></tr>
+      <tr><td>Gender Check</td><td>Detect gender using ID numbers</td></tr>
+      <tr><td>Loop</td><td>Process multiple values</td></tr>
+    </table>
+
+    <br>
+    <strong style="font-size:20px; color:#004080;">💡 Tips:</strong><br>
+    ✅ Use <b>SUM</b> for quick totals<br>
+    ✅ <b>NOW</b> is great for timestamps<br>
+    ✅ Combine IF with AND/OR for complex logic<br>
+    ✅ Loops help apply formulas across multiple values<br>
+
+  </div>
+</div><br>
+
+<b style="font-size: 17px; color:#cc0000;">Quiz:</b> 
+<span style="color:#333;">Which function returns the current date and time?</span>`,
+  "q": "Which function returns the current date and time?",
+  "a": "b",
+  "options": [
+    "SUM",
+    "NOW",
+    "IF",
+    "LOOP"
+  ]
+},
+
+
+    
+
 {
   "passage": `
 <div style="margin-top: 120px;">
