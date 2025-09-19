@@ -227,6 +227,767 @@ input[type="radio"] {
     
     const trueFalseQuestions = [
 
+
+
+{
+  "passage": `
+
+<style>
+  .hover-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  .hover-card:hover {
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+  }
+
+  /* ✅ تأثير الأيقونة */
+  .hover-card:hover svg {
+    transform: scale(1.1) rotate(5deg);
+    transition: transform 0.3s ease, stroke 0.3s ease;
+    stroke: #ff5722; /* اللون عند الهوفر */
+  }
+</style>
+
+
+<div style="margin-top: 40px; max-width: 1100px; margin-left:auto; margin-right:auto; font-family: Segoe UI, Arial, sans-serif; line-height:1.6; color:#333;">
+
+  <!-- ✅ Card 1: Introduction -->
+  <!-- ✅ Card 1: Program Introduction -->
+<div class="hover-card" style="background:#f9fbff; border:2px solid #cce0ff; border-radius:15px; padding:25px; box-shadow:0 4px 12px rgba(0,0,0,0.08);">
+  
+  <!-- Icon -->
+  <div style="text-align:center; margin-bottom:12px;">
+    <svg width="60" height="60" viewBox="0 0 24 24" fill="none" stroke="#0078d7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="12" cy="12" r="10"></circle>
+      <path d="M12 6v6l4 2"></path>
+    </svg>
+  </div>
+
+  <h2 style="color:#0078d7; margin-bottom:15px;">Card 1: Program Introduction</h2>
+  
+  <p>
+    This project represents a <strong>professional adaptive honeypot system</strong> developed as part of a senior graduation program.  
+    The system is designed to attract, monitor, and analyze real attacker behaviors, while dynamically adapting in real-time through automated scripts and machine-learning-assisted decision-making.  
+    By doing so, it not only provides security but also generates <b>valuable research data</b> for ongoing cybersecurity studies.
+  </p>
+
+  <h4 style="color:#004080; margin-top:15px;">🎯 Objectives</h4>
+  <ul style="margin-top:8px; line-height:1.8;">
+    <li>❖ Develop an <b>interactive security system</b> that simulates vulnerable environments to lure attackers.</li>
+    <li>❖ Capture and analyze attacker activity in <b>real-time</b> for deeper insights into evolving threats.</li>
+    <li>❖ Integrate <b>Deep Q-Learning</b> to enable adaptive and intelligent decision-making against attacks.</li>
+    <li>❖ Provide a <b>scalable platform</b> that can be expanded for academic research, enterprise testing, and training.</li>
+  </ul>
+
+  <h4 style="color:#004080; margin-top:15px;">💡 Benefits</h4>
+  <ul style="margin-top:8px; line-height:1.8;">
+    <li>✔ <b>High-fidelity datasets:</b> Unlike traditional IDS/IPS, honeypots generate almost exclusively malicious interactions.</li>
+    <li>✔ <b>Enhanced learning:</b> Provides real-world attacker tactics (TTPs) for security research and teaching.</li>
+    <li>✔ <b>Adaptability:</b> The system evolves with each interaction, making it robust against novel attack methods.</li>
+    <li>✔ <b>Cost-effective:</b> Can be deployed on lightweight servers while still offering deep insights.</li>
+  </ul>
+
+  <h4 style="color:#004080; margin-top:15px;">⚡ Strengths</h4>
+  <ul style="margin-top:8px; line-height:1.8;">
+    <li>🔹 Combines <b>machine learning</b> with classical security monitoring.</li>
+    <li>🔹 Supports <b>real-time detection</b> and automated adaptive responses.</li>
+    <li>🔹 Offers <b>modular architecture</b> for integration with other security tools and dashboards.</li>
+    <li>🔹 Backed by a clear <b>network deployment diagram</b> for transparency and scalability.</li>
+  </ul>
+
+  <h4 style="color:#004080; margin-top:12px;">Network Position (Visual)</h4>
+
+  <!-- Network diagram -->
+  <div style="text-align:center; margin: 16px 0;">
+    <svg width="100%" height="150" viewBox="0 0 1000 150" preserveAspectRatio="xMidYMid meet">
+      <rect x="30" y="30" width="140" height="60" rx="8" fill="#ffecec" stroke="#ff6b6b"/>
+      <text x="100" y="65" font-size="12" fill="#8b0000" text-anchor="middle">Attacker</text>
+
+      <rect x="200" y="20" width="160" height="80" rx="10" fill="#fff7e6" stroke="#ffb84d"/>
+      <text x="280" y="55" font-size="12" fill="#8b4500" text-anchor="middle">Internet / Scan</text>
+
+      <rect x="400" y="20" width="140" height="80" rx="8" fill="#e8f8ff" stroke="#4db6e6"/>
+      <text x="470" y="55" font-size="12" fill="#0b6fa4" text-anchor="middle">Ngrok</text>
+
+      <rect x="600" y="12" width="220" height="96" rx="10" fill="#f0fff4" stroke="#4db86e"/>
+      <text x="710" y="45" font-size="12" fill="#086b3a" text-anchor="middle">Honeypot Server</text>
+
+      <defs>
+        <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+          <path d="M 0 0 L 10 5 L 0 10 z" fill="#333"/>
+        </marker>
+      </defs>
+      <line x1="170" y1="60" x2="200" y2="60" stroke="#333" stroke-width="2" marker-end="url(#arrow)"/>
+      <line x1="360" y1="60" x2="400" y2="60" stroke="#333" stroke-width="2" marker-end="url(#arrow)"/>
+      <line x1="540" y1="60" x2="600" y2="60" stroke="#333" stroke-width="2" marker-end="url(#arrow)"/>
+    </svg>
+  </div>
+</div>
+
+
+  <!-- ✅ Card 2: Server Code -->
+<div class="hover-card" style="margin-top:40px; background:#fff; border-left:6px solid #0078d7; border-radius:12px; padding:20px; box-shadow:0 4px 12px rgba(0,0,0,0.1); transition:transform 0.3s, box-shadow 0.3s;">
+  
+  <!-- Icon -->
+  <div style="text-align:center; margin-bottom:12px;">
+    <svg width="60" height="60" viewBox="0 0 24 24" fill="none" stroke="#004080" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="3" y="3" width="18" height="18" rx="2"></rect>
+      <path d="M7 7h10v10H7z"></path>
+    </svg>
+  </div>
+
+  <h3 style="color:#0078d7; font-size:20px; margin-bottom:8px;">Card 2: Server Code — Smart Analysis</h3>
+
+  <p style="font-size:15px; text-align:justify;">
+    In the honeypot architecture, the <strong>server</strong> functions as the <em>central orchestrator</em> of all interactions.  
+    It not only <strong>presents decoy content</strong> to attackers but also acts as a powerful <strong>monitoring and analysis hub</strong>.  
+    Every incoming request is intercepted, processed, and evaluated using both <em>lightweight heuristics</em> and advanced logging mechanisms.  
+    This enables the system to distinguish between <strong>casual scans</strong> and <strong>targeted attacks</strong> in real time.  
+  </p>
+
+  <p style="font-size:15px; text-align:justify;">
+    From an academic perspective, this component highlights several key principles:  
+    (1) <b>Data collection</b> — all traffic metadata is systematically stored for later forensic analysis.  
+    (2) <b>Security by deception</b> — the attacker believes they are engaging with a real system, while in fact they are feeding the honeypot intelligence.  
+    (3) <b>Adaptivity</b> — the server can modify its traps dynamically in response to detected attacker behavior, making it a <em>living system</em> rather than a static trap.  
+    Such characteristics make this design both <strong>scalable</strong> and <strong>resilient</strong>, which are essential qualities for professional security deployments.  
+  </p>
+
+  <h4 style="color:#004080; margin-top:12px;">Key Functions:</h4>
+  <ul style="line-height:1.6; margin-left:18px;">
+    <li>Serve fake login/UI pages to lure attackers and simulate realistic systems.</li>
+    <li>Capture every request (headers, IP, payload size, method, timing).</li>
+    <li>Run heuristics to detect anomalies (SQL injection, XSS patterns, brute force attempts).</li>
+    <li>Store structured logs (CSV/JSON) for <b>data mining and machine learning analysis</b>.</li>
+    <li>Trigger adaptive scripts that evolve in real time, increasing the deception complexity.</li>
+    <li>Forward anonymized logs to <b>external secure storage (e.g., GitHub, cloud)</b> for persistence and team collaboration.</li>
+  </ul>
+
+  <h4 style="color:#004080; margin-top:12px;">Example Server Snippet:</h4>
+  <pre style="background:#f4f8ff; padding:10px; border-radius:10px; font-size:13px; overflow-x:auto;">
+// Express server example (simplified)
+app.use(express.json());
+
+app.use((req, res, next) => {
+  const log = {
+    time: new Date().toISOString(),
+    ip: req.ip,
+    url: req.originalUrl,
+    method: req.method,
+    headersCount: Object.keys(req.headers).length
+  };
+  console.log("Captured:", log); // In real case: write to log file or DB
+  next();
+});
+
+app.get("/", (req,res)=>{
+  res.sendFile(__dirname + "/public/fake_login.html");
+});
+  </pre>
+
+  <!-- Server flow diagram (main) -->
+  <div style="text-align:center; margin: 18px 0;">
+    <svg width="100%" height="220" viewBox="0 0 1000 220" preserveAspectRatio="xMidYMid meet">
+      <rect x="40" y="20" width="160" height="50" rx="8" fill="#fff4e6" stroke="#ffb84d"/>
+      <text x="120" y="50" font-size="12" fill="#8b4500" text-anchor="middle">Attacker Request</text>
+
+      <rect x="240" y="20" width="180" height="50" rx="8" fill="#e8f8ff" stroke="#4db6e6"/>
+      <text x="330" y="50" font-size="12" fill="#0b6fa4" text-anchor="middle">Express Middleware</text>
+
+      <rect x="520" y="10" width="180" height="70" rx="8" fill="#f0fff4" stroke="#4db86e"/>
+      <text x="610" y="40" font-size="12" fill="#086b3a" text-anchor="middle">Logging & Heuristics</text>
+
+      <rect x="240" y="110" width="180" height="50" rx="8" fill="#fff0f6" stroke="#ff99c8"/>
+      <text x="330" y="142" font-size="12" fill="#a1005f" text-anchor="middle">Adaptive Script</text>
+
+      <rect x="520" y="110" width="180" height="50" rx="8" fill="#f4f6ff" stroke="#8f9eff"/>
+      <text x="610" y="142" font-size="12" fill="#2f3aa2" text-anchor="middle">External Storage</text>
+
+      <defs>
+        <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+          <path d="M 0 0 L 10 5 L 0 10 z" fill="#333"/>
+        </marker>
+      </defs>
+
+      <line x1="200" y1="45" x2="240" y2="45" stroke="#333" stroke-width="2" marker-end="url(#arrow)"/>
+      <line x1="420" y1="45" x2="520" y2="45" stroke="#333" stroke-width="2" marker-end="url(#arrow)"/>
+      <line x1="420" y1="135" x2="520" y2="135" stroke="#333" stroke-width="2" marker-end="url(#arrow)"/>
+    </svg>
+  </div>
+
+  <!-- Extra mini diagram -->
+  <div style="text-align:center; margin-top:20px;">
+    <svg width="100%" height="120" viewBox="0 0 600 120" preserveAspectRatio="xMidYMid meet">
+      <rect x="20" y="30" width="120" height="50" rx="8" fill="#ffeef0" stroke="#ff6f91"/>
+      <text x="80" y="60" font-size="12" fill="#a1002f" text-anchor="middle">Heuristics</text>
+
+      <rect x="180" y="30" width="120" height="50" rx="8" fill="#f0f9ff" stroke="#4db6e6"/>
+      <text x="240" y="60" font-size="12" fill="#004080" text-anchor="middle">Logs</text>
+
+      <rect x="340" y="30" width="120" height="50" rx="8" fill="#f9f6ff" stroke="#8f9eff"/>
+      <text x="400" y="60" font-size="12" fill="#2f3aa2" text-anchor="middle">Adaptive Action</text>
+
+      <line x1="140" y1="55" x2="180" y2="55" stroke="#333" stroke-width="2" marker-end="url(#arrow2)"/>
+      <line x1="300" y1="55" x2="340" y2="55" stroke="#333" stroke-width="2" marker-end="url(#arrow2)"/>
+
+      <defs>
+        <marker id="arrow2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+          <path d="M 0 0 L 10 5 L 0 10 z" fill="#333"/>
+        </marker>
+      </defs>
+    </svg>
+    <p style="font-size:12px; color:#555;">Mini pipeline: Heuristics → Logs → Adaptive Response</p>
+  </div>
+</div>
+
+
+
+  <!-- ✅ Card 3: Adaptive Honeypot -->
+<div class="hover-card" style="background:#fff; border-radius:16px; box-shadow:0 4px 15px rgba(0,0,0,0.08); padding:30px; margin-top:30px;">
+  
+  <!-- Icon -->
+  <div style="text-align:center; margin-bottom:12px;">
+    <svg width="60" height="60" viewBox="0 0 24 24" fill="none" stroke="#16a085" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="12" cy="12" r="10"></circle>
+      <path d="M9 9h6v6H9z"></path>
+    </svg>
+  </div>
+
+  <h2 style="font-size:24px; color:#2c3e50; margin-bottom:12px;">Card 3: Adaptive Honeypot with DQN</h2>
+
+  <p>
+    This honeypot integrates <b>Deep Q-Learning (DQN)</b> with TensorFlow.js to dynamically learn from malicious traffic logs.
+    Instead of relying only on static rules, the model continuously <b>updates its policy</b> based on replayed logs, allowing it
+    to evolve and strengthen defenses against attackers.
+  </p>
+
+  <!-- Mini code sample -->
+  <pre style="background:#f4f4f4; padding:12px; border-radius:8px; font-size:13px;">
+// Example encoder
+function encodeStateFromRecord(record) {
+  return [
+    record.ip && record.ip.startsWith('192.168.') ? 0 : 1,
+    record.method === 'POST' ? 1 : 0,
+    /attack|scan/i.test(record.threatType) ? 1 : 0
+  ];
+}
+  </pre>
+
+  <!-- Pipeline text -->
+  <div style="margin:14px 0; padding:12px; background:#ecf0f1; border-radius:10px; font-size:14px;">
+    <b>Pipeline:</b> Logs → Encoder → State Vector → Model.predict() → Action (block/alert/ignore) → Logger + Replay Memory → Trainer
+  </div>
+
+  <!-- ASCII flow -->
+  <pre style="background:#ffffff; padding:12px; border-radius:10px; font-size:13px;">
+Logs -> Encoder -> Model -> Action -> Logger / Replay Memory
+Trainer -> trainModel() -> update weights
+  </pre>
+
+  <!-- Extra DQN diagram -->
+  <div style="text-align:center; margin: 20px 0;">
+    <svg width="100%" height="260" viewBox="0 0 1000 260" preserveAspectRatio="xMidYMid meet">
+      <!-- Input -->
+      <rect x="40" y="80" width="160" height="50" rx="8" fill="#f9f9f9" stroke="#aaa"/>
+      <text x="120" y="110" font-size="13" fill="#333" text-anchor="middle">Raw Logs</text>
+
+      <!-- Encoder -->
+      <rect x="240" y="80" width="160" height="50" rx="8" fill="#e6f7ff" stroke="#3399ff"/>
+      <text x="320" y="110" font-size="13" fill="#004080" text-anchor="middle">Encoder (features)</text>
+
+      <!-- Model -->
+      <rect x="440" y="40" width="160" height="50" rx="8" fill="#f0fff4" stroke="#2ecc71"/>
+      <text x="520" y="70" font-size="13" fill="#086b3a" text-anchor="middle">DQN Model</text>
+
+      <!-- Action -->
+      <rect x="640" y="20" width="160" height="50" rx="8" fill="#fffaf0" stroke="#ff9933"/>
+      <text x="720" y="50" font-size="13" fill="#8b4500" text-anchor="middle">Action</text>
+
+      <!-- Replay -->
+      <rect x="640" y="120" width="160" height="50" rx="8" fill="#fff0f6" stroke="#ff66b2"/>
+      <text x="720" y="150" font-size="13" fill="#a1005f" text-anchor="middle">Replay Memory</text>
+
+      <!-- Trainer -->
+      <rect x="440" y="180" width="160" height="50" rx="8" fill="#f4f6ff" stroke="#6666ff"/>
+      <text x="520" y="210" font-size="13" fill="#2f3aa2" text-anchor="middle">Trainer</text>
+
+      <!-- Arrows -->
+      <line x1="200" y1="105" x2="240" y2="105" stroke="#333" stroke-width="2" marker-end="url(#arrow)"/>
+      <line x1="400" y1="105" x2="440" y2="65" stroke="#333" stroke-width="2" marker-end="url(#arrow)"/>
+      <line x1="600" y1="65" x2="640" y2="45" stroke="#333" stroke-width="2" marker-end="url(#arrow)"/>
+      <line x1="600" y1="65" x2="640" y2="145" stroke="#333" stroke-width="2" marker-end="url(#arrow)"/>
+      <line x1="640" y1="145" x2="520" y2="180" stroke="#333" stroke-width="2" marker-end="url(#arrow)"/>
+      <line x1="520" y1="180" x2="520" y2="90" stroke="#333" stroke-width="2" marker-end="url(#arrow)"/>
+      
+      <!-- Arrow marker -->
+      <defs>
+        <marker id="arrow" markerWidth="10" markerHeight="10" refX="6" refY="3" orient="auto" markerUnits="strokeWidth">
+          <path d="M0,0 L0,6 L9,3 z" fill="#333"/>
+        </marker>
+      </defs>
+    </svg>
+  </div>
+
+  <!-- ✅ Analysis Section -->
+  <div style="margin-top:20px; background:#fdfdfd; border-left:5px solid #16a085; padding:15px; border-radius:8px; font-size:14px;">
+    <h3 style="color:#16a085;">Detailed Analysis</h3>
+    <p>
+      The <b>dqn-honeypot-ai.js</b> script orchestrates the full adaptive cycle:
+      <ul>
+        <li><b>Encoding:</b> Each log entry (IP, method, threat type) is mapped into an <code>[8-dim state vector]</code>.</li>
+        <li><b>Model:</b> A 3-layer dense neural network outputs probabilities for actions: block, alert, ignore.</li>
+        <li><b>Training:</b> Bootstraps with heuristics, then fine-tunes continuously with replayed logs (experience replay).</li>
+        <li><b>Persistence:</b> Model is saved into <code>model.json</code> + <code>weights.bin</code> to survive restarts.</li>
+        <li><b>Automation:</b> Watches <code>public/logs/threats.csv</code>; each new log triggers processing, action selection, and fine-tuning.</li>
+        <li><b>Compatibility:</b> Can also parse legacy <code>honeypot.log</code> for backward support.</li>
+      </ul>
+      This creates a <b>self-learning defense system</b>: logs become training data, improving the honeypot over time.
+    </p>
+  </div>
+</div>
+
+
+<!-- ✅ Card 4: Threat Logging System (Improved CSV Handling) -->
+<div class="hover-card" style="background:#fff; border-radius:16px; box-shadow:0 4px 15px rgba(0,0,0,0.08); padding:30px; margin-top:30px;">
+
+  <!-- Icon -->
+  <div style="text-align:center; margin-bottom:12px;">
+    <svg width="60" height="60" viewBox="0 0 24 24" fill="none" stroke="#d35400" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M12 2l9 4.9v9.1L12 22l-9-6.9V6.9z"></path>
+      <path d="M12 22V12"></path>
+      <path d="M3 6.9l9 5.1 9-5.1"></path>
+    </svg>
+  </div>
+
+  <h2 style="font-size:24px; color:#2c3e50; margin-bottom:12px;">Card 4: Threat Logging (logThreats.js)</h2>
+
+  <p>
+    In this improved version, we <b>sanitize and escape values</b> before writing to CSV.  
+    This prevents <b>broken rows</b> if an attacker injects commas, quotes, or newlines in headers or payloads.
+  </p>
+
+  <!-- Code sample -->
+  <pre style="background:#f4f4f4; padding:12px; border-radius:8px; font-size:13px;">
+// logThreats.js (ESM with Safe CSV)
+import fs from 'fs';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+const LOGS_DIR = path.join(__dirname, 'logs');
+const OUTPUT_CSV = path.join(LOGS_DIR, 'threats.csv');
+
+// ✅ Escape CSV values safely
+function csvEscape(value) {
+  if (value == null) return '';
+  const str = String(value);
+  if (/[",\n]/.test(str)) {
+    return '"' + str.replace(/"/g, '""') + '"';
+  }
+  return str;
+}
+
+function ensureLogsCsv() {
+  if (!fs.existsSync(LOGS_DIR)) fs.mkdirSync(LOGS_DIR, { recursive: true });
+  if (!fs.existsSync(OUTPUT_CSV)) {
+    fs.writeFileSync(OUTPUT_CSV, 'Timestamp,IP,Method,ThreatType,Action\n', 'utf8');
+  }
+}
+
+export function logThreat(ip, method, threatType, action = 'ignored', timestamp = new Date().toISOString()) {
+  ensureLogsCsv();
+  const row = [
+    csvEscape(timestamp),
+    csvEscape(ip),
+    csvEscape(method),
+    csvEscape(threatType),
+    csvEscape(action)
+  ].join(',') + '\n';
+
+  fs.appendFileSync(OUTPUT_CSV, row, 'utf8');
+}
+  </pre>
+
+  <!-- Flow Diagram -->
+  <div style="text-align:center; margin: 20px 0;">
+    <svg width="100%" height="240" viewBox="0 0 1000 240" preserveAspectRatio="xMidYMid meet">
+      <!-- Suspicious Request -->
+      <rect x="40" y="80" width="180" height="50" rx="8" fill="#fffaf0" stroke="#ff9933"/>
+      <text x="130" y="110" font-size="13" fill="#8b4500" text-anchor="middle">Suspicious Request</text>
+
+      <!-- logThreat() -->
+      <rect x="280" y="80" width="160" height="50" rx="8" fill="#f0fff4" stroke="#27ae60"/>
+      <text x="360" y="110" font-size="13" fill="#086b3a" text-anchor="middle">logThreat()</text>
+
+      <!-- csvEscape() -->
+      <rect x="500" y="40" width="200" height="50" rx="8" fill="#f4f6ff" stroke="#6666ff"/>
+      <text x="600" y="70" font-size="13" fill="#2f3aa2" text-anchor="middle">csvEscape()</text>
+
+      <!-- threats.csv -->
+      <rect x="500" y="140" width="200" height="50" rx="8" fill="#fff0f6" stroke="#ff66b2"/>
+      <text x="600" y="170" font-size="13" fill="#a1005f" text-anchor="middle">logs/threats.csv</text>
+
+      <!-- Arrows -->
+      <line x1="220" y1="105" x2="280" y2="105" stroke="#333" stroke-width="2" marker-end="url(#arrow)"/>
+      <line x1="440" y1="105" x2="500" y2="65" stroke="#333" stroke-width="2" marker-end="url(#arrow)"/>
+      <line x1="440" y1="105" x2="500" y2="165" stroke="#333" stroke-width="2" marker-end="url(#arrow)"/>
+
+      <!-- Arrow marker -->
+      <defs>
+        <marker id="arrow" markerWidth="10" markerHeight="10" refX="6" refY="3" orient="auto" markerUnits="strokeWidth">
+          <path d="M0,0 L0,6 L9,3 z" fill="#333"/>
+        </marker>
+      </defs>
+    </svg>
+  </div>
+
+  <!-- ✅ Analysis Section -->
+  <div style="margin-top:20px; background:#fdfdfd; border-left:5px solid #d35400; padding:15px; border-radius:8px; font-size:14px;">
+    <h3 style="color:#d35400;">Detailed Analysis</h3>
+    <ul>
+      <li><b>CSV Escaping:</b> Values containing commas, quotes, or newlines are safely wrapped in quotes and internal quotes are doubled.</li>
+      <li><b>Sanitized Logging:</b> Prevents malformed CSV rows caused by attacker payloads.</li>
+      <li><b>Default Action:</b> Events without classification are marked as <code>ignored</code>.</li>
+      <li><b>Machine Learning Ready:</b> Structured and clean CSV ensures compatibility with downstream models.</li>
+      <li><b>Resilient:</b> Works even with maliciously crafted inputs (e.g., SQL injection strings).</li>
+    </ul>
+    <p>
+      This ensures the honeypot’s logs are <b>clean, reliable, and tamper-resistant</b>, making them suitable 
+      for <b>forensic analysis</b> and <b>continuous ML training</b>.
+    </p>
+  </div>
+</div>
+
+
+
+
+<!-- ✅ Card 5: Frontend Honeypot (Secure Login Page) -->
+<div class="hover-card" style="background:#fff; border-radius:16px; box-shadow:0 4px 15px rgba(0,0,0,0.08); padding:30px; margin-top:30px;">
+
+  <!-- Icon -->
+  <div style="text-align:center; margin-bottom:12px;">
+    <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M12 1l3 5h-6l3-5z"></path>
+      <rect x="4" y="7" width="16" height="13" rx="2" ry="2"></rect>
+      <path d="M12 11v6"></path>
+      <path d="M9 14h6"></path>
+    </svg>
+  </div>
+
+  <h2 style="font-size:24px; color:#1e3a8a; margin-bottom:12px;">Card 5: Frontend Honeypot (Fake Secure Login)</h2>
+
+  <p>
+    This <b>deceptive login portal</b> is designed as the <b>first point of contact</b> for attackers.  
+    It mimics a corporate-grade login system with professional design, background animations, and 
+    a forced <b>fullscreen trap</b>.  
+    While attackers try fake credentials, the system <b>captures behavior</b>, logs inputs, and 
+    triggers adaptive server-side responses.
+  </p>
+
+  <!-- Code Snippet -->
+  <pre style="background:#f4f4f4; padding:12px; border-radius:8px; font-size:13px; white-space:pre-wrap;">
+&lt;div class="login-container"&gt;
+  &lt;h1 class="login-title"&gt;Authorized Personnel Login Portal&lt;/h1&gt;
+  &lt;form method="POST" action="/fake-login"&gt;
+    &lt;div class="input-group"&gt;
+      &lt;label for="username"&gt;Username&lt;/label&gt;
+      &lt;input type="text" id="username" name="username" required /&gt;
+    &lt;/div&gt;
+    &lt;div class="input-group"&gt;
+      &lt;label for="password"&gt;Password&lt;/label&gt;
+      &lt;input type="password" id="password" name="password" required /&gt;
+    &lt;/div&gt;
+    &lt;button type="submit"&gt;Log In&lt;/button&gt;
+  &lt;/form&gt;
+&lt;/div&gt;
+
+&lt;script&gt;
+// Fullscreen trap
+document.addEventListener('click', () =&gt; {
+  if (!document.fullscreenElement) {
+    document.documentElement.requestFullscreen();
+  }
+});
+&lt;/script&gt;
+  </pre>
+
+  <!-- Flow Diagram -->
+  <div style="text-align:center; margin: 20px 0;">
+    <svg width="100%" height="250" viewBox="0 0 1000 250" preserveAspectRatio="xMidYMid meet">
+      <!-- Attacker -->
+      <rect x="40" y="90" width="160" height="50" rx="8" fill="#fff4e6" stroke="#f97316"/>
+      <text x="120" y="120" font-size="13" fill="#9a3412" text-anchor="middle">Attacker</text>
+
+      <!-- Fake Login -->
+      <rect x="260" y="90" width="200" height="60" rx="8" fill="#e0f2fe" stroke="#2563eb"/>
+      <text x="360" y="120" font-size="13" fill="#1e3a8a" text-anchor="middle">Fake Secure Login Page</text>
+
+      <!-- Fullscreen Trap -->
+      <rect x="520" y="50" width="200" height="60" rx="8" fill="#f0fdf4" stroke="#22c55e"/>
+      <text x="620" y="80" font-size="13" fill="#166534" text-anchor="middle">Fullscreen Trap</text>
+
+      <!-- Behavior Capture -->
+      <rect x="520" y="140" width="200" height="60" rx="8" fill="#fef9c3" stroke="#eab308"/>
+      <text x="620" y="170" font-size="13" fill="#78350f" text-anchor="middle">Input &amp; Behavior Logging</text>
+
+      <!-- Server -->
+      <rect x="780" y="90" width="180" height="60" rx="8" fill="#fdf2f8" stroke="#db2777"/>
+      <text x="870" y="120" font-size="13" fill="#9d174d" text-anchor="middle">Server-side Responses</text>
+
+      <!-- Arrows -->
+      <line x1="200" y1="115" x2="260" y2="115" stroke="#333" stroke-width="2" marker-end="url(#arrow)"/>
+      <line x1="460" y1="115" x2="520" y2="80" stroke="#333" stroke-width="2" marker-end="url(#arrow)"/>
+      <line x1="460" y1="115" x2="520" y2="170" stroke="#333" stroke-width="2" marker-end="url(#arrow)"/>
+      <line x1="720" y1="80" x2="780" y2="115" stroke="#333" stroke-width="2" marker-end="url(#arrow)"/>
+      <line x1="720" y1="170" x2="780" y2="115" stroke="#333" stroke-width="2" marker-end="url(#arrow)"/>
+
+      <!-- Arrow marker -->
+      <defs>
+        <marker id="arrow" markerWidth="10" markerHeight="10" refX="6" refY="3" orient="auto" markerUnits="strokeWidth">
+          <path d="M0,0 L0,6 L9,3 z" fill="#333"/>
+        </marker>
+      </defs>
+    </svg>
+  </div>
+
+  <!-- ✅ Analysis Section -->
+  <div style="margin-top:20px; background:#fdfdfd; border-left:5px solid #2563eb; padding:15px; border-radius:8px; font-size:14px;">
+    <h3 style="color:#2563eb;">Detailed Analysis</h3>
+    <ul>
+      <li><b>Visual Deception:</b> The UI is polished with gradients, shadows, and animated bubbles to appear authentic.</li>
+      <li><b>Trap Mechanism:</b> A fullscreen request ensures attackers stay focused, hiding the browser chrome.</li>
+      <li><b>Credential Capture:</b> All POST requests to <code>/fake-login</code> are intercepted and logged by the backend.</li>
+      <li><b>Behavioral Logging:</b> Tracks keystrokes, timings, and submission patterns for forensic profiling.</li>
+      <li><b>Integration:</b> Pairs with <code>logThreats.js</code> to generate structured CSV records of login attempts.</li>
+    </ul>
+    <p>
+      This fake login page acts as a <b>psychological honeypot</b>, exploiting attacker curiosity and 
+      capturing every interaction for <b>threat intelligence</b> and <b>machine learning pipelines</b>.
+    </p>
+  </div>
+</div>
+
+
+
+<!-- ✅ Card 6: Frontend Dashboard Analysis -->
+<div class="hover-card" style="background:#fff; border-radius:16px; box-shadow:0 4px 15px rgba(0,0,0,0.08); padding:30px; margin-top:30px;">
+
+  <!-- Icon -->
+  <div style="text-align:center; margin-bottom:12px;">
+    <svg width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <polygon points="12 2 22 8.5 22 15.5 12 22 2 15.5 2 8.5 12 2"></polygon>
+      <line x1="12" y1="22" x2="12" y2="15"></line>
+      <line x1="12" y1="2" x2="12" y2="8.5"></line>
+    </svg>
+  </div>
+
+  <h2 style="font-size:24px; color:#166534; margin-bottom:12px;">Card 6: Frontend Dashboard Analysis</h2>
+
+  <p>
+    The <b>Threat Monitoring Dashboard</b> acts as the central hub for security analysts.  
+    It combines <b>data visualization, filters, AI prediction,</b> and <b>real-time logging</b>.  
+    Below are some <b>code examples</b> that highlight key parts of the frontend.
+  </p>
+
+  <!-- ✅ Example 1: Filtering Threats -->
+  <pre style="background:#f9fafb; padding:12px; border-radius:8px; font-size:13px; border:1px solid #e5e7eb;">
+// Example: Filtering threats by IP
+function filterByIP(ip) {
+  return threats.filter(t => t.ip === ip);
+}
+
+// Usage:
+const filtered = filterByIP("192.168.1.10");
+console.log(filtered);
+  </pre>
+  <p><b>Explanation:</b> Analysts can quickly narrow logs to a specific attacker IP, improving investigation speed.</p>
+
+  <!-- ✅ Example 2: Updating the Table -->
+  <pre style="background:#f9fafb; padding:12px; border-radius:8px; font-size:13px; border:1px solid #e5e7eb;">
+// Example: Dynamically update threat table
+function addThreatRow(threat) {
+  const table = document.getElementById("threatTableBody");
+  const row = document.createElement("tr");
+
+  table.appendChild(row);
+}
+  </pre>
+  <p><b>Explanation:</b> Every detected attack is instantly logged into the table for visibility.</p>
+
+  <!-- ✅ Example 3: AI Prediction -->
+  <pre style="background:#f9fafb; padding:12px; border-radius:8px; font-size:13px; border:1px solid #e5e7eb;">
+// Example: Using TensorFlow.js to classify threats
+async function analyzeThreat(features) {
+  const prediction = model.predict(tf.tensor([features]));
+  const result = prediction.argMax(-1).dataSync()[0];
+  return ["Ignore", "Alert", "Block"][result];
+}
+  </pre>
+  <p><b>Explanation:</b> AI model decides whether to ignore, alert, or block a suspicious request.</p>
+
+  <!-- ✅ Diagram -->
+  <div style="text-align:center; margin: 20px 0;">
+    <svg width="100%" height="300" viewBox="0 0 1100 300" preserveAspectRatio="xMidYMid meet">
+      <!-- Logs Source -->
+      <rect x="40" y="100" width="180" height="60" rx="8" fill="#e0f2fe" stroke="#2563eb"/>
+      <text x="130" y="130" font-size="13" fill="#1e3a8a" text-anchor="middle">Raw Logs (CSV / API)</text>
+
+      <!-- Filters -->
+      <rect x="280" y="60" width="180" height="60" rx="8" fill="#fef9c3" stroke="#eab308"/>
+      <text x="370" y="90" font-size="13" fill="#78350f" text-anchor="middle">Filters (IP / Type)</text>
+
+      <!-- Table -->
+      <rect x="280" y="160" width="180" height="60" rx="8" fill="#fdf2f8" stroke="#db2777"/>
+      <text x="370" y="190" font-size="13" fill="#9d174d" text-anchor="middle">Threat Table</text>
+
+      <!-- Chart -->
+      <rect x="520" y="60" width="180" height="60" rx="8" fill="#f0fdf4" stroke="#22c55e"/>
+      <text x="610" y="90" font-size="13" fill="#166534" text-anchor="middle">Threat Statistics Chart</text>
+
+      <!-- AI Analyzer -->
+      <rect x="520" y="160" width="220" height="60" rx="8" fill="#fff4e6" stroke="#f97316"/>
+      <text x="630" y="190" font-size="13" fill="#9a3412" text-anchor="middle">AI Log Analyzer (TensorFlow.js)</text>
+
+      <!-- Actions -->
+      <rect x="820" y="110" width="200" height="70" rx="8" fill="#dbeafe" stroke="#1d4ed8"/>
+      <text x="920" y="145" font-size="13" fill="#1e3a8a" text-anchor="middle">Actions (Block / Alert / Ignore)</text>
+
+      <!-- Arrows -->
+      <line x1="220" y1="130" x2="280" y2="90" stroke="#333" stroke-width="2" marker-end="url(#arrow)"/>
+      <line x1="220" y1="130" x2="280" y2="190" stroke="#333" stroke-width="2" marker-end="url(#arrow)"/>
+      <line x1="460" y1="90" x2="520" y2="90" stroke="#333" stroke-width="2" marker-end="url(#arrow)"/>
+      <line x1="460" y1="190" x2="520" y2="190" stroke="#333" stroke-width="2" marker-end="url(#arrow)"/>
+      <line x1="700" y1="90" x2="820" y2="145" stroke="#333" stroke-width="2" marker-end="url(#arrow)"/>
+      <line x1="740" y1="190" x2="820" y2="145" stroke="#333" stroke-width="2" marker-end="url(#arrow)"/>
+
+      <!-- Arrow marker -->
+      <defs>
+        <marker id="arrow" markerWidth="10" markerHeight="10" refX="6" refY="3" orient="auto" markerUnits="strokeWidth">
+          <path d="M0,0 L0,6 L9,3 z" fill="#333"/>
+        </marker>
+      </defs>
+    </svg>
+  </div>
+
+  <!-- ✅ Analysis Section -->
+  <div style="margin-top:20px; background:#fdfdfd; border-left:5px solid #16a34a; padding:15px; border-radius:8px; font-size:14px;">
+    <h3 style="color:#166534;">Detailed Functional Analysis</h3>
+    <ul>
+      <li><b>Filtering:</b> Allows quick isolation of specific attack vectors.</li>
+      <li><b>Table Update:</b> Ensures visibility of each threat in chronological order.</li>
+      <li><b>AI Analyzer:</b> Automates classification using a trained ML model.</li>
+      <li><b>Chart Visualization:</b> Gives a bird’s-eye view of the distribution of threats.</li>
+      <li><b>Actions:</b> Final step where analysts or the system act (block, alert, ignore).</li>
+    </ul>
+    <p>
+      These examples demonstrate how the frontend bridges <b>raw threat data</b> and 
+      <b>actionable intelligence</b> using clean UI, real-time logging, and AI integration.
+    </p>
+  </div>
+</div>
+
+
+
+<!-- ✅ Card 7: Workflow Integration -->
+<div class="hover-card" style="background:#fff; border-radius:16px; box-shadow:0 4px 15px rgba(0,0,0,0.08); padding:30px; margin-top:30px;">
+
+  <!-- Icon -->
+  <div style="text-align:center; margin-bottom:12px;">
+    <svg width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="#0ea5e9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="12" cy="12" r="10"></circle>
+      <path d="M8 12l2 2 4-4"></path>
+    </svg>
+  </div>
+
+  <h2 style="font-size:24px; color:#0c4a6e; margin-bottom:12px;">Card 7: Honeypot Workflow Overview</h2>
+
+  <p>
+    This card visualizes the <b>end-to-end workflow</b> of the adaptive honeypot system,  
+    connecting all previous modules (Cards 1–6) into a single pipeline:  
+    from <b>attack capture</b>, <b>logging</b>, <b>storage</b>, <b>AI processing</b>, and finally <b>dashboard analysis</b>.
+  </p>
+
+  <!-- ✅ Workflow Diagram -->
+  <div style="text-align:center; margin: 20px 0;">
+    <svg width="100%" height="380" viewBox="0 0 1200 380" preserveAspectRatio="xMidYMid meet">
+
+      <!-- Card 1 -->
+      <rect x="40" y="40" width="160" height="60" rx="8" fill="#f0f9ff" stroke="#0284c7"/>
+      <text x="120" y="70" font-size="13" fill="#075985" text-anchor="middle">Card 1: Request Trap</text>
+
+      <!-- Card 2 -->
+      <rect x="260" y="40" width="160" height="60" rx="8" fill="#fef9c3" stroke="#eab308"/>
+      <text x="340" y="70" font-size="13" fill="#78350f" text-anchor="middle">Card 2: Threat Classifier</text>
+
+      <!-- Card 3 -->
+      <rect x="480" y="40" width="160" height="60" rx="8" fill="#fdf2f8" stroke="#db2777"/>
+      <text x="560" y="70" font-size="13" fill="#9d174d" text-anchor="middle">Card 3: Adaptive Response</text>
+
+      <!-- Card 4 -->
+      <rect x="700" y="40" width="160" height="60" rx="8" fill="#fff0f6" stroke="#ec4899"/>
+      <text x="780" y="70" font-size="13" fill="#9a165f" text-anchor="middle">Card 4: Logging System</text>
+
+      <!-- Card 5 -->
+      <rect x="920" y="40" width="160" height="60" rx="8" fill="#f0fdf4" stroke="#22c55e"/>
+      <text x="1000" y="70" font-size="13" fill="#166534" text-anchor="middle">Card 5: ML Training</text>
+
+      <!-- Card 6 -->
+      <rect x="480" y="200" width="200" height="70" rx="8" fill="#e0f2fe" stroke="#2563eb"/>
+      <text x="580" y="235" font-size="13" fill="#1e3a8a" text-anchor="middle">Card 6: Dashboard Analysis</text>
+
+      <!-- Arrows -->
+      <line x1="200" y1="70" x2="260" y2="70" stroke="#333" stroke-width="2" marker-end="url(#arrow)"/>
+      <line x1="420" y1="70" x2="480" y2="70" stroke="#333" stroke-width="2" marker-end="url(#arrow)"/>
+      <line x1="640" y1="70" x2="700" y2="70" stroke="#333" stroke-width="2" marker-end="url(#arrow)"/>
+      <line x1="860" y1="70" x2="920" y2="70" stroke="#333" stroke-width="2" marker-end="url(#arrow)"/>
+
+      <!-- Connection down to Dashboard -->
+      <line x1="780" y1="100" x2="580" y2="200" stroke="#333" stroke-width="2" marker-end="url(#arrow)"/>
+      <line x1="1000" y1="100" x2="580" y2="200" stroke="#333" stroke-width="2" marker-end="url(#arrow)"/>
+
+      <!-- Arrow marker -->
+      <defs>
+        <marker id="arrow" markerWidth="10" markerHeight="10" refX="6" refY="3" orient="auto" markerUnits="strokeWidth">
+          <path d="M0,0 L0,6 L9,3 z" fill="#333"/>
+        </marker>
+      </defs>
+    </svg>
+  </div>
+
+  <!-- ✅ Analysis Section -->
+  <div style="margin-top:20px; background:#fdfdfd; border-left:5px solid #0ea5e9; padding:15px; border-radius:8px; font-size:14px;">
+    <h3 style="color:#0ea5e9;">Workflow Explanation</h3>
+    <ul>
+      <li><b>Card 1:</b> Captures suspicious requests.</li>
+      <li><b>Card 2:</b> Classifies type of threat (SQLi, XSS, etc.).</li>
+      <li><b>Card 3:</b> Decides adaptive response (block, redirect, delay).</li>
+      <li><b>Card 4:</b> Logs event details into structured CSV.</li>
+      <li><b>Card 5:</b> Uses logs as dataset for continuous ML training.</li>
+      <li><b>Card 6:</b> Dashboard visualizes attacks, AI predictions, and actions.</li>
+    </ul>
+    <p>
+      This integrated workflow ensures <b>end-to-end coverage</b>:  
+      from attack interception → classification → adaptive response → logging → ML improvement → analyst visibility.
+    </p>
+  </div>
+</div>
+
+
+
+
+
+
+
+
+
+`
+},
+
+
+
 {
   "passage": `
 <div style="margin-top: 40px; max-width: 1100px; margin-left:auto; margin-right:auto; position: relative; font-family: Segoe UI, Arial, sans-serif; line-height:1.6; color:#333;">
