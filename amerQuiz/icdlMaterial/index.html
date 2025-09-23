@@ -168,6 +168,18 @@ input[type="radio"] {
         <p class="author">📘 𝒯𝒽𝑒 𝐵𝓇𝒾𝓉𝒾𝓈𝒽 𝐼𝓃𝓉𝑒𝓇𝓃𝒶𝓉𝒾𝑜𝓃𝒶𝓁 𝐿𝑒𝒶𝓇𝓃𝒾𝓃𝑔 𝒞𝑒𝓃𝓉𝑒𝓇 (𝐼𝐿𝐶)</p>
         <p>Date: <span id="date"></span></p>
         <p id="timer"> ----- </p>
+
+ <!-- 🔎 مربع السيرش -->
+<div style="margin: 15px 0; text-align:center;">
+    <div style="display:inline-flex; align-items:center; border-radius:5px; overflow:hidden;">
+        <input type="number" id="searchQuestion" placeholder="Enter Question Number" 
+               style="padding:10px; width:200px; border:none; outline:none; font-size:16px;">
+        <button class="btn" style="margin:0; border-radius:0;" onclick="goToQuestion()">Go</button>
+    </div>
+</div>
+
+
+
         <div id="passage">
   <h3>Read the following passage carefully and answer the following questions:</h3>
   <p style="font-size: 22px;">
@@ -222,6 +234,39 @@ input[type="radio"] {
         elem.msRequestFullscreen();
       }
     });
+
+
+function goToQuestion() {
+    let num = parseInt(document.getElementById("searchQuestion").value);
+
+    if (isNaN(num) || num <= 0) {
+        alert("⚠️ برجاء إدخال رقم سؤال صحيح.");
+        return;
+    }
+
+    // ✅ أسئلة True/False أولاً
+    if (num <= trueFalseQuestions.length) {
+        currentTFQuestion = num - 1;
+        loadTFQuestion();
+    } 
+    // ✅ ثم الأسئلة الاختيارية
+    else {
+        let mcqNumber = num - trueFalseQuestions.length;
+        if (mcqNumber > 0 && mcqNumber <= questions.length) {
+            // إخفاء القطعة النصية لو وصلنا للاختياري
+            document.getElementById("passage").style.display = "none";
+            document.getElementById("quizTitle").innerText = 
+                "Choose the correct answer from a, b, c or d: (44 marks)";
+            
+            currentQuestion = mcqNumber - 1;
+            loadQuestion();
+        } else {
+            alert("⚠️ رقم السؤال غير موجود.");
+        }
+    }
+}
+
+
   </script>
 
     
@@ -3960,206 +4005,7 @@ Get-Process |
     
 const questions = [
   
-  {
-    q: "21. Which key combination is used to copy a selected file or folder in Windows?",
-    a: "a",
-    options: [
-      "Ctrl + C",
-      "Ctrl + X",
-      "Ctrl + V",
-      "Ctrl + A"
-    ]
-  },
-  {
-    q: "22. Which of the following is the shortcut to paste files or folders in Windows?",
-    a: "b",
-    options: [
-      "Ctrl + C",
-      "Ctrl + V",
-      "Ctrl + X",
-      "Ctrl + Z"
-    ]
-  },
-  {
-    q: "23. What does pressing 'Ctrl + X' do in Windows Explorer?",
-    a: "c",
-    options: [
-      "Copies the file",
-      "Deletes the file",
-      "Cuts the file",
-      "Renames the file"
-    ]
-  },
-  {
-    q: "24. Which Windows feature allows you to see and manage connected drives and partitions?",
-    a: "d",
-    options: [
-      "Device Manager",
-      "Task Manager",
-      "Disk Cleanup",
-      "Disk Management"
-    ]
-  },
-  {
-    q: "25. What is the function of the Recycle Bin in Windows?",
-    a: "a",
-    options: [
-      "Stores deleted files temporarily",
-      "Formats drives",
-      "Saves backup copies",
-      "Deletes files permanently"
-    ]
-  },
-  {
-    q: "26. What happens when you press Shift + Delete on a file in Windows?",
-    a: "b",
-    options: [
-      "File is moved to Recycle Bin",
-      "File is permanently deleted",
-      "File is backed up",
-      "File is copied to another location"
-    ]
-  },
-  {
-    q: "27. What does right-clicking a file and choosing 'Send to > Compressed (zipped) folder' do?",
-    a: "d",
-    options: [
-      "Deletes the file",
-      "Copies the file to Desktop",
-      "Moves the file to Documents",
-      "Creates a zip file containing the original"
-    ]
-  },
-  {
-    q: "28. Which Windows utility helps in freeing up disk space by removing temporary files?",
-    a: "a",
-    options: [
-      "Disk Cleanup",
-      "Task Manager",
-      "Defragmenter",
-      "Resource Monitor"
-    ]
-  },
-  {
-    q: "29. What does pressing Windows + E open?",
-    a: "c",
-    options: [
-      "Edge Browser",
-      "Settings",
-      "File Explorer",
-      "Email"
-    ]
-  },
-  {
-    q: "30. How can you rename a selected file quickly using the keyboard?",
-    a: "b",
-    options: [
-      "F4",
-      "F2",
-      "Alt + R",
-      "Ctrl + R"
-    ]
-  },
-  {
-    q: "31. What is the default file manager in Windows?",
-    a: "a",
-    options: [
-      "File Explorer",
-      "My Computer",
-      "Finder",
-      "Document Manager"
-    ]
-  },
-  {
-    q: "32. What is the shortcut to open the Run dialog in Windows?",
-    a: "c",
-    options: [
-      "Ctrl + R",
-      "Alt + R",
-      "Windows + R",
-      "Shift + R"
-    ]
-  },
-  {
-    q: "33. Which command in Run dialog opens the Command Prompt?",
-    a: "d",
-    options: [
-      "prompt",
-      "cmd.exe",
-      "terminal",
-      "cmd"
-    ]
-  },
-  {
-    q: "34. What does the shortcut Alt + Tab do in Windows?",
-    a: "a",
-    options: [
-      "Switches between open windows",
-      "Opens Task Manager",
-      "Minimizes all windows",
-      "Closes current window"
-    ]
-  },
-  {
-    q: "35. What does pressing Ctrl + Z do in Windows Explorer?",
-    a: "b",
-    options: [
-      "Zoom in",
-      "Undo last action",
-      "Delete file",
-      "Redo last action"
-    ]
-  },
-  {
-    q: "36. How can you create a new folder using the keyboard in a file explorer window?",
-    a: "c",
-    options: [
-      "Ctrl + F",
-      "Ctrl + Shift + F",
-      "Ctrl + Shift + N",
-      "Alt + N"
-    ]
-  },
-  {
-    q: "37. Which file extension indicates a compressed file in Windows?",
-    a: "a",
-    options: [
-      ".zip",
-      ".docx",
-      ".exe",
-      ".txt"
-    ]
-  },
-  {
-    q: "38. What is the function of 'This PC' in Windows?",
-    a: "b",
-    options: [
-      "Shows only USB devices",
-      "Displays drives and common folders",
-      "Opens Settings",
-      "Launches Task Manager"
-    ]
-  },
-  {
-    q: "39. What does the shortcut Windows + D do?",
-    a: "d",
-    options: [
-      "Displays all files",
-      "Deletes selected file",
-      "Disables background apps",
-      "Shows desktop"
-    ]
-  },
-  {
-    q: "40. Which view mode in File Explorer displays file details like size and type?",
-    a: "c",
-    options: [
-      "Tiles",
-      "Large icons",
-      "Details",
-      "Content"
-    ]
-  },
+  
   
 
 
@@ -4264,12 +4110,18 @@ const questions = [
 
         questionHTML += `<button class='btn' onclick='nextTFQuestion()'>Next</button>`;
         quizDiv.innerHTML = questionHTML;
-    } else {
-        // الانتهاء من عرض كل الأسئلة
-        document.getElementById("passage").style.display = "none";
-        quizDiv.innerHTML = "<p>You've finished all reading questions.</p>";
-        loadQuestion(); // لو فيه مرحلة تانية
-    }
+    }  else {
+    // الانتهاء من عرض كل الأسئلة
+    document.getElementById("passage").style.display = "none";
+    quizDiv.innerHTML = `
+      <div style="text-align:center; padding:30px; font-family:Segoe UI, Arial, sans-serif;">
+        <h2 style="color:#28a745; font-size:28px;">🎉 Congratulations! You have completed all the tasks 🎉</h2>
+        <p style="font-size:20px; color:#555;">👏 Well done, you successfully finished the quiz.</p>
+        <div style="font-size:50px; margin-top:15px;">✅🌟🏆</div>
+      </div>
+    `;
+    loadQuestion(); // لو فيه مرحلة تانية
+}
 }
 
     
