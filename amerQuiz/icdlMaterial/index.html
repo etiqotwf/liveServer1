@@ -157,8 +157,7 @@ input[type="radio"] {
 </h1>
         <h2></h2>
 <p>Course Name: <input type="text" id="courseName" value="IcdlMaterial" readonly style="background-color: #f0f0f0; border: none;"></p>
-        <p>Enter Your Name: <input type="text" id="traineeName"></p>
-        <p>Enter Your Phone Number: <input type="text" id="traineePhone"></p>
+        
         <p>Enter Password: <input type="password" id="password"></p>
         <button class="btn" onclick="startQuiz()">Start Quiz</button>
     </div>
@@ -174,7 +173,7 @@ input[type="radio"] {
     <div style="display:inline-flex; align-items:center; border-radius:5px; overflow:hidden;">
         <input type="number" id="searchQuestion" placeholder="Enter Question Number" 
                style="padding:10px; width:200px; border:none; outline:none; font-size:16px;">
-        <button class="btn" style="margin:0; border-radius:0;" onclick="goToQuestion()">Go</button>
+        <button class="btn" style="margin:0; border-radius:0;" onclick="goToQuestion()">Go To Task</button>
     </div>
 </div>
 
@@ -274,7 +273,363 @@ function goToQuestion() {
         document.getElementById("date").innerText = new Date().toLocaleDateString("en-US");
     
     const trueFalseQuestions = [
+    
 
+
+      {
+  "passage": `
+<div style="margin-top: 40px; max-width: 1100px; margin-left:auto; margin-right:auto; font-family:'Segoe UI', Arial, sans-serif; line-height:1.7;">
+
+  <!-- Intro Passage -->
+  <div style="background:linear-gradient(135deg,#f7fbff,#ffffff); padding:28px; border:1px solid #dfefff; border-radius:16px; box-shadow:0 6px 18px rgba(0,0,0,0.08); margin-bottom:40px;">
+    <h2 style="color:#003b70; margin-bottom:14px;">📘 IT Applications – Review Quiz</h2>
+    <p style="color:#214b77; font-size:18px;">
+      This quiz is designed as a <strong>final review</strong> for intermediate IT learners.  
+      Each card focuses on one topic (Word, Excel, Access, PowerPoint, Windows, IT & Internet).  
+      Hover over a question to reveal the <strong>correct answer</strong>. 🎯
+    </p>
+  </div>
+
+  <!-- Cards Grid -->
+  <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(340px,1fr)); gap:28px;">
+
+    <!-- Word -->
+    <div class="task-card" style="--color:#0078d7;">
+      <h3>Task 1: Microsoft Word</h3>
+      <div class="questions">
+        <ol>
+          <li class="question">Which feature helps to create consistent headings?
+            <span class="answer">✅ Styles</span>
+          </li>
+          <li class="question">True/False: Word allows inserting tables and images.
+            <span class="answer">✅ True</span>
+          </li>
+          <li class="question">Fill in the blank: _______ is used to check spelling mistakes.
+            <span class="answer">✅ Spelling & Grammar Checker</span>
+          </li>
+          <li class="question">What is the shortcut for Copy?
+            <span class="answer">✅ Ctrl + C</span>
+          </li>
+          <li class="question">Define the function of "Track Changes".
+            <span class="answer">✅ Tracks edits and comments for review</span>
+          </li>
+          <li class="question">Which tab contains Page Layout options?
+            <span class="answer">✅ Layout tab</span>
+          </li>
+          <li class="question">True/False: You cannot insert SmartArt in Word.
+            <span class="answer">❌ False</span>
+          </li>
+          <li class="question">Complete: Header and Footer are placed at the _______ of the page.
+            <span class="answer">✅ Top and Bottom</span>
+          </li>
+          <li class="question">What is the benefit of using Styles in Word?
+            <span class="answer">✅ Consistency and easy formatting</span>
+          </li>
+          <li class="question">Which feature creates an automatic list of contents?
+            <span class="answer">✅ Table of Contents</span>
+          </li>
+        </ol>
+      </div>
+    </div>
+
+    <!-- Excel -->
+    <div class="task-card" style="--color:#00b294;">
+      <h3>Task 2: Microsoft Excel</h3>
+      <div class="questions">
+        <ol>
+          <li class="question">Which function calculates the average of numbers?
+            <span class="answer">✅ AVERAGE()</span>
+          </li>
+          <li class="question">True/False: The formula =SUM(A1:A5) adds values from A1 to A5.
+            <span class="answer">✅ True</span>
+          </li>
+          <li class="question">Fill in the blank: _______ function returns the highest value.
+            <span class="answer">✅ MAX()</span>
+          </li>
+          <li class="question">What is the shortcut to create a new workbook?
+            <span class="answer">✅ Ctrl + N</span>
+          </li>
+          <li class="question">Explain the purpose of cell referencing.
+            <span class="answer">✅ To reuse values and build dynamic formulas</span>
+          </li>
+          <li class="question">Which chart is best for showing trends over time?
+            <span class="answer">✅ Line Chart</span>
+          </li>
+          <li class="question">True/False: Conditional Formatting highlights cells based on rules.
+            <span class="answer">✅ True</span>
+          </li>
+          <li class="question">Fill in the blank: The _______ tab is used to insert charts.
+            <span class="answer">✅ Insert tab</span>
+          </li>
+          <li class="question">What is a PivotTable used for?
+            <span class="answer">✅ Summarizing and analyzing data</span>
+          </li>
+          <li class="question">Which symbol starts every formula in Excel?
+            <span class="answer">✅ =</span>
+          </li>
+        </ol>
+      </div>
+    </div>
+
+    <!-- Access -->
+    <div class="task-card" style="--color:#e81123;">
+      <h3>Task 3: Microsoft Access</h3>
+      <div class="questions">
+        <ol>
+          <li class="question">Why is a primary key important in a table?
+            <span class="answer">✅ To uniquely identify each record</span>
+          </li>
+          <li class="question">True/False: Queries can filter and sort data.
+            <span class="answer">✅ True</span>
+          </li>
+          <li class="question">Fill in the blank: _______ are used to enter data into tables.
+            <span class="answer">✅ Forms</span>
+          </li>
+          <li class="question">What is the purpose of relationships between tables?
+            <span class="answer">✅ To connect related data across tables</span>
+          </li>
+          <li class="question">Explain the difference between tables and queries.
+            <span class="answer">✅ Tables store data, queries extract data</span>
+          </li>
+          <li class="question">Which object is used to print well-formatted reports?
+            <span class="answer">✅ Reports</span>
+          </li>
+          <li class="question">True/False: Access cannot handle more than one table.
+            <span class="answer">❌ False</span>
+          </li>
+          <li class="question">Fill in the blank: A _______ field uniquely identifies each record.
+            <span class="answer">✅ Primary Key</span>
+          </li>
+          <li class="question">What is a query used for?
+            <span class="answer">✅ To filter, sort, and calculate data</span>
+          </li>
+          <li class="question">Which data type is best for storing names?
+            <span class="answer">✅ Text</span>
+          </li>
+        </ol>
+      </div>
+    </div>
+
+    <!-- PowerPoint -->
+    <div class="task-card" style="--color:#ffb900;">
+      <h3>Task 4: Microsoft PowerPoint</h3>
+      <div class="questions">
+        <ol>
+          <li class="question">Which feature controls how slides move between each other?
+            <span class="answer">✅ Transitions</span>
+          </li>
+          <li class="question">True/False: Animations can be applied to text and pictures.
+            <span class="answer">✅ True</span>
+          </li>
+          <li class="question">Fill in the blank: _______ view shows all slides in thumbnails.
+            <span class="answer">✅ Slide Sorter View</span>
+          </li>
+          <li class="question">What is the shortcut to start a slideshow?
+            <span class="answer">✅ F5</span>
+          </li>
+          <li class="question">Explain the use of slide master.
+            <span class="answer">✅ Controls global slide design and layout</span>
+          </li>
+          <li class="question">Which file extension is used for PowerPoint presentations?
+            <span class="answer">✅ .pptx</span>
+          </li>
+          <li class="question">True/False: Themes help keep design consistent.
+            <span class="answer">✅ True</span>
+          </li>
+          <li class="question">Fill in the blank: _______ are notes for the presenter only.
+            <span class="answer">✅ Speaker Notes</span>
+          </li>
+          <li class="question">What is the difference between transitions and animations?
+            <span class="answer">✅ Transitions = slide-to-slide, Animations = object effects</span>
+          </li>
+          <li class="question">Which tab allows you to insert pictures and shapes?
+            <span class="answer">✅ Insert tab</span>
+          </li>
+        </ol>
+      </div>
+    </div>
+
+    <!-- Windows -->
+    <div class="task-card" style="--color:#605e5c;">
+      <h3>Task 5: Windows</h3>
+      <div class="questions">
+        <ol>
+          <li class="question">Which shortcut creates a new folder?
+            <span class="answer">✅ Ctrl + Shift + N</span>
+          </li>
+          <li class="question">True/False: Ctrl+C copies a file.
+            <span class="answer">✅ True</span>
+          </li>
+          <li class="question">Fill in the blank: _______ + Tab switches between programs.
+            <span class="answer">✅ Alt + Tab</span>
+          </li>
+          <li class="question">What is the purpose of the Recycle Bin?
+            <span class="answer">✅ Stores deleted files temporarily</span>
+          </li>
+          <li class="question">Explain how to rename a file.
+            <span class="answer">✅ Right-click → Rename OR press F2</span>
+          </li>
+          <li class="question">Which menu contains shutdown and restart options?
+            <span class="answer">✅ Start Menu</span>
+          </li>
+          <li class="question">True/False: Windows Explorer is used for file management.
+            <span class="answer">✅ True</span>
+          </li>
+          <li class="question">Fill in the blank: The _______ bar shows open applications.
+            <span class="answer">✅ Taskbar</span>
+          </li>
+          <li class="question">What is the shortcut for selecting all items?
+            <span class="answer">✅ Ctrl + A</span>
+          </li>
+          <li class="question">Which feature helps search for files quickly?
+            <span class="answer">✅ Windows Search</span>
+          </li>
+        </ol>
+      </div>
+    </div>
+
+    <!-- IT -->
+    <div class="task-card" style="--color:#107c10;">
+      <h3>Task 6: IT</h3>
+      <div class="questions">
+        <ol>
+          <li class="question">What does IT stand for?
+            <span class="answer">✅ Information Technology</span>
+          </li>
+          <li class="question">True/False: Hardware refers to physical components.
+            <span class="answer">✅ True</span>
+          </li>
+          <li class="question">Fill in the blank: _______ is the brain of the computer.
+            <span class="answer">✅ CPU</span>
+          </li>
+          <li class="question">What is the difference between RAM and ROM?
+            <span class="answer">✅ RAM = temporary memory, ROM = permanent storage</span>
+          </li>
+          <li class="question">Explain the function of an operating system.
+            <span class="answer">✅ Manages hardware and software resources</span>
+          </li>
+          <li class="question">Which device is an input device?
+            <span class="answer">✅ Keyboard</span>
+          </li>
+          <li class="question">True/False: Software includes programs and applications.
+            <span class="answer">✅ True</span>
+          </li>
+          <li class="question">Fill in the blank: _______ memory is temporary and volatile.
+            <span class="answer">✅ RAM</span>
+          </li>
+          <li class="question">What is the role of antivirus software?
+            <span class="answer">✅ Protects against malware and threats</span>
+          </li>
+          <li class="question">Which port is commonly used for internet connection?
+            <span class="answer">✅ Ethernet / RJ45</span>
+          </li>
+        </ol>
+      </div>
+    </div>
+
+    <!-- Internet -->
+    <div class="task-card" style="--color:#0099cc;">
+      <h3>Task 7: Internet</h3>
+      <div class="questions">
+        <ol>
+          <li class="question">What does URL stand for?
+            <span class="answer">✅ Uniform Resource Locator</span>
+          </li>
+          <li class="question">True/False: HTTP is more secure than HTTPS.
+            <span class="answer">❌ False (HTTPS is more secure)</span>
+          </li>
+          <li class="question">Fill in the blank: _______ is used to find information online.
+            <span class="answer">✅ Search Engine</span>
+          </li>
+          <li class="question">What is the purpose of a web browser?
+            <span class="answer">✅ To access and view web pages</span>
+          </li>
+          <li class="question">Explain the use of bookmarks.
+            <span class="answer">✅ Save and organize favorite websites</span>
+          </li>
+          <li class="question">Which search engine is most popular worldwide?
+            <span class="answer">✅ Google</span>
+          </li>
+          <li class="question">True/False: Email is a service of the internet.
+            <span class="answer">✅ True</span>
+          </li>
+          <li class="question">Fill in the blank: _______ protects your computer from online threats.
+            <span class="answer">✅ Firewall</span>
+          </li>
+          <li class="question">What is the difference between upload and download?
+            <span class="answer">✅ Upload = send files, Download = receive files</span>
+          </li>
+          <li class="question">Which protocol is used to transfer files over the internet?
+            <span class="answer">✅ FTP</span>
+          </li>
+        </ol>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<style>
+.task-card {
+  background:#ffffff;
+  border-left:8px solid var(--color);
+  border-radius:16px;
+  padding:22px;
+  box-shadow:0 8px 26px rgba(0,0,0,0.07);
+  transition: transform 0.28s, box-shadow 0.28s;
+}
+.task-card h3 {
+  color:var(--color);
+  font-size:20px;
+  margin-bottom:12px;
+}
+.task-card:hover {
+  transform: translateY(-8px) scale(1.01);
+  box-shadow:0 22px 50px rgba(0,0,0,0.15);
+}
+.questions ol {
+  padding-left: 20px;
+  margin: 0;
+}
+.questions li {
+  margin-bottom: 14px;
+  font-size: 16px;
+  color:#333;
+  position: relative;
+  cursor: pointer;
+}
+.answer {
+  display: none;
+  margin-top: 6px;
+  font-size: 15px;
+  color: #107c10;
+  background:#f0fff4;
+  padding:6px 10px;
+  border-radius:6px;
+  border:1px solid #cce5cc;
+  animation: fadeIn 0.3s ease-in-out;
+}
+.question:hover .answer {
+  display: inline-block;
+}
+@keyframes fadeIn {
+  from {opacity:0; transform:translateY(-5px);}
+  to {opacity:1; transform:translateY(0);}
+}
+</style>
+`,
+
+
+"q": "Which complete workflow is most suitable for intermediate IT learners to practice using Word, Excel, Access, PowerPoint, Windows, IT, and Internet together?",
+"a": "b",
+"options": [
+  "Practice each program randomly without connection",
+  "Write a report in Word → Calculate grades in Excel → Build a student database in Access → Create a presentation in PowerPoint → Organize files in Windows → Apply IT concepts → Search resources on the Internet",
+  "Just open applications without creating any project",
+  "Shut down the computer after opening one program"
+]
+
+},
 
 
 
@@ -4023,21 +4378,9 @@ const questions = [
         let startTime;
     
         function startQuiz() {
-    let name = document.getElementById("traineeName").value.trim();
-    let phone = document.getElementById("traineePhone").value.trim();
     let password = document.getElementById("password").value;
     let course = document.getElementById("courseName").value.trim(); // 🆕 قراءة اسم الكورس
     let quizTitle = document.getElementById("quizTitle"); // 🆕 العنوان اللي هيتغير
-
-    if (!name) {
-        alert("❗ برجاء إدخال الاسم.");
-        return;
-    }
-
-    if (!phone) {
-        alert("❗ برجاء إدخال رقم التليفون.");
-        return;
-    }
 
     if (password !== "1550") {
         alert("❌ كلمة المرور غير صحيحة! الرجاء المحاولة مرة أخرى.");
@@ -4065,7 +4408,6 @@ const questions = [
         elem.msRequestFullscreen();
     }
 }
-
 
 
     
