@@ -151,16 +151,89 @@ input[type="radio"] {
 
 
 
-    <div class="container" id="startScreen">
-        <h1>📘 𝒯𝒽𝑒 𝐵𝓇𝒾𝓉𝒾𝓈𝒽 𝐼𝓃𝓉𝑒𝓇𝓃𝒶𝓉𝒾𝑜𝓃𝒶𝓁 𝐿𝑒𝒶𝓇𝓃𝒾𝓃𝑔 𝒞𝑒𝓃𝓉𝑒𝓇 (𝐼𝐿𝐶)
+    <div class="container" id="startScreen" 
+     style="max-width: 550px; margin: 60px auto; padding: 45px; 
+            background: #ffffff; border-radius: 25px; 
+            box-shadow: 0 14px 35px rgba(0,0,0,0.2); 
+            text-align: center; font-family: 'Segoe UI', sans-serif; 
+            animation: zoomFade 1.2s ease; position: relative; overflow:hidden;">
 
-</h1>
-        <h2></h2>
-<p>Course Name: <input type="text" id="courseName" value="IcdlMaterial" readonly style="background-color: #f0f0f0; border: none;"></p>
-        
-        <p>Enter Password: <input type="password" id="password"></p>
-        <button class="btn" onclick="startQuiz()">Start Quiz</button>
-    </div>
+  <!-- Floating Emoji Animation -->
+  <div class="floating-emojis" id="emojiBox">🤖</div>
+
+  <h1 style="font-size: 28px; color:#1e3c72; margin-bottom: 25px; line-height:1.5;">
+    📘 The British International Learning Center (ILC)
+  </h1>
+
+  <p style="font-size:18px; color:#333; text-align:left; margin:18px 0 10px;">
+    📦 Course Name:
+  </p>
+  <input type="text" id="courseName" value="IcdlMaterial" 
+         readonly 
+         style="width:100%; padding:18px; border:none; 
+                border-radius:16px; background:#f0f0f0; font-size:17px;">
+
+  <p style="font-size:18px; color:#333; text-align:left; margin:25px 0 10px;">
+    🔑 Enter Password:
+  </p>
+  <input type="password" id="password" placeholder="Enter your password here"
+         style="width:100%; padding:18px; border:1px solid #ccc; 
+                border-radius:16px; font-size:17px; transition:0.3s;">
+  
+  <button class="btn" onclick="startQuiz()"
+          style="margin-top:35px; width:100%; padding:18px; border:none; 
+                 border-radius:50px; font-size:18px; font-weight:bold; 
+                 background:linear-gradient(135deg,#1e3c72,#2a5298); 
+                 color:#fff; cursor:pointer; transition:0.3s;">
+    🚀 Start Quiz
+  </button>
+
+  <p style="margin-top:35px; font-size:15px; color:#777; font-style:italic;">
+    ✍️ Edited by Ahmed Amer
+  </p>
+</div>
+
+<style>
+@keyframes zoomFade {
+  from {opacity: 0; transform: scale(0.9);}
+  to {opacity: 1; transform: scale(1);}
+}
+
+.floating-emojis {
+  position: absolute;
+  top: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 36px;
+  animation: floatUp 6s infinite linear;
+  opacity: 0.9;
+}
+
+@keyframes floatUp {
+  0%   { transform: translateX(-50%) translateY(120%); opacity: 0; }
+  20%  { opacity: 1; }
+  50%  { transform: translateX(-50%) translateY(40%); opacity: 0.95; }
+  80%  { opacity: 1; }
+  100% { transform: translateX(-50%) translateY(-120%); opacity: 0; }
+}
+
+.btn:hover {
+  box-shadow: 0 0 15px rgba(30,60,114,0.4);
+  transform: translateY(-3px);
+}
+</style>
+
+<script>
+  // Array of AI-related emojis
+  const emojis = ["🤖"];
+  const emojiBox = document.getElementById("emojiBox");
+
+  setInterval(() => {
+    const randomEmoji = emojis[Math.floor(Math.random() * emojis.length)];
+    emojiBox.textContent = randomEmoji;
+  }, 2000); // change every 2 seconds
+</script>
+
 
     <div class="container" id="quizContainer" style="display: none;">
         <h2 id="quizTitle">Placement Test</h2>
