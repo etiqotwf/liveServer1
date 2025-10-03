@@ -235,7 +235,7 @@
   document.addEventListener("DOMContentLoaded", function () {
     // 🗂️ الدورات وتواريخها
     const courseData = {
-      " Ms Excel     ": { start: "2025-09-28", end: "2025-10-2" },
+      "  amer": { start: "2025-10-5", end: "2025-10-5" },
 
     };
 
@@ -284,6 +284,111 @@
         endSelect.disabled = true;
       }
     });
+  });
+</script>
+
+
+<script>
+  // 🗄️ IndexedDB Setup
+  let db;
+  const request = indexedDB.open("myNewDB", 1); // 👈 اسم جديد للداتا بيز
+
+  request.onupgradeneeded = function (event) {
+    db = event.target.result;
+    if (!db.objectStoreNames.contains("records")) { // 👈 اسم جديد للمستودع
+      db.createObjectStore("records", { keyPath: "id", autoIncrement: true });
+    }
+  };
+
+  request.onsuccess = function (event) {
+    db = event.target.result;
+    console.log("✅ IndexedDB جاهز");
+  };
+
+  request.onerror = function () {
+    console.error("❌ خطأ في IndexedDB");
+  };
+
+  // 📝 حفظ البيانات أوفلاين فقط
+  function saveOffline(formData) {
+    const transaction = db.transaction(["records"], "readwrite"); // 👈 اسم المستودع الجديد
+    const store = transaction.objectStore("records");
+    store.add(formData);
+    console.log("💾 اتحفظ أوفلاين:", formData);
+  }
+
+  // ☁️ محاولة إرسال للـ Google Sheet
+  function sendToGoogleSheets(formData, callback) {
+    fetch("https://script.google.com/macros/s/AKfycbw5P1p8vgWYf40hBzsSSUhK8ykZWdumWd5GAUuRbsyl5ur8-qyS4_4xoYhCiFQ2PL7UuQ/exec", {
+      method: "POST",
+      body: new URLSearchParams(formData)
+    })
+    .then(res => res.text())
+    .then(txt => {
+      console.log("رد السيرفر:", txt);
+      if (txt.includes("success") || txt.includes("تم")) {
+        if (callback) callback(true);
+      } else {
+        if (callback) callback(false);
+      }
+    })
+    .catch(() => {
+      if (callback) callback(false);
+    });
+  }
+
+  // 🔄 مزامنة كل السجلات مع إعادة المحاولة
+  function syncPendingData() {
+    const transaction = db.transaction(["records"], "readwrite"); // 👈 نفس التغيير
+    const store = transaction.objectStore("records");
+    const getAll = store.getAll();
+
+    getAll.onsuccess = function () {
+      const items = getAll.result;
+      if (items.length === 0) {
+        console.log("✅ مفيش سجلات معلقة");
+        return;
+      }
+
+      let pending = items.length;
+      items.forEach(item => {
+        sendToGoogleSheets(item, function (success) {
+          if (success) {
+            store.delete(item.id);
+            console.log("🗑️ اتحذف بعد المزامنة:", item);
+          } else {
+            console.warn("⚠️ فشل الإرسال، هنجرب تاني:", item);
+          }
+
+          pending--;
+          if (pending === 0) {
+            setTimeout(syncPendingData, 5000);
+          }
+        });
+      });
+    };
+  }
+
+  // تشغيل المزامنة عند رجوع الإنترنت
+  window.addEventListener("online", syncPendingData);
+
+  // 🎯 تعديل الفورم
+  document.addEventListener("DOMContentLoaded", function () {
+    const form = document.querySelector("form");
+
+    form.addEventListener("submit", function (e) {
+  if (!navigator.onLine) {
+    e.preventDefault();
+    const formData = Object.fromEntries(new FormData(form).entries());
+    saveOffline(formData);
+    form.reset();
+    alert("⚠️ مفيش إنترنت.. البيانات اتحفظت وهتتبعت تلقائي لما النت يرجع ✅");
+
+    // 🔄 عمل Refresh للصفحة عشان النموذج يبدأ من جديد
+    location.reload();
+  }
+});
+
   });
 </script>
 
@@ -346,15 +451,24 @@
   -webkit-text-fill-color: transparent;
   user-select: none;
 ">
-  <div class="logo-container">
-    <img src="logo.jpg" alt="الشعار" style="
-      width: 80px;
-      height: 80px;
-      border-radius: 50%;
-      object-fit: cover;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-    ">
+ <div class="logo-container" style="text-align: center; margin-bottom: 10px;">
+  <img src="logo.jpg" alt="الشعار" style="
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    object-fit: cover;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  ">
+  <div style="
+    margin-top: 8px;
+    font-size: 20px;
+    font-weight: bold;
+    color: #333;
+    font-family: Arial, sans-serif;
+  ">
+    Tanta (DTC)
   </div>
+
 </div>
 
 <!-- أيقونة التقييم 📝 -->
