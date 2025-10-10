@@ -122,35 +122,87 @@
   margin-bottom: 30px;
 ">
 
-  <!-- عبارة التصميم في أقصى اليسار -->
+  <!-- ✅ الصورة الدائرية + كلمة DTC -->
   <div style="
     position: absolute;
-    top: 10;
+    top: 10px;
     left: 25px;
-    font-size: 20px;
-    font-weight: 800;
-    background: linear-gradient(90deg, #ff00cc, #3333ff, #ff0000);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    user-select: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
   ">
 
-  
-         DTC
+    <!-- 🖼️ اللوجو الكبير -->
+    <img src="logo.jpg" alt="الشعار" style="
+      width: 120px; /* ✅ تم تكبير العرض */
+      height: 120px; /* ✅ تم تكبير الارتفاع */
+      border-radius: 50%;
+      object-fit: cover;
+      box-shadow: 0 6px 14px rgba(0,0,0,0.3);
+      transition: transform 0.4s ease, box-shadow 0.4s ease;
+    "
+    onmouseover="this.style.transform='scale(1.1)'; this.style.boxShadow='0 8px 20px rgba(0,0,0,0.35)'"
+    onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='0 6px 14px rgba(0,0,0,0.3)'"
+    >
 
-   
-  <!-- الصورة الدائرية في أعلى اليسار -->
-  <img src="logo.jpg" alt="الشعار" style="
-    top: 80;
-    width: 80px;
-    height: 80px;
-    border-radius: 50%;
-    object-fit: cover;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-  ">
-
+    <!-- 🌈 كلمة DTC أسفل اللوجو -->
+    <div style="
+      margin-top: 8px;
+      font-size: 26px; /* ✅ تم تكبير الخط */
+      font-weight: 900;
+      background: linear-gradient(90deg, #ff00cc, #3333ff, #ff0000);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      user-select: none;
+      letter-spacing: 1.5px;
+      text-shadow: 0 0 10px rgba(255,255,255,0.3);
+    ">
+      DTC TANTA
+    </div>
 
   </div>
+
+</div>
+
+<!-- ✍️ توقيع أنيق على يمين الواجهة بدون الإيموجي -->
+<div id="signature" style="
+  position: fixed;
+  bottom: 200px;
+  right: 100px;
+  font-family: 'Brush Script MT', 'Lucida Handwriting', cursive;
+  font-size: 36px;
+  font-weight: bold;
+  color: #ccc;
+  background: linear-gradient(90deg, #999, #ccc, #eee);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  letter-spacing: 2px;
+  user-select: none;
+  background-size: 200%;
+  animation: fadeInRight 2s ease-out, shimmer 5s infinite linear;
+  opacity: 0.5;
+  z-index: 9999;
+  pointer-events: none;
+  transition: opacity 1s ease;
+">
+  Ahmed Amer
+</div>
+
+<style>
+@keyframes fadeInRight {
+  0% { opacity: 0; transform: translateX(30px) scale(0.9); }
+  100% { opacity: 0.5; transform: translateX(0) scale(1); }
+}
+
+@keyframes shimmer {
+  0% { background-position: -200%; }
+  100% { background-position: 200%; }
+}
+</style>
+
+
+
+
 
   <!-- العناوين الرئيسية -->
   <h2>وزارة الموارد المائية والرى</h2>
@@ -160,10 +212,6 @@
   <h2>🔹 Trainees Database Management Form </h2>
 </div>
 
-<button id="toggleFormBtn" onclick="window.open('https://etiqotwf.github.io/liveServer1/', '_blank')">
-📝 فتح منظومة المتابعة والتقييم |  Monitoring and Evaluation System
-
-</button>
 
 
 
@@ -399,51 +447,123 @@
   }
 }
 </style>
+<div style="
+  text-align: center;
+  margin: 25px 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+  flex-wrap: wrap;
+  font-family: 'Cairo', sans-serif;
+">
 
-
-
-
-<div style="text-align:center; margin: 15px 0;">
-  <input 
-    type="text" 
-    id="searchInput" 
-    placeholder="ابحث بالاسم، الدورة، التاريخ، ..." 
-    style="
-      width: 320px; 
-      padding: 10px 15px; 
-      font-size: 20px; 
-      border: 1.5px solid #007BFF; 
-      border-radius: 5px 0 0 5px; 
-      outline: none;
-      transition: border-color 0.3s ease;
-    "
-    onfocus="this.style.borderColor='#0056b3'"
-    onblur="this.style.borderColor='#007BFF'"
-  >
-  <button 
-    onclick="searchTrainees()" 
-    style="
-      padding: 11px 20px; 
-      font-size: 16px; 
-      background-color: #007BFF; 
-      color: white; 
-      border: none; 
-      border-radius: 0 5px 5px 0; 
-      cursor: pointer;
-      box-shadow: 0 3px 6px rgba(0,0,0,0.16);
-      transition: background-color 0.3s ease;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      font-weight: 600;
-    "
-    onmouseover="this.style.backgroundColor='#0056b3'"
-    onmouseout="this.style.backgroundColor='#007BFF'"
-  >
-    🔍 بحث
-  </button>
-
+  <!-- 🗓️ البحث بالمدة (يمين) -->
+  <div style="display: flex; align-items: center; gap: 8px;">
+    <input 
+      type="date" 
+      id="fromDate" 
+      style="
+        padding: 12px 15px; 
+        font-size: 17px; 
+        border: 2px solid #0d6efd; 
+        border-radius: 10px; 
+        outline: none;
+        transition: all 0.3s ease;
+        box-shadow: 0 2px 8px rgba(13, 110, 253, 0.15);
+      "
+      onfocus="this.style.borderColor='#6610f2'; this.style.boxShadow='0 0 12px rgba(102,16,242,0.4)'"
+      onblur="this.style.borderColor='#0d6efd'; this.style.boxShadow='0 2px 8px rgba(13,110,253,0.15)'"
+    >
+    <span style="font-weight: bold; font-size: 18px;">🕓 إلى</span>
+    <input 
+      type="date" 
+      id="toDate" 
+      style="
+        padding: 12px 15px; 
+        font-size: 17px; 
+        border: 2px solid #0d6efd; 
+        border-radius: 10px; 
+        outline: none;
+        transition: all 0.3s ease;
+        box-shadow: 0 2px 8px rgba(13, 110, 253, 0.15);
+      "
+      onfocus="this.style.borderColor='#6610f2'; this.style.boxShadow='0 0 12px rgba(102,16,242,0.4)'"
+      onblur="this.style.borderColor='#0d6efd'; this.style.boxShadow='0 2px 8px rgba(13,110,253,0.15)'"
+    >
   </div>
+
+  <!-- 🔍 البحث الشامل -->
+  <div style="display: flex; align-items: center;">
+    <input 
+      type="text" 
+      id="searchInput" 
+      placeholder="ابحث بالاسم، الدورة، التاريخ، ..." 
+      style="
+        width: 340px; 
+        padding: 13px 18px; 
+        font-size: 18px; 
+        border: 2px solid #0d6efd; 
+        border-radius: 10px 0 0 10px; 
+        outline: none;
+        transition: all 0.3s ease;
+        box-shadow: 0 2px 8px rgba(13, 110, 253, 0.15);
+      "
+      onfocus="this.style.borderColor='#6610f2'; this.style.boxShadow='0 0 12px rgba(102,16,242,0.4)'"
+      onblur="this.style.borderColor='#0d6efd'; this.style.boxShadow='0 2px 8px rgba(13,110,253,0.15)'"
+    >
+
+    <button 
+      onclick="searchTrainees()" 
+      style="
+        position: relative;
+        padding: 13px 25px; 
+        font-size: 18px; 
+        background: linear-gradient(135deg, #0d6efd, #6610f2);
+        color: white; 
+        border: none; 
+        border-radius: 0 10px 10px 0; 
+        cursor: pointer;
+        font-weight: 700;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        overflow: hidden;
+      "
+      onmouseover="this.style.transform='scale(1.08)'; this.style.boxShadow='0 8px 16px rgba(0,0,0,0.4)'"
+      onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='0 4px 10px rgba(0,0,0,0.3)'"
+    >
+      <span id='searchEmoji' style='font-size:22px; animation: bounce 1.2s infinite ease-in-out;'>🔎</span>
+      <span>بحث</span>
+      <span style="
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: rgba(255,255,255,0.15);
+        transform: skewX(-45deg);
+        animation: shine 3s infinite;
+      "></span>
+    </button>
+  </div>
+</div>
+
+<style>
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-4px); }
+}
+
+@keyframes shine {
+  0% { left: -100%; }
+  50% { left: 120%; }
+  100% { left: 120%; }
+}
+</style>
+
 
 
 
@@ -703,7 +823,7 @@
 <th>👤 الاسم</th>
 <th>📞 الهاتف</th>
 <th>📧 البريد الإلكتروني</th>
-<th>🏢 الإدارة</th>
+<th>🏢 الإدارة - الإقليم</th>
 <th>🎓 المؤهل</th>
 <th>💼 الوظيفة</th>
 <th>🏨 الإقامة</th>
@@ -1209,7 +1329,7 @@ function loadPhonesFromDB() {
 
 function confirmPassword() {
   const input = document.getElementById("passwordInput").value;
-  if (input === "12345") {
+  if (input === "1550") {
     const tx = db.transaction("trainees", "readwrite");
     tx.objectStore("trainees").clear().onsuccess = () => {
       alert("تم مسح البيانات.");
@@ -1474,8 +1594,31 @@ function extractDateRangeFromText(text) {
 
 
 function searchTrainees() {
+
+console.log("جارٍ تنفيذ البحث...");
+  
+  // ✅ إخفاء التوقيع عند الضغط على زر البحث
+  const signature = document.getElementById("signature");
+  if (signature) {
+    signature.style.opacity = "0";
+    setTimeout(() => signature.style.display = "none", 1000);
+  }
+
  const query = document.getElementById('searchInput').value.trim().toLowerCase();
   const range = extractDateRangeFromText(query);
+
+  // 🔍 إضافة حقول بحث بالمدة من واجهة المستخدم (في حالة إدخال مباشر من المستخدم)
+const fromInput = document.getElementById("fromDate") ? document.getElementById("fromDate").value : "";
+const toInput = document.getElementById("toDate") ? document.getElementById("toDate").value : "";
+
+let fromDate = fromInput ? new Date(fromInput) : (range ? range.from : null);
+let toDate = toInput ? new Date(toInput) : (range ? range.to : null);
+
+if (fromDate && toDate && fromDate > toDate) {
+  alert("⚠️ تاريخ البداية يجب أن يكون قبل تاريخ النهاية");
+  return;
+}
+
 
   // تحويل الشهور من العربي للإنجليزي داخل query
 const arabicToEnglishMonths = {
@@ -1572,11 +1715,8 @@ if (monthYearMatch) {
         const combined = Object.values(d).map(v => v ? String(v) : '').join(" ").toLowerCase();
 const recordDate = d.courseStart ? new Date(Date.parse(d.courseStart)) : null;
 const inRange =
-  (!range || (recordDate && recordDate >= range.from && recordDate <= range.to)) &&
+  (!fromDate || !toDate || (recordDate && recordDate >= fromDate && recordDate <= toDate)) &&
   (searchMonth === null || (recordDate && recordDate.getMonth() === searchMonth && recordDate.getFullYear() === searchYear));
-
-
-
 
         // تطبيع النصوص وإجراء البحث الدقيق بدون همزات
         const normalizedCombined = normalizeArabic(combined);
@@ -1750,81 +1890,57 @@ if (!normalizedQuery) {
         return { labels, data, colors };
       };
 
-      statsDiv.appendChild(createCard("عدد السجلات حسب السنة", "📅", stats.byYear, "rgba(76, 175, 80, 0.15)", "year"));
-// 🩵 كارت عدد المتدربين حسب الدورة وتاريخها مع خاصية البحث بالمدة
-const courseDateCard = createCard("عدد المتدربين حسب الدورة وتاريخها", "📘", stats.byCourseDate, "rgba(33, 150, 243, 0.15)", "courseDate");
+    // ✅ كارت عدد السجلات حسب السنة
+statsDiv.appendChild(createCard(
+  "عدد السجلات حسب السنة", 
+  "📅", 
+  stats.byYear, 
+  "rgba(76, 175, 80, 0.15)", 
+  "year"
+));
 
-// 🔍 إنشاء حقول البحث بالمدة داخل الكارت
-const filterDiv = document.createElement("div");
-filterDiv.style.marginTop = "8px";
-filterDiv.style.display = "flex";
-filterDiv.style.flexDirection = "column";
-filterDiv.style.alignItems = "center";
-filterDiv.style.gap = "6px";
-filterDiv.innerHTML = `
-  <label>بحث داخل الكارت بالمدة:</label>
-  <div style="display:flex;gap:4px;flex-wrap:wrap;justify-content:center;">
-    <input type="date" id="filterFrom" style="padding:4px;">
-    <input type="date" id="filterTo" style="padding:4px;">
-    <button id="filterBtn" style="padding:4px 8px; background-color:#003366; color:white; border:none; border-radius:4px;">بحث</button>
-  </div>
-`;
-
-courseDateCard.appendChild(filterDiv);
+// ✅ كارت عدد المتدربين حسب الدورة وتاريخها (بدون بحث بالمدة)
+const courseDateCard = createCard(
+  "عدد المتدربين حسب الدورة وتاريخها", 
+  "📘", 
+  stats.byCourseDate, 
+  "rgba(33, 150, 243, 0.15)", 
+  "courseDate"
+);
 statsDiv.appendChild(courseDateCard);
 
-// 🧮 ربط الزر بالفلترة داخل الكارت
-filterDiv.querySelector("#filterBtn").addEventListener("click", () => {
-  const from = new Date(filterDiv.querySelector("#filterFrom").value);
-  const to = new Date(filterDiv.querySelector("#filterTo").value);
+// ✅ باقي الكروت
+statsDiv.appendChild(createCard(
+  "عدد المتدربين حسب الشهر والسنة", 
+  "🗓️", 
+  stats.byMonthYear, 
+  "rgba(255, 152, 0, 0.15)", 
+  "monthYear"
+));
 
-  if (isNaN(from) || isNaN(to)) {
-    alert("الرجاء تحديد تاريخي البداية والنهاية بشكل صحيح");
-    return;
-  }
+statsDiv.appendChild(createCard(
+  "عدد المتدربين حسب الإدارة", 
+  "🏢", 
+  stats.byDepartment, 
+  "rgba(0, 150, 136, 0.15)", 
+  "department"
+));
 
-  // تصفية بيانات الكارت الأصلي حسب المدة
-  const filtered = {};
-  for (const [k, v] of Object.entries(stats.byCourseDate)) {
-    const match = k.match(/\((\d{2}\/\d{2}\/\d{4})\)/); // استخراج التاريخ داخل الأقواس
-    if (match) {
-      const date = new Date(match[1].split("/").reverse().join("-")); // تحويل من dd/mm/yyyy إلى yyyy-mm-dd
-      if (date >= from && date <= to) {
-        filtered[k] = v;
-      }
-    }
-  }
+statsDiv.appendChild(createCard(
+  "عدد المتدربين حسب الوظيفة", 
+  "💼", 
+  stats.byJob, 
+  "rgba(156, 39, 176, 0.15)", 
+  "job"
+));
 
-  // تحديث محتوى الكارت
-  const body = courseDateCard.querySelector("div:nth-child(2)");
-  body.textContent = Object.entries(filtered).map(([k, v]) => `${k}: ${v}`).join(" - ") || "لا توجد بيانات في هذه المدة";
-
-  // تحديث الرسم البياني
-  const chartId = "chart_courseDate";
-  const chartCanvas = document.getElementById(chartId);
-  const ctx = chartCanvas.getContext("2d");
-  const chartData = prepareChartData(filtered);
-  new Chart(ctx, {
-    type: "pie",
-    data: {
-      labels: chartData.labels,
-      datasets: [{
-        data: chartData.data,
-        backgroundColor: chartData.colors,
-        borderColor: "#fff",
-        borderWidth: 1,
-      }]
-    },
-    options: {
-      responsive: true,
-      plugins: { legend: { position: "bottom" } }
-    }
-  });
-});
-      statsDiv.appendChild(createCard("عدد المتدربين حسب الشهر والسنة", "🗓️", stats.byMonthYear, "rgba(255, 152, 0, 0.15)", "monthYear"));
-      statsDiv.appendChild(createCard("عدد المتدربين حسب الإدارة", "🏢", stats.byDepartment, "rgba(0, 150, 136, 0.15)", "department"));
-      statsDiv.appendChild(createCard("عدد المتدربين حسب الوظيفة", "💼", stats.byJob, "rgba(156, 39, 176, 0.15)", "job"));
-      statsDiv.appendChild(createCard("عدد المتدربين حسب الإقامة والنوع", "🏠", stats.byResidencyGender, "rgba(244, 67, 54, 0.15)", "residency"));
+statsDiv.appendChild(createCard(
+  "عدد المتدربين حسب الإقامة والنوع", 
+  "🏠", 
+  stats.byResidencyGender, 
+  "rgba(244, 67, 54, 0.15)", 
+  "residency"
+));
 
       tableContainer.parentNode.insertBefore(statsDiv, tableContainer);
       tableContainer.style.display = 'block';
