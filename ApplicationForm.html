@@ -181,8 +181,7 @@ box-shadow: 0 0 10px rgba(255, 215, 0, 0.3), inset 0 0 8px rgba(255, 255, 200, 0
   background-clip: padding-box;
   letter-spacing: 1.5px;
   text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
-  background-image: linear-gradient(90deg, #b8860b, #ffd700, #fff8dc, #b8860b);
-  -webkit-background-clip: text;
+background-image: linear-gradient( 90deg, #b8860b 0%, /* ذهبى داكن */ #daa520 20%, /* لمعة ذهبية */ #ffd700 50%, /* ذهب مشع */ #fff8dc 75%, /* بيج فاتح */ #ffec8b 90%, /* لمعة ذهبية لامعة جدًا */ #b8860b 100% /* رجوع للذهبي الداكن */ ); box-shadow: 0 0 20px rgba(255, 215, 0, 0.6), 0 0 40px rgba(255, 223, 0, 0.4); border: 2px solid #b8860b; color: #4b2e05; font-weight: 800;  -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-size: 400%;
   animation: fadeInRight 2s ease-out, shimmer 25s infinite linear;
@@ -1248,7 +1247,7 @@ function loadPhonesFromDB() {
   d.name || "",             // 👤 الاسم
   d.phone || "",            // 📞 الهاتف
   d.email || "",            // 📧 البريد الإلكتروني
-  d.department || "",       // 🏢 الإدارة
+d.department ? `${d.department}${regionsMap[d.department] ? " - " + regionsMap[d.department] : ""}` : "",
   d.qualification || "",    // 🎓 المؤهل
   d.job || "",              // 💼 الوظيفة
   d.residency || "",        // 🏨 الإقامة
@@ -1355,6 +1354,20 @@ function closePasswordModal() {
 
   function toggleAllTrainees() {
   const traineesTable = document.getElementById("traineesTable");
+
+
+  // ✳️ تعديل الإدارات داخل الجدول لإضافة الإقليم قبل الطباعة
+const rows = traineesTable.querySelectorAll("tbody tr");
+rows.forEach(row => {
+  const deptCell = row.cells[4]; // العمود الخامس عادة هو عمود "الإدارة"
+  if (deptCell && deptCell.textContent.trim()) {
+    const deptName = deptCell.textContent.trim();
+    if (regionsMap[deptName]) {
+      deptCell.textContent = `${deptName} - ${regionsMap[deptName]}`;
+    }
+  }
+});
+
 
   // إنشاء عنصر مؤقت لنسخ المحتوى
   const tempDiv = document.createElement('div');
@@ -1599,6 +1612,43 @@ function extractDateRangeFromText(text) {
 
 
 
+// 🗂️ خريطة الإدارات والأقاليم
+const regionsMap = {
+  // 🔹 إقليم صرف وسط الدلتا
+  "الإدارة العامة لصرف كفر الشيخ": "إقليم صرف وسط الدلتا",
+  "الإدارة العامة لصرف الغربية": "إقليم صرف وسط الدلتا",
+  "الإدارة العامة لصرف المنوفية": "إقليم صرف وسط الدلتا",
+  "الإدارة العامة لصرف البحيرة": "إقليم صرف وسط الدلتا",
+  "الإدارة العامة لصرف الدقهلية": "إقليم صرف وسط الدلتا",
+  "الإدارة العامة لصرف الشرقية": "إقليم صرف وسط الدلتا",
+  "الإدارة العامة لصرف وسط الدلتا": "إقليم صرف وسط الدلتا",
+
+  // 🔹 إقليم صرف غرب الدلتا
+  "الإدارة العامة لصرف شمال البحيرة": "إقليم صرف غرب الدلتا",
+  "الإدارة العامة لصرف جنوب شرق البحيرة": "إقليم صرف غرب الدلتا",
+  "الإدارة العامة لصرف غرب البحيرة": "إقليم صرف غرب الدلتا",
+  "الإدارة العامة لصرف النصر": "إقليم صرف غرب الدلتا",
+  "الإدارة العامة لصرف النوبارية": "إقليم صرف غرب الدلتا",
+
+  // 🔹 إقليم صرف القناة وسيناء
+  "الإدارة العامة لصرف الإسماعيلية": "إقليم صرف القناة وسيناء",
+  "الإدارة العامة لصرف بورسعيد": "إقليم صرف القناة وسيناء",
+  "الإدارة العامة لصرف السويس": "إقليم صرف القناة وسيناء",
+
+  // 🔹 إقليم صرف شرق الدلتا
+  "الإدارة العامة لمشروعات شرق الدلتا": "إقليم صرف شرق الدلتا",
+  "الإدارة العامة لصرف شمال الشرقية": "إقليم صرف شرق الدلتا",
+  "الإدارة العامة لصرف جنوب الشرقية": "إقليم صرف شرق الدلتا",
+  "الإدارة العامة للمعدات والمصانع الشرقية": "إقليم صرف شرق الدلتا",
+  "الإدارة العامة لصرف جنوب الدقهلية": "إقليم صرف شرق الدلتا",
+  "الإدارة العامة لصرف وسط الدقهلية": "إقليم صرف شرق الدلتا",
+  "الإدارة العامة لصرف شمال الدقهلية": "إقليم صرف شرق الدلتا",
+  "الإدارة العامة لصرف القليوبية": "إقليم صرف شرق الدلتا"
+};
+
+
+
+
 function searchTrainees() {
 
 console.log("جارٍ تنفيذ البحث...");
@@ -1717,6 +1767,96 @@ if (monthYearMatch) {
       if (oldStats) oldStats.remove();
 
       allRecords.forEach(({ key, value: d }) => {
+
+if (d.department) {
+  const originalDept = d.department.trim();
+  const deptNorm = normalizeArabic(originalDept);
+  let detectedRegion = "";
+
+  // 🧮 دالة حساب التشابه (Levenshtein)
+  function levenshteinDistance(a, b) {
+    const matrix = Array.from({ length: a.length + 1 }, (_, i) =>
+      Array.from({ length: b.length + 1 }, (_, j) => (i === 0 ? j : j === 0 ? i : 0))
+    );
+    for (let i = 1; i <= a.length; i++) {
+      for (let j = 1; j <= b.length; j++) {
+        const cost = a[i - 1] === b[j - 1] ? 0 : 1;
+        matrix[i][j] = Math.min(
+          matrix[i - 1][j] + 1,
+          matrix[i][j - 1] + 1,
+          matrix[i - 1][j - 1] + cost
+        );
+      }
+    }
+    return matrix[a.length][b.length];
+  }
+
+  function similarity(a, b) {
+    const dist = levenshteinDistance(a, b);
+    const maxLen = Math.max(a.length, b.length);
+    return 1 - dist / maxLen;
+  }
+
+  // 🗺️ خريطة الكلمات المفتاحية
+  const regionKeywords = {
+    "إقليم صرف وسط الدلتا": [
+      "طنطا", "كفر الشيخ", "كفرالشيخ", "الغربية", "المنوفية", "المنوفيه", "البحيرة",
+      "الدقهلية", "الشرقية", "زفتى", "كفر الزيات", "زفتي", "وسط الدلتا",
+      "مركز تدريب الصرف", "مصنع مواسير زفتى", "مخازن كفر الزيات"
+    ],
+    "إقليم صرف غرب الدلتا": [
+      "غرب الدلتا", "غرب البحيرة", "شمال البحيرة", "جنوب شرق البحيرة",
+      "النصر", "النوبارية", "دمنهور", "مشروعات صرف غرب الدلتا"
+    ],
+    "إقليم صرف شرق الدلتا": [
+      "دمياط", "بطلخا", "فاقوس", "الزقازيق", "القليوبية", "الشرقية",
+      "المنصورة", "شرق الدلتا", "صرف دمياط بطلخا", "ادارة دمياط بطلخا"
+    ],
+    "إقليم صرف القناة وسيناء": [
+      "الاسماعيلية", "الإسماعيلية", "بورسعيد", "السويس",
+      "سيناء", "القنطرة", "التل الكبير", "فايد", "القناة"
+    ],
+    "إقليم صرف الجيزة": [
+      "الجيزة", "جنوب الجيزة", "مشروعات صرف الجيزة"
+    ]
+  };
+
+  const deptTokens = deptNorm.split(/\s+/).filter(Boolean);
+
+  // 🔍 نبحث بتشابه 0.7 أو أكثر
+  for (const [region, keywords] of Object.entries(regionKeywords)) {
+    for (const kw of keywords) {
+      const kwNorm = normalizeArabic(kw);
+      for (const token of deptTokens) {
+        const sim = similarity(token, kwNorm);
+        if (deptNorm.includes(kwNorm) || sim >= 0.7) {
+          detectedRegion = region;
+          break;
+        }
+      }
+      if (detectedRegion) break;
+    }
+    if (detectedRegion) break;
+  }
+
+  // ⚙️ معالجة خاصة لمركز التدريب أو مصنع المواسير بدون موقع
+  if (!detectedRegion) {
+    const hasFactory = deptNorm.includes("مصنع مواسير");
+    const hasTrainingCenter = deptNorm.includes("مركز تدريب الصرف");
+    if ((hasFactory || hasTrainingCenter) && !deptNorm.match(/(طنطا|زفتى|كفر|الزيات|الجيزه|دمياط|البحيره|الاسماعيلية)/)) {
+      detectedRegion = "إقليم صرف وسط الدلتا";
+    }
+  }
+
+  // ✅ الإضافة النهائية: لون أحمر فاتح ثقيل فقط
+  if (detectedRegion && !originalDept.includes(detectedRegion)) {
+    d.department = `${originalDept} - <span style="color: #ff1a1a; font-weight: 800;">${detectedRegion}</span>`;
+  } else if (!detectedRegion) {
+    console.warn("⚠️ لم يتم التعرف على الإقليم لهذا القسم:", originalDept);
+  }
+}
+
+
         // بناء النص الموحد بأمان (تجنب undefined)
         const combined = Object.values(d).map(v => v ? String(v) : '').join(" ").toLowerCase();
 const recordDate = d.courseStart ? new Date(Date.parse(d.courseStart)) : null;
@@ -1767,7 +1907,17 @@ if (!normalizedQuery) {
           const monthYear = recordDate ? recordDate.toLocaleString("en-GB", { month: "long", year: "numeric" }) : "بدون تاريخ";
           stats.byMonthYear[monthYear] = (stats.byMonthYear[monthYear] || 0) + 1;
 
-          stats.byDepartment[d.department || "غير محددة"] = (stats.byDepartment[d.department || "غير محددة"] || 0) + 1;
+// 🧹 تنظيف اسم الإدارة من أي أكواد HTML قبل إضافتها في الإحصائيات
+const cleanDept = d.department ? d.department.replace(/<[^>]*>/g, '').trim() : "غير محددة";
+// 🔁 بدل البحث في الإدارة، نبحث في الإقليم
+let regionOnly = "";
+const regionMatch = d.department.match(/<span[^>]*>([^<]+)<\/span>|-?\s*([^<]+إقليم\s+صرف[^\s<]*)/i);
+if (regionMatch) {
+  regionOnly = regionMatch[1] || regionMatch[2] || "غير محدد";
+} else {
+  regionOnly = "غير محدد";
+}
+stats.byDepartment[regionOnly.trim()] = (stats.byDepartment[regionOnly.trim()] || 0) + 1;
           stats.byJob[d.job || "غير محددة"] = (stats.byJob[d.job || "غير محددة"] || 0) + 1;
 
           let residencyLabel = "غير مقيم/ة";
@@ -1785,16 +1935,22 @@ if (!normalizedQuery) {
           const row = document.createElement("tr");
           const fields = ["datetime","name","phone","email","department","qualification","job","residency","course","courseStart","courseEnd","trainerRating","contentRating","organizationRating","residencyRating","comments"];
 
-          fields.forEach(field => {
-            const cell = document.createElement("td");
-            if (["datetime", "courseStart", "courseEnd"].includes(field)) {
-              const rawDate = d[field];
-              cell.textContent = rawDate
-                ? new Date(rawDate).toLocaleDateString("en-GB", { year: "numeric", month: "long", day: "numeric" })
-                : "";
-            } else {
-              cell.textContent = d[field] || "";
-            }
+         fields.forEach(field => {
+  const cell = document.createElement("td");
+  if (["datetime", "courseStart", "courseEnd"].includes(field)) {
+    const rawDate = d[field];
+    cell.textContent = rawDate
+      ? new Date(rawDate).toLocaleDateString("en-GB", { year: "numeric", month: "long", day: "numeric" })
+      : "";
+  } else if (field === "department") {
+    // 👇 عرض الإقليم باللون الأحمر كـ HTML
+    cell.innerHTML = d[field] || "";
+  } else {
+    cell.textContent = d[field] || "";
+  }
+
+
+  
             cell.contentEditable = "true";
             cell.dataset.key = key;
             cell.dataset.field = field;
@@ -1925,7 +2081,7 @@ statsDiv.appendChild(createCard(
 ));
 
 statsDiv.appendChild(createCard(
-  "عدد المتدربين حسب الإدارة", 
+  "عدد المتدربين حسب الاقليم", 
   "🏢", 
   stats.byDepartment, 
   "rgba(0, 150, 136, 0.15)", 
