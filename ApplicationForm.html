@@ -1214,61 +1214,106 @@ function loadPhonesFromDB() {
   function exportToExcel() {
   const tx = db.transaction("trainees", "readonly");
   const store = tx.objectStore("trainees");
-  // أضفت رموز (icons) بسيطة بجانب العناوين
- const headers = [
-  "🕒 تاريخ ووقت التسجيل",
-  "👤 الاسم",
-  "📞 الهاتف",
-  "📧 البريد الإلكتروني",
-  "🏢 الإدارة",
-  "🎓 المؤهل",
-  "💼 الوظيفة",
-  "🏨 الإقامة",
-  "📘 اسم الدورة",
-  "📅 بداية الدورة",
-  "📅 نهاية الدورة",
-  "🧑‍🏫 تقييم المدرب",
-  "📘 تقييم المحتوى",
-  "🛠️ تقييم التنظيم",
-  "🏨 تقييم الإقامة",
-  "📝 ملاحظات"
-];
 
+  const headers = [
+    "🕒 تاريخ ووقت التسجيل",
+    "👤 الاسم",
+    "📞 الهاتف",
+    "📧 البريد الإلكتروني",
+    "🏢 الإدارة",
+    "🎓 المؤهل",
+    "💼 الوظيفة",
+    "🏨 الإقامة",
+    "📘 اسم الدورة",
+    "📅 بداية الدورة",
+    "📅 نهاية الدورة",
+    "🧑‍🏫 تقييم المدرب",
+    "📘 تقييم المحتوى",
+    "🛠️ تقييم التنظيم",
+    "🏨 تقييم الإقامة",
+    "📝 ملاحظات"
+  ];
 
   const rows = [headers];
   const allData = [];
+
+  // 🧹 دالة تطبيع النص العربي
+  function normalizeArabic(text) {
+    if (!text) return "";
+    return String(text)
+      .replace(/[أإآا]/g, "ا")
+      .replace(/ى/g, "ي")
+      .replace(/ؤ/g, "و")
+      .replace(/ئ/g, "ي")
+      .replace(/ة/g, "ه")
+      .toLowerCase();
+  }
 
   store.openCursor().onsuccess = function (e) {
     const cursor = e.target.result;
     if (cursor) {
       const d = cursor.value;
-    allData.push([
-  d.datetime || "",         // 📅 والوقت
-  d.name || "",             // 👤 الاسم
-  d.phone || "",            // 📞 الهاتف
-  d.email || "",            // 📧 البريد الإلكتروني
-d.department ? `${d.department}${regionsMap[d.department] ? " - " + regionsMap[d.department] : ""}` : "",
-  d.qualification || "",    // 🎓 المؤهل
-  d.job || "",              // 💼 الوظيفة
-  d.residency || "",        // 🏨 الإقامة
-  d.course || "",           // 📘 اسم الدورة
-  d.courseStart || "",      // 📅 بداية الدورة
-  d.courseEnd || "",        // 📅 نهاية الدورة
-  d.trainerRating || "",    // 🧑‍🏫 تقييم المدرب
-  d.contentRating || "",    // 📘 تقييم المحتوى
-  d.organizationRating || "", // 🛠️ تقييم التنظيم
-  d.residencyRating || "",  // 🏨 تقييم الإقامة
-  d.comments || ""          // 📝 ملاحظات
-]);
 
+      // 👇 إضافة الإقليم بجانب الإدارة
+      if (d.department) {
+        const originalDept = d.department.trim();
+        const deptNorm = normalizeArabic(originalDept);
+        let detectedRegion = "";
+
+        const regionKeywords = {
+          "إقليم صرف وسط الدلتا": ["طنطا","كفر الشيخ","الغربية","المنوفية","البحيرة","الدقهلية","الشرقية","زفتى","كفر الزيات","وسط الدلتا","مركز تدريب الصرف","مصنع مواسير زفتى"],
+          "إقليم صرف غرب الدلتا": ["غرب الدلتا","غرب البحيرة","شمال البحيرة","جنوب شرق البحيرة","النصر","النوبارية","دمنهور","مشروعات صرف غرب الدلتا"],
+          "إقليم صرف شرق الدلتا": ["دمياط","بطلخا","فاقوس","الزقازيق","القليوبية","الشرقية","المنصورة","شرق الدلتا","صرف دمياط بطلخا","ادارة دمياط بطلخا"],
+          "إقليم صرف القناة وسيناء": ["الاسماعيلية","الإسماعيلية","بورسعيد","السويس","سيناء","القنطرة","التل الكبير","فايد","القناة"],
+          "إقليم صرف الجيزة": ["الجيزة","جنوب الجيزة","مشروعات صرف الجيزة"]
+        };
+
+        for (const [region, keywords] of Object.entries(regionKeywords)) {
+          for (const kw of keywords) {
+            const kwNorm = normalizeArabic(kw);
+            if (deptNorm.includes(kwNorm)) {
+              detectedRegion = region;
+              break;
+            }
+          }
+          if (detectedRegion) break;
+        }
+
+        if (!detectedRegion) {
+          if (deptNorm.includes("مصنع مواسير") || deptNorm.includes("مركز تدريب الصرف")) {
+            detectedRegion = "إقليم صرف وسط الدلتا";
+          }
+        }
+
+        d.department = detectedRegion ? `${originalDept} - ${detectedRegion}` : originalDept;
+      }
+
+      // 📝 إضافة الصفوف
+      allData.push([
+        d.datetime || "",
+        d.name || "",
+        d.phone || "",
+        d.email || "",
+        d.department || "",
+        d.qualification || "",
+        d.job || "",
+        d.residency || "",
+        d.course || "",
+        d.courseStart || "",
+        d.courseEnd || "",
+        d.trainerRating || "",
+        d.contentRating || "",
+        d.organizationRating || "",
+        d.residencyRating || "",
+        d.comments || ""
+      ]);
 
       cursor.continue();
     } else {
       const data = [...rows, ...allData];
-
       const ws = XLSX.utils.aoa_to_sheet(data);
 
-      // إعدادات الخط وحجمه (16) مع تنسيقات الجدول
+      // إعدادات الخط والحجم والحدود
       const headerStyle = {
         font: { bold: true, sz: 16, color: { rgb: "FFFFFF" } },
         fill: { fgColor: { rgb: "4F81BD" } },
@@ -1302,13 +1347,11 @@ d.department ? `${d.department}${regionsMap[d.department] ? " - " + regionsMap[d
         }
       }
 
-      // ضبط عرض الأعمدة تلقائياً حسب المحتوى مع حد أدنى 12 وحد أقصى 40
+      // ضبط عرض الأعمدة تلقائيًا
       const colWidths = data[0].map((col, i) => {
         let maxLen = col.length;
         allData.forEach(row => {
-          if (row[i] && row[i].length > maxLen) {
-            maxLen = row[i].length;
-          }
+          if (row[i] && row[i].length > maxLen) maxLen = row[i].length;
         });
         return { wch: Math.min(Math.max(maxLen + 4, 12), 40) };
       });
@@ -1316,7 +1359,6 @@ d.department ? `${d.department}${regionsMap[d.department] ? " - " + regionsMap[d
 
       const wb = XLSX.utils.book_new();
       XLSX.utils.book_append_sheet(wb, ws, "المتدربين");
-
       XLSX.writeFile(wb, "trainees.xlsx");
     }
   };
