@@ -570,7 +570,7 @@ const colors = [
   '#FFCDD2','#BBDEFB','#C8E6C9','#FFF9C4','#FFCCBC','#D1C4E9','#B2EBF2'
 ];
 
-let startDate = new Date(2025, 10, 2); // 2 نوفمبر 2025 (شهر 10 لأن العد يبدأ من صفر)
+let startDate = new Date(2025, 10, 9); // 2 نوفمبر 2025 (شهر 10 لأن العد يبدأ من صفر)
 
 const dayNames = ['Sunday','Monday','Tuesday','Wednesday','Thursday'];
 
@@ -664,7 +664,7 @@ document.getElementById("saveBtn").addEventListener("click", async ()=> {
       grouped[row.group].push(row.name);
     });
 
-    if(grouped[currentGroup] && grouped[currentGroup].length >= 10){
+    if(grouped[currentGroup] && grouped[currentGroup].length >= 12){
       alert(`⚠️ هذه المجموعة ${currentGroup} مكتملة، لا يمكن إضافة متدرب جديد`);
       modal.style.display="none";
       saveBtn.disabled = false;

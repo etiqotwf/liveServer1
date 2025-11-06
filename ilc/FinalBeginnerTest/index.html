@@ -205,26 +205,46 @@ overflow: hidden;
   user-select: none;
 ">
 
-<h1 style="color:#0056b3; font-size: 40px; margin-bottom: 20px;">
-  🤖 The British International Learning Center (ILC)
+<h1 style="color:#0056b3; font-size:35px; margin-bottom: 20px;">
+  🌍 The International British Institute   🌍
 </h1>
-<h2 style="font-size: 26px; color:#444; margin-bottom: 30px;">
-  ✨ AI-Powered Training Portal ✨
-</h2>
 
-<!-- Course Name (ثابت) -->
-<p style="font-size: 20px;">
-  📘 Course Name: 
-  <input type="text" id="courseName" value="FinalBeginnerTest" readonly 
-    style="font-size: 25px; padding:12px; width:60%; border:none; border-radius:8px; background:#f0f0f0; text-align:center;">
-</p>
+
+<!-- Course Name (في المنتصف وعلى سطر واحد) -->
+<div style="
+  display: flex;
+  justify-content: left;
+  align-items: center;
+  gap: 15px;
+  margin: 20px 0;
+">
+  <label for="courseName" style="
+    font-size: 22px;
+    font-weight: bold;
+    color:#0056b3;
+    white-space: nowrap;
+  ">
+    📘 Course Name:
+  </label>
+
+  <input type="text" id="courseName" value="Final(A1)Test" readonly 
+    style="
+      font-size: 25px;
+      padding:12px;
+      width:60%;
+      border:none;
+      border-radius:10px;
+      background:#f0f0f0;
+      text-align:center;
+      color:#000;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    ">
+</div>
+
 
 <!-- Enter Your Name -->
 <p style="font-size: 20px;">
-  <span style="
-    color: #0056b3;
-    font-weight: bold;
-  ">
+  <span style="color: #0056b3; font-weight: bold;">
     👤 Enter Your Name:
   </span>
   <input type="text" id="traineeName" placeholder="Type your name..." 
@@ -233,22 +253,25 @@ overflow: hidden;
 
 <!-- Enter Your Phone Number -->
 <p style="font-size: 20px;">
-  <span style="
-    color: #0056b3;
-    font-weight: bold;
-  ">
+  <span style="color: #0056b3; font-weight: bold;">
     📱 Enter Your Phone Number:
   </span>
   <input type="text" id="traineePhone" placeholder="Type your phone number..." 
     style="font-size:18px; padding:12px; width:60%; border:1px solid #ccc; border-radius:8px; text-align:center; color:#000;">
 </p>
 
+<!-- Enter Trainee Code -->
+<p style="font-size: 20px;">
+  <span style="color: #0056b3; font-weight: bold;">
+    🧾 Enter Your Code:
+  </span>
+  <input type="text" id="traineeCode" placeholder="Enter your code..." 
+    style="font-size:18px; padding:12px; width:60%; border:1px solid #ccc; border-radius:8px; text-align:center; color:#000;">
+</p>
+
 <!-- Enter Password -->
 <p style="font-size: 20px;">
-  <span style="
-    color: #0056b3;
-    font-weight: bold;
-  ">
+  <span style="color: #0056b3; font-weight: bold;">
     🔑 Enter Password:
   </span>
   <input type="password" id="password" placeholder="Enter password..." 
@@ -256,26 +279,31 @@ overflow: hidden;
 </p>
 
 <!-- زر Start Quiz مع تأثير لامع -->
-<button class="btn" onclick="startQuiz()" style="
-  margin-top: 25px; 
-  font-size: 22px; 
-  padding: 15px 40px; 
-  border:none; 
-  border-radius:12px; 
-  background: linear-gradient(270deg, #ff0055, #ff5500, #ff00ff, #007bff, #00d4ff);
-  background-size: 1000% 1000%;
-  color:white; 
-  cursor:pointer; 
-  box-shadow:0 8px 20px rgba(0,0,0,0.3);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  animation: gradientMove 4s ease infinite, glowPulse 2s infinite;
-" onmouseover="this.style.transform='scale(1.1)'" 
-   onmouseout="this.style.transform='scale(1)'">
-  <span class="emoji" style="display:inline-block; margin-right:10px; animation: bounce 1s infinite;">🚀</span>
-  Start Quiz
-</button>
+<!-- زر Start Quiz بعد تقليل المسافة -->
+<div style="text-align: center; margin-top: 10px;">
+  <button class="btn" onclick="startQuiz()" style="
+    font-size: 22px; 
+    padding: 15px 50px; 
+    border:none; 
+    border-radius:12px; 
+    background: linear-gradient(270deg, #ff0055, #ff5500, #ff00ff, #007bff, #00d4ff);
+    background-size: 1000% 1000%;
+    color:white; 
+    cursor:pointer; 
+    box-shadow:0 8px 20px rgba(0,0,0,0.3);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    animation: gradientMove 4s ease infinite, glowPulse 2s infinite;
+    transition: transform 0.2s;
+    margin-top: 5px; /* ✅ تم تقليل المسافة بين الزر والباسورد */
+  " onmouseover="this.style.transform='scale(1.1)'" 
+     onmouseout="this.style.transform='scale(1)'">
+    <span class="emoji" style="display:inline-block; margin-right:10px; animation: bounce 1s infinite;">🚀</span>
+    Start Quiz
+  </button>
+</div>
+
 
 <p style="margin-top: 40px; font-size: 18px; color: gray;">
   ✍️ Edited by: Ahmed Amer
@@ -350,7 +378,7 @@ stopEmojiRain();
   <!-- شاشة الأسئلة -->
   <div class="container" id="quizContainer">
     <h2 id="quizTitle">Placement Test</h2>
-    <p class="author">📘 The British International Learning Center (ILC)</p>
+    <p class="author"> 🌍 The International British Institute  🌍 
     <p>Date: <span id="date"></span></p>
      <!-- Emoji Sticky Animation -->
  <div id="emoji-character" style="
@@ -407,6 +435,12 @@ overflow: hidden;
 <p style="font-size: 28px; margin: 12px 0;">
   📱 <strong>Phone Number:</strong> <span id="resultPhone"></span>
 </p>
+
+<p style="font-size: 28px; margin: 12px 0;">
+  🆔 <strong>Code:</strong> <span id="resultCode"></span>
+</p>
+
+
 <p style="font-size: 28px; margin: 12px 0;">
   📅 <strong>Test Date:</strong> <span id="resultDate"></span>
 </p>
@@ -417,10 +451,14 @@ overflow: hidden;
   ⏱️ <strong>Time Taken:</strong> <span id="resultTime"></span>
 </p>
 
-<!-- Score و Rating -->
-<p style="font-size: 30px; font-weight: bold; color: #ffd700; margin-top: 25px;">
-  🏆 Score: <span id="resultScore"></span> - Rating: <span id="resultRating"></span>
+<!-- Score & Rating (السكور مخفي لكن موجود عشان الكود ما يقعش) -->
+<p style="font-size: 32px; font-weight: bold; color: #ffd700; margin-top: 25px;">
+  <span id="resultScore" style="display:none;"></span>
+  🏆 Grade: <span id="resultRating"></span>
 </p>
+
+
+
 
 <a href="https://docs.google.com/forms/d/e/1FAIpQLSdO8aYvcG_LM3mYIdLPWDdh2p88VGIYab8XBJFWFsKTWOvLcw/viewform" target="_blank" style="
   display:block;
@@ -491,7 +529,8 @@ function calculateRating(score, maxScore) {
   if (score === undefined || maxScore === undefined) return "غير محدد ❓";
 
   // التقديرات حسب طلب المدرس
-  if (score >= 0 && score < 20) return "Good 🙂";
+  if (score >= 0 && score < 10) return "Pass ✅";
+  else if (score >= 10 && score < 20) return "Good 🙂";
   else if (score >= 20 && score < 30) return "Very Good 👍";
   else if (score >= 30 && score <= maxScore) return "Excellent 🌟";
   else return "غير محدد ❓";
@@ -660,6 +699,7 @@ const questions = [
         function startQuiz() {
     let name = document.getElementById("traineeName").value.trim();
     let phone = document.getElementById("traineePhone").value.trim();
+    let traineeCode = document.getElementById("traineeCode").value.trim(); // ✅ السطر الجديد هنا
     let password = document.getElementById("password").value;
     let course = document.getElementById("courseName").value.trim(); // 🆕 قراءة اسم الكورس
     let quizTitle = document.getElementById("quizTitle"); // 🆕 العنوان اللي هيتغير
@@ -674,13 +714,22 @@ const questions = [
         return;
     }
 
+    // ✅ التحقق من إدخال الكود
+    if (!traineeCode) {
+        alert("❗ برجاء إدخال الكود الخاص بك.");
+        return;
+    }
+
     if (password !== "1800") {
         alert("❌ كلمة المرور غير صحيحة! الرجاء المحاولة مرة أخرى.");
         return;
     }
 
     // 🆕 تغيير العنوان بناءً على اسم الكورس
-    quizTitle.textContent = course || "FinalBeginnerTest";
+    quizTitle.textContent = course || "Final(A1)Test";
+
+    // ✅ يمكنك حفظ الكود ضمن بيانات المتدرب لو محتاجه بعد كده
+    window.traineeData = { name, phone, traineeCode, course };
 
     document.getElementById("startScreen").style.display = "none";
     document.getElementById("quizContainer").style.display = "block";
@@ -700,8 +749,6 @@ const questions = [
         elem.msRequestFullscreen();
     }
 }
-
-
 
     
         function startTimer() {
@@ -846,6 +893,9 @@ function showResult() {
     // إيقاف المؤقت
     clearInterval(timerInterval);
 
+    // ✅ تحميل بيانات المتدرب من window (عشان ميظهرش undefined)
+    const traineeData = window.traineeData || {};
+
     // حساب الوقت المستغرق
     let endTime = new Date();
     let timeTaken = Math.floor((endTime - startTime) / 1000);
@@ -853,10 +903,11 @@ function showResult() {
     let secondsTaken = timeTaken % 60;
 
     // جمع بيانات المتدرب
-    let name = document.getElementById("traineeName").value || "Unknown";
-    let phone = document.getElementById("traineePhone").value || "Unknown";
+    let name = traineeData.name || document.getElementById("traineeName").value || "Unknown";
+    let phone = traineeData.phone || document.getElementById("traineePhone").value || "Unknown";
+    let traineeCode = traineeData.traineeCode || document.getElementById("traineeCode").value || "Unknown";
     let date = new Date().toLocaleDateString("en-US");
-    let course = document.getElementById("courseName").value || "Unknown";
+    let course = traineeData.course || document.getElementById("courseName").value || "Unknown";
 
     // حساب النتيجة
     let totalQuestions = trueFalseQuestions.length + questions.length;
@@ -864,10 +915,11 @@ function showResult() {
 
     // بيانات النتيجة
     let resultData = {
-        name: name,
-        phone: phone,
-        date: date,
-        course: course,
+        name,
+        phone,
+        traineeCode,
+        date,
+        course,
         startTime: startTime.toLocaleString("en-GB", {
             timeZone: "Africa/Cairo",
             year: "numeric",
@@ -901,6 +953,7 @@ function showResult() {
     document.getElementById("resultCourse").innerText = course;
     document.getElementById("resultName").innerText = name;
     document.getElementById("resultPhone").innerText = phone;
+    document.getElementById("resultCode").innerText = traineeCode; // ✅ الكود هيظهر صح دلوقتي
     document.getElementById("resultDate").innerText = date;
     document.getElementById("resultStartTime").innerText = startTime.toLocaleTimeString();
     document.getElementById("resultTime").innerText = `${minutesTaken} min ${secondsTaken} sec`;
@@ -912,7 +965,7 @@ function showResult() {
     // عنوان النتيجة والألعاب النارية
     const title = document.getElementById('resultTitle');
     const scorePercentage = totalCorrectAnswers / totalQuestions;
-    if(scorePercentage >= 0.6){
+    if(scorePercentage >= 0.20){
         title.innerText = "🎉 Congratulations! 🎉";
         launchFireworks();
     } else {
@@ -923,6 +976,7 @@ function showResult() {
     document.getElementById("quizContainer").style.display = "none";
     document.getElementById("resultScreen").style.display = "block";
 }
+
 
 // إرسال البيانات إلى السيرفر الأساسي
 function sendDataToServer(resultData) {
