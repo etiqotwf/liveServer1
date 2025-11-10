@@ -227,7 +227,7 @@ overflow: hidden;
     📘 Course Name:
   </label>
 
-  <input type="text" id="courseName" value="PlacementTest" readonly 
+  <input type="text" id="courseName" value="Final(A2)Test" readonly 
     style="
       font-size: 25px;
       padding:12px;
@@ -377,7 +377,7 @@ stopEmojiRain();
 
   <!-- شاشة الأسئلة -->
   <div class="container" id="quizContainer">
-    <h2 id="quizTitle">PlacementTest</h2>
+    <h2 id="quizTitle">Final(A2)Test</h2>
     <p class="author"> 🌍 The International British Institute  🌍 
     <p>Date: <span id="date"></span></p>
      <!-- Emoji Sticky Animation -->
@@ -586,362 +586,117 @@ function launchFireworks() {
    <script>
         document.getElementById("date").innerText = new Date().toLocaleDateString("en-US");
     
-        const trueFalseQuestions = [
-  {
-    passage: `Passage 1:<br>What are you doing today?<br><strong>BETTY CHAN:</strong> I usually stay home on Sundays and take it easy - read, clean the house, do stuff like that. But today I'm at the mall. I'm buying some things for my kids.`,
-    q: "Betty's --------------------- today.",
-    a: "a",
-    options: ["Shopping", "Reading", "Cleaning", "Resting"]
-  },
-  {
-    passage: `Passage 2:<br>What do you do?<br><strong>TONY PEREX:</strong> I'm a flight attendant with a major airline. Flying isn't dangerous, but it can be stressful. When I'm up in the air working, I always have something to do. I like it because I meet a lot of interesting people.`,
-    q: "Tony's job is -------------------.",
-    a: "a",
-    options: ["Busy", "Easy", "Relaxing", "Boring"]
-  },
-  {
-    passage: `Passage 3:<br><strong>A vacation postcard</strong><br>Dear Sal,<br>Greetings from France – it's so good to be back here again. We left the kids with their grandparents in Chicago, and we're biking across the French countryside by ourselves. We brought a tent and sleeping bags, so we can camp out if we want to, but we're really enjoying the small hotels we find along the way.<br>Love, Michael and Paula.`,
-    q: "Michael and Paula ----------------.",
-    a: "a",
-    options: [
-      "Have been to France before",
-      "Took their children with them",
-      "Are visiting their grandparents",
-      "Prefer to sleep outside"
-    ]
-  },
-  {
-    passage: `Passage 4:<br><strong>The "Zone"</strong><br>You're deeply involved in a task and can ignore everything around you – ringing telephones, your neighbor's TV, even your own hunger – and still do things in record time. This is similar to what athletes call the "Zone" – the power to concentrate so hard that you can ignore everything else. This ability can bring success in any field, but in athletics it can mean all the difference between winning and losing a game or event.`,
-    q: `In this reading, the "Zone" refers to a person's ----------------.`,
-    a: "a",
-    options: ["State of mind", "Neighborhood", "Physical condition", "Intelligence"]
-  },
-  {
-    passage: `Passage 4:<br><strong>The "Zone"</strong><br>You're deeply involved in a task and can ignore everything around you – ringing telephones, your neighbor's TV, even your own hunger – and still do things in record time. This is similar to what athletes call the "Zone" – the power to concentrate so hard that you can ignore everything else. This ability can bring success in any field, but in athletics it can mean all the difference between winning and losing a game or event.`,
-    q: `Athletes in the "Zone" are more likely to ----------------.`,
-    a: "c",
-    options: ["Fall", "Compete", "Win", "Relax"]
-  },
-  {
-    passage: `Passage 5:<br><strong>Henry Ford and the Model-T</strong><br>Henry Ford became famous and rich because he found a better, faster way to build cars. This is shown in the history of the Model-T. When the Model-T was first introduced in 1908, it took 14 hours to build and cost $850. After Ford introduced into his own factory the mass-production techniques that he saw in a meat-packing plant, the time for building a Model-T was reduced to less than two hours. As a result, Ford was able to drop the price of the car to $265. By 1927, he had sold over 15 million Model-Ts.`,
-    q: `The first Model–T was expensive because it ----------------.`,
-    a: "c",
-    options: [
-      "Was new",
-      "Was very popular",
-      "Took a long time to build",
-      "Was built in a factory"
-    ]
-  },
-  {
-    passage: `Passage 5:<br><strong>Henry Ford and the Model-T</strong><br>Henry Ford became famous and rich because he found a better, faster way to build cars. This is shown in the history of the Model-T. When the Model-T was first introduced in 1908, it took 14 hours to build and cost $850. After Ford introduced into his own factory the mass-production techniques that he saw in a meat-packing plant, the time for building a Model-T was reduced to less than two hours. As a result, Ford was able to drop the price of the car to $265. By 1927, he had sold over 15 million Model-Ts.`,
-    q: `The Model–T became so popular because it was -------- than other cars.`,
-    a: "d",
-    options: ["Newer", "Faster", "Better", "Cheaper"]
-  },
-
-  {
-    passage: `Passage 6:<br><strong>It's a Big Country!</strong><br>When it comes to body weight, Americans stand out. Most visitors to the United States, no matter where they go across this vast country, comment on the size of many Americans. In fact, these impressions are backed by numerous statistics. For example, the average 5'4" American weighs 162 pounds, or 15 pounds more than the average person of the same height from Western or Central Europe. Another comparison: At 150 pounds, the average 5'4" American woman is 24 pounds heavier than her Japanese counterpart.<br><br>Why are Americans so heavy? Some blame the American diet. Certainly it's true that Americans eat more high–fat foods – meat, dairy products, and processed food – and fewer grains and vegetables than people in other countries. But fat isn't the whole story. Lifestyle factors – including the tendency for Americans to drive rather than walk or ride a bicycle to work, to snack throughout the day, and to have so many labor-saving devices in the home – appear to contribute to the problem.`,
-    q: "According to the article, visitors to the United States often comment on the size of the ---",
-    a: "d",
-    options: ["Population", "Cities", "Country", "People"]
-  },
-  {
-    passage: `Passage 6:<br><strong>It's a Big Country!</strong><br>When it comes to body weight, Americans stand out. ... (same passage as above)`,
-    q: "According to the article, the average Western European weighs --------.",
-    a: "c",
-    options: [
-      "More than an American",
-      "More than a Central European",
-      "Less than an American",
-      "Less than a Japanese person"
-    ]
-  },
-  {
-    passage: `Passage 6:<br><strong>It's a Big Country!</strong><br>When it comes to body weight, Americans stand out. ... (same passage as above)`,
-    q: "In comparison with Americans, people in other countries eat more ----.",
-    a: "d",
-    options: ["Meat", "Dairy products", "Processed food", "Grains"]
-  },
-  {
-    passage: `Passage 6:<br><strong>It's a Big Country!</strong><br>When it comes to body weight, Americans stand out. ... (same passage as above)`,
-    q: "The article implies that Americans would lose weight if they --------.",
-    a: "b",
-    options: [
-      "Snacked more often",
-      "Rode bicycles to work",
-      "Stayed at home more",
-      "Ate fewer vegetables"
-    ]
-  },
-    {
-    passage: `Passage 7:<br><strong>Small talk isn't so "small"</strong><br>Small talk may not be about serious issues; nevertheless, researchers into the subject have concluded that it's important. That's because small talk keeps us connected to one another and can lead to bigger things, such as a job or a new friendship. Yet people who find themselves alone with another person often don't know what to say. Here are a few tips to help you start a conversation, and to keep the conversational bell rolling.<br><br>Start with the obvious. If you have something in common with another person (your job, hobbies, a person you both know, etc), begin with that. If you don't know the person, it's always acceptable to bring up a neutral topic such as the weather or a recent news event. It isn't necessary to be clever – all that's required is to show interest in the other person and to be willing to talk.<br><br>Compliment where appropriate. If the other person has done something you like or is wearing something attractive, it's always appropriate to compliment. But avoid talking about the specifics of a person's physical appearance (people can't usually change how they look) and keep your compliments short and to the point ("What a great tie!" or "You look great tonight!") and continue with another topic.<br><br>Talk about yourself – then return to your partner. It's perfectly ok to talk about your own interests for a while, but keep your conversation from becoming a monolog. It's only polite, for example, that after talking about your own children, you turn the conversation back to your partner by asking about his or her children.`,
-    q: "According to the article, the main function of small talk is to ---------.",
-    a: "c",
-    options: [
-      "Show our own importance",
-      "Get valuable information",
-      "Relate to other people",
-      "Talk about major issues"
-    ]
-  },
-  {
-    passage: `Passage 7:<br><strong>Small talk isn't so "small"</strong><br>...(same passage as above)...`,
-    q: `"Start with the obvious" means that you should talk about things that you --------.`,
-    a: "a",
-    options: [
-      "Have in common",
-      "Enjoy doing",
-      "Want to understand",
-      "Know everything about"
-    ]
-  },
-  {
-    passage: `Passage 7:<br><strong>Small talk isn't so "small"</strong><br>...(same passage as above)...`,
-    q: "You need to be careful when complimenting someone because most people --------.",
-    a: "b",
-    options: [
-      "Don't like compliments",
-      "Can't change how they look",
-      "Don't dress very well",
-      "Haven't done anything interesting"
-    ]
-  },
-  {
-  passage: `Passage 7:<br><strong>Small talk isn't so "small"</strong><br>
-Small talk may not be about serious issues; nevertheless, researchers into the subject have concluded that it's important. That's because small talk keeps us connected to one another and can lead to bigger things, such as a job or a new friendship. Yet people who find themselves alone with another person often don't know what to say. Here are a few tips to help you start a conversation, and to keep the conversational bell rolling.<br><br>
-Start with the obvious. If you have something in common with another person (your job, hobbies, a person you both know, etc), begin with that. If you don't know the person, it's always acceptable to bring up a neutral topic such as the weather or a recent news event. It isn't necessary to be clever – all that's required is to show interest in the other person and to be willing to talk.<br><br>
-Compliment where appropriate. If the other person has done something you like or is wearing something attractive, it's always appropriate to compliment. But avoid talking about the specifics of a person's physical appearance (people can't usually change how they look) and keep your compliments short and to the point ("What a great tie!" or "You look great tonight!") and continue with another topic.<br><br>
-Talk about yourself – then return to your partner. It's perfectly ok to talk about your own interests for a while, but keep your conversation from becoming a monolog. It's only polite, for example, that after talking about your own children, you turn the conversation back to your partner by asking about his or her children.`,
-  q: "You should avoid monologs because other people ---------------.",
-  a: "c",
-  options: [
-    "Have no interest in what you say.",
-    "Already know a lot about you.",
-    "Like to talk about themselves, too.",
-    "Prefer to discuss neutral subjects."
-  ]
-},
-{
-  passage: `Passage 8:<br><strong>Headaches</strong><br>
-Everyone has experienced headaches, but only recently have medical researchers begun to learn more specifically about the causes and possible treatments for different types of headache pain.<br><br>
-The most common type of headache is the simple tension headache. Tension headaches are usually mild and short-lasting and can result from various factors, such as stress caused by worry or noise. Tension headaches are caused by a tightening of the neck or back muscles, which slow the flow of blood and, therefore, oxygen to the brain. It is the lack of oxygen that causes the pain. Most headaches can be relieved by taking a mild analgesic such as aspirin. Analgesics expand the blood vessels and restore the normal flow of blood and oxygen to the brain.<br><br>
-A more serious type of headache is the migraine. Migraine headaches are often extremely painful and can last for hours or days. Like tension headaches, they can be the result of different factors, including stress, hormonal changes, and allergies. Unlike tension headaches, however, they are caused by an abnormal expansion or swelling (rather than a contraction) of the blood vessels within the head. Medicines that shrink swollen blood vessels can be used to treat migraine headaches.<br><br>
-A tiny minority of headaches can be linked to severe physical problems such as head injury or brain tumors. For these types of headaches, there are medicines to treat the symptoms, but there is no cure unless the underlying problem is removed.`,
-  q: "The main thesis of the article is -----------.",
-  a: "c",
-  options: [
-    "Tiny minority of people who have headaches",
-    "History of medical research into headaches",
-    "Causes and remedies for headaches",
-    "Physical problems caused by headaches"
-  ]
-},
-{
-  passage: `Passage 8:<br><strong>Headaches</strong><br>
-  Everyone has experienced headaches, but only recently have medical researchers begun to learn more specifically about the causes and possible treatments for different types of headache pain.<br>
-  The most common type of headache is the simple tension headache. Tension headaches are usually mild and short-lasting and can result from various factors, such as stress caused by worry or noise. Tension headaches are caused by a tightening of the neck or back muscles, which slow the flow of blood and, therefore, oxygen to the brain. It is the lack of oxygen that causes the pain. Most headaches can be relieved by taking a mild analgesic such as aspirin. Analgesics expand the blood vessels and restore the normal flow of blood and oxygen to the brain.<br>
-  A more serious type of headache is the migraine. Migraine headaches are often extremely painful and can last for hours or days. Like tension headaches, they can be the result of different factors, including stress, hormonal changes, and allergies. Unlike tension headaches, however, they are caused by an abnormal expansion or swelling (rather than a contraction) of the blood vessels within the head. Medicines that shrink swollen blood vessels can be used to treat migraine headaches.<br>
-  A tiny minority of headaches can be linked to severe physical problems such as head injury or brain tumors. For these types of headaches, there are medicines to treat the symptoms, but there is no cure unless the underlying problem is removed.`,
-  q: " A tension headache can result when-----------------.",
-  a: "c",
-  options: [
-    "The neck and back muscles relax",
-    "People get injured in an accident",
-    "The flow of blood is restricted",
-    "Too much oxygen goes to the brain"
-  ]
-},
-{
-  passage: "", // إعادة استخدام نفس الباساج السابق لذا نتركه فارغًا أو تكراره لو تحب
-  q: " Migraine headaches--------------.",
-  a: "c",
-  options: [
-    "Are the most common kind of headache?",
-    "Usually last only a few minutes",
-    "Can cause extreme pain",
-    "Have one main cause"
-  ]
-},
-{
-    passage: `Passage 8:<br><strong>Headaches</strong><br>Everyone has experienced headaches...`,
-    q: " Medicines for migraines ------------.",
-    a: "d",
-    options: [
-      "Relax the head and neck.",
-      "Generally relieve tension",
-      "Increase the flow of blood",
-      "Cause blood vessels to contract"
-    ]
-  },
-  {
-    passage: `Passage 8:<br><strong>Headaches</strong><br>Everyone has experienced headaches...`,
-    q: " Headaches caused by serious physical problems.",
-    a: "d",
-    options: [
-      "Can't be treated",
-      "Don't cause much pain",
-      "Have no symptoms",
-      "Are not very common"
-    ]
-  }
-
-];
-
-    
-const questions = [
-  {
-    q: "21. ---------- several good restaurants in our neighborhood.",
-    a: "c",
-    options: ["There", "They're", "There are", "Their"]
-  },
-  {
-    q: "22. The gas station is ------- Main Street.",
-    a: "a",
-    options: ["On", "At", "Next", "Close"]
-  },
-  {
-    q: "23. I can't swim very well. I can't ----.",
-    a: "b",
-    options: ["Too", "Either", "So", "Neither"]
-  },
-  {
-    q: "24. I enjoy ---------------- out two or three times a week.",
-    a: "b",
-    options: ["To eat", "Eating", "Eat", "I eat"]
-  },
-  {
-    q: "25. These days, -------------- women keep working after they get married.",
-    a: "a",
-    options: ["Most", "Most of", "Almost", "The most"]
-  },
-  {
-    q: "26. My new job is very --------------.",
-    a: "c",
-    options: ["Excitement", "Excited", "Exciting", "Excite"]
-  },
-  {
-    q: "27. After finishing college, I hope ---------- married.",
-    a: "d",
-    options: ["Get", "That get", "Getting", "To get"]
-  },
-  {
-    q: "28. Mt. Everest is ---- mountain in the world.",
-    a: "d",
-    options: ["The high", "High as", "Laughter than", "The highest"]
-  },
-  {
-    q: "29. Bob's never been bungee jumping, ---------------- he?",
-    a: "b",
-    options: ["Is", "Has", "Does", "Was"]
-  },
-  {
-    q: "30. I've run out of money. I wish I ------------ more.",
-    a: "c",
-    options: ["Am saving", "Have saved", "Had saved", "Will save"]
-  },
-  {
-    q: "31. Could you tell me where ---------------?",
-    a: "b",
-    options: ["Is the post office", "The post office is", "Is it the post office?", "It is the post office"]
-  },
-  {
-    q: "32. If I had known about the accident, I ----------- it to the police.",
-    a: "b",
-    options: ["Reported", "Would have reported", "Was reporting", "Have been reporting"]
-  },
-  {
-    q: "33. Yolanda --------------- part time for several years now.",
-    a: "a",
-    options: ["Has been working", "Is working", "Works", "Was working"]
-  },
-  {
-    q: "34. The Taj Mahal is really worth ------------.",
-    a: "b",
-    options: ["To see it", "Seeing", "You see it", "See"]
-  },
-  {
-    q: "35. If I went to live in a foreign country, ------------ my friends.",
-    a: "a",
-    options: ["I'd miss", "I'm missing", "I missed", "I miss"]
-  },
-  {
-    q: "36. Would you mind -------- the window?",
-    a: "b",
-    options: ["Open", "Opening", "To open", "I open"]
-  },
-  {
-    q: "37. I was interested ---------- the violin.",
-    a: "c",
-    options: ["To study", "Study", "In studying", "Studied"]
-  },
-  {
-    q: "38. Before a film is finished, it needs --------------.",
-    a: "c",
-    options: ["They edit it", "To edit", "To be edited", "Being edited"]
-  },
-  {
-    q: "39. By 2040, scientists -------- a cure for cancer.",
-    a: "b",
-    options: ["Had found", "Will have found", "Are finding", "Have been finding"]
-  },
-  {
-    q: "40. She must ------- about our appointment.",
-    a: "d",
-    options: ["Forget", "Be forgetting", "Forgot", "Have forgotten"]
-  },
-  {
-    q: "41. We're not used ----------- our own meals.",
-    a: "d",
-    options: ["Cook", "To cook", "Cooking", "To cooking"]
-  },
-  {
-    q: "42. Chicago, ---------- is nicknamed the Windy City, is the largest city in Illinois.",
-    a: "b",
-    options: ["It", "Which", "What", "That"]
-  },
-  {
-    q: "43. ------------------ John, I like to cook.",
-    a: "d",
-    options: ["Unless", "Except", "Instead", "Unlike"]
-  },
-  {
-    q: "44. Before -------------- breakfast, I usually take a shower.",
-    a: "c",
-    options: ["Eat", "To eat", "Eating", "That eat"]
-  },
-  {
-    q: "45. I'm taking a class -------------- learn more about my computer.",
-    a: "c",
-    options: ["So that", "In order", "In order to", "That"]
-  },
-  {
-    q: "46. For me, mathematics is ----------- difficult than biology.",
-    a: "a",
-    options: ["More", "The more", "Most", "The most"]
-  },
-  {
-    q: "47. I would rather ---------------- evening classes.",
-    a: "b",
-    options: ["Don't take", "Not take", "No taking", "Not taking"]
-  },
-  {
-    q: "48. I feel sick. I shouldn't -------------- too much.",
-    a: "c",
-    options: ["To eat", "Eaten", "Have eaten", "Eating"]
-  },
-  {
-    q: "49. Jim's boss demanded that he ------ to work earlier.",
-    a: "d",
-    options: ["Has come", "Coming", "Is come", "Come"]
-  },
-  {
-    q: "50. The earlier children learn to read, ---------- for their education.",
-    a: "c",
-    options: ["Good", "The good", "The better", "The best"]
-  }
-];
-
+    const trueFalseQuestions = [
+   {
+     passage: `Rodrigo Santoro<br>
+ Rodrigo Santoro was born in 1975 in Petropolis, near Rio de Janeiro, Brazil. As a child, he used to organize puppet performances during family vacations. When he was studying communications in college, he started acting in television soap operas, such as Olho no Olho in 1993 and Hilda Furacao in 1998.
+ After his success in soap opera, Santoro started acting in Brazilian films. His first big role was in Bicho de Sete Cabeças in 2001. The movie is about a young man who is wrongly kept in a mental hospital. For this role, he won the Best Actor Award at the Cartagena Film Festival. This success led to Hollywood. In 2003, Santoro acted in three movies: Charlie's Angels: Full Throttle, with Drew Barrymore; The Roman Spring of Mrs. Stone, with Helen Mirren, and Love Actually, with Hugh Grant. His performance as King Xerxes of Persia in the movie 300 was nominated as Best Villain at the MTV Movie Awards in 2007.
+ During this time, Santoro continued working in Brazil. In 2003, he starred in Carandiru, a film about a prison in São Paulo. He was nominated as Best Actor at the Prêmio Contigo Cinema for his performance in the 2007 film Não Por Acaso. More recently, he performed the role of President Raul Castro of Cuba in Che: part two (2008) and that of Oriol in There Be Dragons (2011).
+ With this heavy workload, Santoro balances his life in Rio de Janeiro by reading, listening to music, and meditating. He also loves sports. In 2008, he played soccer with such international stars as Louis Figo and Alan Shearer for Soccer Aid, a charity that raises money for the United Nations Children's Fund (UNICEF).`,
+     q: "Rodrigo Santoro studied acting in college.",
+     a: "False", // B
+     options: ["True", "False"]
+   },
+   {
+    passage: `Rodrigo Santoro<br>
+ Rodrigo Santoro was born in 1975 in Petropolis, near Rio de Janeiro, Brazil. As a child, he used to organize puppet performances during family vacations. When he was studying communications in college, he started acting in television soap operas, such as Olho no Olho in 1993 and Hilda Furacao in 1998.
+ After his success in soap opera, Santoro started acting in Brazilian films. His first big role was in Bicho de Sete Cabeças in 2001. The movie is about a young man who is wrongly kept in a mental hospital. For this role, he won the Best Actor Award at the Cartagena Film Festival. This success led to Hollywood. In 2003, Santoro acted in three movies: Charlie's Angels: Full Throttle, with Drew Barrymore; The Roman Spring of Mrs. Stone, with Helen Mirren, and Love Actually, with Hugh Grant. His performance as King Xerxes of Persia in the movie 300 was nominated as Best Villain at the MTV Movie Awards in 2007.
+ During this time, Santoro continued working in Brazil. In 2003, he starred in Carandiru, a film about a prison in São Paulo. He was nominated as Best Actor at the Prêmio Contigo Cinema for his performance in the 2007 film Não Por Acaso. More recently, he performed the role of President Raul Castro of Cuba in Che: part two (2008) and that of Oriol in There Be Dragons (2011).
+ With this heavy workload, Santoro balances his life in Rio de Janeiro by reading, listening to music, and meditating. He also loves sports. In 2008, he played soccer with such international stars as Louis Figo and Alan Shearer for Soccer Aid, a charity that raises money for the United Nations Children's Fund (UNICEF).`,
+     q: "He won an award for his role in Bicho de Sete Cabeças.",
+     a: "True", // A
+     options: ["True", "False"]
+   },
+   {
+    passage: `Rodrigo Santoro<br>
+ Rodrigo Santoro was born in 1975 in Petropolis, near Rio de Janeiro, Brazil. As a child, he used to organize puppet performances during family vacations. When he was studying communications in college, he started acting in television soap operas, such as Olho no Olho in 1993 and Hilda Furacao in 1998.
+ After his success in soap opera, Santoro started acting in Brazilian films. His first big role was in Bicho de Sete Cabeças in 2001. The movie is about a young man who is wrongly kept in a mental hospital. For this role, he won the Best Actor Award at the Cartagena Film Festival. This success led to Hollywood. In 2003, Santoro acted in three movies: Charlie's Angels: Full Throttle, with Drew Barrymore; The Roman Spring of Mrs. Stone, with Helen Mirren, and Love Actually, with Hugh Grant. His performance as King Xerxes of Persia in the movie 300 was nominated as Best Villain at the MTV Movie Awards in 2007.
+ During this time, Santoro continued working in Brazil. In 2003, he starred in Carandiru, a film about a prison in São Paulo. He was nominated as Best Actor at the Prêmio Contigo Cinema for his performance in the 2007 film Não Por Acaso. More recently, he performed the role of President Raul Castro of Cuba in Che: part two (2008) and that of Oriol in There Be Dragons (2011).
+ With this heavy workload, Santoro balances his life in Rio de Janeiro by reading, listening to music, and meditating. He also loves sports. In 2008, he played soccer with such international stars as Louis Figo and Alan Shearer for Soccer Aid, a charity that raises money for the United Nations Children's Fund (UNICEF).`,
+     q: "He worked in Brazil before he worked in Hollywood.",
+     a: "False", // B (لتوافق إجابة المدرس)
+     options: ["True", "False"]
+   },
+   {
+    passage: `Rodrigo Santoro<br>
+ Rodrigo Santoro was born in 1975 in Petropolis, near Rio de Janeiro, Brazil. As a child, he used to organize puppet performances during family vacations. When he was studying communications in college, he started acting in television soap operas, such as Olho no Olho in 1993 and Hilda Furacao in 1998.
+ After his success in soap opera, Santoro started acting in Brazilian films. His first big role was in Bicho de Sete Cabeças in 2001. The movie is about a young man who is wrongly kept in a mental hospital. For this role, he won the Best Actor Award at the Cartagena Film Festival. This success led to Hollywood. In 2003, Santoro acted in three movies: Charlie's Angels: Full Throttle, with Drew Barrymore; The Roman Spring of Mrs. Stone, with Helen Mirren, and Love Actually, with Hugh Grant. His performance as King Xerxes of Persia in the movie 300 was nominated as Best Villain at the MTV Movie Awards in 2007.
+ During this time, Santoro continued working in Brazil. In 2003, he starred in Carandiru, a film about a prison in São Paulo. He was nominated as Best Actor at the Prêmio Contigo Cinema for his performance in the 2007 film Não Por Acaso. More recently, he performed the role of President Raul Castro of Cuba in Che: part two (2008) and that of Oriol in There Be Dragons (2011).
+ With this heavy workload, Santoro balances his life in Rio de Janeiro by reading, listening to music, and meditating. He also loves sports. In 2008, he played soccer with such international stars as Louis Figo and Alan Shearer for Soccer Aid, a charity that raises money for the United Nations Children's Fund (UNICEF).`,
+     q: "He won an MTV Movie Award for the role of King Xerxes.",
+     a: "False", // B
+     options: ["True", "False"]
+   },
+   {
+    passage: `Rodrigo Santoro<br>
+ Rodrigo Santoro was born in 1975 in Petropolis, near Rio de Janeiro, Brazil. As a child, he used to organize puppet performances during family vacations. When he was studying communications in college, he started acting in television soap operas, such as Olho no Olho in 1993 and Hilda Furacao in 1998.
+ After his success in soap opera, Santoro started acting in Brazilian films. His first big role was in Bicho de Sete Cabeças in 2001. The movie is about a young man who is wrongly kept in a mental hospital. For this role, he won the Best Actor Award at the Cartagena Film Festival. This success led to Hollywood. In 2003, Santoro acted in three movies: Charlie's Angels: Full Throttle, with Drew Barrymore; The Roman Spring of Mrs. Stone, with Helen Mirren, and Love Actually, with Hugh Grant. His performance as King Xerxes of Persia in the movie 300 was nominated as Best Villain at the MTV Movie Awards in 2007.
+ During this time, Santoro continued working in Brazil. In 2003, he starred in Carandiru, a film about a prison in São Paulo. He was nominated as Best Actor at the Prêmio Contigo Cinema for his performance in the 2007 film Não Por Acaso. More recently, he performed the role of President Raul Castro of Cuba in Che: part two (2008) and that of Oriol in There Be Dragons (2011).
+ With this heavy workload, Santoro balances his life in Rio de Janeiro by reading, listening to music, and meditating. He also loves sports. In 2008, he played soccer with such international stars as Louis Figo and Alan Shearer for Soccer Aid, a charity that raises money for the United Nations Children's Fund (UNICEF).`,
+     q: "He always plays very similar roles.",
+     a: "True", // A
+     options: ["True", "False"]
+   },
+   {
+    passage: `Rodrigo Santoro<br>
+ Rodrigo Santoro was born in 1975 in Petropolis, near Rio de Janeiro, Brazil. As a child, he used to organize puppet performances during family vacations. When he was studying communications in college, he started acting in television soap operas, such as Olho no Olho in 1993 and Hilda Furacao in 1998.
+ After his success in soap opera, Santoro started acting in Brazilian films. His first big role was in Bicho de Sete Cabeças in 2001. The movie is about a young man who is wrongly kept in a mental hospital. For this role, he won the Best Actor Award at the Cartagena Film Festival. This success led to Hollywood. In 2003, Santoro acted in three movies: Charlie's Angels: Full Throttle, with Drew Barrymore; The Roman Spring of Mrs. Stone, with Helen Mirren, and Love Actually, with Hugh Grant. His performance as King Xerxes of Persia in the movie 300 was nominated as Best Villain at the MTV Movie Awards in 2007.
+ During this time, Santoro continued working in Brazil. In 2003, he starred in Carandiru, a film about a prison in São Paulo. He was nominated as Best Actor at the Prêmio Contigo Cinema for his performance in the 2007 film Não Por Acaso. More recently, he performed the role of President Raul Castro of Cuba in Che: part two (2008) and that of Oriol in There Be Dragons (2011).
+ With this heavy workload, Santoro balances his life in Rio de Janeiro by reading, listening to music, and meditating. He also loves sports. In 2008, he played soccer with such international stars as Louis Figo and Alan Shearer for Soccer Aid, a charity that raises money for the United Nations Children's Fund (UNICEF).`,
+     q: "He once played soccer for a children's charity.",
+     a: "False", // B
+     options: ["True", "False"]
+   }
+ ];
+ 
+     
+ const questions = [
+   { q: "7- Where was Rodrigo Santoro born?", a: "a", options: ["USA", "Brazil", "Argentina", "Spain"] }, // A
+   { q: "8- What year was Rodrigo Santoro born?", a: "a", options: ["1980", "1970", "1975", "1965"] }, // A
+   { q: "9- What did he do as a child?", a: "a", options: ["Organized puppet performances", "Played soccer professionally", "Acted in movies", "Sang in a band"] }, // A
+   { q: "10- Which course did he study in college?", a: "b", options: ["Medicine", "Engineering", "Law", "Communications"] }, // B
+   { q: "11- When did he act in Olho no Olho?", a: "b", options: ["1990", "1995", "1993", "1998"] }, // B
+   { q: "12- When did he act in Hilda Furacao?", a: "c", options: ["1993", "1990", "1995", "1998"] }, // C
+   { q: "13- Which movie gave him his first big role?", a: "a", options: ["Carandiru", "Bicho de Sete Cabeças", "Love Actually", "300"] }, // A
+   { q: "14- What award did he win for Bicho de Sete Cabeças?", a: "b", options: ["Best Actor at Cartagena Film Festival", "MTV Movie Award", "Oscar", "Golden Globe"] }, // B
+   { q: "15- Which Hollywood movies did he act in 2003?", a: "b", options: ["300, Carandiru, Love Actually", "Bicho de Sete Cabeças, Che: Part Two", "Charlie's Angels, The Roman Spring of Mrs. Stone, Love Actually", "Carandiru, Olho no Olho"] }, // B
+   { q: "16- Which role got him MTV Best Villain nomination?", a: "b", options: ["President Raul Castro", "Oriol", "King Xerxes in 300", "Himself in a soap opera"] }, // B
+   { q: "17- Which Brazilian movie did he star in 2003?", a: "a", options: ["Bicho de Sete Cabeças", "Carandiru", "Love Actually", "There Be Dragons"] }, // A
+   { q: "18- In Che: Part Two (2008), which character did he play?", a: "c", options: ["King Xerxes", "Hugh Grant", "President Raul Castro", "Oriol"] }, // C
+   { q: "19- In There Be Dragons (2011), which character did he play?", a: "a", options: ["King Xerxes", "President Raul Castro", "Hugh Grant", "Oriol"] }, // A
+   { q: "20- How does he balance his busy life in Rio?", a: "b", options: ["By traveling frequently", "Reading, listening to music, and meditating", "By acting nonstop", "By doing nothing"] }, // B
+   { q: "21- Which sport did he play for charity in 2008?", a: "c", options: ["Soccer", "Basketball", "Tennis", "Volleyball"] }, // C
+   { q: "22- Which charity benefits from Soccer Aid?", a: "c", options: ["Red Cross", "UNICEF USA", "UNICEF", "World Food Program"] }, // C
+   { q: "23- Which international stars did he play with for Soccer Aid?", a: "c", options: ["Louis Figo and Alan Shearer", "Drew Barrymore and Hugh Grant", "Helen Mirren and Hugh Grant", "Alan Shearer and Hugh Grant"] }, // C
+   { q: "24- What did he organize during family vacations as a child?", a: "a", options: ["Puppet performances", "Soccer games", "Cooking contests", "Music shows"] }, // A
+   { q: "25- In which soap opera did he act in 1998?", a: "b", options: ["Olho no Olho", "Carandiru", "Bicho de Sete Cabeças", "Hilda Furacao"] }, // B
+   { q: "26- Which of these films is a mental hospital story?", a: "c", options: ["Love Actually", "Bicho de Sete Cabeças", "300", "Carandiru"] }, // C
+   { q: "27- Which role in 300 made him famous internationally?", a: "d", options: ["Love Actually character", "Carandiru character", "King Xerxes", "President Raul Castro"] }, // D
+   { q: "28- Where does he live?", a: "b", options: ["São Paulo", "Rio de Janeiro", "Petropolis", "Buenos Aires"] }, // B
+   { q: "29- What hobby does he do besides acting?", a: "a", options: ["Painting", "Reading, music, meditation", "Cooking", "Dancing"] }, // A
+   { q: "30- When did he start acting in television soap operas?", a: "b", options: ["1990", "1995", "1993", "1998"] }, // B
+   { q: "31- Which award nomination did he receive for Não Por Acaso?", a: "c", options: ["MTV Movie Award", "Best Actor at Prêmio Contigo Cinema", "Oscar", "Golden Globe"] }, // C
+   { q: "32- Name a Hollywood movie with Drew Barrymore he acted in.", a: "a", options: ["Charlie's Angels: Full Throttle", "Love Actually", "300", "The Roman Spring of Mrs. Stone"] }, // A
+   { q: "33- Name a Hollywood movie with Helen Mirren he acted in.", a: "a", options: ["300", "Charlie's Angels: Full Throttle", "Love Actually", "The Roman Spring of Mrs. Stone"] }, // A
+   { q: "34- Name a Hollywood movie with Hugh Grant he acted in.", a: "a", options: ["300", "Charlie's Angels: Full Throttle", "Love Actually", "Che: Part Two"] }, // A
+   { q: "35- In which year was 300 released?", a: "c", options: ["2003", "2005", "2007", "2008"] }, // C
+   { q: "36- Which country is he originally from?", a: "b", options: ["USA", "Brazil", "Spain", "Argentina"] }, // B
+   { q: "37- Which character did he play in Carandiru?", a: "d", options: ["King Xerxes", "One of the prisoners", "President Raul Castro", "Oriol"] }, // D
+   { q: "38- For which activity is he known besides acting?", a: "b", options: ["Playing soccer", "Cooking", "Singing", "Painting"] }, // B
+   { q: "39- How does he spend his free time?", a: "c", options: ["Traveling daily", "Reading, listening to music, meditating", "Sleeping", "Watching movies"] }, // C
+   { q: "40- Which role is from Che: Part Two?", a: "c", options: ["Oriol", "King Xerxes", "Bicho de Sete Cabeças character", "Hugh Grant"] }, // C
+   { q: "41- Which role is from There Be Dragons?", a: "b", options: ["King Xerxes", "President Raul Castro", "Bicho de Sete Cabeças character", "Oriol"] }, // B
+   { q: "42- Which movie shows a young man wrongly kept in a mental hospital?", a: "a", options: ["Carandiru", "Bicho de Sete Cabeças", "300", "Love Actually"] }, // A
+   { q: "43- Which award did he win at Cartagena Film Festival?", a: "c", options: ["Best Actor", "Best Director", "Best Villain", "Best Supporting Actor"] }, // C
+   { q: "44- What activity did he do with Louis Figo and Alan Shearer?", a: "b", options: ["Played soccer", "Watched a movie", "Acted in a film", "Sang"] }, // B
+   { q: "45- How does he manage his workload?", a: "b", options: ["Sleeping", "Reading, music, meditation", "Traveling", "Cooking"] }, // B
+   { q: "46- Which film in 2001 was his first big role?", a: "c", options: ["Carandiru", "Bicho de Sete Cabeças", "Love Actually", "300"] }, // C
+   { q: "47- Rodrigo Santoro starred in which genre initially?", a: "c", options: ["Hollywood movies", "Documentaries", "Brazilian soap operas", "Stage plays"] }, // C
+   { q: "48- Which movie character earned him MTV Best Villain nomination?", a: "a", options: ["Oriol", "President Raul Castro", "King Xerxes", "Bicho de Sete Cabeças character"] }, // A
+   { q: "49- What city is near his birthplace?", a: "a", options: ["São Paulo", "Rio de Janeiro", "Brasília", "Salvador"] }, // A
+   { q: "50- In addition to acting, what else does he love?", a: "c", options: ["Sports", "Cooking", "Painting", "Singing"] } // C
+ ];
+ 
 
 
     
@@ -983,7 +738,7 @@ const questions = [
     }
 
     // 🆕 تغيير العنوان بناءً على اسم الكورس
-    quizTitle.textContent = course || "PlacementTest";
+    quizTitle.textContent = course || "Final(A2)Test";
 
     // ✅ يمكنك حفظ الكود ضمن بيانات المتدرب لو محتاجه بعد كده
     window.traineeData = { name, phone, traineeCode, course };
