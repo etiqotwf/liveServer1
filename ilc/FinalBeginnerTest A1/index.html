@@ -169,6 +169,16 @@
 
 <body>
 
+<!-- رسالة التكرار -->
+<div id="duplicateMessage" style="display:none !important; position:fixed; top:20px; left:50%; transform:translateX(-50%);
+    background-color:#ff4d4f; color:white; padding:15px 25px; border-radius:10px; box-shadow:0 4px 8px rgba(0,0,0,0.2);
+    font-family:Arial, sans-serif; z-index:9999; font-size:16px; display:flex; align-items:center; gap:10px;">
+    <span id="duplicateIcon" style="font-size:20px;">❌</span>
+    <span id="duplicateText">تم التسجيل مسبقًا</span>
+</div>
+
+
+
  <!-- شاشة البداية -->
 <div class="container" id="startScreen" style="
 max-width: 700px; 
@@ -696,61 +706,134 @@ const questions = [
         let timerInterval;
         let startTime;
     
-        function startQuiz() {
-    let name = document.getElementById("traineeName").value.trim();
-    let phone = document.getElementById("traineePhone").value.trim();
-    let traineeCode = document.getElementById("traineeCode").value.trim(); // ✅ السطر الجديد هنا
-    let password = document.getElementById("password").value;
-    let course = document.getElementById("courseName").value.trim(); // 🆕 قراءة اسم الكورس
-    let quizTitle = document.getElementById("quizTitle"); // 🆕 العنوان اللي هيتغير
+      /**
+       * 
+ * رابط Web App (استبدل لو عندك ID مختلف)
+ */
 
-    if (!name) {
-        alert("❗ برجاء إدخال الاسم.");
-        return;
+
+ 
+const CHECK_URL = "https://script.google.com/macros/s/AKfycbxr0F9VfFA5hmITyLgPtHrjBD3umZAwFtKJxzVy0vShJdY8tjq6q1CanJ5gH92IAPPV/exec";
+
+/**
+ * يتحقق من التكرار عبر doGet?action=checkDuplicate
+ * يرجع كائن { ok: true } أو { ok: false, message: "..." }
+ */
+
+
+ 
+async function checkDuplicate(name, phone, quizName) {
+  const url = `${CHECK_URL}?action=checkDuplicate&name=${encodeURIComponent(name)}&phone=${encodeURIComponent(phone)}&quizName=${encodeURIComponent(quizName)}`;
+  console.log("Checking URL:", url);
+  try {
+    const res = await fetch(url, { method: 'GET', cache: 'no-store' });
+    console.log("Fetch response:", res);
+    if (!res.ok) {
+      return { ok: false, message: 'خطأ في الاتصال بخدمة التحقق (HTTP ' + res.status + ')' };
     }
+    const data = await res.json();
+    console.log("Data from server:", data);
+    if (data.status === 'duplicate') return { ok: false, message: data.message };
+    if (data.status === 'ok') return { ok: true };
+    return { ok: false, message: data.message || 'حدث خطأ أثناء التحقق من التكرار.' };
+  } catch (err) {
+    console.error("checkDuplicate error:", err);
+    return { ok: false, message: 'خطأ في الاتصال. تأكد من الإنترنت.' };
+  }
+}
 
-    if (!phone) {
-        alert("❗ برجاء إدخال رقم التليفون.");
-        return;
+async function startQuiz(event) {
+  // قراءة الحقول
+  let name = document.getElementById("traineeName").value.trim();
+  let phone = document.getElementById("traineePhone").value.trim();
+  let traineeCode = document.getElementById("traineeCode").value.trim();
+  let password = document.getElementById("password").value;
+  let course = document.getElementById("courseName").value.trim();
+  let quizTitle = document.getElementById("quizTitle");
+
+  // إزالة الصفر الأول من رقم التليفون لو موجود
+  if (phone.startsWith('0')) {
+      phone = phone.substring(1);
+  }
+
+  // تحقق محلي سريع
+  if (!name) { alert("❗ برجاء إدخال الاسم."); return; }
+  if (!phone) { alert("❗ برجاء إدخال رقم التليفون."); return; }
+  if (!traineeCode) { alert("❗ برجاء إدخال الكود الخاص بك."); return; }
+  if (password !== "1800") { alert("❌ كلمة المرور غير صحيحة!"); return; }
+
+  // الحصول على الزر لتغيير النص وتعطيله
+  const startBtn = event && event.currentTarget ? event.currentTarget : document.querySelector('.btn');
+  let prevText = startBtn ? startBtn.innerText : "Start Quiz";
+
+  if (startBtn) {
+    startBtn.disabled = true;
+    startBtn.innerText = "Checking...";
+  }
+
+  // تحقق من التكرار على السيرفر
+  const quizName = course || "Unknown";
+  let check;
+  try {
+    check = await checkDuplicate(name, phone, quizName);
+    console.log("Data from server:", check);
+  } catch (err) {
+    console.error(err);
+    alert("❌ حدث خطأ أثناء الاتصال بالسيرفر.");
+    if (startBtn) {
+      startBtn.disabled = false;
+      startBtn.innerText = prevText;
     }
+    return;
+  }
 
-    // ✅ التحقق من إدخال الكود
-    if (!traineeCode) {
-        alert("❗ برجاء إدخال الكود الخاص بك.");
-        return;
-    }
+  // إعادة الزر لوضعه الطبيعي
+  if (startBtn) {
+    startBtn.disabled = false;
+    startBtn.innerText = prevText;
+  }
 
-    if (password !== "1800") {
-        alert("❌ كلمة المرور غير صحيحة! الرجاء المحاولة مرة أخرى.");
-        return;
-    }
+  // منع الدخول إذا كان مكرر
+  if (!check.ok) {
+    showDuplicateMessage(check.message);
+    return;
+  }
 
-    // 🆕 تغيير العنوان بناءً على اسم الكورس
-    quizTitle.textContent = course || "Final(A1)Test";
+  // لو كل شيء تمام: ضع بيانات المتدرب وابدأ الامتحان
+  quizTitle.textContent = course || "Final(A1)Test";
+  window.traineeData = { name, phone, traineeCode, course };
 
-    // ✅ يمكنك حفظ الكود ضمن بيانات المتدرب لو محتاجه بعد كده
-    window.traineeData = { name, phone, traineeCode, course };
+  document.getElementById("startScreen").style.display = "none";
+  document.getElementById("quizContainer").style.display = "block";
 
-    document.getElementById("startScreen").style.display = "none";
-    document.getElementById("quizContainer").style.display = "block";
-    startTime = new Date();
-    startTimer();
-    loadTFQuestion();
+  startTime = new Date();
+  startTimer();
+  loadTFQuestion();
 
-    // تشغيل وضع ملء الشاشة
-    let elem = document.documentElement;
-    if (elem.requestFullscreen) {
-        elem.requestFullscreen();
-    } else if (elem.mozRequestFullScreen) {
-        elem.mozRequestFullScreen();
-    } else if (elem.webkitRequestFullscreen) {
-        elem.webkitRequestFullscreen();
-    } else if (elem.msRequestFullscreen) {
-        elem.msRequestFullscreen();
-    }
+  // تشغيل وضع ملء الشاشة
+  let elem = document.documentElement;
+  if (elem.requestFullscreen) { elem.requestFullscreen(); }
+  else if (elem.mozRequestFullScreen) { elem.mozRequestFullScreen(); }
+  else if (elem.webkitRequestFullscreen) { elem.webkitRequestFullscreen(); }
+  else if (elem.msRequestFullscreen) { elem.msRequestFullscreen(); }
 }
 
     
+function showDuplicateMessage(message) {
+    const msgBox = document.getElementById("duplicateMessage");
+    const msgText = document.getElementById("duplicateText");
+
+    msgText.textContent = message || "❌ تم التسجيل مسبقًا في هذا الاختبار.";
+    msgBox.style.display = "flex";
+
+    // اختفاء الرسالة بعد 3 ثواني
+    setTimeout(() => {
+        msgBox.style.display = "none";
+    }, 3000);
+}
+
+
+
         function startTimer() {
             timerInterval = setInterval(() => {
                 let minutes = Math.floor(timeLeft / 60);
@@ -1008,7 +1091,7 @@ function sendDataToGoogleSheet(resultData) {
     formData.append("course", resultData.course);
 
 
-    fetch("https://script.google.com/macros/s/AKfycbybhyNx3uPAoAjGlvHe_jumSp_NKeOIIwoAPHWOqzUukmlmtoTlE5wF8Y_w17l5m9FS/exec", {
+    fetch("https://script.google.com/macros/s/AKfycbxr0F9VfFA5hmITyLgPtHrjBD3umZAwFtKJxzVy0vShJdY8tjq6q1CanJ5gH92IAPPV/exec", {
         method: "POST",
         headers: {
             "Content-Type": "application/x-www-form-urlencoded",
