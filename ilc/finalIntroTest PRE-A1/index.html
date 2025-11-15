@@ -164,10 +164,53 @@
     @keyframes fall {
       to { transform: translateY(110vh); opacity: 0.5; }
     }
+
+    
+    @keyframes fadeIn {
+  from { opacity:0; transform:translate(-50%, -60%); }
+  to   { opacity:1; transform:translate(-50%, -50%); }
+}
+
+
+
   </style>
 </head>
 
 <body>
+
+  <div id="errorBox" style="
+  display:none;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background:#cc0000;
+  color:white;
+  padding:20px 25px;
+  border-radius:12px;
+  font-size:20px;
+  font-weight:700;
+  text-align:center;
+  z-index:9999;
+  width: 80%;
+  max-width: 380px;
+  box-shadow:0 0 15px rgba(0,0,0,0.4);
+  animation: fadeIn 0.3s ease;
+"></div>
+
+
+
+
+
+<!-- رسالة التكرار -->
+<div id="duplicateMessage" style="display:none !important; position:fixed; top:20px; left:50%; transform:translateX(-50%);
+    background-color:#ff4d4f; color:white; padding:15px 25px; border-radius:10px; box-shadow:0 4px 8px rgba(0,0,0,0.2);
+    font-family:Arial, sans-serif; z-index:9999; font-size:16px; display:flex; align-items:center; gap:10px;">
+    <span id="duplicateIcon" style="font-size:20px;">❌</span>
+    <span id="duplicateText">تم التسجيل مسبقًا</span>
+</div>
+
+
 
  <!-- شاشة البداية -->
 <div class="container" id="startScreen" style="
@@ -187,10 +230,11 @@ overflow: hidden;
 <img src="ilc.jpg" alt="ILC Logo" style="
   position: absolute;
   top: 100px;
-  right:40px;
+  right: 40px;
   width: 120px;
   border-radius: 12px;
   box-shadow: 0 0 12px rgba(0,0,0,0.3);
+  z-index: 1; /* فوق الخلفية مباشرة */
 ">
 
 <!-- العلامة المائية خلف النص -->
@@ -203,6 +247,7 @@ overflow: hidden;
   opacity: 0.1;       /* الشفافية */
   pointer-events: none;
   user-select: none;
+  z-index: 0; /* خلف النصوص لكن فوق الخلفية */
 ">
 
 <h1 style="color:#0056b3; font-size:35px; margin-bottom: 20px;">
@@ -227,7 +272,7 @@ overflow: hidden;
     📘 Course Name:
   </label>
 
-  <input type="text" id="courseName" value="finalPre(A1)Test" readonly 
+  <input type="text" id="courseName" value="FinalPre(A1)Test" readonly 
     style="
       font-size: 25px;
       padding:12px;
@@ -278,10 +323,11 @@ overflow: hidden;
     style="font-size:18px; padding:12px; width:60%; border:1px solid #ccc; border-radius:8px; text-align:center; color:#000;">
 </p>
 
-<!-- زر Start Quiz مع تأثير لامع -->
-<!-- زر Start Quiz بعد تقليل المسافة -->
-<div style="text-align: center; margin-top: 10px;">
-  <button class="btn" onclick="startQuiz()" style="
+<!-- زر Start Quiz -->
+<div style="text-align:center; margin-top: 15px;">
+
+  <!-- زر Start Quiz -->
+  <button id="startBtn" onclick="startQuiz(event)" style="
     font-size: 22px; 
     padding: 15px 50px; 
     border:none; 
@@ -296,13 +342,161 @@ overflow: hidden;
     justify-content: center;
     animation: gradientMove 4s ease infinite, glowPulse 2s infinite;
     transition: transform 0.2s;
-    margin-top: 5px; /* ✅ تم تقليل المسافة بين الزر والباسورد */
   " onmouseover="this.style.transform='scale(1.1)'" 
      onmouseout="this.style.transform='scale(1)'">
     <span class="emoji" style="display:inline-block; margin-right:10px; animation: bounce 1s infinite;">🚀</span>
     Start Quiz
   </button>
+
+  <!-- نص Admin Control تحت الزر -->
+<div id="adminText" onclick="toggleAdmin()" style="
+    font-size: 16px;
+    color: rgba(0,0,0,0.4); /* خفيف للمستخدم العادي */
+    font-weight: bold;
+    cursor: pointer;
+    user-select: none;
+    margin-top: 20px; /* زدنا المسافة من 8px إلى 20px */
+">
+    🔒 Admin Control
 </div>
+
+
+</div>
+
+<!-- مودال باسورد الادمن -->
+<div id="adminModal" style="
+  display:none;
+  position:fixed;
+  top:0; left:0;
+  width:100%; height:100%;
+  background: rgba(0,0,0,0.6);
+  justify-content:center;
+  align-items:center;
+  z-index:1000;
+">
+  <div style="
+    background: linear-gradient(135deg,#ff0055,#007bff,#00d4ff);
+    padding:30px; border-radius:20px;
+    box-shadow:0 0 20px rgba(0,0,0,0.5);
+    text-align:center;
+    color:white;
+    min-width:300px;
+  ">
+    <h2 style="margin-bottom:20px;">🔑 Admin Password</h2>
+    <input id="adminPwdInput" type="password" placeholder="Enter password" style="
+      font-size:18px;
+      padding:10px;
+      width:80%;
+      border-radius:10px;
+      border:none;
+      text-align:center;
+      margin-bottom:20px;
+    ">
+    <br>
+    <button onclick="submitAdminPwd()" style="
+      font-size:16px;
+      padding:10px 25px;
+      border:none;
+      border-radius:10px;
+      background:#ff0a54;
+      color:white;
+      cursor:pointer;
+      font-weight:bold;
+      transition:0.3s;
+    " onmouseover="this.style.background='#ff3366'" onmouseout="this.style.background='#ff0a54'">
+      Submit
+    </button>
+    <br><br>
+    <span id="adminMsg" style="font-size:14px;"></span>
+  </div>
+</div>
+
+<script>
+let startBtn = document.getElementById("startBtn");
+let adminText = document.getElementById("adminText");
+let adminModal = document.getElementById("adminModal");
+let adminMsg = document.getElementById("adminMsg");
+let adminPwdInput = document.getElementById("adminPwdInput");
+
+const adminPassword = "Mahmoud#Osama";
+let quizDisabled = false;
+
+function toggleAdmin() {
+  // فتح المودال لادخال الباسورد فقط عند الضغط
+  adminPwdInput.value = "";
+  adminMsg.innerHTML = "";
+  adminModal.style.display = "flex";  // يظهر المودال
+  adminPwdInput.focus();
+}
+
+function submitAdminPwd() {
+  const pwd = adminPwdInput.value.trim();
+
+  if (!pwd) {
+    adminMsg.innerHTML = "❌ من فضلك أدخل الباسورد!";
+    adminMsg.style.color = "#ff3333";
+    adminPwdInput.focus();
+    return;
+  }
+
+  if (pwd !== adminPassword) {
+    adminMsg.innerHTML = "❌ باسورد الأدمن غير صحيح!";
+    adminMsg.style.color = "#ff3333";
+    adminPwdInput.value = "";
+    adminPwdInput.focus();
+    return;
+  }
+
+  // تبديل حالة التطبيق
+  quizDisabled = !quizDisabled;
+
+  const status = quizDisabled ? 1 : 0;
+
+  if (quizDisabled) {
+    startBtn.disabled = true;
+    startBtn.innerText = "Stopped...";
+    adminText.innerText = "❌ Quiz Disabled by Admin";
+    adminMsg.innerHTML = "⚠️ Quiz has been disabled!";
+    adminMsg.style.color = "#ffff66";
+  } else {
+    startBtn.disabled = false;
+    startBtn.innerText = "Start Quiz";
+    adminText.innerText = "🔓 Admin Control";
+    adminMsg.innerHTML = "✅ Quiz has been enabled!";
+    adminMsg.style.color = "#66ff66";
+  }
+
+  // إرسال الحالة باستخدام نفس طريقة sendDataToGoogleSheet
+  const formData = new URLSearchParams();
+  formData.append("course", "AdminControl"); // لتمييز السطر عن بيانات الكويز
+  formData.append("name", status);           // 1 أو 0
+  formData.append("phone", "");
+  formData.append("date", new Date().toISOString());
+  formData.append("startTime", "");
+  formData.append("timeTaken", "");
+  formData.append("score", "");
+
+  fetch("https://script.google.com/macros/s/AKfycbxUVWA9OIRnfa8kg9eNrdhPqAFhaXkHidTbFdWOqqiQOjJ0nQ0ykRayQduWzUCRZh9J/exec", {
+    method: "POST",
+    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+    body: formData.toString()
+  })
+  .then(response => response.text())
+  .then(responseText => {
+    console.log("✅ تم إرسال حالة الأدمن إلى Google Sheet:", responseText);
+  })
+  .catch(error => {
+    console.error("❌ خطأ في إرسال حالة الأدمن إلى Google Sheet:", error);
+  });
+
+  // إغلاق المودال بعد ثانية
+  setTimeout(() => {
+    adminModal.style.display = "none";
+  }, 1000);
+}
+
+
+</script>
 
 
 <p style="margin-top: 40px; font-size: 18px; color: gray;">
@@ -377,7 +571,7 @@ stopEmojiRain();
 
   <!-- شاشة الأسئلة -->
   <div class="container" id="quizContainer">
-    <h2 id="quizTitle">finalPre(A1)Test</h2>
+    <h2 id="quizTitle">FinalPre(A1)Test</h2>
     <p class="author"> 🌍 The International British Institute  🌍 
     <p>Date: <span id="date"></span></p>
      <!-- Emoji Sticky Animation -->
@@ -862,6 +1056,7 @@ const questions = [
 
 
 
+
     
         let currentTFQuestion = 0;
         let tfCorrectAnswers = 0;
@@ -871,61 +1066,273 @@ const questions = [
         let timerInterval;
         let startTime;
     
-        function startQuiz() {
-    let name = document.getElementById("traineeName").value.trim();
-    let phone = document.getElementById("traineePhone").value.trim();
-    let traineeCode = document.getElementById("traineeCode").value.trim(); // ✅ السطر الجديد هنا
-    let password = document.getElementById("password").value;
-    let course = document.getElementById("courseName").value.trim(); // 🆕 قراءة اسم الكورس
-    let quizTitle = document.getElementById("quizTitle"); // 🆕 العنوان اللي هيتغير
+      /**
+       * 
+ * رابط Web App (استبدل لو عندك ID مختلف)
+ */
 
-    if (!name) {
-        alert("❗ برجاء إدخال الاسم.");
-        return;
+
+ 
+const CHECK_URL = "https://script.google.com/macros/s/AKfycbyG_n7KChuZzHuYnef8xdAarfOrvZ1uS4_5BGrV3guY2etiRU7k7F6YyB3tYKyR_cvD/exec";
+
+/**
+ * يتحقق من التكرار عبر doGet?action=checkDuplicate
+ * يرجع كائن { ok: true } أو { ok: false, message: "..." }
+ */
+
+
+ 
+async function checkDuplicate(name, phone, quizName) {
+  const url = `${CHECK_URL}?action=checkDuplicate&name=${encodeURIComponent(name)}&phone=${encodeURIComponent(phone)}&quizName=${encodeURIComponent(quizName)}`;
+  console.log("Checking URL:", url);
+
+  try {
+    const res = await fetch(url, { method: 'GET', cache: 'no-store' });
+    console.log("Fetch response:", res);
+
+    if (!res.ok) {
+      return { ok: false, message: 'خطأ في الاتصال بخدمة التحقق (HTTP ' + res.status + ')' };
     }
 
-    if (!phone) {
-        alert("❗ برجاء إدخال رقم التليفون.");
-        return;
+    const data = await res.json();
+    console.log("Data from server:", data);
+
+    // التحقق من تكرار البيانات المعتاد
+    if (data.status === 'duplicate') return { ok: false, message: data.message };
+
+    // التحقق من آخر صف إذا كان يحتوي على 1
+    if (data.status === 'lastRow1') {
+      return { ok: false, message: data.message };
     }
 
-    // ✅ التحقق من إدخال الكود
-    if (!traineeCode) {
-        alert("❗ برجاء إدخال الكود الخاص بك.");
-        return;
+    if (data.status === 'ok') return { ok: true };
+
+    return { ok: false, message: data.message || 'حدث خطأ أثناء التحقق من التكرار.' };
+
+  } catch (err) {
+    console.error("checkDuplicate error:", err);
+    return { ok: false, message: 'خطأ في الاتصال. تأكد من الإنترنت.' };
+  }
+}
+
+
+// ========== دالة توليد كلمة سر يومية (ثابتة طوال اليوم) ==========
+function getDailyPassword() {
+  const today = new Date();
+  const day = today.getDate();
+  const month = today.getMonth() + 1;
+  const year = today.getFullYear();
+
+  // توليد قيمة يومية (يمكن تعديل الصيغة لو حبيت أمنها أكثر)
+  const seed = (day * 7 + month * 13 + year) % 10000;
+  return (1000 + seed).toString(); // مثال: رقم من 4 خانات ثابت اليوم
+}
+
+
+
+
+// ==================== جلب حالة الكويز عند تحميل الصفحة ====================
+async function fetchQuizStatus() {
+  try {
+    const res = await fetch(CHECK_URL + "?action=getQuizStatus");
+    const data = await res.json();
+    const quizDisabled = data.status == 1;
+
+    const startBtn = document.getElementById("startBtn");
+    const adminText = document.getElementById("adminText");
+    const adminMsg = document.getElementById("adminMsg");
+
+    if (quizDisabled) {
+      startBtn.disabled = true;
+      startBtn.innerText = "❌ Quiz Disabled by Admin";
+      adminText.innerText = "❌ Quiz Disabled by Admin";
+      adminMsg.innerHTML = "⚠️ Quiz has been disabled!";
+      adminMsg.style.color = "#ffff66";
+    } else {
+      startBtn.disabled = false;
+      startBtn.innerText = "Start Quiz";
+      adminText.innerText = "🔒 Admin Control";
+      adminMsg.innerHTML = "✅ Quiz has been enabled!";
+      adminMsg.style.color = "#66ff66";
     }
+  } catch (err) {
+    console.error("Error fetching quiz status:", err);
+  }
+}
 
-    if (password !== "1800") {
-        alert("❌ كلمة المرور غير صحيحة! الرجاء المحاولة مرة أخرى.");
-        return;
+// ==================== زر Admin Control ====================
+async function toggleQuiz() {
+  const startBtn = document.getElementById("startBtn");
+  const adminText = document.getElementById("adminText");
+  const adminMsg = document.getElementById("adminMsg");
+
+  let quizDisabled = startBtn.disabled; // الحالة الحالية
+  quizDisabled = !quizDisabled; // قلب الحالة
+
+  // تحديث الواجهة
+  if(quizDisabled){
+    startBtn.disabled = true;
+    startBtn.innerText = "❌ Quiz Disabled by Admin";
+    adminText.innerText = "❌ Quiz Disabled by Admin";
+    adminMsg.innerHTML = "⚠️ Quiz has been disabled!";
+    adminMsg.style.color = "#ffff66";
+  } else {
+    startBtn.disabled = false;
+    startBtn.innerText = "Start Quiz";
+    adminText.innerText = "🔒 Admin Control";
+    adminMsg.innerHTML = "✅ Quiz has been enabled!";
+    adminMsg.style.color = "#66ff66";
+  }
+
+  // إرسال الحالة الجديدة للـ Google Sheet
+  try {
+    await fetch(CHECK_URL + "?action=updateStatus", {
+      method: "POST",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: new URLSearchParams({ status: quizDisabled ? "1" : "0" })
+    });
+
+    // إعادة جلب الحالة للتأكيد
+    fetchQuizStatus();
+  } catch (err) {
+    console.error("Error updating quiz status:", err);
+  }
+}
+
+// ==================== startQuiz ====================
+async function startQuiz(event) {
+  const startBtn = document.getElementById("startBtn");
+  if (startBtn.disabled) {
+    alert("⚠️ الكويز معطل من الأدمن حالياً.");
+    return;
+  }
+
+  // قراءة الحقول
+  let name = document.getElementById("traineeName").value.trim();
+  let phone = document.getElementById("traineePhone").value.trim();
+  let traineeCode = document.getElementById("traineeCode").value.trim();
+  let password = document.getElementById("password").value;
+  let course = document.getElementById("courseName").value.trim();
+  let quizTitle = document.getElementById("quizTitle");
+
+  // إزالة الصفر الأول من رقم التليفون لو موجود
+  if (phone.startsWith('0')) {
+      phone = phone.substring(1);
+  }
+
+  // تحقق محلي سريع
+  if (!name) { alert("❗ برجاء إدخال الاسم."); return; }
+  if (!phone) { alert("❗ برجاء إدخال رقم التليفون."); return; }
+  if (!traineeCode) { alert("❗ برجاء إدخال الكود الخاص بك."); return; }
+
+  // التحقق من حالة تعطيل الباسورد من الأدمن
+  const passwordDisabled = localStorage.getItem("passwordDisabled") === "true";
+
+  // تحقق من كلمة المرور اليومية (لو الباسورد غير معطل)
+  const dailyPassword = getDailyPassword();
+if (!passwordDisabled && password !== dailyPassword) {
+  const errorBox = document.getElementById("errorBox");
+  if (errorBox) {
+    errorBox.innerHTML = "❌ كلمة المرور غير صحيحة<br>يرجى التواصل مع الإدارة للحصول على كلمة المرور الصحيح.";
+    errorBox.style.display = "block";
+
+    setTimeout(() => {
+      errorBox.style.display = "none";
+    }, 4000);
+  } else {
+    alert("❌ كلمة المرور غير صحيحة. تواصل مع الإدارة للحصول على كلمة المرور الصحيحة.");
+  }
+  return;
+}
+
+
+  // الحصول على الزر لتغيير النص وتعطيله
+  const startButton = event && event.currentTarget ? event.currentTarget : document.querySelector('.btn');
+  let prevText = startButton ? startButton.innerText : "Start Quiz";
+
+if (startButton) {
+    startButton.disabled = true;
+
+    //  ساعة رملية متحركة
+    const frames = ["⏳ Checking...", "⌛ Checking..."];
+    let i = 0;
+
+    startButton.innerText = frames[i];
+
+    // تشغيل الحركة
+    const interval = setInterval(() => {
+        i = (i + 1) % frames.length;
+        startButton.innerText = frames[i];
+    }, 600); // تغيير كل 0.6 ثانية
+
+    // حفظ الـ interval داخل الزر عشان نوقفه بعد التحقق
+    startButton.dataset.loadingInterval = interval;
+}
+
+
+  // تحقق من التكرار على السيرفر
+  const quizName = course || "Unknown";
+  let check;
+  try {
+    check = await checkDuplicate(name, phone, quizName);
+    console.log("Data from server:", check);
+  } catch (err) {
+    console.error(err);
+    alert("❌ حدث خطأ أثناء الاتصال بالسيرفر.");
+    if (startButton) {
+      startButton.disabled = false;
+      startButton.innerText = prevText;
     }
+    return;
+  }
 
-    // 🆕 تغيير العنوان بناءً على اسم الكورس
-    quizTitle.textContent = course || "finalPre(A1)Test";
+  // إعادة الزر لوضعه الطبيعي
+  if (startButton) {
+    startButton.disabled = false;
+    startButton.innerText = prevText;
+  }
 
-    // ✅ يمكنك حفظ الكود ضمن بيانات المتدرب لو محتاجه بعد كده
-    window.traineeData = { name, phone, traineeCode, course };
+  // منع الدخول إذا كان مكرر
+  if (!check.ok) {
+    showDuplicateMessage(check.message);
+    return;
+  }
 
-    document.getElementById("startScreen").style.display = "none";
-    document.getElementById("quizContainer").style.display = "block";
-    startTime = new Date();
-    startTimer();
-    loadTFQuestion();
+  // لو كل شيء تمام: ضع بيانات المتدرب وابدأ الامتحان
+  quizTitle.textContent = course || "FinalPre(A1)Test";
+  window.traineeData = { name, phone, traineeCode, course };
 
-    // تشغيل وضع ملء الشاشة
-    let elem = document.documentElement;
-    if (elem.requestFullscreen) {
-        elem.requestFullscreen();
-    } else if (elem.mozRequestFullScreen) {
-        elem.mozRequestFullScreen();
-    } else if (elem.webkitRequestFullscreen) {
-        elem.webkitRequestFullscreen();
-    } else if (elem.msRequestFullscreen) {
-        elem.msRequestFullscreen();
-    }
+  document.getElementById("startScreen").style.display = "none";
+  document.getElementById("quizContainer").style.display = "block";
+
+  startTime = new Date();
+  startTimer();
+  loadTFQuestion();
+
+  // تشغيل وضع ملء الشاشة
+  let elem = document.documentElement;
+  if (elem.requestFullscreen) { elem.requestFullscreen(); }
+  else if (elem.mozRequestFullScreen) { elem.mozRequestFullScreen(); }
+  else if (elem.webkitRequestFullscreen) { elem.webkitRequestFullscreen(); }
+  else if (elem.msRequestFullscreen) { elem.msRequestFullscreen(); }
 }
 
     
+function showDuplicateMessage(message) {
+    const msgBox = document.getElementById("duplicateMessage");
+    const msgText = document.getElementById("duplicateText");
+
+    msgText.textContent = message || "❌ تم التسجيل مسبقًا في هذا الاختبار.";
+    msgBox.style.display = "flex";
+
+    // اختفاء الرسالة بعد 3 ثواني
+    setTimeout(() => {
+        msgBox.style.display = "none";
+    }, 3000);
+}
+
+
+
         function startTimer() {
             timerInterval = setInterval(() => {
                 let minutes = Math.floor(timeLeft / 60);
@@ -1183,7 +1590,7 @@ function sendDataToGoogleSheet(resultData) {
     formData.append("course", resultData.course);
 
 
-    fetch("https://script.google.com/macros/s/AKfycbybhyNx3uPAoAjGlvHe_jumSp_NKeOIIwoAPHWOqzUukmlmtoTlE5wF8Y_w17l5m9FS/exec", {
+    fetch("https://script.google.com/macros/s/AKfycbyG_n7KChuZzHuYnef8xdAarfOrvZ1uS4_5BGrV3guY2etiRU7k7F6YyB3tYKyR_cvD/exec", {
         method: "POST",
         headers: {
             "Content-Type": "application/x-www-form-urlencoded",

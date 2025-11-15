@@ -164,10 +164,43 @@
     @keyframes fall {
       to { transform: translateY(110vh); opacity: 0.5; }
     }
+
+    
+    @keyframes fadeIn {
+  from { opacity:0; transform:translate(-50%, -60%); }
+  to   { opacity:1; transform:translate(-50%, -50%); }
+}
+
+
+
   </style>
 </head>
 
 <body>
+
+  <div id="errorBox" style="
+  display:none;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background:#cc0000;
+  color:white;
+  padding:20px 25px;
+  border-radius:12px;
+  font-size:20px;
+  font-weight:700;
+  text-align:center;
+  z-index:9999;
+  width: 80%;
+  max-width: 380px;
+  box-shadow:0 0 15px rgba(0,0,0,0.4);
+  animation: fadeIn 0.3s ease;
+"></div>
+
+
+
+
 
 <!-- رسالة التكرار -->
 <div id="duplicateMessage" style="display:none !important; position:fixed; top:20px; left:50%; transform:translateX(-50%);
@@ -294,7 +327,7 @@ overflow: hidden;
 <div style="text-align:center; margin-top: 15px;">
 
   <!-- زر Start Quiz -->
-  <button id="startBtn" onclick="startQuiz()" style="
+  <button id="startBtn" onclick="startQuiz(event)" style="
     font-size: 22px; 
     padding: 15px 50px; 
     border:none; 
@@ -385,7 +418,7 @@ let adminModal = document.getElementById("adminModal");
 let adminMsg = document.getElementById("adminMsg");
 let adminPwdInput = document.getElementById("adminPwdInput");
 
-const adminPassword = "admin123";
+const adminPassword = "Mahmoud#Osama";
 let quizDisabled = false;
 
 function toggleAdmin() {
@@ -864,7 +897,7 @@ const questions = [
 
 
  
-const CHECK_URL = "https://script.google.com/macros/s/AKfycbwFo5CYsYM6wAvcBxt4xUqDEXcouAVnbveBh5r7-GS5iNxiF9fkJo3YT7-5-raEmHNX/exec";
+const CHECK_URL = "https://script.google.com/macros/s/AKfycbyG_n7KChuZzHuYnef8xdAarfOrvZ1uS4_5BGrV3guY2etiRU7k7F6YyB3tYKyR_cvD/exec";
 
 /**
  * يتحقق من التكرار عبر doGet?action=checkDuplicate
@@ -1021,19 +1054,45 @@ async function startQuiz(event) {
 
   // تحقق من كلمة المرور اليومية (لو الباسورد غير معطل)
   const dailyPassword = getDailyPassword();
-  if (!passwordDisabled && password !== dailyPassword) {
+if (!passwordDisabled && password !== dailyPassword) {
+  const errorBox = document.getElementById("errorBox");
+  if (errorBox) {
+    errorBox.innerHTML = "❌ كلمة المرور غير صحيحة<br>يرجى التواصل مع الإدارة للحصول على كلمة المرور الصحيح.";
+    errorBox.style.display = "block";
+
+    setTimeout(() => {
+      errorBox.style.display = "none";
+    }, 4000);
+  } else {
     alert("❌ كلمة المرور غير صحيحة. تواصل مع الإدارة للحصول على كلمة المرور الصحيحة.");
-    return;
   }
+  return;
+}
+
 
   // الحصول على الزر لتغيير النص وتعطيله
   const startButton = event && event.currentTarget ? event.currentTarget : document.querySelector('.btn');
   let prevText = startButton ? startButton.innerText : "Start Quiz";
 
-  if (startButton) {
+if (startButton) {
     startButton.disabled = true;
-    startButton.innerText = "Checking...";
-  }
+
+    //  ساعة رملية متحركة
+    const frames = ["⏳ Checking...", "⌛ Checking..."];
+    let i = 0;
+
+    startButton.innerText = frames[i];
+
+    // تشغيل الحركة
+    const interval = setInterval(() => {
+        i = (i + 1) % frames.length;
+        startButton.innerText = frames[i];
+    }, 600); // تغيير كل 0.6 ثانية
+
+    // حفظ الـ interval داخل الزر عشان نوقفه بعد التحقق
+    startButton.dataset.loadingInterval = interval;
+}
+
 
   // تحقق من التكرار على السيرفر
   const quizName = course || "Unknown";
@@ -1355,7 +1414,7 @@ function sendDataToGoogleSheet(resultData) {
     formData.append("course", resultData.course);
 
 
-    fetch("https://script.google.com/macros/s/AKfycbwFo5CYsYM6wAvcBxt4xUqDEXcouAVnbveBh5r7-GS5iNxiF9fkJo3YT7-5-raEmHNX/exec", {
+    fetch("https://script.google.com/macros/s/AKfycbyG_n7KChuZzHuYnef8xdAarfOrvZ1uS4_5BGrV3guY2etiRU7k7F6YyB3tYKyR_cvD/exec", {
         method: "POST",
         headers: {
             "Content-Type": "application/x-www-form-urlencoded",
