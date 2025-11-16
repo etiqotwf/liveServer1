@@ -346,6 +346,362 @@ function goToQuestion() {
         document.getElementById("date").innerText = new Date().toLocaleDateString("en-US");
     
     const trueFalseQuestions = [
+
+
+
+      {
+  "passage": `
+<div style="margin-top: 40px; max-width: 1100px; margin-left:auto; margin-right:auto; font-family:'Segoe UI', Arial, sans-serif; line-height:1.7;">
+
+  <!-- Intro Passage -->
+  <div style="background:linear-gradient(135deg,#f7fbff,#ffffff); padding:28px; border:1px solid #dfefff; border-radius:16px; box-shadow:0 6px 18px rgba(0,0,0,0.08); margin-bottom:40px;">
+    <h2 style="color:#003b70; margin-bottom:14px;">📘 IT Applications – Intro Lesson Quiz</h2>
+    <p style="color:#214b77; font-size:18px;">
+      This quiz introduces the <strong>basic concepts</strong> for each IT application.  
+      Each card contains <strong>introductory questions</strong> about what the program is, why we use it,  
+      and what learners will achieve after mastering it. Hover over a question to reveal the <strong>answer</strong>. 🎯
+    </p>
+  </div>
+
+  <!-- Cards Grid -->
+  <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(340px,1fr)); gap:28px;">
+
+    <!-- Word -->
+    <div class="task-card" style="--color:#0078d7;">
+      <h3>Task 1: Microsoft Word</h3>
+      <div class="questions">
+        <ol>
+          <li class="question">What is Microsoft Word mainly used for?
+            <span class="answer">✅ Creating and editing text documents</span>
+          </li>
+          <li class="question">True/False: Word is a word-processing program.
+            <span class="answer">✅ True</span>
+          </li>
+          <li class="question">Fill in the blank: Word documents usually end with the extension _______.
+            <span class="answer">✅ .docx</span>
+          </li>
+          <li class="question">What is the first screen you see when you open Word?
+            <span class="answer">✅ The Start Screen with templates</span>
+          </li>
+          <li class="question">Why do people use Microsoft Word?
+            <span class="answer">✅ To create professional documents quickly</span>
+          </li>
+          <li class="question">Which feature helps format text easily?
+            <span class="answer">✅ The Ribbon</span>
+          </li>
+          <li class="question">True/False: Word can be used to create reports and CVs.
+            <span class="answer">✅ True</span>
+          </li>
+          <li class="question">Complete: Mastering Word helps you improve your _______ skills.
+            <span class="answer">✅ document creation</span>
+          </li>
+          <li class="question">What kind of files can you create using Word?
+            <span class="answer">✅ Letters, reports, CVs, forms, and more</span>
+          </li>
+          <li class="question">What is the Ribbon used for?
+            <span class="answer">✅ Accessing tools and commands</span>
+          </li>
+        </ol>
+      </div>
+    </div>
+
+    <!-- Excel -->
+    <div class="task-card" style="--color:#00b294;">
+      <h3>Task 2: Microsoft Excel</h3>
+      <div class="questions">
+        <ol>
+          <li class="question">What is the main purpose of Excel?
+            <span class="answer">✅ Performing calculations and organizing data</span>
+          </li>
+          <li class="question">True/False: Excel is a spreadsheet program.
+            <span class="answer">✅ True</span>
+          </li>
+          <li class="question">Fill in the blank: Excel files usually use the extension _______.
+            <span class="answer">✅ .xlsx</span>
+          </li>
+          <li class="question">What do we call the boxes in Excel?
+            <span class="answer">✅ Cells</span>
+          </li>
+          <li class="question">Why is Excel important in business?
+            <span class="answer">✅ It helps analyze and manage large amounts of data</span>
+          </li>
+          <li class="question">Which tool helps visualize data?
+            <span class="answer">✅ Charts</span>
+          </li>
+          <li class="question">True/False: Excel can perform automatic calculations.
+            <span class="answer">✅ True</span>
+          </li>
+          <li class="question">Complete: Rows run _______ and columns run _______.
+            <span class="answer">✅ horizontally / vertically</span>
+          </li>
+          <li class="question">What is the first thing you see in Excel?
+            <span class="answer">✅ A blank worksheet made of cells</span>
+          </li>
+          <li class="question">Why should learners master Excel?
+            <span class="answer">✅ To improve data management and analytical skills</span>
+          </li>
+        </ol>
+      </div>
+    </div>
+
+    <!-- Access -->
+    <div class="task-card" style="--color:#e81123;">
+      <h3>Task 3: Microsoft Access</h3>
+      <div class="questions">
+        <ol>
+          <li class="question">What is Microsoft Access used for?
+            <span class="answer">✅ Creating and managing databases</span>
+          </li>
+          <li class="question">True/False: Access stores data in tables.
+            <span class="answer">✅ True</span>
+          </li>
+          <li class="question">Fill in the blank: An Access file usually ends with _______.
+            <span class="answer">✅ .accdb</span>
+          </li>
+          <li class="question">What is the purpose of Access?
+            <span class="answer">✅ To organize large collections of information</span>
+          </li>
+          <li class="question">What does the Access workspace mainly show?
+            <span class="answer">✅ Objects like tables, forms, queries, and reports</span>
+          </li>
+          <li class="question">Why is Access useful?
+            <span class="answer">✅ It links related data and reduces duplication</span>
+          </li>
+          <li class="question">True/False: Access can handle small and large databases.
+            <span class="answer">✅ True</span>
+          </li>
+          <li class="question">Complete: A _______ key uniquely identifies each record.
+            <span class="answer">✅ Primary</span>
+          </li>
+          <li class="question">What will learners achieve if they master Access?
+            <span class="answer">✅ The ability to build full database systems</span>
+          </li>
+          <li class="question">What is the first thing you see when opening Access?
+            <span class="answer">✅ Templates and options to create a new database</span>
+          </li>
+        </ol>
+      </div>
+    </div>
+
+    <!-- PowerPoint -->
+    <div class="task-card" style="--color:#ffb900;">
+      <h3>Task 4: Microsoft PowerPoint</h3>
+      <div class="questions">
+        <ol>
+          <li class="question">What is PowerPoint mainly used for?
+            <span class="answer">✅ Creating presentations</span>
+          </li>
+          <li class="question">True/False: PowerPoint uses slides to display content.
+            <span class="answer">✅ True</span>
+          </li>
+          <li class="question">Fill in the blank: PowerPoint files end with _______.
+            <span class="answer">✅ .pptx</span>
+          </li>
+          <li class="question">Why do people use PowerPoint?
+            <span class="answer">✅ To present information visually and clearly</span>
+          </li>
+          <li class="question">What does the main screen show when you open PowerPoint?
+            <span class="answer">✅ A blank slide and layout options</span>
+          </li>
+          <li class="question">What is a slide?
+            <span class="answer">✅ A single page in a presentation</span>
+          </li>
+          <li class="question">True/False: PowerPoint can include pictures, videos, and charts.
+            <span class="answer">✅ True</span>
+          </li>
+          <li class="question">Complete: Mastering PowerPoint improves your _______ skills.
+            <span class="answer">✅ communication and presentation</span>
+          </li>
+          <li class="question">What makes PowerPoint useful for teachers and trainers?
+            <span class="answer">✅ It helps explain ideas visually</span>
+          </li>
+          <li class="question">What can you add to make a presentation more attractive?
+            <span class="answer">✅ Themes, colors, and simple animations</span>
+          </li>
+        </ol>
+      </div>
+    </div>
+
+    <!-- Windows -->
+    <div class="task-card" style="--color:#605e5c;">
+      <h3>Task 5: Windows</h3>
+      <div class="questions">
+        <ol>
+          <li class="question">What is the Windows operating system?
+            <span class="answer">✅ The main software that controls the computer</span>
+          </li>
+          <li class="question">True/False: Windows helps open programs and manage files.
+            <span class="answer">✅ True</span>
+          </li>
+          <li class="question">Fill in the blank: The main screen in Windows is called the _______.
+            <span class="answer">✅ Desktop</span>
+          </li>
+          <li class="question">Why is Windows important?
+            <span class="answer">✅ It allows users to interact with the computer easily</span>
+          </li>
+          <li class="question">What is the Start Menu used for?
+            <span class="answer">✅ Accessing apps, settings, and power options</span>
+          </li>
+          <li class="question">What is the Taskbar?
+            <span class="answer">✅ A bar that shows open programs and shortcuts</span>
+          </li>
+          <li class="question">True/False: The Recycle Bin stores deleted files.
+            <span class="answer">✅ True</span>
+          </li>
+          <li class="question">Complete: Windows provides a _______ interface for users.
+            <span class="answer">✅ graphical</span>
+          </li>
+          <li class="question">What will learners achieve by mastering Windows?
+            <span class="answer">✅ Better file management and computer skills</span>
+          </li>
+          <li class="question">What appears when Windows starts?
+            <span class="answer">✅ The Desktop and Taskbar</span>
+          </li>
+        </ol>
+      </div>
+    </div>
+
+    <!-- IT -->
+    <div class="task-card" style="--color:#107c10;">
+      <h3>Task 6: IT</h3>
+      <div class="questions">
+        <ol>
+          <li class="question">What does IT stand for?
+            <span class="answer">✅ Information Technology</span>
+          </li>
+          <li class="question">True/False: IT includes both hardware and software.
+            <span class="answer">✅ True</span>
+          </li>
+          <li class="question">Fill in the blank: The _______ is known as the brain of the computer.
+            <span class="answer">✅ CPU</span>
+          </li>
+          <li class="question">Why is IT important today?
+            <span class="answer">✅ It powers communication, business, and data systems</span>
+          </li>
+          <li class="question">What will learners gain from studying IT?
+            <span class="answer">✅ Strong understanding of computers and technology</span>
+          </li>
+          <li class="question">What is hardware?
+            <span class="answer">✅ The physical parts of a computer</span>
+          </li>
+          <li class="question">True/False: Software refers to applications and programs.
+            <span class="answer">✅ True</span>
+          </li>
+          <li class="question">Complete: RAM is _______ memory.
+            <span class="answer">✅ temporary</span>
+          </li>
+          <li class="question">What is an operating system?
+            <span class="answer">✅ Software that manages computer resources</span>
+          </li>
+          <li class="question">What happens if a computer has no OS?
+            <span class="answer">✅ It cannot function or run applications</span>
+          </li>
+        </ol>
+      </div>
+    </div>
+
+    <!-- Internet -->
+    <div class="task-card" style="--color:#0099cc;">
+      <h3>Task 7: Internet</h3>
+      <div class="questions">
+        <ol>
+          <li class="question">What is the Internet?
+            <span class="answer">✅ A global network that connects computers worldwide</span>
+          </li>
+          <li class="question">True/False: The Internet allows communication and information sharing.
+            <span class="answer">✅ True</span>
+          </li>
+          <li class="question">Fill in the blank: A website’s address is called a _______.
+            <span class="answer">✅ URL</span>
+          </li>
+          <li class="question">What is the purpose of a web browser?
+            <span class="answer">✅ To access and view websites</span>
+          </li>
+          <li class="question">Why is the Internet important?
+            <span class="answer">✅ It provides information, services, and communication</span>
+          </li>
+          <li class="question">What is a search engine?
+            <span class="answer">✅ A tool used to find information online</span>
+          </li>
+          <li class="question">True/False: Email is an Internet service.
+            <span class="answer">✅ True</span>
+          </li>
+          <li class="question">Complete: Upload means to _______ files online.
+            <span class="answer">✅ send</span>
+          </li>
+          <li class="question">What will learners achieve by understanding the Internet?
+            <span class="answer">✅ Safe and effective online usage</span>
+          </li>
+          <li class="question">What is the difference between Internet and WWW?
+            <span class="answer">✅ Internet = network; WWW = websites and pages</span>
+          </li>
+        </ol>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<style>
+.task-card {
+  background:#ffffff;
+  border-left:8px solid var(--color);
+  border-radius:16px;
+  padding:22px;
+  box-shadow:0 8px 26px rgba(0,0,0,0.07);
+  transition: transform 0.28s, box-shadow 0.28s;
+}
+.task-card h3 {
+  color:var(--color);
+  font-size:20px;
+  margin-bottom:12px;
+}
+.task-card:hover {
+  transform: translateY(-8px) scale(1.01);
+  box-shadow:0 22px 50px rgba(0,0,0,0.15);
+}
+.questions ol {
+  padding-left: 20px;
+  margin: 0;
+}
+.questions li {
+  margin-bottom: 14px;
+  font-size: 16px;
+  color:#333;
+  position: relative;
+  cursor: pointer;
+}
+.answer {
+  display: none;
+  margin-top: 6px;
+  font-size: 15px;
+  color: #107c10;
+  background:#f0fff4;
+  padding:6px 10px;
+  border-radius:6px;
+  border:1px solid #cce5cc;
+  animation: fadeIn 0.3s ease-in-out;
+}
+.question:hover .answer {
+  display: inline-block;
+}
+@keyframes fadeIn {
+  from {opacity:0; transform:translateY(-5px);}
+  to {opacity:1; transform:translateY(0);}
+}
+</style>
+`,
+
+  "q": "Which complete workflow is most suitable for intro-level IT learners to understand how Word, Excel, Access, PowerPoint, Windows, IT, and Internet fit together?",
+  "a": "b",
+  "options": [
+    "Practice each program separately without understanding their purpose",
+    "Learn the basics of each program → Understand file management in Windows → Explore IT fundamentals → Use the Internet to gather information",
+    "Open each program randomly without direction",
+    "Skip learning and depend only on Internet searches"
+  ]
+},
+
     
 
 
