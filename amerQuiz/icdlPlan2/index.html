@@ -497,6 +497,50 @@ h2 {
     <div class="password-text">🔑 Password: 1550</div>
   </div>
 
+
+
+<!-- بوكس الواتساب -->
+<div class="material-container">
+  <a href="https://chat.whatsapp.com/K3p33XFDR6PI1TBwxGtqaN" target="_blank" class="material-box btn-metal-gaming">
+    🚀 ادخل الآن جروب الواتس اب
+  </a>
+  <div class="password-text">💬 تواصل مع المتدربين</div>
+</div>
+
+<style>
+/* استخدام نفس ستايل metallic للواتس اب */
+.btn-metal-gaming {
+    display: inline-block;
+    padding: 14px 28px;
+    font-size: 18px;
+    font-weight: bold;
+    color: #fff;
+    text-decoration: none;
+    text-align: center;
+    background: linear-gradient(145deg, #ff4d4d, #ff0000, #b30000); /* أحمر ميتاليك */
+    border: 2px solid #ff9999;
+    border-radius: 12px;
+    box-shadow: 0 6px 18px rgba(255,50,50,0.6), inset 0 1px 2px rgba(255,255,255,0.2);
+    transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.3s ease;
+}
+
+.btn-metal-gaming:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 28px rgba(255,100,100,0.8), inset 0 1px 2px rgba(255,255,255,0.25);
+    background: linear-gradient(145deg, #ff6666, #ff1a1a, #cc0000);
+}
+
+/* النص الصغير تحت الزر */
+.password-text {
+    margin-top: 6px;
+    font-size: 14px;
+    color: #ff0000;
+    text-align: center;
+}
+</style>
+
+
+
   <!-- بوكس الفاينال -->
   <div class="material-container">
     <a href="https://etiqotwf.github.io/liveServer1/amerQuiz/icdlFinalTest" target="_blank" class="material-box">
@@ -683,11 +727,19 @@ document.getElementById("saveBtn").addEventListener("click", async ()=> {
     const result = await res.json(); // قراءة رد السيرفر
 
     if(result.status === "ok"){
-      alert("✅ " + result.message);
-      await loadMembers();
-    } else {
-      alert("❌ خطأ: " + result.message);
-    }
+    alert("✅ " + result.message);
+
+    // 🌟 whatsapp link
+    setTimeout(() => {
+        const whatsappLink = "https://chat.whatsapp.com/K3p33XFDR6PI1TBwxGtqaN";
+        window.open(whatsappLink, "_blank");
+    }, 0);
+
+    await loadMembers();
+} else {
+    alert("❌ خطأ: " + result.message);
+}
+
 
   } catch(err){
     console.error("Error saving member", err);
