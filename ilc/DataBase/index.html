@@ -129,12 +129,10 @@
   </div>
 
   <!-- العناوين الرئيسية -->
-  <h2></h2>
-  <h2></h2>
+  
   <h2>𝒯𝒽𝑒 𝐵𝓇𝒾𝓉𝒾𝓈𝒽 𝐼𝓃𝓉𝑒𝓇𝓃𝒶𝓉𝒾𝑜𝓃𝒶𝓁 𝐿𝑒𝒶𝓇𝓃𝒾𝓃𝑔 𝒞𝑒𝓃𝓉𝑒𝓇 (𝐼𝐿𝐶)
 
 </h2>
-  <h2>نموذج إدارة قاعدة بيانات المتدربين</h2>
   <h2>🔹 Trainees Database Management Quiz Form </h2>
 </div>
 
@@ -228,13 +226,15 @@
 
 <!-- ستايل Metallic Red Gaming -->
 <style>
+/* زرار Metallic Gaming */
 .btn-metal-gaming {
   background: linear-gradient(145deg, #ff1a1a, #ff4d4d, #b30000);
   color: #fff;
   font-weight: bold;
   border: 1px solid #ff6666;
   border-radius: 12px;
-  padding: 12px 20px;
+  padding: 14px 24px; /* حجم أساسي أكبر */
+  font-size: 18px;
   cursor: pointer;
   box-shadow:
     0 4px 12px rgba(255,50,50,0.5),
@@ -242,13 +242,13 @@
     0 0 12px rgba(255,0,0,0.4);
   display: inline-flex;
   align-items: center;
-  gap: 6px;
+  gap: 8px;
   transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.3s ease;
   position: relative;
   overflow: hidden;
 }
 
-/* Hover متوهج وجيم */
+/* Hover متوهج */
 .btn-metal-gaming:hover {
   transform: translateY(-3px);
   background: linear-gradient(145deg, #ff4d4d, #ff1a1a, #cc0000);
@@ -258,7 +258,7 @@
     0 0 28px rgba(255,50,50,0.7);
 }
 
-/* حركة لمعان خفيف داخل الزر */
+/* حركة لمعان */
 .btn-metal-gaming::after {
   content: "";
   position: absolute;
@@ -279,7 +279,31 @@
 /* svg داخل الزر */
 .btn-metal-gaming svg {
   stroke: #fff;
+  width: 20px;
+  height: 20px;
 }
+
+/* ======== تكبير الأزرار على الموبايل ======== */
+@media (max-width: 768px) {
+  .btn-metal-gaming {
+    padding: 20px 32px !important;
+    font-size: 22px !important;
+    border-radius: 16px !important;
+    gap: 12px !important;
+  }
+
+  .btn-metal-gaming svg {
+    width: 28px !important;
+    height: 28px !important;
+  }
+
+  /* خلي الأزرار تمتد أفقياً على الموبايل */
+  .buttons-row {
+    flex-direction: column;
+    align-items: center;
+  }
+}
+
 </style>
 
 
@@ -370,7 +394,19 @@ h2 {
   text-shadow: 0 0 14px rgba(99,224,255,0.18) !important;
   letter-spacing: 0.6px;
   font-weight: 800;
+  font-size: 40px !important; /* تكبير الخط الأساسي */
+  line-height: 1.2;           /* تحسين ارتفاع السطر */
+  text-align: center;          /* وسط النص */
 }
+
+/* ======== تكبير أكثر على الموبايل ======== */
+@media (max-width: 768px) {
+  h2 {
+    font-size: 44px !important;  /* تكبير إضافي على الموبايل */
+    letter-spacing: 0.8px;
+  }
+}
+
 
 /* toggle button ستايل جديد */
 #toggleFormBtn {
@@ -590,33 +626,56 @@ body::before {
 
 
 
-  .btn-container {
+ .btn-container {
     display: flex;
     justify-content: center; /* مركز الأزرار أفقياً */
-    gap: 16px;
+    gap: 20px;               /* زيادة المسافة بين الأزرار */
     margin-top: 20px;
-    flex-wrap: wrap; /* لو الشاشة ضيقة تتكسر الأسطر */
-  }
+    flex-wrap: wrap;          /* لو الشاشة ضيقة تتكسر الأسطر */
+}
 
-  .btn {
-    font-size: 25px;
-    padding: 12px 16px;
+/* الأزرار */
+.btn {
+    font-size: 33px;          /* تكبير الخط */
+    padding: 18px 24px;       /* تكبير مساحة الضغط */
     border: 1px solid #555;
-    border-radius: 6px;
+    border-radius: 12px;      /* زيادة نصف القطر للراحة */
     color: #222;
     background-color: #f8f9fa;
     cursor: pointer;
     display: inline-flex;
     flex-direction: column;
     align-items: center;
-    gap: 4px;
-    width: 130px;
-    box-shadow: none;
-    font-weight: 600;
-    transition: background-color 0.3s ease, color 0.3s ease;
+    gap: 6px;                 /* زيادة المسافة بين النص والأيقونة */
+    width: 150px;             /* تكبير عرض الزر */
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1); /* ظل خفيف */
+    font-weight: 700;
+    transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s ease;
     user-select: none;
-  }
+}
 
+/* Hover effect */
+.btn:hover {
+    background-color: #e2e6ea;
+    transform: translateY(-3px);
+}
+
+/* ======== تكبير الأزرار على الموبايل ======== */
+@media (max-width: 768px) {
+    .btn {
+        font-size: 32px !important;   /* تكبير الخط للموبايل */
+        padding: 22px 28px !important; /* زيادة البادينج */
+        width: 90%;                    /* الزرار يشغل معظم عرض الشاشة */
+        border-radius: 16px !important;
+        gap: 8px !important;
+    }
+
+    .btn-container {
+        flex-direction: column;        /* ترتيب الأزرار عمودي على الموبايل */
+        align-items: center;
+        gap: 16px;
+    }
+}
 
 
   .btn:hover {
