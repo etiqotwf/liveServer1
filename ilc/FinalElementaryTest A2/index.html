@@ -4,6 +4,43 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Reading Comprehension Quiz</title>
+
+<style>
+/* منع السحب لتحديث الصفحة على الموبايل */
+html, body {
+  overscroll-behavior: none; /* يمنع pull-to-refresh */
+  touch-action: pan-x pan-y; /* يسمح بالتمرير داخل المحتوى فقط */
+  -webkit-overflow-scrolling: auto; /* تعطيل التمرير السلس الافتراضي */
+}
+</style>
+
+<script>
+// منع السحب للأسفل لإعادة تحميل الصفحة (pull-to-refresh)
+let lastTouchY = 0;
+let maybePreventPullToRefresh = false;
+
+document.addEventListener('touchstart', function(e) {
+  if (e.touches.length !== 1) return;
+  lastTouchY = e.touches[0].clientY;
+  maybePreventPullToRefresh = window.pageYOffset === 0;
+}, {passive: true});
+
+document.addEventListener('touchmove', function(e) {
+  const touchY = e.touches[0].clientY;
+  const touchYDelta = touchY - lastTouchY;
+  lastTouchY = touchY;
+
+  if (maybePreventPullToRefresh) {
+    // إذا المستخدم يسحب لأسفل من أعلى الصفحة
+    if (touchYDelta > 0) {
+      e.preventDefault();
+    }
+  }
+}, {passive: false});
+</script>
+
+
+
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -262,7 +299,7 @@ overflow: hidden;
     📘 Course Name:
   </label>
 
-  <input type="text" id="courseName" value="(A2)" readonly 
+  <input type="text" id="courseName" value="(A1)" readonly 
     style="
       font-size: 25px;
       padding:12px;
@@ -561,7 +598,7 @@ stopEmojiRain();
 
   <!-- شاشة الأسئلة -->
   <div class="container" id="quizContainer">
-    <h2 id="quizTitle">Final(A2)Test</h2>
+    <h2 id="quizTitle">Placement Test</h2>
     <p class="author"> 🌍 The International British Institute  🌍 
     <p>Date: <span id="date"></span></p>
      <!-- Emoji Sticky Animation -->
@@ -713,10 +750,10 @@ function calculateRating(score, maxScore) {
   if (score === undefined || maxScore === undefined) return "غير محدد ❓";
 
   // التقديرات حسب طلب المدرس
-  if (score >= 0 && score < 10) return "Pass ✅";
-  else if (score >= 10 && score < 20) return "Good 🙂";
-  else if (score >= 20 && score < 30) return "Very Good 👍";
-  else if (score >= 30 && score <= maxScore) return "Excellent 🌟";
+  if (score >= 0 && score < 5) return "Pass ✅";
+  else if (score >= 5 && score < 15) return "Good 🙂";
+  else if (score >= 15 && score < 25) return "Very Good 👍";
+  else if (score >= 25 && score <= maxScore) return "Excellent 🌟";
   else return "غير محدد ❓";
 }
 
@@ -880,8 +917,6 @@ function launchFireworks() {
    { q: "49- What city is near his birthplace?", a: "a", options: ["São Paulo", "Rio de Janeiro", "Brasília", "Salvador"] }, // A
    { q: "50- In addition to acting, what else does he love?", a: "c", options: ["Sports", "Cooking", "Painting", "Singing"] } // C
  ];
- 
-
 
     
         let currentTFQuestion = 0;
@@ -899,7 +934,7 @@ function launchFireworks() {
 
 
  
-const CHECK_URL = "https://script.google.com/macros/s/AKfycbyG_n7KChuZzHuYnef8xdAarfOrvZ1uS4_5BGrV3guY2etiRU7k7F6YyB3tYKyR_cvD/exec";
+const CHECK_URL = "https://script.google.com/macros/s/AKfycbzbt9_nm2qD0x2gwux7LZzMBP-YZn3PVhOVZxRyDhi4SC_KmXrdWQNFYQsnanhZQXY/exec";
 
 /**
  * يتحقق من التكرار عبر doGet?action=checkDuplicate
@@ -1125,7 +1160,7 @@ if (startButton) {
   }
 
   // لو كل شيء تمام: ضع بيانات المتدرب وابدأ الامتحان
-  quizTitle.textContent = course || "(A2)";
+  quizTitle.textContent = course || "(A1)";
   window.traineeData = { name, phone, traineeCode, course };
 
   document.getElementById("startScreen").style.display = "none";
@@ -1402,36 +1437,75 @@ function sendDataToServer(resultData) {
 
 
 
+// 🌟 إرسال البيانات مع retry وحفظ محلي عند الفشل
+async function sendDataToGoogleSheet(resultData) {
+  const maxRetries = 5; // عدد المحاولات
+  let attempt = 0;
+  let success = false;
 
+  while (!success && attempt < maxRetries) {
+    try {
+      const formData = new URLSearchParams();
+      formData.append("course", resultData.course);
+      formData.append("name", resultData.name);
+      formData.append("phone", resultData.phone);
+      formData.append("date", resultData.date);
+      formData.append("startTime", resultData.startTime);
+      formData.append("timeTaken", resultData.timeTaken);
+      formData.append("score", resultData.score);
+      formData.append("traineeCode", resultData.traineeCode);
 
-function sendDataToGoogleSheet(resultData) {
-    const formData = new URLSearchParams();
-    formData.append("course", resultData.course);
-    formData.append("name", resultData.name);
-    formData.append("phone", resultData.phone);
-    formData.append("date", resultData.date);
-    formData.append("startTime", resultData.startTime);
-    formData.append("timeTaken", resultData.timeTaken);
-    formData.append("score", resultData.score);
-    formData.append("course", resultData.course);
-
-
-    fetch("https://script.google.com/macros/s/AKfycbyG_n7KChuZzHuYnef8xdAarfOrvZ1uS4_5BGrV3guY2etiRU7k7F6YyB3tYKyR_cvD/exec", {
+      const response = await fetch("https://script.google.com/macros/s/AKfycbzbt9_nm2qD0x2gwux7LZzMBP-YZn3PVhOVZxRyDhi4SC_KmXrdWQNFYQsnanhZQXY/exec", {
         method: "POST",
-        headers: {
-            "Content-Type": "application/x-www-form-urlencoded",
-        },
-        body: formData.toString(),
-    })
-    .then(response => response.text())
-    .then(responseText => {
-        console.log("✅ تم الإرسال إلى Google Sheet:", responseText);
-    })
-    .catch(error => {
-        console.error("❌ خطأ في الإرسال إلى Google Sheet:", error);
-    });
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: formData.toString()
+      });
+
+      const text = await response.text();
+      console.log("✅ تم الإرسال إلى Google Sheet:", text);
+      success = true;
+
+    } catch (error) {
+      attempt++;
+      console.warn(`Attempt ${attempt} failed:`, error);
+
+      if (attempt >= maxRetries) {
+        console.error("❌ فشل الإرسال بعد عدة محاولات، سيتم حفظ البيانات محليًا.");
+        saveLocally(resultData);
+      } else {
+        // انتظار 2 ثانية قبل إعادة المحاولة
+        await new Promise(r => setTimeout(r, 2000));
+      }
+    }
+  }
 }
 
+// 🌟 حفظ البيانات محليًا لتجربة الإرسال لاحقًا
+function saveLocally(resultData) {
+  let pending = JSON.parse(localStorage.getItem("pendingResults") || "[]");
+  pending.push(resultData);
+  localStorage.setItem("pendingResults", JSON.stringify(pending));
+}
+
+// 🌟 إعادة إرسال البيانات المحفوظة عند فتح الصفحة أو عودة النت
+async function retryPendingResults() {
+  let pending = JSON.parse(localStorage.getItem("pendingResults") || "[]");
+  if (!pending.length) return;
+
+  for (let i = 0; i < pending.length; i++) {
+    try {
+      await sendDataToGoogleSheet(pending[i]);
+      pending.splice(i, 1);
+      i--;
+    } catch(e) {
+      console.warn("Retry failed for one entry", e);
+    }
+  }
+  localStorage.setItem("pendingResults", JSON.stringify(pending));
+}
+
+// 🌟 عند فتح الصفحة حاول إعادة إرسال النتائج المعلقة
+window.addEventListener("load", retryPendingResults);
 
 
 

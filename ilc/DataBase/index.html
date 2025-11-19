@@ -855,33 +855,34 @@ body::before {
 </style>
 
 
-
 <div id="traineesTable">
-<h3 style="
-  font-weight: 900; 
-  font-size: 18px; 
-  color: #222; 
-  display: flex; 
-  align-items: center; 
-  gap: 8px;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  margin: 0;           
-  padding-top: 16px;    /* رفع أكثر */
-">
-  🖨️ ⬆️ <span>لطباعة الاحصاءات والرسوم البيانية CTRL+p</span>
-</h3>
+  <h1 style="
+    font-weight: 900; 
+    font-size: 24px;        /* تكبير الحجم */
+    color: #FFFF00;         /* أصفر فائق */
+    display: flex; 
+    align-items: center; 
+    gap: 8px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;           
+    padding-top: 16px;     
+  ">
+    🧑‍🎓📊 <span>Search Trainees Table</span>
+  </h1>
+
   <table id="allTrainees">
     <thead>
       <tr>
        <tr>
    <th>🕒 تاريخ ووقت التسجيل</th>
-         <th>📝 اسم الاختبار</th>
-    <th>👤 الاسم</th>
-    <th>📞 الهاتف</th>
-    <th>⏰ وقت البدء</th>
-    <th>⏳ المدة المستغرقة</th>
-    <th>🎯 النتيجة</th>
-    <th>🗑️ إجراء</th>
+<th>📝 اسم الاختبار</th>
+<th>👤 الاسم</th>
+<th>📞 الهاتف</th>
+<th>⏰ وقت البدء</th>
+<th>⏳ المدة المستغرقة</th>
+<th>🎯 النتيجة</th>
+<th>🔑 كود المتدرب</th>     <!-- العمود الجديد لكود المتدرب -->
+<th>🗑️ إجراء</th>
 
 </tr>
 
@@ -927,15 +928,17 @@ function syncWithGoogleSheets() {
         const store = tx.objectStore("trainees");
 
         newData.forEach(row => {
-          const newRecord = {
-            datetime: row[0] || "",     // 📅 التاريخ
-            course: row[1] || "",       // 📘 اسم الدورة
-            name: row[2] || "",         // 🧑‍🎓 الاسم
-            phone: row[3] || "",        // 📞 الهاتف
-            startTime: row[4] || "",    // ⏰ وقت البدء
-            timeTaken: row[5] || "",    // ⏳ المدة
-            score: row[6] || ""         // 🎯 النتيجة
-          };
+  const newRecord = {
+    datetime: row[0] || "",      // 📅 التاريخ
+    course: row[1] || "",        // 📘 اسم الدورة
+    name: row[2] || "",          // 🧑‍🎓 الاسم
+    phone: row[3] || "",         // 📞 الهاتف
+    startTime: row[4] || "",     // ⏰ وقت البدء
+    timeTaken: row[5] || "",     // ⏳ المدة
+    score: row[6] || "",         // 🎯 النتيجة
+    traineeCode: row[7] || ""    // 🔑 كود المتدرب
+  };
+
 
           store.add(newRecord);
         });
@@ -1722,9 +1725,8 @@ if (!isNaN(score) && !isNaN(total) && total !== 0) {
 
 
           const row = document.createElement("tr");
-const fields = ["datetime", "course", "name", "phone", "startTime", "timeTaken", "score"];
-
-        fields.forEach(field => {
+const fields = ["datetime", "course", "name", "phone", "startTime", "timeTaken", "score", "traineeCode"];
+     fields.forEach(field => {
   const cell = document.createElement("td");
 
   if (field === "datetime") {
@@ -1738,10 +1740,14 @@ const fields = ["datetime", "course", "name", "phone", "startTime", "timeTaken",
   } else if (field === "score") {
     let scoreText = d.score || "";
     if (typeof scoreText === "string" && scoreText.includes("/")) {
-      cell.innerHTML = `<strong style="font-size: 18px; color: #003366;">🎯 ${scoreText}</strong>`;
+cell.innerHTML = `<strong style="font-size: 18px; color: #FFD700;">🎯 ${scoreText}</strong>`;
     } else {
       cell.textContent = scoreText;
     }
+  } else if (field === "rating") {
+    cell.textContent = d.rating || ""; // التقدير كما هو في الريزيلت
+  } else if (field === "traineeCode") {
+    cell.textContent = d.traineeCode || ""; // كود المتدرب
   } else {
     cell.textContent = d[field] || "";
   }
@@ -1771,6 +1777,7 @@ const fields = ["datetime", "course", "name", "phone", "startTime", "timeTaken",
 
   row.appendChild(cell);
 });
+
 
           const deleteCell = document.createElement("td");
           const deleteBtn = document.createElement("button");
