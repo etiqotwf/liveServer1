@@ -2117,10 +2117,9 @@ function getRegion(inputName) {
     return regionsMap[inputName];
   }
 
-  // 2️⃣ البحث الجزئي داخل المفاتيح
-  const found = Object.keys(regionsMap).find(key =>
-    key.includes(inputName)
-  );
+  // 2️⃣ البحث الجزئي داخل المفاتيح مع ترتيب المفاتيح حسب الطول (الأطول أولًا)
+  const sortedKeys = Object.keys(regionsMap).sort((a,b) => b.length - a.length);
+  const found = sortedKeys.find(key => inputName.includes(key) || key.includes(inputName));
 
   if (found) {
     return regionsMap[found];
@@ -2129,7 +2128,6 @@ function getRegion(inputName) {
   // 3️⃣ لو مفيش تطابق نهائي → الهيئة
   return "الهيئة";
 }
-
 
 
 

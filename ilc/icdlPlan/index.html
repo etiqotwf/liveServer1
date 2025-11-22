@@ -501,6 +501,71 @@ h2 {
   </div>
 
 
+  <h2 style="
+  text-align:center;
+  font-size:24px;
+  font-weight:800;
+  color:#00aaff;
+  margin-bottom:10px;
+  text-shadow:0 0 10px rgba(0,170,255,0.3);
+">
+  👉 لحجز المجموعات الجديدة اضغط 👉
+</h2>
+
+
+
+<div style="text-align:center; margin:20px 0; display:flex; justify-content:center; gap:20px;">
+
+  <button id="btnG8" 
+    style="background:#FFE082; 
+           padding:18px 28px; 
+           font-size:22px; 
+           font-weight:bold; 
+           border:none; 
+           border-radius:14px; 
+           cursor:pointer; 
+           box-shadow:0 4px 12px rgba(0,0,0,0.3); 
+           transition:0.3s ease, background 0.3s ease;">
+    🚀 G8
+</button>
+
+<button id="btnG9" 
+    style="background:#D7CCC8; 
+           padding:18px 28px; 
+           font-size:22px; 
+           font-weight:bold; 
+           border:none; 
+           border-radius:14px; 
+           cursor:pointer; 
+           box-shadow:0 4px 12px rgba(0,0,0,0.3); 
+           transition:0.3s ease, background 0.3s ease;">
+    🌟 G9
+</button>
+
+<script>
+  const btnG8 = document.getElementById('btnG8');
+  const btnG9 = document.getElementById('btnG9');
+
+  btnG8.addEventListener('mouseenter', ()=> {
+    btnG8.style.transform = 'scale(1.08)';
+    btnG8.style.background = '#FFD54F'; // لون جديد عند الهوفر
+  });
+  btnG8.addEventListener('mouseleave', ()=> {
+    btnG8.style.transform = 'scale(1)';
+    btnG8.style.background = '#FFE082'; // اللون الأصلي
+  });
+
+  btnG9.addEventListener('mouseenter', ()=> {
+    btnG9.style.transform = 'scale(1.08)';
+    btnG9.style.background = '#BCAAA4'; // لون جديد عند الهوفر
+  });
+  btnG9.addEventListener('mouseleave', ()=> {
+    btnG9.style.transform = 'scale(1)';
+    btnG9.style.background = '#D7CCC8'; // اللون الأصلي
+  });
+</script>
+
+</div>
 
 <!-- بوكس الواتساب -->
 <div class="material-container">
@@ -687,6 +752,12 @@ for (let w = 1; w <= 6; w++) { // 6 أسابيع فقط (كل مجموعة = 12 
     tbody.appendChild(tr);
   }
 }
+
+// 🎯 ربط أزرار G8 و G9 بفتح المودال
+document.getElementById("btnG8").addEventListener("click", () => openModal("G8"));
+document.getElementById("btnG9").addEventListener("click", () => openModal("G9"));
+
+
 
   // ✅ modal handling
   const modal=document.getElementById("nameModal");

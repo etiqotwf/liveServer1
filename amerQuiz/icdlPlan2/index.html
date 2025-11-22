@@ -459,14 +459,17 @@ h2 {
 </div>
 
 
+<!--
 <div class="trainee-questions">
-<button class="toggle-questions-btn">
-  ❓ أسئلة المتدربين اضغط هنا لرؤية الأسئلة
-  <span class="notification">
-    <span class="icon">✉️</span>
-    <span id="questions-badge">0</span>
-  </span>
-</button>
+  <button class="toggle-questions-btn">
+    ❓ أسئلة المتدربين اضغط هنا لرؤية الأسئلة
+    <span class="notification">
+      <span class="icon">✉️</span>
+      <span id="questions-badge">0</span>
+    </span>
+  </button>
+</div>
+-->
 
 
   <div id="questionsSection" style="display:none; margin-top:10px;">
@@ -498,6 +501,71 @@ h2 {
   </div>
 
 
+  <h2 style="
+  text-align:center;
+  font-size:24px;
+  font-weight:800;
+  color:#00aaff;
+  margin-bottom:10px;
+  text-shadow:0 0 10px rgba(0,170,255,0.3);
+">
+  👉 لحجز المجموعات الجديدة اضغط 👉
+</h2>
+
+
+
+<div style="text-align:center; margin:20px 0; display:flex; justify-content:center; gap:20px;">
+
+  <button id="btnG8" 
+    style="background:#FFE082; 
+           padding:18px 28px; 
+           font-size:22px; 
+           font-weight:bold; 
+           border:none; 
+           border-radius:14px; 
+           cursor:pointer; 
+           box-shadow:0 4px 12px rgba(0,0,0,0.3); 
+           transition:0.3s ease, background 0.3s ease;">
+    🚀 G8
+</button>
+
+<button id="btnG9" 
+    style="background:#D7CCC8; 
+           padding:18px 28px; 
+           font-size:22px; 
+           font-weight:bold; 
+           border:none; 
+           border-radius:14px; 
+           cursor:pointer; 
+           box-shadow:0 4px 12px rgba(0,0,0,0.3); 
+           transition:0.3s ease, background 0.3s ease;">
+    🌟 G9
+</button>
+
+<script>
+  const btnG8 = document.getElementById('btnG8');
+  const btnG9 = document.getElementById('btnG9');
+
+  btnG8.addEventListener('mouseenter', ()=> {
+    btnG8.style.transform = 'scale(1.08)';
+    btnG8.style.background = '#FFD54F'; // لون جديد عند الهوفر
+  });
+  btnG8.addEventListener('mouseleave', ()=> {
+    btnG8.style.transform = 'scale(1)';
+    btnG8.style.background = '#FFE082'; // اللون الأصلي
+  });
+
+  btnG9.addEventListener('mouseenter', ()=> {
+    btnG9.style.transform = 'scale(1.08)';
+    btnG9.style.background = '#BCAAA4'; // لون جديد عند الهوفر
+  });
+  btnG9.addEventListener('mouseleave', ()=> {
+    btnG9.style.transform = 'scale(1)';
+    btnG9.style.background = '#D7CCC8'; // اللون الأصلي
+  });
+</script>
+
+</div>
 
 <!-- بوكس الواتساب -->
 <div class="material-container">
@@ -608,11 +676,20 @@ const scriptURL = "https://script.google.com/macros/s/AKfycbzbUWAlJ4oI-OF0xrGQmO
 (function(){
  // كان عندك 15 مجموعة وتاريخ 31 أغسطس
 // استبدلها بهذا:
-const groups = Array.from({length:7}, (_,i) => 'G' + (i+1));
+const groups = Array.from({length: 9}, (_, i) => 'G' + (i + 1));
 
 const colors = [
-  '#FFCDD2','#BBDEFB','#C8E6C9','#FFF9C4','#FFCCBC','#D1C4E9','#B2EBF2'
+  '#FFCDD2', // مجموعة 1
+  '#BBDEFB', // مجموعة 2
+  '#C8E6C9', // مجموعة 3
+  '#FFF9C4', // مجموعة 4
+  '#FFCCBC', // مجموعة 5
+  '#D1C4E9', // مجموعة 6
+  '#B2EBF2', // مجموعة 7
+  '#FFE082', // مجموعة 8 - لون جديد
+  '#D7CCC8'  // مجموعة 9 - لون فاتح جديد
 ];
+
 
 let startDate = new Date(2025, 10, 16); // 2 نوفمبر 2025 (شهر 10 لأن العد يبدأ من صفر)
 
@@ -675,6 +752,12 @@ for (let w = 1; w <= 6; w++) { // 6 أسابيع فقط (كل مجموعة = 12 
     tbody.appendChild(tr);
   }
 }
+
+// 🎯 ربط أزرار G8 و G9 بفتح المودال
+document.getElementById("btnG8").addEventListener("click", () => openModal("G8"));
+document.getElementById("btnG9").addEventListener("click", () => openModal("G9"));
+
+
 
   // ✅ modal handling
   const modal=document.getElementById("nameModal");
@@ -779,8 +862,18 @@ window.onclick=function(e){
       container.style.flexWrap="wrap";
       container.style.gap="12px";
 
-      const nameColors = ['#e53935','#8e24aa','#3949ab','#00897b','#f4511e','#6d4c41','#004d40','#43a047','#1e88e5','#d81b60'];
-      const emojis = ['🎓','🖊️','📚','📝','💡','🏆','🌟','🔥','✅','🎯'];
+      const nameColors = [
+  '#e53935','#8e24aa','#3949ab','#00897b','#f4511e',
+  '#6d4c41','#004d40','#43a047','#1e88e5','#d81b60',
+  '#ff9800', // ✅ عنصر جديد 1
+  '#9c27b0'  // ✅ عنصر جديد 2
+];
+
+const emojis = [
+  '🎓','🖊️','📚','📝','💡','🏆','🌟','🔥','🥇','🎯',
+  '🎉', // ✅ عنصر جديد 1
+  '✅'  // ✅ عنصر جديد 2
+];
 
       groups.forEach((g,i)=>{
         const div=document.createElement("div");
