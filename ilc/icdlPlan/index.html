@@ -419,6 +419,116 @@ h2 {
 }
 
 
+/* الحاوية الأساسية */
+.main-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 25px;
+  padding: 20px;
+}
+
+/*** العنوان ***/
+.title {
+  text-align: center;
+  font-size: 24px;
+  font-weight: 800;
+  color: #00aaff;
+  margin: 10px 0;
+  text-shadow: 0 0 10px rgba(0,170,255,0.3);
+}
+
+/*** أزرار G8 + G9 ***/
+.groups-buttons {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.group-btn {
+  padding: 18px 28px;
+  font-size: 22px;
+  font-weight: bold;
+  border: none;
+  border-radius: 14px;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+  transition: 0.3s ease;
+}
+
+.g8 { background: #FFE082; }
+.g9 { background: #D7CCC8; }
+
+.g8:hover { transform: scale(1.08); background: #FFD54F; }
+.g9:hover { transform: scale(1.08); background: #BCAAA4; }
+
+/*** الماتيريال + الفاينال + واتساب ***/
+.material-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.material-box {
+  display: inline-block;
+  padding: 14px 28px;
+  background: #00aaff;
+  color: #fff;
+  font-size: 20px;
+  border-radius: 12px;
+  text-align: center;
+  font-weight: bold;
+  text-decoration: none;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.25);
+  transition: 0.3s;
+}
+
+.password-text {
+  margin-top: 6px;
+  font-size: 14px;
+  color: #ff0000;
+  text-align: center;
+}
+
+/*** ريسبونسيف — للموبايل ***/
+@media (max-width: 600px) {
+
+  .group-btn {
+    width: 100%;
+    max-width: 280px;
+  }
+
+  .material-box {
+    width: 100%;
+    max-width: 300px;
+  }
+
+  .groups-buttons {
+    flex-direction: column;
+    align-items: center;
+  }
+}
+
+
+
+/* صف الماتيريال + الفاينال */
+.row-material-final {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+/* للموبايل — يحولهم عمود تحت بعض */
+@media (max-width: 600px) {
+  .row-material-final {
+    flex-direction: column;
+    align-items: center;
+  }
+}
+
 
 </style>
 </head>
@@ -490,135 +600,55 @@ h2 {
 
 
 <!-- ✅ بوكس Material + Final Exam مع إظهار الباسورد -->
-<div style="display: flex; justify-content: center; gap: 40px; margin-top: 30px;">
+<!-- صف مكوّن من زر الماتيريال + زر الفاينال -->
+<div class="row-material-final">
 
-  <!-- بوكس الماتيريال -->
+  <!-- الماتيريال -->
   <div class="material-container">
-    <a href="https://etiqotwf.github.io/liveServer1/amerQuiz/icdlMaterial" target="_blank" class="material-box">
+    <a href="https://etiqotwf.github.io/liveServer1/amerQuiz/icdlMaterial" 
+       target="_blank" class="material-box">
       📦 Material
     </a>
     <div class="password-text">🔑 Password: 1550</div>
   </div>
 
-
-  <h2 style="
-  text-align:center;
-  font-size:24px;
-  font-weight:800;
-  color:#00aaff;
-  margin-bottom:10px;
-  text-shadow:0 0 10px rgba(0,170,255,0.3);
-">
-  👉 لحجز المجموعات الجديدة اضغط 👉
-</h2>
-
-
-
-<div style="text-align:center; margin:20px 0; display:flex; justify-content:center; gap:20px;">
-
-  <button id="btnG8" 
-    style="background:#FFE082; 
-           padding:18px 28px; 
-           font-size:22px; 
-           font-weight:bold; 
-           border:none; 
-           border-radius:14px; 
-           cursor:pointer; 
-           box-shadow:0 4px 12px rgba(0,0,0,0.3); 
-           transition:0.3s ease, background 0.3s ease;">
-    🚀 G8
-</button>
-
-<button id="btnG9" 
-    style="background:#D7CCC8; 
-           padding:18px 28px; 
-           font-size:22px; 
-           font-weight:bold; 
-           border:none; 
-           border-radius:14px; 
-           cursor:pointer; 
-           box-shadow:0 4px 12px rgba(0,0,0,0.3); 
-           transition:0.3s ease, background 0.3s ease;">
-    🌟 G9
-</button>
-
-<script>
-  const btnG8 = document.getElementById('btnG8');
-  const btnG9 = document.getElementById('btnG9');
-
-  btnG8.addEventListener('mouseenter', ()=> {
-    btnG8.style.transform = 'scale(1.08)';
-    btnG8.style.background = '#FFD54F'; // لون جديد عند الهوفر
-  });
-  btnG8.addEventListener('mouseleave', ()=> {
-    btnG8.style.transform = 'scale(1)';
-    btnG8.style.background = '#FFE082'; // اللون الأصلي
-  });
-
-  btnG9.addEventListener('mouseenter', ()=> {
-    btnG9.style.transform = 'scale(1.08)';
-    btnG9.style.background = '#BCAAA4'; // لون جديد عند الهوفر
-  });
-  btnG9.addEventListener('mouseleave', ()=> {
-    btnG9.style.transform = 'scale(1)';
-    btnG9.style.background = '#D7CCC8'; // اللون الأصلي
-  });
-</script>
-
-</div>
-
-<!-- بوكس الواتساب -->
-<div class="material-container">
-  <a href="https://chat.whatsapp.com/K3p33XFDR6PI1TBwxGtqaN" target="_blank" class="material-box btn-metal-gaming">
-    🚀 ادخل الآن جروب الواتس اب
-  </a>
-  <div class="password-text">💬 تواصل مع المتدربين</div>
-</div>
-
-<style>
-/* استخدام نفس ستايل metallic للواتس اب */
-.btn-metal-gaming {
-    display: inline-block;
-    padding: 14px 28px;
-    font-size: 18px;
-    font-weight: bold;
-    color: #fff;
-    text-decoration: none;
-    text-align: center;
-    background: linear-gradient(145deg, #ff4d4d, #ff0000, #b30000); /* أحمر ميتاليك */
-    border: 2px solid #ff9999;
-    border-radius: 12px;
-    box-shadow: 0 6px 18px rgba(255,50,50,0.6), inset 0 1px 2px rgba(255,255,255,0.2);
-    transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.3s ease;
-}
-
-.btn-metal-gaming:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 12px 28px rgba(255,100,100,0.8), inset 0 1px 2px rgba(255,255,255,0.25);
-    background: linear-gradient(145deg, #ff6666, #ff1a1a, #cc0000);
-}
-
-/* النص الصغير تحت الزر */
-.password-text {
-    margin-top: 6px;
-    font-size: 14px;
-    color: #ff0000;
-    text-align: center;
-}
-</style>
-
-
-
-  <!-- بوكس الفاينال -->
+  <!-- الفاينال -->
   <div class="material-container">
-    <a href="https://etiqotwf.github.io/liveServer1/amerQuiz/icdlFinalTest" target="_blank" class="material-box">
+    <a href="https://etiqotwf.github.io/liveServer1/amerQuiz/icdlFinalTest" 
+       target="_blank" class="material-box">
       📝 Final Exam
     </a>
-    <div class="password-text">🔑 Password: </div>
+    <div class="password-text">🔑 Password:</div>
   </div>
 
 </div>
 
+
+  <h2 class="title">
+    👉 لحجز المجموعات الجديدة اضغط 👉
+  </h2>
+
+  <!-- أزرار G8 + G9 -->
+  <div class="groups-buttons">
+
+    <button id="btnG8" class="group-btn g8">🚀 G8</button>
+
+    <button id="btnG9" class="group-btn g9">🌟 G9</button>
+
+  </div>
+
+  <!-- الواتساب -->
+  <div class="material-container">
+    <a href="https://chat.whatsapp.com/K3p33XFDR6PI1TBwxGtqaN" 
+       target="_blank" class="material-box btn-metal-gaming">
+      🚀 ادخل الآن جروب الواتس اب
+    </a>
+    <div class="password-text">💬 تواصل مع المتدربين</div>
+  </div>
+
+ 
+
+</div>
 
 
 <!-- ✅ المودال -->
