@@ -317,8 +317,7 @@
     console.log("💾 اتحفظ أوفلاين:", formData);
   }
 
-  // ☁️ محاولة إرسال للـ Google Sheet
-  function sendToGoogleSheets(formData, callback) {
+ function sendToGoogleSheets(formData, callback) {
     fetch("https://script.google.com/macros/s/AKfycbw5P1p8vgWYf40hBzsSSUhK8ykZWdumWd5GAUuRbsyl5ur8-qyS4_4xoYhCiFQ2PL7UuQ/exec", {
       method: "POST",
       body: new URLSearchParams(formData)
@@ -332,63 +331,29 @@
         if (callback) callback(false);
       }
     })
-    .catch(() => {
+    .catch(err => {
+      console.error("خطأ في الإرسال:", err);
       if (callback) callback(false);
     });
   }
 
-  // 🔄 مزامنة كل السجلات مع إعادة المحاولة
-  function syncPendingData() {
-    const transaction = db.transaction(["records"], "readwrite"); // 👈 نفس التغيير
-    const store = transaction.objectStore("records");
-    const getAll = store.getAll();
-
-    getAll.onsuccess = function () {
-      const items = getAll.result;
-      if (items.length === 0) {
-        console.log("✅ مفيش سجلات معلقة");
-        return;
-      }
-
-      let pending = items.length;
-      items.forEach(item => {
-        sendToGoogleSheets(item, function (success) {
-          if (success) {
-            store.delete(item.id);
-            console.log("🗑️ اتحذف بعد المزامنة:", item);
-          } else {
-            console.warn("⚠️ فشل الإرسال، هنجرب تاني:", item);
-          }
-
-          pending--;
-          if (pending === 0) {
-            setTimeout(syncPendingData, 5000);
-          }
-        });
-      });
-    };
-  }
-
-  // تشغيل المزامنة عند رجوع الإنترنت
-  window.addEventListener("online", syncPendingData);
-
-  // 🎯 تعديل الفورم
   document.addEventListener("DOMContentLoaded", function () {
     const form = document.querySelector("form");
 
     form.addEventListener("submit", function (e) {
-  if (!navigator.onLine) {
-    e.preventDefault();
-    const formData = Object.fromEntries(new FormData(form).entries());
-    saveOffline(formData);
-    form.reset();
-    alert("⚠️ مفيش إنترنت.. البيانات اتحفظت وهتتبعت تلقائي لما النت يرجع ✅");
+      e.preventDefault(); // منع الإرسال التقليدي
 
-    // 🔄 عمل Refresh للصفحة عشان النموذج يبدأ من جديد
-    location.reload();
-  }
-});
+      const formData = Object.fromEntries(new FormData(form).entries());
 
+      sendToGoogleSheets(formData, function(success) {
+        if (success) {
+          alert("✅ تم إرسال البيانات بنجاح إلى Google Sheets");
+          form.reset(); // إعادة تهيئة النموذج بعد الإرسال
+        } else {
+          alert("⚠️ حدث خطأ أثناء إرسال البيانات، حاول مرة أخرى");
+        }
+      });
+    });
   });
 </script>
 

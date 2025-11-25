@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>استبيان احتياجات التدريب — مركز تدريب</title>
+<style>
+  :root{
+    --primary:#007bff;
+    --accent:#00aaff;
+    --card-bg:#ffffff;
+    --muted:#666;
+    --glass: rgba(255,255,255,0.85);
+  }
+  *{box-sizing:border-box;font-family: "Segoe UI", Tahoma, system-ui, Arial;}
+  body{
+    margin:0;
+    background: linear-gradient(180deg,#f3f8ff 0%, #eef6ff 60%);
+    color:#0b2436;
+    padding:20px;
+    min-height:100vh;
+    display:flex;
+    align-items:flex-start;
+    justify-content:center;
+  }
+  .container{
+    max-width:980px;
+    width:100%;
+    display:grid;
+    grid-template-columns: 300px 1fr;
+    gap:20px;
+  }
+  @media (max-width:980px){.container{grid-template-columns:1fr}}
+  header{
+    grid-column: 1 / -1;
+    display:flex;
+    gap:16px;
+    align-items:center;
+    margin-bottom:10px;
+  }
+  header img{
+    width:84px;
+    height:84px;
+    object-fit:cover;
+    border-radius:10px;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+  }
+  header h1{margin:0;font-size:20px;color:var(--primary);}
+  header p{margin:0;color:var(--muted);font-size:14px}
+
+  form{
+    background: linear-gradient(180deg, rgba(255,255,255,0.9), rgba(250,250,255,0.9));
+    padding:16px;
+    border-radius:10px;
+    box-shadow: 0 6px 18px rgba(3,50,100,0.04);
+    display:flex;
+    flex-direction:column;
+    gap:12px;
+  }
+  label{font-weight:700;font-size:14px;margin-bottom:6px}
+  .row{display:flex;gap:10px;flex-wrap:wrap}
+  input[type="text"], select, textarea{
+    width:100%;
+    padding:10px 12px;
+    border-radius:8px;
+    border:1px solid #e0e6ef;
+    outline:none;
+    font-size:15px;
+    background:#fff;
+  }
+  textarea{min-height:90px;resize:vertical}
+  .small{font-size:13px;color:var(--muted)}
+  .checkbox-grid{display:grid;grid-template-columns: repeat(2, 1fr);gap:8px}
+
+  .chip{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    padding:8px 10px;
+    border-radius:10px;
+    border:1px solid rgba(0,0,0,0.06);
+    background:#fafcff;
+    cursor:pointer;
+    user-select:none;
+    transition:0.15s;
+  }
+  .chip input{margin:0}
+  .chip:hover{transform:translateY(-3px)}
+
+  .actions{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-start}
+  button{
+    padding:10px 14px;
+    border-radius:10px;
+    border:none;
+    cursor:pointer;
+    font-weight:700;
+    box-shadow: 0 6px 16px rgba(3,50,100,0.06);
+    transition:0.2s;
+  }
+  .btn-primary{background:linear-gradient(90deg,var(--primary),var(--accent)); color:#fff}
+  .btn-ghost{background:transparent;border:1px solid #d6e6ff;color:var(--primary)}
+  .btn-danger{background:#ff6b6b;color:#fff}
+
+  .tab {overflow: hidden; border-bottom: 2px solid #ccc; margin-bottom: 10px;}
+  .tab button {
+    background-color: #f1f1f1;
+    float: right;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    padding: 10px 20px;
+    transition: 0.3s;
+    font-size: 16px;
+  }
+  .tab button:hover {background-color: #ddd;}
+  .tab button.active {background-color: var(--primary); color: white;}
+  .tabcontent {display: none; padding: 10px 0; border-top: none;}
+  .tabcontent .chip{background:#eee;border-radius:25px;padding:10px 15px;margin:5px;}
+  .tabcontent .chip input{margin-left:5px;}
+
+  .side{
+    padding:14px;
+    border-radius:10px;
+    background:linear-gradient(180deg,#ffffff,#fbfeff);
+    box-shadow: 0 6px 18px rgba(6,30,60,0.04);
+  }
+  .stat{display:flex;gap:12px;align-items:center;margin-bottom:12px}
+  .stat .big{font-size:24px;font-weight:800;color:var(--primary)}
+  .stat .mut{color:var(--muted);font-size:13px}
+  .chart-wrap{background:#f7fbff;border-radius:8px;padding:10px}
+  .bar{height:10px;border-radius:6px;background:#d6ecff;margin:8px 0;overflow:hidden}
+  .bar > i{display:block;height:100%;background:linear-gradient(90deg,var(--primary),var(--accent));width:0%}
+  .table-mini{width:100%;border-collapse:collapse;font-size:14px;margin-top:8px}
+  .table-mini td{padding:6px 4px;border-bottom:1px dashed #eee;color:#123}
+  .tools{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+</style>
+</head>
+<body>
+
+<div class="container" role="main" aria-labelledby="pageTitle">
+
+  <!-- البطاقة الجانبية على اليسار -->
+  <aside class="side" aria-live="polite">
+    <div class="stat">
+      <div class="big" id="totalCount">0</div>
+      <div>
+        <div class="mut">إجمالى الاستجابات</div>
+        <div class="small">الأحدث يظهر أولاً</div>
+      </div>
+    </div>
+
+    <div>
+      <strong>توزيع الموضوعات المطلوبة</strong>
+      <div class="chart-wrap" id="topicsChart"></div>
+    </div>
+
+    <div style="margin-top:10px;">
+      <strong>الصيغ المفضلة</strong>
+      <table class="table-mini" id="formatBreakdown"></table>
+    </div>
+
+    <div style="margin-top:10px;">
+      <strong>المستوى الحالي (تلخيص)</strong>
+      <table class="table-mini" id="levelBreakdown"></table>
+    </div>
+
+    <div class="tools">
+      <button id="exportCSV" class="btn-ghost">تصدير CSV</button>
+      <button id="downloadJSON" class="btn-ghost">تحميل JSON</button>
+      <button id="copySummary" class="btn-ghost">نسخ ملخص للحافظة</button>
+    </div>
+  </aside>
+
+  <!-- النموذج على اليمين -->
+  <form id="surveyForm" aria-label="نموذج استبيان">
+    <header>
+      <img src="logo.jpg" alt="لوجو مركز التدريب">
+      <div>
+        <h1 id="pageTitle">استبيان احتياجات التدريب — مركز تدريب الصرف</h1>
+        <p class="small">ساعدنا على تصميم برامج تدريبية تلائم احتياجاتك. الإجابة لا تستغرق أكثر من دقيقة.</p>
+      </div>
+    </header>
+
+    <div>
+      <label for="name">الاسم (اختياري)</label>
+      <input id="name" type="text" placeholder="اكتب اسمك أو اتركه فارغاً" />
+    </div>
+
+    <div>
+      <label for="dept">الإدارة / الجهة</label>
+      <input id="dept" type="text" placeholder="مثال: إدارة الصرف/ مركز تدريب..." required />
+    </div>
+
+    <div>
+      <label>المستوى الحالي في مهارات الحاسوب</label>
+      <div class="row">
+        <select id="skillLevel" aria-label="مستوى المهارة">
+          <option value="مبتدئ">مبتدئ</option>
+          <option value="متوسط">متوسط</option>
+          <option value="متقدم">متقدم</option>
+          <option value="لا اعرف">لا أعرف</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- التبويبات -->
+    <div>
+      <label>الموضوعات التدريبية المطلوبة (اختر ما يناسبك)</label>
+      <div class="tab">
+        <button type="button" class="tablinks" onclick="openTab(event, 'civil')">🏗️ الهندسة المدنية</button>
+        <button type="button" class="tablinks" onclick="openTab(event, 'mechanical')">⚙️ الهندسة الميكانيكية</button>
+        <button type="button" class="tablinks" onclick="openTab(event, 'computer')">🖥️ الكمبيوتر</button>
+        <button type="button" class="tablinks" onclick="openTab(event, 'administrative')">🏢 الإدارية</button>
+        <button type="button" class="tablinks" onclick="openTab(event, 'humanDevelopment')">🌱 التنمية البشرية</button>
+        <button type="button" class="tablinks" onclick="openTab(event, 'future')">💡 دورات جديده</button>
+        <button type="button" class="tablinks" onclick="openTab(event, 'suggestions')">📝 الدورات المقترحة من قبل المتدربين</button>
+      </div>
+
+      <!-- محتوى التبويبات -->
+      <!-- مثال: قسم الكمبيوتر -->
+      <div id="computer" class="tabcontent">
+        <label class="chip"><input type="checkbox" value="صيانة الحاسب الآلي (هاردوير - سوفتوير)"> صيانة الحاسب الآلي (هاردوير - سوفتوير)</label>
+        <label class="chip"><input type="checkbox" value="ADOBE ILLUSTRAITOR"> ADOBE ILLUSTRAITOR</label>
+        <label class="chip"><input type="checkbox" value="Arc GIS"> Arc GIS</label>
+        <label class="chip"><input type="checkbox" value="Windows"> Windows</label>
+        <label class="chip"><input type="checkbox" value="Google docs"> Google docs</label>
+        <label class="chip"><input type="checkbox" value="Word"> Word</label>
+        <label class="chip"><input type="checkbox" value="Power Point"> Power Point</label>
+        <label class="chip"><input type="checkbox" value="Excel"> Excel</label>
+        <label class="chip"><input type="checkbox" value="AutoCAD-2D"> AutoCAD-2D</label>
+        <label class="chip"><input type="checkbox" value="Sap"> Sap</label>
+        <label class="chip"><input type="checkbox" value="فوتوشوب"> فوتوشوب</label>
+        <label class="chip"><input type="checkbox" value="Access"> Access</label>
+        <label class="chip"><input type="checkbox" value="Primavera"> Primavera</label>
+        <label class="chip"><input type="checkbox" value="شبكات الحاسب الآلي"> شبكات الحاسب الآلي</label>
+        <label class="chip"><input type="checkbox" value="Revit for Civil ENG"> Revit for Civil ENG</label>
+      </div>
+
+      <!-- باقي التبويبات مشابهة -->
+      <!-- ... civil, mechanical, administrative, humanDevelopment, future, suggestions -->
+
+      <div id="suggestions" class="tabcontent">
+        <label for="suggestedCourses">اكتب أي دورات تدريبية ترغب بها:</label>
+        <textarea id="suggestedCourses" placeholder="مثال: دورة متقدمة في تحليل البيانات، دورة في روبوتات ذكية..." rows="6"></textarea>
+      </div>
+    </div>
+
+    <div class="actions">
+      <button class="btn-primary" id="submitBtn" type="button">إرسال + حفظ</button>
+      <button class="btn-ghost" id="previewBtn" type="button">معاينة الإحصاء الآن</button>
+      <button class="btn-danger" id="clearBtn" type="button" title="حذف كل البيانات">مسح البيانات</button>
+    </div>
+
+    <div class="small" style="margin-top:6px;color:var(--muted)">
+      البيانات تُخزن فقط في جهازك (LocalStorage). يمكنك تصديرها ومشاركتها مع الإدارة.
+    </div>
+
+  </form>
+</div>
+
+<script>
+// التبويبات
+function openTab(evt, tabName){
+  const tabcontent=document.getElementsByClassName("tabcontent");
+  const tablinks=document.getElementsByClassName("tablinks");
+  for(let i=0;i<tabcontent.length;i++) tabcontent[i].style.display="none";
+  for(let i=0;i<tablinks.length;i++) tablinks[i].className=tablinks[i].className.replace(" active","");
+  document.getElementById(tabName).style.display="block";
+  evt.currentTarget.className+=" active";
+}
+document.getElementsByClassName('tablinks')[0].click();
+
+// LocalStorage
+const STORAGE_KEY = 'trainingResponses_v1';
+function loadResponses(){ return JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]"); }
+function saveResponses(arr){ localStorage.setItem(STORAGE_KEY, JSON.stringify(arr)); }
+
+// جمع البيانات من الفورم
+function collectForm(){
+  const name=document.getElementById('name').value.trim();
+  const dept=document.getElementById('dept').value.trim();
+  const skill=document.getElementById('skillLevel').value;
+  const checked=Array.from(document.querySelectorAll('.tabcontent input[type="checkbox"]:checked')).map(i=>i.value);
+  const suggestions=document.getElementById('suggestedCourses').value.split('\n').map(s=>s.trim()).filter(s=>s!=='');
+  const topics=[...checked,...suggestions];
+  return {id:Date.now(),name,dept,skill,topics,format:"حضوري",ts:new Date().toISOString()};
+}
+
+function resetForm(){document.getElementById('surveyForm').reset();}
+function validate(entry){if(!entry.dept){alert('من فضلك اكتب اسم الإدارة أو الجهة.'); return false;} return true;}
+
+// عرض الإحصاءات
+function renderStats(){
+  const data=loadResponses();
+  document.getElementById('totalCount').textContent=data.length;
+
+  const topicsMap={},formats={},levels={};
+  data.forEach(r=>{(r.topics||[]).forEach(t=>topicsMap[t]=(topicsMap[t]||0)+1); formats[r.format]=(formats[r.format]||0)+1; levels[r.skill]=(levels[r.skill]||0)+1;});
+
+  // الموضوعات
+  const topicsChart=document.getElementById('topicsChart');
+  topicsChart.innerHTML='';
+  const totalTopics=Object.values(topicsMap).reduce((a,b)=>a+b,0);
+  Object.entries(topicsMap).forEach(([topic,count])=>{
+    const percent=totalTopics?Math.round((count/totalTopics)*100):0;
+    const bar=document.createElement('div'); bar.className='bar'; bar.innerHTML=`<i style="width:${percent}%"></i>`;
+    const label=document.createElement('div'); label.textContent=`${topic} — ${count} (${percent}%)`;
+    topicsChart.appendChild(label); topicsChart.appendChild(bar);
+  });
+
+  // الصيغ
+  const formatBreakdown=document.getElementById('formatBreakdown'); formatBreakdown.innerHTML='';
+  Object.entries(formats).forEach(([fmt,count])=>formatBreakdown.innerHTML+=`<tr><td>${fmt}</td><td>${count}</td></tr>`);
+
+  // المستويات
+  const levelBreakdown=document.getElementById('levelBreakdown'); levelBreakdown.innerHTML='';
+  Object.entries(levels).forEach(([lvl,count])=>levelBreakdown.innerHTML+=`<tr><td>${lvl}</td><td>${count}</td></tr>`);
+}
+
+function buildSummaryText(){
+  const data=loadResponses();
+  const lines=[]; lines.push('ملخص احتياجات التدريب — مركز تدريب غرب الدلتا'); lines.push('إجمالي الاستجابات: '+data.length);
+  if(data.length){
+    const topics={},formats={};
+    data.forEach(r=>{(r.topics||[]).forEach(t=>topics[t]=(topics[t]||0)+1); formats[r.format]=(formats[r.format]||0)+1;});
+    lines.push(''); lines.push('أكثر الموضوعات طلباً:');
+    Object.entries(topics).sort((a,b)=>b[1]-a[1]).slice(0,6).forEach(([k,v])=>lines.push(`- ${k}: ${v}`));
+    lines.push(''); lines.push('تفاصيل صيغ التدريب:');
+    Object.entries(formats).forEach(([k,v])=>lines.push(`- ${k}: ${v}`));
+  }
+  return lines.join('\n');
+}
+
+// تحميل الملفات
+function downloadText(text,filename,mime){
+  const blob=new Blob([text],{type:mime});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');
+  a.href=url;a.download=filename;document.body.appendChild(a);a.click();
+  setTimeout(()=>{URL.revokeObjectURL(url);a.remove();},500);
+}
+
+// 🌟 إرسال البيانات إلى Google Sheet
+const GOOGLE_SHEET_WEBAPP_URL = "https://script.google.com/macros/s/AKfycbxAi1wrrPlXptVBnZuO8IKtQpyBxEz8FCDx_eEtAsEhyA7Dz1W-WFs57JgTiiiGJjCl/exec"; // ضع هنا رابط الـ Web App
+
+async function sendDataToGoogleSheet(entry){
+  try{
+    const res = await fetch(GOOGLE_SHEET_WEBAPP_URL, {
+      method: "POST",
+      headers: {"Content-Type":"application/json"},
+      body: JSON.stringify(entry)
+    });
+    const json = await res.json();
+    return json;
+  }catch(err){
+    console.error("Error sending to Google Sheet:", err);
+    return {status:"error", message: err.message};
+  }
+}
+
+document.getElementById('submitBtn').addEventListener('click', async function(){
+  const entry = collectForm();
+  if(!validate(entry)) return;
+
+  const result = await sendDataToGoogleSheet(entry);
+
+  if(result.status==="success"){
+    saveResponses([entry,...loadResponses()]);
+    renderStats();
+    alert(result.message);
+    resetForm();
+  } else if(result.status==="duplicate"){
+    alert(result.message);
+  } else {
+    saveResponses([entry,...loadResponses()]);
+    renderStats();
+    alert("⚠️ لم يتم الإرسال إلى Google Sheet، تم حفظ البيانات محلياً.\n"+result.message);
+  }
+});
+
+</script>
+</body>
+</html>

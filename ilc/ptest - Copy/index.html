@@ -1,0 +1,1764 @@
+<!DOCTYPE html>
+<html lang="en" class="notranslate">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- منع الترجمة في المتصفحات -->
+  <meta name="google" content="notranslate">
+
+  <title>Reading Comprehension Quiz</title>
+
+<style>
+/* منع السحب لتحديث الصفحة على الموبايل */
+html, body {
+  overscroll-behavior: none; /* يمنع pull-to-refresh */
+  touch-action: pan-x pan-y; /* يسمح بالتمرير داخل المحتوى فقط */
+  -webkit-overflow-scrolling: auto; /* تعطيل التمرير السلس الافتراضي */
+}
+</style>
+
+<script>
+// منع السحب للأسفل لإعادة تحميل الصفحة (pull-to-refresh)
+let lastTouchY = 0;
+let maybePreventPullToRefresh = false;
+
+document.addEventListener('touchstart', function(e) {
+  if (e.touches.length !== 1) return;
+  lastTouchY = e.touches[0].clientY;
+  maybePreventPullToRefresh = window.pageYOffset === 0;
+}, {passive: true});
+
+document.addEventListener('touchmove', function(e) {
+  const touchY = e.touches[0].clientY;
+  const touchYDelta = touchY - lastTouchY;
+  lastTouchY = touchY;
+
+  if (maybePreventPullToRefresh) {
+    // إذا المستخدم يسحب لأسفل من أعلى الصفحة
+    if (touchYDelta > 0) {
+      e.preventDefault();
+    }
+  }
+}, {passive: false});
+</script>
+
+
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      margin: 0;
+      background: #1e1e2e;
+      color: white;
+    }
+
+    .container {
+      margin-top: 5px;
+      width: 95%;
+      max-width: 1200px;
+      background: #282a36;
+      padding: 10px 30px 30px;
+      border-radius: 10px;
+      box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.5);
+      text-align: left;
+    }
+
+    h1, h2, p { margin-top: 0; }
+
+    .question {
+      font-weight: bold;
+      font-size: 30px;
+      margin-bottom: 20px;
+    }
+
+    .options label {
+      display: block;
+      padding: 10px;
+    }
+
+    .btn {
+      background: #ff5555;
+      color: white;
+      border: none;
+      padding: 12px 25px;
+      cursor: pointer;
+      border-radius: 5px;
+      margin-top: 200px;
+      font-size: 18px;
+      display: block;
+    }
+
+    .btn:hover { background: #ff79c6; }
+
+    .result-screen {
+      display: none;
+      background: #44475a;
+      padding: 30px;
+      border-radius: 10px;
+      text-align: center;
+      width: 100%;
+    }
+
+    #resultScore {
+      font-size: 36px;
+      font-weight: bold;
+      color: #ffffff;
+      margin-top: 20px;
+    }
+
+    .result-screen p {
+      font-size: 20px;
+      font-weight: bold;
+      color: #f8f8f2;
+    }
+
+    #timer {
+  font-size: 28px;
+  color: #222; /* لون غامق عشان يظهر فوق الخلفية البيضاء */
+  font-weight: bold;
+  background: rgba(255, 215, 0, 0.2); /* خلفية شفافة ذهبية خفيفة */
+  padding: 10px 20px;
+  border-radius: 10px;
+  width: fit-content;
+  margin: 20px auto;
+  position: relative;
+  z-index: 2;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+
+    .author {
+      font-size: 30px;
+      color: #eb2d0b;
+      text-align: center;
+      font-weight: bold;
+      margin-bottom: 15px;
+    }
+
+    label {
+      font-size: 22px;
+      padding: 10px;
+      display: block;
+    }
+
+    input[type="radio"] {
+      transform: scale(1.5);
+      margin-right: 10px;
+    }
+
+    #passage { font-size: 16px; font-weight: bold; }
+
+    #startScreen p {
+      font-size: 22px;
+      font-weight: bold;
+    }
+
+    #startScreen input {
+      font-size: 20px;
+      font-weight: bold;
+      padding: 8px;
+    }
+
+    #startScreen h1 {
+      font-size: 40px;
+      font-weight: bold;
+      color: #ffd700;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    /* شاشة الأسئلة البيضاء */
+    #quizContainer {
+      display: none;
+      position: relative;
+      background: #ffffff;
+      color: #000;
+      border-radius: 25px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+      padding: 40px;
+      max-width: 1000px;
+      text-align: left;
+      overflow: hidden;
+    }
+
+    
+
+    /* اللوجو الشفاف في المنتصف */
+    #quizContainer::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: url('ilc.jpg') center center no-repeat;
+      background-size: 60%;
+      opacity: 0.2;
+      z-index: 0;
+    }
+
+    #quizContainer > * { position: relative; z-index: 1; }
+
+    @keyframes fall {
+      to { transform: translateY(110vh); opacity: 0.5; }
+    }
+
+    
+    @keyframes fadeIn {
+  from { opacity:0; transform:translate(-50%, -60%); }
+  to   { opacity:1; transform:translate(-50%, -50%); }
+}
+
+
+
+  </style>
+</head>
+
+<body>
+
+  <div id="errorBox" style="
+  display:none;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background:#cc0000;
+  color:white;
+  padding:20px 25px;
+  border-radius:12px;
+  font-size:20px;
+  font-weight:700;
+  text-align:center;
+  z-index:9999;
+  width: 80%;
+  max-width: 380px;
+  box-shadow:0 0 15px rgba(0,0,0,0.4);
+  animation: fadeIn 0.3s ease;
+"></div>
+
+
+
+
+
+<!-- رسالة التكرار -->
+<div id="duplicateMessage" style="display:none !important; position:fixed; top:20px; left:50%; transform:translateX(-50%);
+    background-color:#ff4d4f; color:white; padding:15px 25px; border-radius:10px; box-shadow:0 4px 8px rgba(0,0,0,0.2);
+    font-family:Arial, sans-serif; z-index:9999; font-size:16px; display:flex; align-items:center; gap:10px;">
+    <span id="duplicateIcon" style="font-size:20px;">❌</span>
+    <span id="duplicateText">تم التسجيل مسبقًا</span>
+</div>
+
+
+
+ <!-- شاشة البداية -->
+<div class="container" id="startScreen" style="
+max-width: 700px; 
+margin: 60px auto; 
+padding: 40px; 
+background: #ffffff; 
+border-radius: 25px; 
+box-shadow: 0 10px 30px rgba(0,0,0,0.2); 
+text-align: center; 
+font-family: 'Trebuchet MS', sans-serif;
+position: relative;
+overflow: hidden;
+">
+
+
+<!-- العلامة المائية خلف النص -->
+<img src="ilc.jpg" alt="ILC Logo" style="
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 600px;       /* حجم العلامة المائية */
+  opacity: 0.1;       /* الشفافية */
+  pointer-events: none;
+  user-select: none;
+  z-index: 0; /* خلف النصوص لكن فوق الخلفية */
+">
+
+<h1 style="color:#0056b3; font-size:35px; margin-bottom: 20px;">
+  🌍 The International British Institute   🌍
+</h1>
+
+
+<!-- Course Name (في المنتصف وعلى سطر واحد) -->
+<div style="
+  display: flex;
+  justify-content: left;
+  align-items: center;
+  gap: 15px;
+  margin: 20px 0;
+">
+  <label for="courseName" style="
+    font-size: 22px;
+    font-weight: bold;
+    color:#0056b3;
+    white-space: nowrap;
+  ">
+    📘 Course Name:
+  </label>
+
+  <input type="text" id="courseName" value="Placement" readonly 
+    style="
+      font-size: 25px;
+      padding:12px;
+      width:60%;
+      border:none;
+      border-radius:10px;
+      background:#f0f0f0;
+      text-align:center;
+      color:#000;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    ">
+</div>
+
+
+<!-- Enter Your Name -->
+<p style="font-size: 20px;">
+  <span style="color: #0056b3; font-weight: bold;">
+    👤 Enter Your Name:
+  </span>
+  <input type="text" id="traineeName" placeholder="Type your name..." 
+    style="font-size:18px; padding:12px; width:60%; border:1px solid #ccc; border-radius:8px; text-align:center; color:#000;">
+</p>
+
+<!-- Enter Your Phone Number -->
+<p style="font-size: 20px;">
+  <span style="color: #0056b3; font-weight: bold;">
+    📱 Enter Your Phone Number:
+  </span>
+  <input type="text" id="traineePhone" placeholder="Type your phone number..." 
+    style="font-size:18px; padding:12px; width:60%; border:1px solid #ccc; border-radius:8px; text-align:center; color:#000;">
+</p>
+
+<!-- Enter Trainee Code -->
+<p style="font-size: 20px;">
+  <span style="color: #0056b3; font-weight: bold;">
+    🧾 Enter Your Code:
+  </span>
+  <input type="text" id="traineeCode" placeholder="Enter your code..." 
+    style="font-size:18px; padding:12px; width:60%; border:1px solid #ccc; border-radius:8px; text-align:center; color:#000;">
+</p>
+
+<!-- Enter Password -->
+<p style="font-size: 20px;">
+  <span style="color: #0056b3; font-weight: bold;">
+    🔑 Enter Password:
+  </span>
+  <input type="password" id="password" placeholder="Enter password..." 
+    style="font-size:18px; padding:12px; width:60%; border:1px solid #ccc; border-radius:8px; text-align:center; color:#000;">
+</p>
+
+<!-- زر Start Quiz -->
+<div style="text-align:center; margin-top: 15px;">
+
+  <!-- زر Start Quiz -->
+  <button id="startBtn" onclick="startQuiz(event)" style="
+    font-size: 22px; 
+    padding: 15px 50px; 
+    border:none; 
+    border-radius:12px; 
+    background: linear-gradient(270deg, #ff0055, #ff5500, #ff00ff, #007bff, #00d4ff);
+    background-size: 1000% 1000%;
+    color:white; 
+    cursor:pointer; 
+    box-shadow:0 8px 20px rgba(0,0,0,0.3);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    animation: gradientMove 4s ease infinite, glowPulse 2s infinite;
+    transition: transform 0.2s;
+  " onmouseover="this.style.transform='scale(1.1)'" 
+     onmouseout="this.style.transform='scale(1)'">
+    <span class="emoji" style="display:inline-block; margin-right:10px; animation: bounce 1s infinite;">🚀</span>
+    Start Quiz
+  </button>
+
+  <!-- نص Admin Control تحت الزر -->
+<div id="adminText" onclick="toggleAdmin()" style="
+    font-size: 16px;
+    color: rgba(0,0,0,0.4); /* خفيف للمستخدم العادي */
+    font-weight: bold;
+    cursor: pointer;
+    user-select: none;
+    margin-top: 20px; /* زدنا المسافة من 8px إلى 20px */
+">
+    🔒 Admin Control
+</div>
+
+
+</div>
+
+<!-- مودال باسورد الادمن -->
+<div id="adminModal" style="
+  display:none;
+  position:fixed;
+  top:0; left:0;
+  width:100%; height:100%;
+  background: rgba(0,0,0,0.6);
+  justify-content:center;
+  align-items:center;
+  z-index:1000;
+">
+  <div style="
+    background: linear-gradient(135deg,#ff0055,#007bff,#00d4ff);
+    padding:30px; border-radius:20px;
+    box-shadow:0 0 20px rgba(0,0,0,0.5);
+    text-align:center;
+    color:white;
+    min-width:300px;
+  ">
+    <h2 style="margin-bottom:20px;">🔑 Admin Password</h2>
+    <input id="adminPwdInput" type="password" placeholder="Enter password" style="
+      font-size:18px;
+      padding:10px;
+      width:80%;
+      border-radius:10px;
+      border:none;
+      text-align:center;
+      margin-bottom:20px;
+    ">
+    <br>
+    <button onclick="submitAdminPwd()" style="
+      font-size:16px;
+      padding:10px 25px;
+      border:none;
+      border-radius:10px;
+      background:#ff0a54;
+      color:white;
+      cursor:pointer;
+      font-weight:bold;
+      transition:0.3s;
+    " onmouseover="this.style.background='#ff3366'" onmouseout="this.style.background='#ff0a54'">
+      Submit
+    </button>
+    <br><br>
+    <span id="adminMsg" style="font-size:14px;"></span>
+  </div>
+</div>
+
+<script>
+let startBtn = document.getElementById("startBtn");
+let adminText = document.getElementById("adminText");
+let adminModal = document.getElementById("adminModal");
+let adminMsg = document.getElementById("adminMsg");
+let adminPwdInput = document.getElementById("adminPwdInput");
+
+const adminPassword = "Mahmoud#Osama";
+let quizDisabled = false;
+
+function toggleAdmin() {
+  // فتح المودال لادخال الباسورد فقط عند الضغط
+  adminPwdInput.value = "";
+  adminMsg.innerHTML = "";
+  adminModal.style.display = "flex";  // يظهر المودال
+  adminPwdInput.focus();
+}
+
+function submitAdminPwd() {
+  const pwd = adminPwdInput.value.trim();
+
+  if (!pwd) {
+    adminMsg.innerHTML = "❌ من فضلك أدخل الباسورد!";
+    adminMsg.style.color = "#ff3333";
+    adminPwdInput.focus();
+    return;
+  }
+
+  if (pwd !== adminPassword) {
+    adminMsg.innerHTML = "❌ باسورد الأدمن غير صحيح!";
+    adminMsg.style.color = "#ff3333";
+    adminPwdInput.value = "";
+    adminPwdInput.focus();
+    return;
+  }
+
+  // تبديل حالة التطبيق
+  quizDisabled = !quizDisabled;
+
+  const status = quizDisabled ? 1 : 0;
+
+  if (quizDisabled) {
+    startBtn.disabled = true;
+    startBtn.innerText = "Stopped...";
+    adminText.innerText = "❌ Quiz Disabled by Admin";
+    adminMsg.innerHTML = "⚠️ Quiz has been disabled!";
+    adminMsg.style.color = "#ffff66";
+  } else {
+    startBtn.disabled = false;
+    startBtn.innerText = "Start Quiz";
+    adminText.innerText = "🔓 Admin Control";
+    adminMsg.innerHTML = "✅ Quiz has been enabled!";
+    adminMsg.style.color = "#66ff66";
+  }
+
+  // إرسال الحالة باستخدام نفس طريقة sendDataToGoogleSheet
+  const formData = new URLSearchParams();
+  formData.append("course", "AdminControl"); // لتمييز السطر عن بيانات الكويز
+  formData.append("name", status);           // 1 أو 0
+  formData.append("phone", "");
+  formData.append("date", new Date().toISOString());
+  formData.append("startTime", "");
+  formData.append("timeTaken", "");
+  formData.append("score", "");
+
+  fetch("https://script.google.com/macros/s/AKfycbxUVWA9OIRnfa8kg9eNrdhPqAFhaXkHidTbFdWOqqiQOjJ0nQ0ykRayQduWzUCRZh9J/exec", {
+    method: "POST",
+    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+    body: formData.toString()
+  })
+  .then(response => response.text())
+  .then(responseText => {
+    console.log("✅ تم إرسال حالة الأدمن إلى Google Sheet:", responseText);
+  })
+  .catch(error => {
+    console.error("❌ خطأ في إرسال حالة الأدمن إلى Google Sheet:", error);
+  });
+
+  // إغلاق المودال بعد ثانية
+  setTimeout(() => {
+    adminModal.style.display = "none";
+  }, 1000);
+}
+
+
+</script>
+
+
+<p style="margin-top: 40px; font-size: 18px; color: gray;">
+  ✍️ Edited by: Ahmed Amer
+</p>
+
+<!-- إيموجي المطر -->
+<div id="emojiRain" style="
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  font-size: 2rem;
+"></div>
+</div>
+
+<style>
+@keyframes gradientMove {
+0% { background-position: 0% 50%; }
+50% { background-position: 100% 50%; }
+100% { background-position: 0% 50%; }
+}
+
+@keyframes glowPulse {
+0%, 100% { box-shadow: 0 8px 20px rgba(255, 0, 85, 0.6), 0 0 10px rgba(255, 255, 255, 0.2); }
+50% { box-shadow: 0 8px 25px rgba(255, 0, 85, 0.9), 0 0 20px rgba(255, 255, 255, 0.4); }
+}
+
+@keyframes bounce {
+0%, 100% { transform: translateY(0); }
+50% { transform: translateY(-8px); }
+}
+</style>
+
+<script>
+const emojis = ["📝","✏️","📘","📖","⏳","🎯","🏆","📊","👨‍🎓"];
+const container = document.getElementById("emojiRain");
+let rainInterval;
+
+function createEmoji() {
+const emoji = document.createElement("div");
+emoji.innerText = emojis[Math.floor(Math.random() * emojis.length)];
+emoji.style.position = "absolute";
+emoji.style.left = Math.random() * 100 + "vw";
+emoji.style.top = "-50px";
+emoji.style.fontSize = "28px";
+emoji.style.animation = `fall ${6 + Math.random() * 3}s linear`;
+container.appendChild(emoji);
+setTimeout(() => emoji.remove(), 2000);
+}
+
+function startEmojiRain() {
+rainInterval = setInterval(createEmoji, 500);
+}
+
+function stopEmojiRain() {
+clearInterval(rainInterval);
+container.innerHTML = "";
+}
+
+startEmojiRain();
+
+function startQuiz() {
+document.getElementById("startScreen").style.display = "none";
+stopEmojiRain();
+// هنا ضع أي كود لتظهر شاشة الكويز
+}
+</script>
+
+
+  <!-- شاشة الأسئلة -->
+  <div class="container" id="quizContainer">
+    <h2 id="quizTitle">Placement Test</h2>
+    <p class="author"> 🌍 The International British Institute  🌍 
+    <p>Date: <span id="date"></span></p>
+     <!-- Emoji Sticky Animation -->
+ <div id="emoji-character" style="
+    position: sticky;
+    top: 10px;
+    float: right;
+    margin-left: auto;
+    display: block;
+    z-index: 10;
+">
+  <img src="ilc.jpg" alt="ILC Logo" style="
+      width: 180px;
+      height: auto;
+      border-radius: 12px;
+      box-shadow: 0 0 12px rgba(0,0,0,0.3);
+  ">
+</div>
+
+    <p id="timer"> ----- </p>
+    <div id="passage">
+      <h3>Read the following passage carefully and answer the following questions:</h3>
+      <p style="font-size: 22px;"></p>
+    </div>
+    <div id="quiz"></div>
+
+  
+  </div>
+
+<!-- شاشة النتيجة -->
+<div class="result-screen" id="resultScreen" style="
+display:none;
+background: #0056b3; /* خلفية فورمال أزرق ثابت */
+padding: 40px;
+border-radius: 25px;
+text-align: center;
+color: #fff;
+position: relative;
+font-family: 'Arial', sans-serif;
+max-width: 800px;
+margin: 40px auto;
+box-shadow: 0 0 20px rgba(0,0,0,0.4);
+border: 3px solid #ffd700; /* بوردر ذهبي أنيق */
+overflow: hidden;
+">
+
+<h1 id="resultTitle" style="font-size: 46px; margin-bottom: 25px; font-weight:bold;"></h1>
+
+<p style="font-size: 30px; margin: 12px 0;">
+  📘 <strong>Course Name:</strong> <span id="resultCourse"></span>
+</p>
+<p style="font-size: 28px; margin: 12px 0;">
+  👤 <strong>Name:</strong> <span id="resultName"></span>
+</p>
+<p style="font-size: 28px; margin: 12px 0;">
+  📱 <strong>Phone Number:</strong> <span id="resultPhone"></span>
+</p>
+
+<p style="font-size: 28px; margin: 12px 0;">
+  🆔 <strong>Code:</strong> <span id="resultCode"></span>
+</p>
+
+
+<p style="font-size: 28px; margin: 12px 0;">
+  📅 <strong>Test Date:</strong> <span id="resultDate"></span>
+</p>
+<p style="font-size: 28px; margin: 12px 0;">
+  ⏰ <strong>Start Time:</strong> <span id="resultStartTime"></span>
+</p>
+<p style="font-size: 28px; margin: 12px 0;">
+  ⏱️ <strong>Time Taken:</strong> <span id="resultTime"></span>
+</p>
+
+<!-- Score & Rating (السكور مخفي لكن موجود عشان الكود ما يقعش) -->
+<p style="font-size: 32px; font-weight: bold; color: #ffd700; margin-top: 25px;">
+  <span id="resultScore" style="display:none;"></span>
+  🏆 Grade: <span id="resultRating"></span>
+</p>
+
+
+
+
+<a href="https://docs.google.com/forms/d/e/1FAIpQLSdO8aYvcG_LM3mYIdLPWDdh2p88VGIYab8XBJFWFsKTWOvLcw/viewform" target="_blank" style="
+  display:block;
+  margin-top: 30px;
+  font-size:28px;
+  font-weight:bold;
+  color:#fff;
+  text-decoration: underline;
+">
+  🎓 Click here to request your certificate
+</a>
+
+<!-- الألعاب النارية -->
+<div id="fireworks" style="
+  position:absolute;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  pointer-events:none;
+"></div>
+</div>
+
+<style>
+/* Score و Rating ألوان ذهبية ثابتة */
+#resultScore, #resultRating {
+  background: none !important;
+  -webkit-background-clip: none !important;
+  -webkit-text-fill-color: #ffd700; /* ذهبي */
+  animation: none !important;
+}
+
+/* تحسين الخطوط داخل النتيجة */
+.result-screen p {
+  font-family: 'Arial', sans-serif;
+  line-height: 1.6;
+}
+
+/* تحسين الرابط */
+.result-screen a:hover {
+  color: #ffd700;
+}
+
+/* حركة الألعاب النارية */
+@keyframes fireworkFall {
+  0% { transform: translateY(0) scale(1); opacity:1; }
+  100% { transform: translateY(-100px) scale(0.5); opacity:0; }
+}
+</style>
+
+<script>
+// متغيرات لتخزين بيانات المتدرب
+let traineeData = {
+  course: "غير محدد",
+  name: "غير محدد",
+  phone: "غير محدد"
+};
+
+// دالة لتحديث بيانات المتدرب
+function setTraineeData(course, name, phone) {
+  traineeData.course = course || "غير محدد";
+  traineeData.name = name || "غير محدد";
+  traineeData.phone = phone || "غير محدد";
+}
+
+// دالة لتحديد التقدير بناءً على الدرجة
+function calculateRating(score, maxScore) {
+  if (score === undefined || maxScore === undefined) return "غير محدد ❓";
+
+  // التقديرات حسب طلب المدرس
+  if (score >= 0 && score < 5) return "Pass ✅";
+  else if (score >= 5 && score < 15) return "Good 🙂";
+  else if (score >= 15 && score < 25) return "Very Good 👍";
+  else if (score >= 25 && score <= maxScore) return "Excellent 🌟";
+  else return "غير محدد ❓";
+}
+
+
+// دالة لإظهار التقدير مباشرة من الرقم
+function displayRatingFromNumber(score, maxScore) {
+  const ratingEl = document.getElementById("resultRating");
+  if (!ratingEl) return;
+  const rating = calculateRating(score, maxScore);
+  ratingEl.innerText = rating;
+}
+
+// دالة بسيطة للألعاب النارية
+function launchFireworks() {
+  const fireworks = document.getElementById('fireworks');
+  for(let i=0;i<50;i++){
+    const emoji = document.createElement('div');
+    emoji.innerText = "🎆";
+    emoji.style.position = "absolute";
+    emoji.style.left = Math.random()*100 + "%";
+    emoji.style.top = Math.random()*100 + "%";
+    emoji.style.fontSize = (20 + Math.random()*30) + "px";
+    emoji.style.animation = `fireworkFall ${2+Math.random()*2}s linear forwards`;
+    fireworks.appendChild(emoji);
+    setTimeout(()=> emoji.remove(), 4000);
+  }
+}
+
+
+</script>
+
+
+
+<script>
+    // عند الضغط على أي مكان في الصفحة، أدخل وضع ملء الشاشة
+    document.addEventListener("click", () => {
+      const elem = document.documentElement; // أو document.getElementById("myForm")
+      if (document.fullscreenElement) return; // لا تفعل شيء إذا كنا بالفعل في ملء الشاشة
+
+      if (elem.requestFullscreen) {
+        elem.requestFullscreen();
+      } else if (elem.webkitRequestFullscreen) { /* Safari */
+        elem.webkitRequestFullscreen();
+      } else if (elem.msRequestFullscreen) { /* IE11 */
+        elem.msRequestFullscreen();
+      }
+    });
+  </script>
+
+    
+   <script>
+        document.getElementById("date").innerText = new Date().toLocaleDateString("en-US");
+    
+        const trueFalseQuestions = [
+  {
+    passage: `Passage 1:<br>What are you doing today?<br><strong>BETTY CHAN:</strong> I usually stay home on Sundays and take it easy - read, clean the house, do stuff like that. But today I'm at the mall. I'm buying some things for my kids.`,
+    q: "Betty's --------------------- today.",
+    a: "a",
+    options: ["Shopping", "Reading", "Cleaning", "Resting"]
+  },
+  {
+    passage: `Passage 2:<br>What do you do?<br><strong>TONY PEREX:</strong> I'm a flight attendant with a major airline. Flying isn't dangerous, but it can be stressful. When I'm up in the air working, I always have something to do. I like it because I meet a lot of interesting people.`,
+    q: "Tony's job is -------------------.",
+    a: "a",
+    options: ["Busy", "Easy", "Relaxing", "Boring"]
+  },
+  {
+    passage: `Passage 3:<br><strong>A vacation postcard</strong><br>Dear Sal,<br>Greetings from France – it's so good to be back here again. We left the kids with their grandparents in Chicago, and we're biking across the French countryside by ourselves. We brought a tent and sleeping bags, so we can camp out if we want to, but we're really enjoying the small hotels we find along the way.<br>Love, Michael and Paula.`,
+    q: "Michael and Paula ----------------.",
+    a: "a",
+    options: [
+      "Have been to France before",
+      "Took their children with them",
+      "Are visiting their grandparents",
+      "Prefer to sleep outside"
+    ]
+  },
+  {
+    passage: `Passage 4:<br><strong>The "Zone"</strong><br>You're deeply involved in a task and can ignore everything around you – ringing telephones, your neighbor's TV, even your own hunger – and still do things in record time. This is similar to what athletes call the "Zone" – the power to concentrate so hard that you can ignore everything else. This ability can bring success in any field, but in athletics it can mean all the difference between winning and losing a game or event.`,
+    q: `In this reading, the "Zone" refers to a person's ----------------.`,
+    a: "a",
+    options: ["State of mind", "Neighborhood", "Physical condition", "Intelligence"]
+  },
+  {
+    passage: `Passage 4:<br><strong>The "Zone"</strong><br>You're deeply involved in a task and can ignore everything around you – ringing telephones, your neighbor's TV, even your own hunger – and still do things in record time. This is similar to what athletes call the "Zone" – the power to concentrate so hard that you can ignore everything else. This ability can bring success in any field, but in athletics it can mean all the difference between winning and losing a game or event.`,
+    q: `Athletes in the "Zone" are more likely to ----------------.`,
+    a: "c",
+    options: ["Fall", "Compete", "Win", "Relax"]
+  },
+  {
+    passage: `Passage 5:<br><strong>Henry Ford and the Model-T</strong><br>Henry Ford became famous and rich because he found a better, faster way to build cars. This is shown in the history of the Model-T. When the Model-T was first introduced in 1908, it took 14 hours to build and cost $850. After Ford introduced into his own factory the mass-production techniques that he saw in a meat-packing plant, the time for building a Model-T was reduced to less than two hours. As a result, Ford was able to drop the price of the car to $265. By 1927, he had sold over 15 million Model-Ts.`,
+    q: `The first Model–T was expensive because it ----------------.`,
+    a: "c",
+    options: [
+      "Was new",
+      "Was very popular",
+      "Took a long time to build",
+      "Was built in a factory"
+    ]
+  },
+  {
+    passage: `Passage 5:<br><strong>Henry Ford and the Model-T</strong><br>Henry Ford became famous and rich because he found a better, faster way to build cars. This is shown in the history of the Model-T. When the Model-T was first introduced in 1908, it took 14 hours to build and cost $850. After Ford introduced into his own factory the mass-production techniques that he saw in a meat-packing plant, the time for building a Model-T was reduced to less than two hours. As a result, Ford was able to drop the price of the car to $265. By 1927, he had sold over 15 million Model-Ts.`,
+    q: `The Model–T became so popular because it was -------- than other cars.`,
+    a: "d",
+    options: ["Newer", "Faster", "Better", "Cheaper"]
+  },
+
+  {
+    passage: `Passage 6:<br><strong>It's a Big Country!</strong><br>When it comes to body weight, Americans stand out. Most visitors to the United States, no matter where they go across this vast country, comment on the size of many Americans. In fact, these impressions are backed by numerous statistics. For example, the average 5'4" American weighs 162 pounds, or 15 pounds more than the average person of the same height from Western or Central Europe. Another comparison: At 150 pounds, the average 5'4" American woman is 24 pounds heavier than her Japanese counterpart.<br><br>Why are Americans so heavy? Some blame the American diet. Certainly it's true that Americans eat more high–fat foods – meat, dairy products, and processed food – and fewer grains and vegetables than people in other countries. But fat isn't the whole story. Lifestyle factors – including the tendency for Americans to drive rather than walk or ride a bicycle to work, to snack throughout the day, and to have so many labor-saving devices in the home – appear to contribute to the problem.`,
+    q: "According to the article, visitors to the United States often comment on the size of the ---",
+    a: "d",
+    options: ["Population", "Cities", "Country", "People"]
+  },
+  {
+    passage: `Passage 6:<br><strong>It's a Big Country!</strong><br>When it comes to body weight, Americans stand out. ... (same passage as above)`,
+    q: "According to the article, the average Western European weighs --------.",
+    a: "c",
+    options: [
+      "More than an American",
+      "More than a Central European",
+      "Less than an American",
+      "Less than a Japanese person"
+    ]
+  },
+  {
+    passage: `Passage 6:<br><strong>It's a Big Country!</strong><br>When it comes to body weight, Americans stand out. ... (same passage as above)`,
+    q: "In comparison with Americans, people in other countries eat more ----.",
+    a: "d",
+    options: ["Meat", "Dairy products", "Processed food", "Grains"]
+  },
+  {
+    passage: `Passage 6:<br><strong>It's a Big Country!</strong><br>When it comes to body weight, Americans stand out. ... (same passage as above)`,
+    q: "The article implies that Americans would lose weight if they --------.",
+    a: "b",
+    options: [
+      "Snacked more often",
+      "Rode bicycles to work",
+      "Stayed at home more",
+      "Ate fewer vegetables"
+    ]
+  },
+    {
+    passage: `Passage 7:<br><strong>Small talk isn't so "small"</strong><br>Small talk may not be about serious issues; nevertheless, researchers into the subject have concluded that it's important. That's because small talk keeps us connected to one another and can lead to bigger things, such as a job or a new friendship. Yet people who find themselves alone with another person often don't know what to say. Here are a few tips to help you start a conversation, and to keep the conversational bell rolling.<br><br>Start with the obvious. If you have something in common with another person (your job, hobbies, a person you both know, etc), begin with that. If you don't know the person, it's always acceptable to bring up a neutral topic such as the weather or a recent news event. It isn't necessary to be clever – all that's required is to show interest in the other person and to be willing to talk.<br><br>Compliment where appropriate. If the other person has done something you like or is wearing something attractive, it's always appropriate to compliment. But avoid talking about the specifics of a person's physical appearance (people can't usually change how they look) and keep your compliments short and to the point ("What a great tie!" or "You look great tonight!") and continue with another topic.<br><br>Talk about yourself – then return to your partner. It's perfectly ok to talk about your own interests for a while, but keep your conversation from becoming a monolog. It's only polite, for example, that after talking about your own children, you turn the conversation back to your partner by asking about his or her children.`,
+    q: "According to the article, the main function of small talk is to ---------.",
+    a: "c",
+    options: [
+      "Show our own importance",
+      "Get valuable information",
+      "Relate to other people",
+      "Talk about major issues"
+    ]
+  },
+  {
+    passage: `Passage 7:<br><strong>Small talk isn't so "small"</strong><br>...(same passage as above)...`,
+    q: `"Start with the obvious" means that you should talk about things that you --------.`,
+    a: "a",
+    options: [
+      "Have in common",
+      "Enjoy doing",
+      "Want to understand",
+      "Know everything about"
+    ]
+  },
+  {
+    passage: `Passage 7:<br><strong>Small talk isn't so "small"</strong><br>...(same passage as above)...`,
+    q: "You need to be careful when complimenting someone because most people --------.",
+    a: "b",
+    options: [
+      "Don't like compliments",
+      "Can't change how they look",
+      "Don't dress very well",
+      "Haven't done anything interesting"
+    ]
+  },
+  {
+  passage: `Passage 7:<br><strong>Small talk isn't so "small"</strong><br>
+Small talk may not be about serious issues; nevertheless, researchers into the subject have concluded that it's important. That's because small talk keeps us connected to one another and can lead to bigger things, such as a job or a new friendship. Yet people who find themselves alone with another person often don't know what to say. Here are a few tips to help you start a conversation, and to keep the conversational bell rolling.<br><br>
+Start with the obvious. If you have something in common with another person (your job, hobbies, a person you both know, etc), begin with that. If you don't know the person, it's always acceptable to bring up a neutral topic such as the weather or a recent news event. It isn't necessary to be clever – all that's required is to show interest in the other person and to be willing to talk.<br><br>
+Compliment where appropriate. If the other person has done something you like or is wearing something attractive, it's always appropriate to compliment. But avoid talking about the specifics of a person's physical appearance (people can't usually change how they look) and keep your compliments short and to the point ("What a great tie!" or "You look great tonight!") and continue with another topic.<br><br>
+Talk about yourself – then return to your partner. It's perfectly ok to talk about your own interests for a while, but keep your conversation from becoming a monolog. It's only polite, for example, that after talking about your own children, you turn the conversation back to your partner by asking about his or her children.`,
+  q: "You should avoid monologs because other people ---------------.",
+  a: "c",
+  options: [
+    "Have no interest in what you say.",
+    "Already know a lot about you.",
+    "Like to talk about themselves, too.",
+    "Prefer to discuss neutral subjects."
+  ]
+},
+{
+  passage: `Passage 8:<br><strong>Headaches</strong><br>
+Everyone has experienced headaches, but only recently have medical researchers begun to learn more specifically about the causes and possible treatments for different types of headache pain.<br><br>
+The most common type of headache is the simple tension headache. Tension headaches are usually mild and short-lasting and can result from various factors, such as stress caused by worry or noise. Tension headaches are caused by a tightening of the neck or back muscles, which slow the flow of blood and, therefore, oxygen to the brain. It is the lack of oxygen that causes the pain. Most headaches can be relieved by taking a mild analgesic such as aspirin. Analgesics expand the blood vessels and restore the normal flow of blood and oxygen to the brain.<br><br>
+A more serious type of headache is the migraine. Migraine headaches are often extremely painful and can last for hours or days. Like tension headaches, they can be the result of different factors, including stress, hormonal changes, and allergies. Unlike tension headaches, however, they are caused by an abnormal expansion or swelling (rather than a contraction) of the blood vessels within the head. Medicines that shrink swollen blood vessels can be used to treat migraine headaches.<br><br>
+A tiny minority of headaches can be linked to severe physical problems such as head injury or brain tumors. For these types of headaches, there are medicines to treat the symptoms, but there is no cure unless the underlying problem is removed.`,
+  q: "The main thesis of the article is -----------.",
+  a: "c",
+  options: [
+    "Tiny minority of people who have headaches",
+    "History of medical research into headaches",
+    "Causes and remedies for headaches",
+    "Physical problems caused by headaches"
+  ]
+},
+{
+  passage: `Passage 8:<br><strong>Headaches</strong><br>
+  Everyone has experienced headaches, but only recently have medical researchers begun to learn more specifically about the causes and possible treatments for different types of headache pain.<br>
+  The most common type of headache is the simple tension headache. Tension headaches are usually mild and short-lasting and can result from various factors, such as stress caused by worry or noise. Tension headaches are caused by a tightening of the neck or back muscles, which slow the flow of blood and, therefore, oxygen to the brain. It is the lack of oxygen that causes the pain. Most headaches can be relieved by taking a mild analgesic such as aspirin. Analgesics expand the blood vessels and restore the normal flow of blood and oxygen to the brain.<br>
+  A more serious type of headache is the migraine. Migraine headaches are often extremely painful and can last for hours or days. Like tension headaches, they can be the result of different factors, including stress, hormonal changes, and allergies. Unlike tension headaches, however, they are caused by an abnormal expansion or swelling (rather than a contraction) of the blood vessels within the head. Medicines that shrink swollen blood vessels can be used to treat migraine headaches.<br>
+  A tiny minority of headaches can be linked to severe physical problems such as head injury or brain tumors. For these types of headaches, there are medicines to treat the symptoms, but there is no cure unless the underlying problem is removed.`,
+  q: " A tension headache can result when-----------------.",
+  a: "c",
+  options: [
+    "The neck and back muscles relax",
+    "People get injured in an accident",
+    "The flow of blood is restricted",
+    "Too much oxygen goes to the brain"
+  ]
+},
+{
+  passage: "", // إعادة استخدام نفس الباساج السابق لذا نتركه فارغًا أو تكراره لو تحب
+  q: " Migraine headaches--------------.",
+  a: "c",
+  options: [
+    "Are the most common kind of headache?",
+    "Usually last only a few minutes",
+    "Can cause extreme pain",
+    "Have one main cause"
+  ]
+},
+{
+    passage: `Passage 8:<br><strong>Headaches</strong><br>Everyone has experienced headaches...`,
+    q: " Medicines for migraines ------------.",
+    a: "d",
+    options: [
+      "Relax the head and neck.",
+      "Generally relieve tension",
+      "Increase the flow of blood",
+      "Cause blood vessels to contract"
+    ]
+  },
+  {
+    passage: `Passage 8:<br><strong>Headaches</strong><br>Everyone has experienced headaches...`,
+    q: " Headaches caused by serious physical problems.",
+    a: "d",
+    options: [
+      "Can't be treated",
+      "Don't cause much pain",
+      "Have no symptoms",
+      "Are not very common"
+    ]
+  }
+
+];
+
+    
+const questions = [
+  {
+    q: "21. ---------- several good restaurants in our neighborhood.",
+    a: "c",
+    options: ["There", "They're", "There are", "Their"]
+  },
+  {
+    q: "22. The gas station is ------- Main Street.",
+    a: "a",
+    options: ["On", "At", "Next", "Close"]
+  },
+  {
+    q: "23. I can't swim very well. I can't ----.",
+    a: "b",
+    options: ["Too", "Either", "So", "Neither"]
+  },
+  {
+    q: "24. I enjoy ---------------- out two or three times a week.",
+    a: "b",
+    options: ["To eat", "Eating", "Eat", "I eat"]
+  },
+  {
+    q: "25. These days, -------------- women keep working after they get married.",
+    a: "a",
+    options: ["Most", "Most of", "Almost", "The most"]
+  },
+  {
+    q: "26. My new job is very --------------.",
+    a: "c",
+    options: ["Excitement", "Excited", "Exciting", "Excite"]
+  },
+  {
+    q: "27. After finishing college, I hope ---------- married.",
+    a: "d",
+    options: ["Get", "That get", "Getting", "To get"]
+  },
+  {
+    q: "28. Mt. Everest is ---- mountain in the world.",
+    a: "d",
+    options: ["The high", "High as", "Laughter than", "The highest"]
+  },
+  {
+    q: "29. Bob's never been bungee jumping, ---------------- he?",
+    a: "b",
+    options: ["Is", "Has", "Does", "Was"]
+  },
+  {
+    q: "30. I've run out of money. I wish I ------------ more.",
+    a: "c",
+    options: ["Am saving", "Have saved", "Had saved", "Will save"]
+  },
+  {
+    q: "31. Could you tell me where ---------------?",
+    a: "b",
+    options: ["Is the post office", "The post office is", "Is it the post office?", "It is the post office"]
+  },
+  {
+    q: "32. If I had known about the accident, I ----------- it to the police.",
+    a: "b",
+    options: ["Reported", "Would have reported", "Was reporting", "Have been reporting"]
+  },
+  {
+    q: "33. Yolanda --------------- part time for several years now.",
+    a: "a",
+    options: ["Has been working", "Is working", "Works", "Was working"]
+  },
+  {
+    q: "34. The Taj Mahal is really worth ------------.",
+    a: "b",
+    options: ["To see it", "Seeing", "You see it", "See"]
+  },
+  {
+    q: "35. If I went to live in a foreign country, ------------ my friends.",
+    a: "a",
+    options: ["I'd miss", "I'm missing", "I missed", "I miss"]
+  },
+  {
+    q: "36. Would you mind -------- the window?",
+    a: "b",
+    options: ["Open", "Opening", "To open", "I open"]
+  },
+  {
+    q: "37. I was interested ---------- the violin.",
+    a: "c",
+    options: ["To study", "Study", "In studying", "Studied"]
+  },
+  {
+    q: "38. Before a film is finished, it needs --------------.",
+    a: "c",
+    options: ["They edit it", "To edit", "To be edited", "Being edited"]
+  },
+  {
+    q: "39. By 2040, scientists -------- a cure for cancer.",
+    a: "b",
+    options: ["Had found", "Will have found", "Are finding", "Have been finding"]
+  },
+  {
+    q: "40. She must ------- about our appointment.",
+    a: "d",
+    options: ["Forget", "Be forgetting", "Forgot", "Have forgotten"]
+  },
+  {
+    q: "41. We're not used ----------- our own meals.",
+    a: "d",
+    options: ["Cook", "To cook", "Cooking", "To cooking"]
+  },
+  {
+    q: "42. Chicago, ---------- is nicknamed the Windy City, is the largest city in Illinois.",
+    a: "b",
+    options: ["It", "Which", "What", "That"]
+  },
+  {
+    q: "43. ------------------ John, I like to cook.",
+    a: "d",
+    options: ["Unless", "Except", "Instead", "Unlike"]
+  },
+  {
+    q: "44. Before -------------- breakfast, I usually take a shower.",
+    a: "c",
+    options: ["Eat", "To eat", "Eating", "That eat"]
+  },
+  {
+    q: "45. I'm taking a class -------------- learn more about my computer.",
+    a: "c",
+    options: ["So that", "In order", "In order to", "That"]
+  },
+  {
+    q: "46. For me, mathematics is ----------- difficult than biology.",
+    a: "a",
+    options: ["More", "The more", "Most", "The most"]
+  },
+  {
+    q: "47. I would rather ---------------- evening classes.",
+    a: "b",
+    options: ["Don't take", "Not take", "No taking", "Not taking"]
+  },
+  {
+    q: "48. I feel sick. I shouldn't -------------- too much.",
+    a: "c",
+    options: ["To eat", "Eaten", "Have eaten", "Eating"]
+  },
+  {
+    q: "49. Jim's boss demanded that he ------ to work earlier.",
+    a: "d",
+    options: ["Has come", "Coming", "Is come", "Come"]
+  },
+  {
+    q: "50. The earlier children learn to read, ---------- for their education.",
+    a: "c",
+    options: ["Good", "The good", "The better", "The best"]
+  }
+];
+
+
+    
+        let currentTFQuestion = 0;
+        let tfCorrectAnswers = 0;
+        let currentQuestion = 0;
+        let correctAnswers = 0;
+        let timeLeft = 3600;
+        let timerInterval;
+        let startTime;
+    
+      /**
+       * 
+ * رابط Web App (استبدل لو عندك ID مختلف)
+ */
+
+
+ 
+const CHECK_URL = "https://script.google.com/macros/s/AKfycbzbt9_nm2qD0x2gwux7LZzMBP-YZn3PVhOVZxRyDhi4SC_KmXrdWQNFYQsnanhZQXY/exec";
+
+/**
+ * يتحقق من التكرار عبر doGet?action=checkDuplicate
+ * يرجع كائن { ok: true } أو { ok: false, message: "..." }
+ */
+
+
+ 
+async function checkDuplicate(name, phone, quizName) {
+  const url = `${CHECK_URL}?action=checkDuplicate&name=${encodeURIComponent(name)}&phone=${encodeURIComponent(phone)}&quizName=${encodeURIComponent(quizName)}`;
+  console.log("Checking URL:", url);
+
+  try {
+    const res = await fetch(url, { method: 'GET', cache: 'no-store' });
+    console.log("Fetch response:", res);
+
+    if (!res.ok) {
+      return { ok: false, message: 'خطأ في الاتصال بخدمة التحقق (HTTP ' + res.status + ')' };
+    }
+
+    const data = await res.json();
+    console.log("Data from server:", data);
+
+    // التحقق من تكرار البيانات المعتاد
+    if (data.status === 'duplicate') return { ok: false, message: data.message };
+
+    // التحقق من آخر صف إذا كان يحتوي على 1
+    if (data.status === 'lastRow1') {
+      return { ok: false, message: data.message };
+    }
+
+    if (data.status === 'ok') return { ok: true };
+
+    return { ok: false, message: data.message || 'حدث خطأ أثناء التحقق من التكرار.' };
+
+  } catch (err) {
+    console.error("checkDuplicate error:", err);
+    return { ok: false, message: 'خطأ في الاتصال. تأكد من الإنترنت.' };
+  }
+}
+
+
+// ========== دالة توليد كلمة سر يومية (ثابتة طوال اليوم) ==========
+function getDailyPassword() {
+  const today = new Date();
+  const day = today.getDate();
+  const month = today.getMonth() + 1;
+  const year = today.getFullYear();
+
+  // توليد قيمة يومية (يمكن تعديل الصيغة لو حبيت أمنها أكثر)
+  const seed = (day * 7 + month * 13 + year) % 10000;
+  return (1000 + seed).toString(); // مثال: رقم من 4 خانات ثابت اليوم
+}
+
+
+
+
+// ==================== جلب حالة الكويز عند تحميل الصفحة ====================
+async function fetchQuizStatus() {
+  try {
+    const res = await fetch(CHECK_URL + "?action=getQuizStatus");
+    const data = await res.json();
+    const quizDisabled = data.status == 1;
+
+    const startBtn = document.getElementById("startBtn");
+    const adminText = document.getElementById("adminText");
+    const adminMsg = document.getElementById("adminMsg");
+
+    if (quizDisabled) {
+      startBtn.disabled = true;
+      startBtn.innerText = "❌ Quiz Disabled by Admin";
+      adminText.innerText = "❌ Quiz Disabled by Admin";
+      adminMsg.innerHTML = "⚠️ Quiz has been disabled!";
+      adminMsg.style.color = "#ffff66";
+    } else {
+      startBtn.disabled = false;
+      startBtn.innerText = "Start Quiz";
+      adminText.innerText = "🔒 Admin Control";
+      adminMsg.innerHTML = "✅ Quiz has been enabled!";
+      adminMsg.style.color = "#66ff66";
+    }
+  } catch (err) {
+    console.error("Error fetching quiz status:", err);
+  }
+}
+
+// ==================== زر Admin Control ====================
+async function toggleQuiz() {
+  const startBtn = document.getElementById("startBtn");
+  const adminText = document.getElementById("adminText");
+  const adminMsg = document.getElementById("adminMsg");
+
+  let quizDisabled = startBtn.disabled; // الحالة الحالية
+  quizDisabled = !quizDisabled; // قلب الحالة
+
+  // تحديث الواجهة
+  if(quizDisabled){
+    startBtn.disabled = true;
+    startBtn.innerText = "❌ Quiz Disabled by Admin";
+    adminText.innerText = "❌ Quiz Disabled by Admin";
+    adminMsg.innerHTML = "⚠️ Quiz has been disabled!";
+    adminMsg.style.color = "#ffff66";
+  } else {
+    startBtn.disabled = false;
+    startBtn.innerText = "Start Quiz";
+    adminText.innerText = "🔒 Admin Control";
+    adminMsg.innerHTML = "✅ Quiz has been enabled!";
+    adminMsg.style.color = "#66ff66";
+  }
+
+  // إرسال الحالة الجديدة للـ Google Sheet
+  try {
+    await fetch(CHECK_URL + "?action=updateStatus", {
+      method: "POST",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: new URLSearchParams({ status: quizDisabled ? "1" : "0" })
+    });
+
+    // إعادة جلب الحالة للتأكيد
+    fetchQuizStatus();
+  } catch (err) {
+    console.error("Error updating quiz status:", err);
+  }
+}
+
+// ==================== startQuiz ====================
+async function startQuiz(event) {
+  const startBtn = document.getElementById("startBtn");
+  if (startBtn.disabled) {
+    alert("⚠️ الكويز معطل من الأدمن حالياً.");
+    return;
+  }
+
+  // قراءة الحقول
+  let name = document.getElementById("traineeName").value.trim();
+  let phone = document.getElementById("traineePhone").value.trim();
+  let traineeCode = document.getElementById("traineeCode").value.trim();
+  let password = document.getElementById("password").value;
+  let course = document.getElementById("courseName").value.trim();
+  let quizTitle = document.getElementById("quizTitle");
+
+  // إزالة الصفر الأول من رقم التليفون لو موجود
+  if (phone.startsWith('0')) {
+      phone = phone.substring(1);
+  }
+
+  // تحقق محلي سريع
+  if (!name) { alert("❗ برجاء إدخال الاسم."); return; }
+  if (!phone) { alert("❗ برجاء إدخال رقم التليفون."); return; }
+  if (!traineeCode) { alert("❗ برجاء إدخال الكود الخاص بك."); return; }
+
+  // التحقق من حالة تعطيل الباسورد من الأدمن
+  const passwordDisabled = localStorage.getItem("passwordDisabled") === "true";
+
+  // تحقق من كلمة المرور اليومية (لو الباسورد غير معطل)
+  const dailyPassword = getDailyPassword();
+if (!passwordDisabled && password !== dailyPassword) {
+  const errorBox = document.getElementById("errorBox");
+  if (errorBox) {
+    errorBox.innerHTML = "❌ كلمة المرور غير صحيحة<br>يرجى التواصل مع الإدارة للحصول على كلمة المرور الصحيح.";
+    errorBox.style.display = "block";
+
+    setTimeout(() => {
+      errorBox.style.display = "none";
+    }, 4000);
+  } else {
+    alert("❌ كلمة المرور غير صحيحة. تواصل مع الإدارة للحصول على كلمة المرور الصحيحة.");
+  }
+  return;
+}
+
+
+  // الحصول على الزر لتغيير النص وتعطيله
+  const startButton = event && event.currentTarget ? event.currentTarget : document.querySelector('.btn');
+  let prevText = startButton ? startButton.innerText : "Start Quiz";
+
+if (startButton) {
+    startButton.disabled = true;
+
+    //  ساعة رملية متحركة
+    const frames = ["⏳ Checking...", "⌛ Checking..."];
+    let i = 0;
+
+    startButton.innerText = frames[i];
+
+    // تشغيل الحركة
+    const interval = setInterval(() => {
+        i = (i + 1) % frames.length;
+        startButton.innerText = frames[i];
+    }, 600); // تغيير كل 0.6 ثانية
+
+    // حفظ الـ interval داخل الزر عشان نوقفه بعد التحقق
+    startButton.dataset.loadingInterval = interval;
+}
+
+
+  // تحقق من التكرار على السيرفر
+  const quizName = course || "Unknown";
+  let check;
+  try {
+    check = await checkDuplicate(name, phone, quizName);
+    console.log("Data from server:", check);
+  } catch (err) {
+    console.error(err);
+    alert("❌ حدث خطأ أثناء الاتصال بالسيرفر.");
+    if (startButton) {
+      startButton.disabled = false;
+      startButton.innerText = prevText;
+    }
+    return;
+  }
+
+  // إعادة الزر لوضعه الطبيعي
+  if (startButton) {
+    startButton.disabled = false;
+    startButton.innerText = prevText;
+  }
+
+  // منع الدخول إذا كان مكرر
+  if (!check.ok) {
+    showDuplicateMessage(check.message);
+    return;
+  }
+
+  // لو كل شيء تمام: ضع بيانات المتدرب وابدأ الامتحان
+  quizTitle.textContent = course || "Placement";
+  window.traineeData = { name, phone, traineeCode, course };
+
+  document.getElementById("startScreen").style.display = "none";
+  document.getElementById("quizContainer").style.display = "block";
+
+  startTime = new Date();
+  startTimer();
+  loadTFQuestion();
+
+  // تشغيل وضع ملء الشاشة
+  let elem = document.documentElement;
+  if (elem.requestFullscreen) { elem.requestFullscreen(); }
+  else if (elem.mozRequestFullScreen) { elem.mozRequestFullScreen(); }
+  else if (elem.webkitRequestFullscreen) { elem.webkitRequestFullscreen(); }
+  else if (elem.msRequestFullscreen) { elem.msRequestFullscreen(); }
+}
+
+    
+function showDuplicateMessage(message) {
+    const msgBox = document.getElementById("duplicateMessage");
+    const msgText = document.getElementById("duplicateText");
+
+    msgText.textContent = message || "❌ تم التسجيل مسبقًا في هذا الاختبار.";
+    msgBox.style.display = "flex";
+
+    // اختفاء الرسالة بعد 3 ثواني
+    setTimeout(() => {
+        msgBox.style.display = "none";
+    }, 3000);
+}
+
+
+
+        function startTimer() {
+            timerInterval = setInterval(() => {
+                let minutes = Math.floor(timeLeft / 60);
+                let seconds = timeLeft % 60;
+                document.getElementById("timer").innerText = `Time Remaining: ${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+                if (timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    showResult();
+                }
+                timeLeft--;
+            }, 1000);
+        }
+    
+      function loadTFQuestion() {
+    let quizDiv = document.getElementById("quiz");
+    let passageDiv = document.getElementById("passage");
+
+    if (currentTFQuestion < trueFalseQuestions.length) {
+        let q = trueFalseQuestions[currentTFQuestion];
+
+        // عرض المقطع
+        passageDiv.innerHTML = `
+            <h3>Read the following passage carefully and answer the question:</h3>
+            <p style="font-size: 22px;">${q.passage}</p>
+        `;
+
+        // عرض السؤال والاختيارات
+        let questionHTML = `<p class='question'><strong>${currentTFQuestion + 1}- ${q.q}</strong></p>`;
+
+        q.options.forEach((option, index) => {
+    const letter = String.fromCharCode(97 + index); // "a", "b", ...
+    questionHTML += `
+        <label>
+            <input type='radio' name='answer' value='${letter}'>
+            ${option}
+        </label><br>
+    `;
+});
+
+        questionHTML += `<button class='btn' onclick='nextTFQuestion()'>Next</button>`;
+        quizDiv.innerHTML = questionHTML;
+    } else {
+        // الانتهاء من عرض كل الأسئلة
+        document.getElementById("passage").style.display = "none";
+        quizDiv.innerHTML = "<p>You've finished all reading questions.</p>";
+        loadQuestion(); // لو فيه مرحلة تانية
+    }
+}
+
+    
+  function nextTFQuestion() {
+  const selectedAnswer = document.querySelector("input[name='answer']:checked");
+  if (!selectedAnswer) {
+    alert("Please select an answer");
+    return;
+  }
+
+  const q = trueFalseQuestions[currentTFQuestion];
+  const selectedValue = selectedAnswer.value;
+
+  const isAnswerKeyALetter = q.a.length === 1 && ["a", "b", "c", "d"].includes(q.a.toLowerCase());
+
+  if (isAnswerKeyALetter) {
+    if (selectedValue === q.a.toLowerCase()) {
+      tfCorrectAnswers++; // ✅ صحح هنا بدل score
+    }
+  } else {
+    const selectedOptionIndex = selectedValue.charCodeAt(0) - 97;
+    const selectedOptionText = q.options[selectedOptionIndex];
+
+    if (selectedOptionText.trim().toLowerCase() === q.a.trim().toLowerCase()) {
+      tfCorrectAnswers++; // ✅ صحح هنا بدل score
+    }
+  }
+
+  currentTFQuestion++;
+  loadTFQuestion();
+}
+
+
+
+
+        function loadQuestion() {
+            let quizDiv = document.getElementById("quiz");
+            let q = questions[currentQuestion];
+            quizDiv.innerHTML = `<p class='question'>${q.q}</p>` +
+                q.options.map((option, index) => `<label><input type='radio' name='answer' value='${String.fromCharCode(97 + index)}'> ${option}</label>`).join('') +
+                `<button class='btn' onclick='nextQuestion()'>${currentQuestion === questions.length - 1 ? "Finish" : "Next"}</button>`;
+        }
+    
+        function nextQuestion() {
+            let selectedAnswer = document.querySelector("input[name='answer']:checked");
+            if (!selectedAnswer) return;
+            if (selectedAnswer.value === questions[currentQuestion].a) {
+                correctAnswers++;
+            }
+            if (currentQuestion < questions.length - 1) {
+                currentQuestion++;
+                loadQuestion();
+            } else {
+                showResult();
+            }
+        }
+    
+let serverUrl = ""; // سيتم تحديثه تلقائيًا عند تحميل الصفحة
+
+// دالة لجلب رابط السيرفر المخزن في GitHub
+function fetchServerUrl() {
+fetch("https://raw.githubusercontent.com/etiqotwf/liveServer1/main/serverUrl.json")
+        .then(response => response.json())
+        .then(data => {
+            if (data.serverUrl) {
+                serverUrl = data.serverUrl;
+                console.log("✅ رابط السيرفر المحدث من GitHub:", serverUrl);
+            } else {
+                console.error("❌ لم يتم العثور على رابط السيرفر في المستودع.");
+                retryFetchServerUrl();
+            }
+        })
+        .catch(error => {
+            console.error("❌ خطأ في جلب رابط السيرفر من GitHub:", error);
+            retryFetchServerUrl();
+        });
+}
+
+// دالة لإعادة المحاولة عند الفشل
+function retryFetchServerUrl() {
+    if (retryCount < MAX_RETRIES) {
+        retryCount++;
+        console.log(`🔄 إعادة المحاولة (${retryCount}/${MAX_RETRIES}) بعد 3 ثوانٍ...`);
+        setTimeout(fetchServerUrl, 3000);
+    } else {
+        console.error("⛔ تم الوصول إلى الحد الأقصى من المحاولات، تعذر جلب رابط السيرفر.");
+    }
+}
+
+// تحميل رابط السيرفر عند فتح الصفحة
+fetchServerUrl();
+function showResult() {
+    // إيقاف المؤقت
+    clearInterval(timerInterval);
+
+    // ✅ تحميل بيانات المتدرب من window (عشان ميظهرش undefined)
+    const traineeData = window.traineeData || {};
+
+    // حساب الوقت المستغرق
+    let endTime = new Date();
+    let timeTaken = Math.floor((endTime - startTime) / 1000);
+    let minutesTaken = Math.floor(timeTaken / 60);
+    let secondsTaken = timeTaken % 60;
+
+    // جمع بيانات المتدرب
+    let name = traineeData.name || document.getElementById("traineeName").value || "Unknown";
+    let phone = traineeData.phone || document.getElementById("traineePhone").value || "Unknown";
+    let traineeCode = traineeData.traineeCode || document.getElementById("traineeCode").value || "Unknown";
+    let date = new Date().toLocaleDateString("en-US");
+    let course = traineeData.course || document.getElementById("courseName").value || "Unknown";
+
+    // حساب النتيجة
+    let totalQuestions = trueFalseQuestions.length + questions.length;
+    let totalCorrectAnswers = tfCorrectAnswers + correctAnswers;
+
+    // بيانات النتيجة
+    let resultData = {
+        name,
+        phone,
+        traineeCode,
+        date,
+        course,
+        startTime: startTime.toLocaleString("en-GB", {
+            timeZone: "Africa/Cairo",
+            year: "numeric",
+            month: "long",
+            day: "numeric",
+            hour: "numeric",
+            minute: "numeric",
+            second: "numeric",
+            hour12: true
+        }),
+        timeTaken: `${minutesTaken} min ${secondsTaken} sec`,
+        score: `${totalCorrectAnswers} / ${totalQuestions}`
+    };
+
+    // إرسال البيانات للسيرفر إذا تم تحميل الرابط
+    if (!serverUrl) {
+        console.log("⏳ انتظار تحميل رابط السيرفر...");
+        fetchServerUrl().then(() => {
+            if (serverUrl) sendDataToServer(resultData);
+            else {
+                console.error("❌ لم يتم تحميل رابط السيرفر بعد.");
+                alert("⚠️ تعذر إرسال البيانات! تأكد من اتصال الإنترنت وأعد المحاولة.");
+            }
+        });
+    } else sendDataToServer(resultData);
+
+    // إرسال البيانات إلى Google Sheets
+    sendDataToGoogleSheet(resultData);
+
+    // تحديث واجهة المستخدم
+    document.getElementById("resultCourse").innerText = course;
+    document.getElementById("resultName").innerText = name;
+    document.getElementById("resultPhone").innerText = phone;
+    document.getElementById("resultCode").innerText = traineeCode; // ✅ الكود هيظهر صح دلوقتي
+    document.getElementById("resultDate").innerText = date;
+    document.getElementById("resultStartTime").innerText = startTime.toLocaleTimeString();
+    document.getElementById("resultTime").innerText = `${minutesTaken} min ${secondsTaken} sec`;
+    document.getElementById("resultScore").innerText = `${totalCorrectAnswers} / ${totalQuestions}`;
+
+    // عرض التقدير
+    displayRatingFromNumber(totalCorrectAnswers, totalQuestions);
+
+    // عنوان النتيجة والألعاب النارية
+    const title = document.getElementById('resultTitle');
+    const scorePercentage = totalCorrectAnswers / totalQuestions;
+    if(scorePercentage >= 0.20){
+        title.innerText = "🎉 Congratulations! 🎉";
+        launchFireworks();
+    } else {
+        title.innerText = "😔 Better luck next time!";
+    }
+
+    // إظهار شاشة النتيجة وإخفاء الاختبار
+    document.getElementById("quizContainer").style.display = "none";
+    document.getElementById("resultScreen").style.display = "block";
+}
+
+
+// إرسال البيانات إلى السيرفر الأساسي
+function sendDataToServer(resultData) {
+    fetch(`${serverUrl}/submit`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(resultData)
+    })
+    .then(response => response.json())
+    .then(data => console.log("✅ تم الإرسال إلى السيرفر بنجاح:", data))
+    .catch(error => console.error("❌ خطأ أثناء الإرسال إلى السيرفر:", error));
+}
+
+
+
+// 🌟 إرسال البيانات مع retry وحفظ محلي عند الفشل
+async function sendDataToGoogleSheet(resultData) {
+  const maxRetries = 5; // عدد المحاولات
+  let attempt = 0;
+  let success = false;
+
+  while (!success && attempt < maxRetries) {
+    try {
+      const formData = new URLSearchParams();
+      formData.append("course", resultData.course);
+      formData.append("name", resultData.name);
+      formData.append("phone", resultData.phone);
+      formData.append("date", resultData.date);
+      formData.append("startTime", resultData.startTime);
+      formData.append("timeTaken", resultData.timeTaken);
+      formData.append("score", resultData.score);
+      formData.append("traineeCode", resultData.traineeCode);
+
+      const response = await fetch("https://script.google.com/macros/s/AKfycbzbt9_nm2qD0x2gwux7LZzMBP-YZn3PVhOVZxRyDhi4SC_KmXrdWQNFYQsnanhZQXY/exec", {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: formData.toString()
+      });
+
+      const text = await response.text();
+      console.log("✅ تم الإرسال إلى Google Sheet:", text);
+      success = true;
+
+    } catch (error) {
+      attempt++;
+      console.warn(`Attempt ${attempt} failed:`, error);
+
+      if (attempt >= maxRetries) {
+        console.error("❌ فشل الإرسال بعد عدة محاولات، سيتم حفظ البيانات محليًا.");
+        saveLocally(resultData);
+      } else {
+        // انتظار 2 ثانية قبل إعادة المحاولة
+        await new Promise(r => setTimeout(r, 2000));
+      }
+    }
+  }
+}
+
+// 🌟 حفظ البيانات محليًا لتجربة الإرسال لاحقًا
+function saveLocally(resultData) {
+  let pending = JSON.parse(localStorage.getItem("pendingResults") || "[]");
+  pending.push(resultData);
+  localStorage.setItem("pendingResults", JSON.stringify(pending));
+}
+
+// 🌟 إعادة إرسال البيانات المحفوظة عند فتح الصفحة أو عودة النت
+async function retryPendingResults() {
+  let pending = JSON.parse(localStorage.getItem("pendingResults") || "[]");
+  if (!pending.length) return;
+
+  for (let i = 0; i < pending.length; i++) {
+    try {
+      await sendDataToGoogleSheet(pending[i]);
+      pending.splice(i, 1);
+      i--;
+    } catch(e) {
+      console.warn("Retry failed for one entry", e);
+    }
+  }
+  localStorage.setItem("pendingResults", JSON.stringify(pending));
+}
+
+// 🌟 عند فتح الصفحة حاول إعادة إرسال النتائج المعلقة
+window.addEventListener("load", retryPendingResults);
+
+
+
+    </script>
+    </body>
+</html>
