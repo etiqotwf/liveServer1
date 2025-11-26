@@ -8,6 +8,30 @@
 <title>استبيان احتياجات التدريب — مركز تدريب</title>
 <style>
 
+/* حاوية كاملة للصفحة */
+body, html {
+  width: 100vw;
+  height: 100vh;
+  overflow-x: hidden;
+  overflow-y: auto;
+  transform-origin: top left;
+  margin: 0;
+  padding: 0;
+}
+
+/* إذا كانت الشاشة ضيقة (Portrait) نعمل دوران */
+@media only screen and (orientation: portrait) {
+  body {
+    transform: rotate(-90deg);
+    width: 100vh;  /* عرض جديد */
+    height: 100vw; /* ارتفاع جديد */
+    overflow-x: hidden;
+    overflow-y: auto;
+    position: absolute;
+    top: 100%;
+    left: 0;
+  }
+}
 
 
 html, body {
