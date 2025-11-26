@@ -2,9 +2,113 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 <title>استبيان احتياجات التدريب — مركز تدريب</title>
 <style>
+
+@media (max-width: 768px) {
+  body {
+    font-size: 15px;
+    line-height: 1.5;
+  }
+
+  h1, h2, h3 {
+    font-size: 18px;
+  }
+
+  label {
+    font-size: 15px;
+  }
+}
+
+
+@media (max-width: 768px) {
+
+  .card, .stat-card, .tools-card {
+    padding: 12px !important;
+    margin-bottom: 15px !important;
+    border-radius: 12px;
+  }
+
+  .card h3, .stat-card h3 {
+    font-size: 17px;
+  }
+}
+
+@media (max-width: 768px) {
+  table {
+    width: 100% !important;
+    border-collapse: collapse;
+    font-size: 14px;
+  }
+
+  th, td {
+    padding: 8px !important;
+    white-space: nowrap;
+  }
+
+  td {
+    font-size: 13px;
+  }
+
+  /* لفّ الجدول لو كبير */
+  .table-wrapper {
+    overflow-x: auto;
+  }
+}
+
+@media (max-width: 768px) {
+  button, .btn {
+    width: 100% !important;
+    padding: 12px !important;
+    font-size: 16px !important;
+    border-radius: 10px;
+    margin-bottom: 10px;
+  }
+}
+
+@media (max-width: 768px) {
+  .tab button {
+    width: 100%;
+    font-size: 16px;
+    padding: 14px;
+    margin-bottom: 8px;
+  }
+
+  .tabcontent {
+    padding: 10px !important;
+  }
+}
+
+@media (max-width: 768px) {
+  aside.side {
+    width: 100% !important;
+    position: relative !important;
+    margin-bottom: 20px;
+  }
+}
+
+* {
+  box-sizing: border-box;
+}
+
+@media (max-width: 768px) {
+  .container, .main {
+    width: 100% !important;
+  }
+}
+
+
+html, body {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+
+
   :root{
     --primary:#007bff;
     --accent:#00aaff;
@@ -187,6 +291,117 @@ form#surveyForm {
   .table-mini{width:100%;border-collapse:collapse;font-size:14px;margin-top:8px}
   .table-mini td{padding:6px 4px;border-bottom:1px dashed #eee;color:#123}
   .tools{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+
+
+/* ====== تحسين التوافق مع الموبايل ====== */
+
+/* تصغير الحاويات الكبيرة على الشاشات الصغيرة */
+@media (max-width: 768px) {
+
+  body {
+    padding: 0;
+    margin: 0;
+    font-size: 15px;
+  }
+
+  .container {
+    width: 100% !important;
+    padding: 10px !important;
+  }
+
+  /* الكروت */
+  .card, .tools-card, .stat-card {
+    padding: 12px !important;
+    margin-bottom: 12px;
+  }
+
+  /* الجدول */
+  table {
+    width: 100% !important;
+    font-size: 14px !important;
+  }
+  th, td {
+    padding: 6px !important;
+  }
+
+  /* الحقول */
+  input, select, textarea {
+    width: 100% !important;
+    font-size: 15px !important;
+  }
+
+  /* الأزرار */
+  button {
+    width: 100%;
+    margin-bottom: 10px;
+  }
+
+  .tools button {
+    width: 100% !important;
+    margin-bottom: 8px !important;
+  }
+
+  /* التبويبات */
+  .tab button {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 5px;
+    font-size: 16px;
+  }
+
+  /* إخفاء شريط الجانب (الـ aside) ووضعه تحت */
+  aside.side {
+    width: 100% !important;
+    position: relative !important;
+    left: 0 !important;
+    top: 0 !important;
+    margin-bottom: 15px;
+  }
+
+  /* جعل المخطط أسفل المحتوى */
+  .main {
+    width: 100% !important;
+  }
+
+}
+
+/* شاشات صغيرة جدًا */
+@media (max-width: 480px) {
+  body {
+    font-size: 14px;
+  }
+  th, td {
+    font-size: 13px;
+  }
+  button {
+    font-size: 14px;
+  }
+}
+
+
+@media screen and (orientation: portrait) {
+  body::before {
+    content: "↻ من فضلك لف الهاتف للوضع الأفقي لعرض التطبيق بشكل أفضل";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.7);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    z-index: 9999;
+    text-align: center;
+    padding: 20px;
+  }
+}
+
+
+
+
 </style>
 </head>
 <body>
@@ -213,12 +428,9 @@ form#surveyForm {
     </div>
   </div>
 
+    <canvas id="myChart" style="width:100%; max-height:300px;"></canvas>
 
-  <!-- كارت المستوى الحالي (مستقل) -->
-  <div class="level-card">
-    <strong>المستوى الحالي (تلخيص)</strong>
-    <table class="table-mini" id="levelBreakdown"></table>
-  </div>
+  
 
 
   <!-- كارت الصيغ المفضلة + أزرار -->
@@ -227,7 +439,7 @@ form#surveyForm {
       <table class="table-mini" id="formatBreakdown"></table>
     </div>
     <div class="tools">
-      <button id="exportCSV" class="btn-ghost">تصدير CSV</button>
+      <button id="exportCSV" class="btn-ghost"> تصدير إلى الإكسل</button>
       <button id="downloadJSON" class="btn-ghost">تحميل JSON</button>
       <button id="copySummary" class="btn-ghost">نسخ ملخص للحافظة</button>
     </div>
@@ -271,6 +483,8 @@ form#surveyForm {
         </select>
       </div>
     </div>
+
+
 
  <!-- التبويبات -->
 <div>
@@ -395,6 +609,23 @@ form#surveyForm {
 
 <iframe name="hidden_iframe" style="display:none;"></iframe>
 
+
+<script>
+  // عند الضغط على أي مكان في الصفحة، أدخل وضع ملء الشاشة
+  document.addEventListener("click", () => {
+    const elem = document.documentElement; // أو document.getElementById("myForm")
+    if (document.fullscreenElement) return; // لا تفعل شيء إذا كنا بالفعل في ملء الشاشة
+
+    if (elem.requestFullscreen) {
+      elem.requestFullscreen();
+    } else if (elem.webkitRequestFullscreen) { /* Safari */
+      elem.webkitRequestFullscreen();
+    } else if (elem.msRequestFullscreen) { /* IE11 */
+      elem.msRequestFullscreen();
+    }
+  });
+</script>
+
 <script>
 // التبويبات
 function openTab(evt, tabName){
@@ -460,15 +691,35 @@ function renderStats(data){
 
 // أزرار التحميل والتصدير
 document.getElementById('previewBtn').addEventListener('click',fetchData);
-document.getElementById('exportCSV').addEventListener('click',async ()=>{
+document.getElementById('exportCSV').addEventListener('click', async () => {
   const res = await fetch(SHEET_URL);
   const data = await res.json();
-  if(!data.length){alert('لا توجد بيانات للتصدير'); return;}
-  const csv=['الاسم,الإدارة,المستوى,الموضوعات,الصيغة,تاريخ'];
-  data.forEach(r=>csv.push(`"${r["🧑‍🎓 الاسم"]}","${r["🏢 الإدارة"]}","${r["💼 المهارة"]}","${r["📚 المواضيع"]}","${r["📦 شكل المشاركة"]}","${r["📅 التاريخ"]}"`));
-  const blob=new Blob([csv.join('\n')],{type:'text/csv'}); const url=URL.createObjectURL(blob);
-  const a=document.createElement('a'); a.href=url; a.download='training_responses.csv'; a.click(); URL.revokeObjectURL(url);
+
+  if (!data.length) {
+    alert('لا توجد بيانات للتصدير');
+    return;
+  }
+
+  // ⇦ إضافة BOM لإصلاح مشكلة الرموز الغريبة في Excel
+  const csv = ['\uFEFF🧑‍🎓 الاسم,🏢 الإدارة,📊 المستوى,📚 الموضوعات,📝 الصيغة,📅 التاريخ'];
+
+  // الصفوف
+  data.forEach(r => csv.push(
+    `"${r["🧑‍🎓 الاسم"]}","${r["🏢 الإدارة"]}","${r["💼 المهارة"]}","${r["📚 المواضيع"]}","${r["📦 شكل المشاركة"]}","${r["📅 التاريخ"]}"`
+  ));
+
+  // إنشاء ملف CSV بترميز UTF-8 الصحيح
+  const blob = new Blob([csv.join('\n')], { type: 'text/csv;charset=utf-8;' });
+  const url = URL.createObjectURL(blob);
+
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'training_responses.csv';
+  a.click();
+
+  URL.revokeObjectURL(url);
 });
+
 document.getElementById('downloadJSON').addEventListener('click',async ()=>{
   const res = await fetch(SHEET_URL);
   const data = await res.json();
@@ -551,6 +802,126 @@ document.getElementById('submitBtn').addEventListener('click', function(e){
 
 // تحميل البيانات عند فتح الصفحة
 fetchData();
+
+
+function drawChart(totalCount, levelCounts) {
+
+  const ctx = document.getElementById('myChart').getContext('2d');
+
+  new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: ['مبتدئ', 'متوسط', 'متقدم'],
+      datasets: [{
+        label: 'عدد المتدربين',
+        data: [
+          levelCounts.beginner,
+          levelCounts.intermediate,
+          levelCounts.advanced
+        ],
+        borderWidth: 2
+      }]
+    },
+    options: {
+      responsive: true,
+      scales: {
+        y: { beginAtZero: true }
+      }
+    }
+  });
+}
+
+
+</script>
+
+
+<script>
+document.addEventListener("DOMContentLoaded", async () => {
+  const ctx = document.getElementById("myChart").getContext("2d");
+
+  try {
+    // جلب البيانات من جوجل شيت
+    const res = await fetch(SHEET_URL);
+    const rows = await res.json();
+
+    if (!rows.length) {
+      console.warn("لا توجد بيانات لعرض الرسم البياني");
+      return;
+    }
+
+    // حساب عدد كل إدارة
+    const counts = {};
+    rows.forEach(r => {
+      const dept = r["🏢 الإدارة"] || "غير محدد";
+      if (!counts[dept]) counts[dept] = 0;
+      counts[dept]++;
+    });
+
+    const labels = Object.keys(counts);
+    const values = Object.values(counts);
+
+    // إنشاء تدرج لوني للخط والخلفية
+    const gradient = ctx.createLinearGradient(0, 0, 0, 400);
+    gradient.addColorStop(0, "rgba(0, 123, 255, 0.6)");
+    gradient.addColorStop(1, "rgba(0, 123, 255, 0.1)");
+
+    new Chart(ctx, {
+      type: "line",
+      data: {
+        labels: labels,
+        datasets: [{
+          label: "عدد الطلبات لكل إدارة",
+          data: values,
+          borderColor: "#007bff",      // لون الخط
+          backgroundColor: gradient,   // لون خلفية الخط بالتدرج
+          fill: true,                  // لتلوين المنطقة تحت الخط
+          tension: 0.4,                // لجعل الخط منحني وسلس
+          pointBackgroundColor: "#fff",// لون نقاط البيانات
+          pointBorderColor: "#007bff", // حدود النقاط
+          pointRadius: 6,              // حجم النقاط
+          pointHoverRadius: 8          // حجم النقاط عند المرور عليها
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: {
+            display: true,
+            labels: {
+              color: "#333",
+              font: { size: 14, weight: "bold" }
+            }
+          },
+          tooltip: {
+            enabled: true,
+            backgroundColor: "#007bff",
+            titleColor: "#fff",
+            bodyColor: "#fff",
+            mode: "index",
+            intersect: false
+          }
+        },
+        scales: {
+          y: {
+            beginAtZero: true,
+            grid: {
+              color: "rgba(0,0,0,0.05)"
+            }
+          },
+          x: {
+            grid: {
+              color: "rgba(0,0,0,0.05)"
+            }
+          }
+        }
+      }
+    });
+
+  } catch (e) {
+    console.error("خطأ فى قراءة البيانات من الشيت:", e);
+  }
+});
+
 </script>
 
 
