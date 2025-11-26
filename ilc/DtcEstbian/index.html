@@ -253,8 +253,6 @@ form#surveyForm {
 
   
 
-}
-
 /* شاشات صغيرة جدًا */
 @media (max-width: 480px) {
   body {
@@ -268,6 +266,26 @@ form#surveyForm {
   }
 }
 
+
+@media screen and (orientation: portrait) {
+  body::before {
+    content: "↻ من فضلك لف الهاتف للوضع الأفقي لعرض التطبيق بشكل أفضل";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.7);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    z-index: 9999;
+    text-align: center;
+    padding: 20px;
+  }
+}
 
 
 
