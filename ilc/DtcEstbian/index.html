@@ -23,13 +23,59 @@
     align-items:flex-start;
     justify-content:center;
   }
-  .container{
-    max-width:980px;
-    width:100%;
-    display:grid;
-    grid-template-columns: 300px 1fr;
-    gap:20px;
-  }
+  .container {
+  display: flex;          /* وضع المحتوى جنب بعض */
+  gap: 20px;
+  max-width: 1200px;
+  margin: auto;
+}
+
+/* جانب الإحصاءات + الصيغ المفضلة */
+/* العمود الجانبي */
+.side {
+    width: 300px;
+    height: 100vh;
+    overflow-y: auto;   /* Scroll للعمود */
+    padding: 10px;
+}
+
+/* كل كارت داخل الجانب */
+.stat-card,
+.tools-card {
+    background: #fff;
+    padding: 14px;
+    border-radius: 10px;
+    box-shadow: 0 6px 18px rgba(6,30,60,0.04);
+    margin-bottom: 14px;
+
+    max-height: 300px;   /* ارتفاع الكارت */
+    overflow-y: auto;    /* Scroll داخلي لكل كارت */
+}
+
+.level-card {
+    background: #fff;
+    padding: 14px;
+    border-radius: 10px;
+    box-shadow: 0 6px 18px rgba(6,30,60,0.04);
+    margin-bottom: 14px;
+
+    max-height: 250px;   /* ارتفاع الكارت */
+    overflow-y: auto;    /* Scroll داخلي */
+}
+
+
+
+/* استبيان يأخذ باقي العرض */
+form#surveyForm {
+  flex: 1;
+  background: linear-gradient(180deg, rgba(255,255,255,0.9), rgba(250,250,255,0.9));
+  padding:16px;
+  border-radius:10px;
+  box-shadow: 0 6px 18px rgba(3,50,100,0.04);
+  overflow-y: auto;
+  max-height: 100vh;
+}
+
   @media (max-width:980px){.container{grid-template-columns:1fr}}
   header{
     grid-column: 1 / -1;
@@ -97,7 +143,19 @@
     box-shadow: 0 6px 16px rgba(3,50,100,0.06);
     transition:0.2s;
   }
-  .btn-primary{background:linear-gradient(90deg,var(--primary),var(--accent)); color:#fff}
+.btn-primary{
+  background: linear-gradient(90deg,#ff7f50,#ff4500); /* لون برتقالي متدرج */
+  color: #fff;
+  transition: 0.3s;
+  opacity: 1;
+  pointer-events: auto; /* لتكون نشطة */
+}
+
+/* حالة غير نشطة */
+.btn-primary.disabled {
+  opacity: 0.5;
+  pointer-events: none;
+}
   .btn-ghost{background:transparent;border:1px solid #d6e6ff;color:var(--primary)}
   .btn-danger{background:#ff6b6b;color:#fff}
 
@@ -118,12 +176,8 @@
   .tabcontent .chip{background:#eee;border-radius:25px;padding:10px 15px;margin:5px;}
   .tabcontent .chip input{margin-left:5px;}
 
-  .side{
-    padding:14px;
-    border-radius:10px;
-    background:linear-gradient(180deg,#ffffff,#fbfeff);
-    box-shadow: 0 6px 18px rgba(6,30,60,0.04);
-  }
+
+
   .stat{display:flex;gap:12px;align-items:center;margin-bottom:12px}
   .stat .big{font-size:24px;font-weight:800;color:var(--primary)}
   .stat .mut{color:var(--muted);font-size:13px}
@@ -140,7 +194,11 @@
 <div class="container" role="main" aria-labelledby="pageTitle">
 
   <!-- البطاقة الجانبية على اليسار -->
-  <aside class="side" aria-live="polite">
+ <!-- البطاقة الجانبية على اليسار -->
+<aside class="side" aria-live="polite">
+
+  <!-- كارت الإحصاءات -->
+  <div class="stat-card">
     <div class="stat">
       <div class="big" id="totalCount">0</div>
       <div>
@@ -149,30 +207,42 @@
       </div>
     </div>
 
-    <div>
+    <div style="margin-top:10px;">
       <strong>توزيع الموضوعات المطلوبة</strong>
       <div class="chart-wrap" id="topicsChart"></div>
     </div>
+  </div>
 
-    <div style="margin-top:10px;">
-      <strong>الصيغ المفضلة</strong>
+
+  <!-- كارت المستوى الحالي (مستقل) -->
+  <div class="level-card">
+    <strong>المستوى الحالي (تلخيص)</strong>
+    <table class="table-mini" id="levelBreakdown"></table>
+  </div>
+
+
+  <!-- كارت الصيغ المفضلة + أزرار -->
+  <div class="tools-card">
+    <div style="margin-bottom:10px;">
       <table class="table-mini" id="formatBreakdown"></table>
     </div>
-
-    <div style="margin-top:10px;">
-      <strong>المستوى الحالي (تلخيص)</strong>
-      <table class="table-mini" id="levelBreakdown"></table>
-    </div>
-
     <div class="tools">
       <button id="exportCSV" class="btn-ghost">تصدير CSV</button>
       <button id="downloadJSON" class="btn-ghost">تحميل JSON</button>
       <button id="copySummary" class="btn-ghost">نسخ ملخص للحافظة</button>
     </div>
-  </aside>
+  </div>
+
+</aside>
 
   <!-- النموذج على اليمين -->
-  <form id="surveyForm" aria-label="نموذج استبيان">
+  <form id="surveyForm" aria-label="نموذج استبيان" 
+        action="https://script.google.com/macros/s/AKfycbxQ9OSlGSdnDFXcrzQXanJkqEP4cXWVj5i-law9Co25RlH9Iww0kpf4OL4UPR2YFojJ/exec" method="POST" target="hidden_iframe">
+    
+    <input type="hidden" name="topics" id="topicsField">
+    <input type="hidden" name="suggestions" id="suggestionsField">
+    <input type="hidden" name="format" value="حضوري">
+    
     <header>
       <img src="logo.jpg" alt="لوجو مركز التدريب">
       <div>
@@ -183,80 +253,147 @@
 
     <div>
       <label for="name">الاسم (اختياري)</label>
-      <input id="name" type="text" placeholder="اكتب اسمك أو اتركه فارغاً" />
+      <input id="name" name="name" type="text" placeholder="اكتب اسمك أو اتركه فارغاً" />
     </div>
 
     <div>
       <label for="dept">الإدارة / الجهة</label>
-      <input id="dept" type="text" placeholder="مثال: إدارة الصرف/ مركز تدريب..." required />
+      <input id="dept" name="dept" type="text" placeholder="مثال: إدارة الصرف/ مركز تدريب..." required />
     </div>
 
     <div>
       <label>المستوى الحالي في مهارات الحاسوب</label>
       <div class="row">
-        <select id="skillLevel" aria-label="مستوى المهارة">
+        <select id="skillLevel" name="skill" aria-label="مستوى المهارة">
           <option value="مبتدئ">مبتدئ</option>
           <option value="متوسط">متوسط</option>
           <option value="متقدم">متقدم</option>
-          <option value="لا اعرف">لا أعرف</option>
         </select>
       </div>
     </div>
 
-    <!-- التبويبات -->
-    <div>
-      <label>الموضوعات التدريبية المطلوبة (اختر ما يناسبك)</label>
-      <div class="tab">
-        <button type="button" class="tablinks" onclick="openTab(event, 'civil')">🏗️ الهندسة المدنية</button>
-        <button type="button" class="tablinks" onclick="openTab(event, 'mechanical')">⚙️ الهندسة الميكانيكية</button>
-        <button type="button" class="tablinks" onclick="openTab(event, 'computer')">🖥️ الكمبيوتر</button>
-        <button type="button" class="tablinks" onclick="openTab(event, 'administrative')">🏢 الإدارية</button>
-        <button type="button" class="tablinks" onclick="openTab(event, 'humanDevelopment')">🌱 التنمية البشرية</button>
-        <button type="button" class="tablinks" onclick="openTab(event, 'future')">💡 دورات جديده</button>
-        <button type="button" class="tablinks" onclick="openTab(event, 'suggestions')">📝 الدورات المقترحة من قبل المتدربين</button>
-      </div>
+ <!-- التبويبات -->
+<div>
+  <label>الموضوعات التدريبية المطلوبة (اختر ما يناسبك)</label>
 
-      <!-- محتوى التبويبات -->
-      <!-- مثال: قسم الكمبيوتر -->
-      <div id="computer" class="tabcontent">
-        <label class="chip"><input type="checkbox" value="صيانة الحاسب الآلي (هاردوير - سوفتوير)"> صيانة الحاسب الآلي (هاردوير - سوفتوير)</label>
-        <label class="chip"><input type="checkbox" value="ADOBE ILLUSTRAITOR"> ADOBE ILLUSTRAITOR</label>
-        <label class="chip"><input type="checkbox" value="Arc GIS"> Arc GIS</label>
-        <label class="chip"><input type="checkbox" value="Windows"> Windows</label>
-        <label class="chip"><input type="checkbox" value="Google docs"> Google docs</label>
-        <label class="chip"><input type="checkbox" value="Word"> Word</label>
-        <label class="chip"><input type="checkbox" value="Power Point"> Power Point</label>
-        <label class="chip"><input type="checkbox" value="Excel"> Excel</label>
-        <label class="chip"><input type="checkbox" value="AutoCAD-2D"> AutoCAD-2D</label>
-        <label class="chip"><input type="checkbox" value="Sap"> Sap</label>
-        <label class="chip"><input type="checkbox" value="فوتوشوب"> فوتوشوب</label>
-        <label class="chip"><input type="checkbox" value="Access"> Access</label>
-        <label class="chip"><input type="checkbox" value="Primavera"> Primavera</label>
-        <label class="chip"><input type="checkbox" value="شبكات الحاسب الآلي"> شبكات الحاسب الآلي</label>
-        <label class="chip"><input type="checkbox" value="Revit for Civil ENG"> Revit for Civil ENG</label>
-      </div>
+  <div class="tab">
+  <button type="button" class="tablinks" onclick="openTab(event, 'civil')">🏗️ الهندسة المدنية</button>
+  <button type="button" class="tablinks" onclick="openTab(event, 'mechanical')">⚙️ الهندسة الميكانيكية</button>
+  <button type="button" class="tablinks" onclick="openTab(event, 'computer')">🖥️ الكمبيوتر</button>
+  <button type="button" class="tablinks" onclick="openTab(event, 'administrative')">🏢 الإدارية</button>
+  <button type="button" class="tablinks" onclick="openTab(event, 'humanDevelopment')">🌱 التنمية البشرية</button>
+  <button type="button" class="tablinks" onclick="openTab(event, 'future')">💡 دورات مقترحة من جانب المركز</button>
+  <button type="button" class="tablinks" onclick="openTab(event, 'suggestions')">📝 الدورات المقترحة من جانب المتدربين</button>
+</div>
 
-      <!-- باقي التبويبات مشابهة -->
-      <!-- ... civil, mechanical, administrative, humanDevelopment, future, suggestions -->
 
-      <div id="suggestions" class="tabcontent">
-        <label for="suggestedCourses">اكتب أي دورات تدريبية ترغب بها:</label>
-        <textarea id="suggestedCourses" placeholder="مثال: دورة متقدمة في تحليل البيانات، دورة في روبوتات ذكية..." rows="6"></textarea>
-      </div>
-    </div>
+
+  <!-- 🏗️ الهندسة المدنية -->
+  <div id="civil" class="tabcontent">
+   <label class="chip"><input type="checkbox" value="تنفيذ شبكت الصرف للمشرف الفنى"> تنفيذ شبكت الصرف للمشرف الفنى</label>
+<label class="chip"><input type="checkbox" value="المساحة وإستخدام محطة الرصد الشاملة (مهندسين)"> المساحة وإستخدام محطة الرصد الشاملة (مهندسين)</label>
+<label class="chip"><input type="checkbox" value="صيانة شبكات الصرف للمهندسين"> صيانة شبكات الصرف للمهندسين</label>
+<label class="chip"><input type="checkbox" value="تشغيل مجموعة الليزر-ميزان الليزر للمشرف الفنى"> تشغيل مجموعة الليزر-ميزان الليزر للمشرف الفنى</label>
+<label class="chip"><input type="checkbox" value="تنمية القدرات الإدارية للمهندسين"> تنمية القدرات الإدارية للمهندسين</label>
+<label class="chip"><input type="checkbox" value="تنفيذ شبكات الصرف للمهندسين"> تنفيذ شبكات الصرف للمهندسين</label>
+<label class="chip"><input type="checkbox" value="المساحة وإستخدام محطة الرصد الشاملة (مساح-مشرف فنى)"> المساحة وإستخدام محطة الرصد الشاملة (مساح-مشرف فنى)</label>
+<label class="chip"><input type="checkbox" value="إرشاد الصرف للمهندسين"> إرشاد الصرف للمهندسين</label>
+<label class="chip"><input type="checkbox" value="مهارات إعداد التقارير"> مهارات إعداد التقارير</label>
+<label class="chip"><input type="checkbox" value="تشغيل مجموعة الليزر-ميزان الليزر للمهندسين"> تشغيل مجموعة الليزر-ميزان الليزر للمهندسين</label>
+<label class="chip"><input type="checkbox" value="تنفيذ منشأت الرى والصرف للمهندسين"> تنفيذ منشأت الرى والصرف للمهندسين</label>
+<label class="chip"><input type="checkbox" value="إرشاد الصرف للدبلومات"> إرشاد الصرف للدبلومات</label>
+<label class="chip"><input type="checkbox" value="إشاد الصرف للمهندسين"> إشاد الصرف للمهندسين</label>
+<label class="chip"><input type="checkbox" value="إدارة الأزمات"> إدارة الأزمات</label>
+  </div>
+
+
+  <!-- ⚙️ الهندسة الميكانيكية -->
+  <div id="mechanical" class="tabcontent">
+   <label class="chip"><input type="checkbox" value="تدريب تحويلى للسائقين لقيادة الحفارات"> تدريب تحويلى للسائقين لقيادة الحفارات</label>
+<label class="chip"><input type="checkbox" value="أساسيات المعدات"> أساسيات المعدات</label>
+<label class="chip"><input type="checkbox" value="معدات صيانة شبكات الصرف المغطى (ماكينة الغسيل والمضخات)"> معدات صيانة شبكات الصرف المغطى (ماكينة الغسيل والمضخات)</label>
+<label class="chip"><input type="checkbox" value="أساسيات النظام الهيدروليكى"> أساسيات النظام الهيدروليكى</label>
+<label class="chip"><input type="checkbox" value="تنمية المهارات فى تشغيل المعدات والسيارات الحكومية"> تنمية المهارات فى تشغيل المعدات والسيارات الحكومية</label>
+<label class="chip"><input type="checkbox" value="أساسيات وعمرات محرك الديزل"> أساسيات وعمرات محرك الديزل</label>
+  </div>
+
+
+  <!-- 🖥️ الكمبيوتر -->
+  <div id="computer" class="tabcontent">
+<label class="chip"><input type="checkbox" value="صيانة الحاسب الآلي (هاردوير - سوفتوير)"> صيانة الحاسب الآلي (هاردوير - سوفتوير)</label>
+<label class="chip"><input type="checkbox" value="ADOBE ILLUSTRAITOR"> ADOBE ILLUSTRAITOR</label>
+<label class="chip"><input type="checkbox" value="Arc GIS"> Arc GIS</label>
+<label class="chip"><input type="checkbox" value="Windows"> Windows</label>
+<label class="chip"><input type="checkbox" value="Google docs"> Google docs</label>
+<label class="chip"><input type="checkbox" value="Word"> Word</label>
+<label class="chip"><input type="checkbox" value="Power Point"> Power Point</label>
+<label class="chip"><input type="checkbox" value="Excel"> Excel</label>
+<label class="chip"><input type="checkbox" value="AutoCAD-2D"> AutoCAD-2D</label>
+<label class="chip"><input type="checkbox" value="Sap"> Sap</label>
+<label class="chip"><input type="checkbox" value="فوتوشوب"> فوتوشوب</label>
+<label class="chip"><input type="checkbox" value="Access"> Access</label>
+<label class="chip"><input type="checkbox" value="Primavera"> Primavera</label>
+<label class="chip"><input type="checkbox" value="شبكات الحاسب الآلي"> شبكات الحاسب الآلي</label>
+<label class="chip"><input type="checkbox" value="Revit for Civil ENG"> Revit for Civil ENG</label>
+  </div>
+
+
+  <!-- 🏢 الإداري -->
+  <div id="administrative" class="tabcontent">
+   <label class="chip"><input type="checkbox" value="أخصائى شئون عاملين"> أخصائى شئون عاملين</label>
+<label class="chip"><input type="checkbox" value="أمناء مخازن"> أمناء مخازن</label>
+<label class="chip"><input type="checkbox" value="المعاشات والقوانين المنظمة لها"> المعاشات والقوانين المنظمة لها</label>
+<label class="chip"><input type="checkbox" value="مندوبى الحجز الإدارى"> مندوبى الحجز الإدارى</label>
+<label class="chip"><input type="checkbox" value="إجراءات تراخيص الرى والصرف"> إجراءات تراخيص الرى والصرف</label>
+<label class="chip"><input type="checkbox" value="عقود ومقاولات الأعمال والتوريدات (قانون 182)"> عقود ومقاولات الأعمال والتوريدات (قانون 182)</label>
+<label class="chip"><input type="checkbox" value="فروق الأسعار"> فروق الأسعار</label>
+<label class="chip"><input type="checkbox" value="أخصائى شئون مالية"> أخصائى شئون مالية</label>
+  </div>
+
+
+  <!-- 🌱 التنمية البشرية -->
+  <div id="humanDevelopment" class="tabcontent">
+    <label class="chip"><input type="checkbox" value="مهارات التواصل والاتصال"> مهارات التواصل والاتصال</label>
+    <label class="chip"><input type="checkbox" value="حل المشكلات واتخاذ القرار"> حل المشكلات واتخاذ القرار</label>
+    <label class="chip"><input type="checkbox" value="العمل الجماعي والقيادة"> العمل الجماعي والقيادة</label>
+    <label class="chip"><input type="checkbox" value="إدارة الضغوط"> إدارة الضغوط</label>
+    <label class="chip"><input type="checkbox" value="التفكير الإبداعي"> التفكير الإبداعي</label>
+    <label class="chip"><input type="checkbox" value="إدارة الوقت الشخصي"> إدارة الوقت الشخصي</label>
+    <label class="chip"><input type="checkbox" value="التوازن بين العمل والحياة"> التوازن بين العمل والحياة</label>
+    <label class="chip"><input type="checkbox" value="فن الإقناع والتأثير"> فن الإقناع والتأثير</label>
+    <label class="chip"><input type="checkbox" value="مهارات العرض والإلقاء"> مهارات العرض والإلقاء</label>
+  </div>
+
+
+  <!-- 💡 دورات جديدة -->
+  <div id="future" class="tabcontent">
+    <label class="chip"><input type="checkbox" value="برمجة تطبيقات الويب"> برمجة تطبيقات الويب</label>
+    <label class="chip"><input type="checkbox" value="JavaScript متقدم"> JavaScript متقدم</label>
+    <label class="chip"><input type="checkbox" value="الذكاء الاصطناعي في الأمن السيبراني"> الذكاء الاصطناعي في الأمن السيبراني</label>
+    <label class="chip"><input type="checkbox" value="أرشفة الملفات بالذكاء الاصطناعي"> أرشفة الملفات بالذكاء الاصطناعي</label>
+    <label class="chip"><input type="checkbox" value="تحليل البيانات باستخدام الذكاء الاصطناعي"> تحليل البيانات باستخدام الذكاء الاصطناعي</label>
+    <label class="chip"><input type="checkbox" value="مقدمة في تعلم الآلة"> مقدمة في تعلم الآلة</label>
+  </div>
+
+
+  <!-- 📝 الدورات المقترحة -->
+  <div id="suggestions" class="tabcontent">
+    <label for="suggestedCourses">اكتب أي دورات تدريبية ترغب بها:</label>
+    <textarea id="suggestedCourses" placeholder="مثال: دورة متقدمة في تحليل البيانات..." rows="6"></textarea>
+  </div>
+
+</div>
 
     <div class="actions">
-      <button class="btn-primary" id="submitBtn" type="button">إرسال + حفظ</button>
+<button type="button" class="btn-primary" id="submitBtn">إرسال + حفظ</button>
       <button class="btn-ghost" id="previewBtn" type="button">معاينة الإحصاء الآن</button>
-      <button class="btn-danger" id="clearBtn" type="button" title="حذف كل البيانات">مسح البيانات</button>
-    </div>
-
-    <div class="small" style="margin-top:6px;color:var(--muted)">
-      البيانات تُخزن فقط في جهازك (LocalStorage). يمكنك تصديرها ومشاركتها مع الإدارة.
     </div>
 
   </form>
+
 </div>
+
+<iframe name="hidden_iframe" style="display:none;"></iframe>
 
 <script>
 // التبويبات
@@ -268,12 +405,6 @@ function openTab(evt, tabName){
   document.getElementById(tabName).style.display="block";
   evt.currentTarget.className+=" active";
 }
-document.getElementsByClassName('tablinks')[0].click();
-
-// LocalStorage
-const STORAGE_KEY = 'trainingResponses_v1';
-function loadResponses(){ return JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]"); }
-function saveResponses(arr){ localStorage.setItem(STORAGE_KEY, JSON.stringify(arr)); }
 
 // جمع البيانات من الفورم
 function collectForm(){
@@ -281,25 +412,37 @@ function collectForm(){
   const dept=document.getElementById('dept').value.trim();
   const skill=document.getElementById('skillLevel').value;
   const checked=Array.from(document.querySelectorAll('.tabcontent input[type="checkbox"]:checked')).map(i=>i.value);
-  const suggestions=document.getElementById('suggestedCourses').value.split('\n').map(s=>s.trim()).filter(s=>s!=='');
+  const suggestions=document.getElementById('suggestedCourses')?document.getElementById('suggestedCourses').value.split('\n').map(s=>s.trim()).filter(s=>s!==''): [];
   const topics=[...checked,...suggestions];
   return {id:Date.now(),name,dept,skill,topics,format:"حضوري",ts:new Date().toISOString()};
 }
 
-function resetForm(){document.getElementById('surveyForm').reset();}
 function validate(entry){if(!entry.dept){alert('من فضلك اكتب اسم الإدارة أو الجهة.'); return false;} return true;}
 
+// Fetch البيانات من Google Sheet
+const SHEET_URL = 'https://script.google.com/macros/s/AKfycbxQ9OSlGSdnDFXcrzQXanJkqEP4cXWVj5i-law9Co25RlH9Iww0kpf4OL4UPR2YFojJ/exec';
+async function fetchData(){
+  try{
+    const res = await fetch(SHEET_URL);
+    const data = await res.json();
+    renderStats(data.reverse()); // الأحدث أولاً
+  }catch(e){console.error("فشل في جلب البيانات من Google Sheet:", e);}
+}
+
 // عرض الإحصاءات
-function renderStats(){
-  const data=loadResponses();
+function renderStats(data){
+  if(!data) data=[];
   document.getElementById('totalCount').textContent=data.length;
 
   const topicsMap={},formats={},levels={};
-  data.forEach(r=>{(r.topics||[]).forEach(t=>topicsMap[t]=(topicsMap[t]||0)+1); formats[r.format]=(formats[r.format]||0)+1; levels[r.skill]=(levels[r.skill]||0)+1;});
+  data.forEach(r=>{
+    (r["📚 المواضيع"]||"").split(',').forEach(t=>topicsMap[t.trim()] = (topicsMap[t.trim()]||0)+1);
+    formats[r["📦 شكل المشاركة"]]=(formats[r["📦 شكل المشاركة"]]||0)+1;
+    levels[r["💼 المهارة"]]=(levels[r["💼 المهارة"]]||0)+1;
+  });
 
   // الموضوعات
-  const topicsChart=document.getElementById('topicsChart');
-  topicsChart.innerHTML='';
+  const topicsChart=document.getElementById('topicsChart'); topicsChart.innerHTML='';
   const totalTopics=Object.values(topicsMap).reduce((a,b)=>a+b,0);
   Object.entries(topicsMap).forEach(([topic,count])=>{
     const percent=totalTopics?Math.round((count/totalTopics)*100):0;
@@ -309,75 +452,108 @@ function renderStats(){
   });
 
   // الصيغ
-  const formatBreakdown=document.getElementById('formatBreakdown'); formatBreakdown.innerHTML='';
-  Object.entries(formats).forEach(([fmt,count])=>formatBreakdown.innerHTML+=`<tr><td>${fmt}</td><td>${count}</td></tr>`);
-
+  
   // المستويات
   const levelBreakdown=document.getElementById('levelBreakdown'); levelBreakdown.innerHTML='';
   Object.entries(levels).forEach(([lvl,count])=>levelBreakdown.innerHTML+=`<tr><td>${lvl}</td><td>${count}</td></tr>`);
 }
 
-function buildSummaryText(){
-  const data=loadResponses();
-  const lines=[]; lines.push('ملخص احتياجات التدريب — مركز تدريب غرب الدلتا'); lines.push('إجمالي الاستجابات: '+data.length);
+// أزرار التحميل والتصدير
+document.getElementById('previewBtn').addEventListener('click',fetchData);
+document.getElementById('exportCSV').addEventListener('click',async ()=>{
+  const res = await fetch(SHEET_URL);
+  const data = await res.json();
+  if(!data.length){alert('لا توجد بيانات للتصدير'); return;}
+  const csv=['الاسم,الإدارة,المستوى,الموضوعات,الصيغة,تاريخ'];
+  data.forEach(r=>csv.push(`"${r["🧑‍🎓 الاسم"]}","${r["🏢 الإدارة"]}","${r["💼 المهارة"]}","${r["📚 المواضيع"]}","${r["📦 شكل المشاركة"]}","${r["📅 التاريخ"]}"`));
+  const blob=new Blob([csv.join('\n')],{type:'text/csv'}); const url=URL.createObjectURL(blob);
+  const a=document.createElement('a'); a.href=url; a.download='training_responses.csv'; a.click(); URL.revokeObjectURL(url);
+});
+document.getElementById('downloadJSON').addEventListener('click',async ()=>{
+  const res = await fetch(SHEET_URL);
+  const data = await res.json();
+  if(!data.length){alert('لا توجد بيانات للتحميل'); return;}
+  const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'}); const url=URL.createObjectURL(blob);
+  const a=document.createElement('a'); a.href=url; a.download='training_responses.json'; a.click(); URL.revokeObjectURL(url);
+});
+document.getElementById('copySummary').addEventListener('click',async ()=>{
+  const res = await fetch(SHEET_URL);
+  const data = await res.json();
+  const lines=['ملخص احتياجات التدريب — مركز تدريب غرب الدلتا','إجمالي الاستجابات: '+data.length];
   if(data.length){
-    const topics={},formats={};
-    data.forEach(r=>{(r.topics||[]).forEach(t=>topics[t]=(topics[t]||0)+1); formats[r.format]=(formats[r.format]||0)+1;});
+    const topics={}; const formats={};
+    data.forEach(r=>{(r["📚 المواضيع"]||"").split(',').forEach(t=>topics[t]=(topics[t]||0)+1); formats[r["📦 شكل المشاركة"]] = (formats[r["📦 شكل المشاركة"]]||0)+1;});
     lines.push(''); lines.push('أكثر الموضوعات طلباً:');
     Object.entries(topics).sort((a,b)=>b[1]-a[1]).slice(0,6).forEach(([k,v])=>lines.push(`- ${k}: ${v}`));
     lines.push(''); lines.push('تفاصيل صيغ التدريب:');
     Object.entries(formats).forEach(([k,v])=>lines.push(`- ${k}: ${v}`));
   }
-  return lines.join('\n');
-}
-
-// تحميل الملفات
-function downloadText(text,filename,mime){
-  const blob=new Blob([text],{type:mime});
-  const url=URL.createObjectURL(blob);
-  const a=document.createElement('a');
-  a.href=url;a.download=filename;document.body.appendChild(a);a.click();
-  setTimeout(()=>{URL.revokeObjectURL(url);a.remove();},500);
-}
-
-// 🌟 إرسال البيانات إلى Google Sheet
-const GOOGLE_SHEET_WEBAPP_URL = "https://script.google.com/macros/s/AKfycbxAi1wrrPlXptVBnZuO8IKtQpyBxEz8FCDx_eEtAsEhyA7Dz1W-WFs57JgTiiiGJjCl/exec"; // ضع هنا رابط الـ Web App
-
-async function sendDataToGoogleSheet(entry){
-  try{
-    const res = await fetch(GOOGLE_SHEET_WEBAPP_URL, {
-      method: "POST",
-      headers: {"Content-Type":"application/json"},
-      body: JSON.stringify(entry)
-    });
-    const json = await res.json();
-    return json;
-  }catch(err){
-    console.error("Error sending to Google Sheet:", err);
-    return {status:"error", message: err.message};
-  }
-}
-
-document.getElementById('submitBtn').addEventListener('click', async function(){
-  const entry = collectForm();
-  if(!validate(entry)) return;
-
-  const result = await sendDataToGoogleSheet(entry);
-
-  if(result.status==="success"){
-    saveResponses([entry,...loadResponses()]);
-    renderStats();
-    alert(result.message);
-    resetForm();
-  } else if(result.status==="duplicate"){
-    alert(result.message);
-  } else {
-    saveResponses([entry,...loadResponses()]);
-    renderStats();
-    alert("⚠️ لم يتم الإرسال إلى Google Sheet، تم حفظ البيانات محلياً.\n"+result.message);
-  }
+  navigator.clipboard.writeText(lines.join('\n')); alert('تم نسخ الملخص للحافظة');
 });
 
+// عند الإرسال، تحديث الحقول المخفية للفورم
+document.getElementById('submitBtn').addEventListener('click', function(e){
+  e.preventDefault(); // يمنع إعادة تحميل الصفحة
+  const submitBtn = document.querySelector('.btn-primary');
+  submitBtn.classList.add('disabled'); // تعطيل الزر قبل الإرسال
+  submitBtn.textContent = "جاري الإرسال..."; // تغيير النص مؤقتًا
+
+  const entry = collectForm();
+  if(!validate(entry)) {
+    submitBtn.classList.remove('disabled');
+    submitBtn.textContent = "إرسال + حفظ";
+    return;
+  }
+
+  const checked = Array.from(document.querySelectorAll('.tabcontent input[type="checkbox"]:checked')).map(i => i.value);
+  const suggestions = document.getElementById('suggestedCourses') 
+                      ? document.getElementById('suggestedCourses').value.split('\n').map(s => s.trim()).filter(s => s !== '') 
+                      : [];
+  document.getElementById('topicsField').value = [...checked, ...suggestions].join(', ');
+  document.getElementById('suggestionsField').value = suggestions.join(',');
+
+  fetch("https://script.google.com/macros/s/AKfycbxQ9OSlGSdnDFXcrzQXanJkqEP4cXWVj5i-law9Co25RlH9Iww0kpf4OL4UPR2YFojJ/exec", {
+    method: 'POST',
+    body: new FormData(document.getElementById('surveyForm'))
+  })
+  .then(res => res.json())
+  .then(data => {
+    if(data.status === "success") {
+      document.getElementById('surveyForm').reset();
+      fetchData(); // تحديث الإحصاءات
+
+      // إغلاق أي تبويب مفتوح بعد الإرسال
+      const tabcontent = document.getElementsByClassName("tabcontent");
+      for (let i = 0; i < tabcontent.length; i++) {
+        tabcontent[i].style.display = "none";
+      }
+      const tablinks = document.getElementsByClassName("tablinks");
+      for (let i = 0; i < tablinks.length; i++) {
+        tablinks[i].classList.remove("active");
+      }
+
+    } else {
+      alert(data.message || "❌ حدث خطأ أثناء الحفظ");
+    }
+  })
+  .catch(err => alert("❌ حدث خطأ في الاتصال: " + err))
+  .finally(() => {
+    submitBtn.classList.remove('disabled'); // إعادة تفعيل الزر
+    submitBtn.textContent = "إرسال + حفظ";
+
+    
+    // إعادة الصفحة لأعلى بعد الإرسال
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+
+  });
+});
+
+
+// تحميل البيانات عند فتح الصفحة
+fetchData();
 </script>
+
+
+
 </body>
 </html>
