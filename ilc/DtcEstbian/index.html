@@ -11,9 +11,27 @@
 
 
 html, body {
+  margin: 0;
+  padding: 0;
   width: 100%;
-  max-width: 100%;
-  overflow-x: hidden;
+  height: 100%;
+  overflow: hidden;
+}
+
+/* اجعل المحتوى دائمًا أفقي */
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transform: rotate(0deg); /* لا تدوير */
+}
+
+/* صندوق المحتوى الرئيسي */
+#app {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: row; /* أفقي */
 }
 
 
@@ -276,19 +294,7 @@ form#surveyForm {
 }
 
 
-/* هذا الجزء يعيد تدوير المحتوى تلقائيًا بدل طلب من المستخدم قلب الهاتف */
-@media screen and (orientation: portrait) {
-  body {
-    transform: rotate(90deg);
-    transform-origin: left top;
-    width: 100vh; /* عرض جديد بعد التدوير */
-    height: 100vw; /* ارتفاع جديد بعد التدوير */
-    overflow-x: hidden;
-    position: absolute;
-    top: 0;
-    left: 0;
-  }
-}
+
 
 
 
