@@ -870,35 +870,30 @@ document.addEventListener("DOMContentLoaded", async () => {
   
 
 </script>
-
 <script>
 document.addEventListener("DOMContentLoaded", () => {
 
   const side = document.querySelector(".side");
-  const toggleBtn = document.getElementById("toggleSide");
+  const submitBtn = document.getElementById("submitBtn");
 
-  /* ⭐⭐ 1) أظهر السيد مباشرة عند فتح الصفحة ⭐⭐ */
-  side.style.transform = "translateX(0)";
+  // ⭐⭐ دالة إظهار السيد لمدة 10 ثواني ⭐⭐
+  function showSideFor10Seconds() {
+    side.classList.add("show");  // يظهر
+    setTimeout(() => {
+      side.classList.remove("show"); // يختفي تلقائيًا
+    }, 10000); // 10 ثواني
+  }
 
-  /* ⭐⭐ 2) لما الصفحة تخلص تحميل – يبدأ العد 10 ثواني ⭐⭐ */
-  window.addEventListener("load", () => {
-      setTimeout(() => {
-          side.classList.remove("show");
-          side.style.transform = "translateX(-100%)";
-      }, 10000);  // 10 ثواني
-  });
-
-  /* ⭐⭐ 3) زر فتح وغلق السيد ⭐⭐ */
-  toggleBtn.addEventListener("click", () => {
-      if (side.style.transform === "translateX(0)") {
-          side.style.transform = "translateX(-100%)";
-      } else {
-          side.style.transform = "translateX(0)";
-      }
-  });
+  // ⭐⭐ عند الضغط على زر إرسال + حفظ ⭐⭐
+  if (submitBtn) {
+    submitBtn.addEventListener("click", () => {
+      showSideFor10Seconds();
+    });
+  }
 
 });
 </script>
+
 
 
 
