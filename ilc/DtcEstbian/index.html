@@ -41,31 +41,22 @@
 
 
 .side {
-  /* … باقي كودك كما هو … */
-  transform: translateX(0);  /* يظهر افتراضي */
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 300px;
+  height: 100vh;
+  background: #fff;
+  z-index: 9999;
+  transform: translateX(-100%);
+  transition: 0.5s ease;
 }
 
+/* حالة الظهور */
+.side.show {
+  transform: translateX(0);
+}
 
-  /* الكارت الجانبي نفسه - بدون تغيير */
-  .side {
-    position: fixed;
-    top: 65px;
-    right: 10px;
-    width: 290px;
-    max-height: 80%;
-    background: #fff;
-    border-radius: 14px;
-    box-shadow: 0 6px 20px rgba(0,0,0,0.22);
-    padding: 10px;
-    overflow-y: auto;
-    z-index: 1000;
-    transform: translateX(320px);
-    transition: transform 0.35s cubic-bezier(.25,.8,.25,1);
-  }
-
-  .side.show {
-    transform: translateX(0);
-  }
 }
 
 
@@ -870,30 +861,28 @@ document.addEventListener("DOMContentLoaded", async () => {
   
 
 </script>
+
 <script>
 document.addEventListener("DOMContentLoaded", () => {
 
   const side = document.querySelector(".side");
-  const submitBtn = document.getElementById("submitBtn");
+  const toggleBtn = document.getElementById("toggleSide");
 
-  // ⭐⭐ دالة إظهار السيد لمدة 10 ثواني ⭐⭐
-  function showSideFor10Seconds() {
-    side.classList.add("show");  // يظهر
-    setTimeout(() => {
-      side.classList.remove("show"); // يختفي تلقائيًا
-    }, 10000); // 10 ثواني
-  }
+  /* ⭐⭐ 1) إظهار السيد فور تحميل الصفحة ⭐⭐ */
+  side.classList.add("show");
 
-  // ⭐⭐ عند الضغط على زر إرسال + حفظ ⭐⭐
-  if (submitBtn) {
-    submitBtn.addEventListener("click", () => {
-      showSideFor10Seconds();
-    });
-  }
+  /* ⭐⭐ 2) بعد 10 ثواني – إخفاء السيد بالكامل ⭐⭐ */
+  setTimeout(() => {
+      side.classList.remove("show");
+  }, 10000);
+
+  /* ⭐⭐ 3) زر فتح وغلق السيد يدويًا ⭐⭐ */
+  toggleBtn.addEventListener("click", () => {
+      side.classList.toggle("show");
+  });
 
 });
 </script>
-
 
 
 
