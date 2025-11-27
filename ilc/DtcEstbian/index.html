@@ -12,52 +12,53 @@
 
 /* على الموبايل، اجعل العمود الجانبي عائم وخفي افتراضيًا */
 @media (max-width: 768px) {
+
+  /* زر الإحصاء العائم */
+  #toggleSide {
+    position: fixed;
+    top: 12px;
+    right: 12px;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.85);
+    border: 2px solid #007bff33;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 26px;
+    cursor: pointer;
+    z-index: 1100;
+    backdrop-filter: blur(6px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+    transition: 0.25s;
+  }
+
+  #toggleSide:hover {
+    transform: scale(1.12);
+    background: rgba(255,255,255,0.95);
+  }
+
+  /* الكارت الجانبي نفسه */
   .side {
-    position: fixed; /* عائم فوق المحتوى */
-    top: 80px;       /* بعد الهيدر */
-    right: 10px;     /* في الجانب */
-    width: 280px;
+    position: fixed;
+    top: 65px;
+    right: 10px;
+    width: 290px;
     max-height: 80%;
     background: #fff;
-    border-radius: 10px;
-    box-shadow: 0 6px 18px rgba(0,0,0,0.2);
+    border-radius: 14px;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.22);
     padding: 10px;
     overflow-y: auto;
     z-index: 1000;
-    transform: translateX(300px); /* مخفي افتراضياً خارج الشاشة */
-    transition: transform 0.3s ease;
+    transform: translateX(320px);
+    transition: transform 0.35s cubic-bezier(.25,.8,.25,1);
   }
 
-  /* عند فتحه */
   .side.show {
     transform: translateX(0);
   }
-
-  /* زر لإظهار/إخفاء الكارت الجانبي */
-  #toggleSide {
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    z-index: 1100;
-    padding: 10px 14px;
-    border-radius: 10px;
-    border: none;
-    background: var(--primary);
-    color: #fff;
-    cursor: pointer;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-  }
-}
-
-.side {
-  width: 100%;
-  height: auto;
-  max-height: none;
-}
-
-form#surveyForm {
-  width: 100%;
-  max-height: none;
 }
 
 
