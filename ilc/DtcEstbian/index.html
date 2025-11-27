@@ -871,25 +871,33 @@ document.addEventListener("DOMContentLoaded", async () => {
 
 </script>
 
-
 <script>
-  const toggleBtn = document.getElementById('toggleSide');
-  const side = document.querySelector('.side');
+document.addEventListener("DOMContentLoaded", () => {
 
-  // تشغيل زر الفتح والغلق
-  toggleBtn.addEventListener('click', () => {
-    side.classList.toggle('show');
+  const side = document.querySelector(".side");
+  const toggleBtn = document.getElementById("toggleSide");
+
+  /* ⭐⭐ 1) أظهر السيد مباشرة عند فتح الصفحة ⭐⭐ */
+  side.style.transform = "translateX(0)";
+
+  /* ⭐⭐ 2) لما الصفحة تخلص تحميل – يبدأ العد 10 ثواني ⭐⭐ */
+  window.addEventListener("load", () => {
+      setTimeout(() => {
+          side.classList.remove("show");
+          side.style.transform = "translateX(-100%)";
+      }, 10000);  // 10 ثواني
   });
 
-  // ⭐ يظهر السيد فورًا قبل تحميل الصفحة
-  side.classList.add('show');
-
-  // ⭐ عند اكتمال تحميل الصفحة — انتظر 10 ثواني ثم أخفيه
-  window.addEventListener('load', () => {
-    setTimeout(() => {
-      side.classList.remove('show'); // إخفاء بعد اكتمال التحميل + 10 ثواني
-    }, 10000); // 10 ثواني
+  /* ⭐⭐ 3) زر فتح وغلق السيد ⭐⭐ */
+  toggleBtn.addEventListener("click", () => {
+      if (side.style.transform === "translateX(0)") {
+          side.style.transform = "translateX(-100%)";
+      } else {
+          side.style.transform = "translateX(0)";
+      }
   });
+
+});
 </script>
 
 
