@@ -11,27 +11,9 @@
 
 
 html, body {
-  margin: 0;
-  padding: 0;
   width: 100%;
-  height: 100%;
-  overflow: hidden;
-}
-
-/* اجعل المحتوى دائمًا أفقي */
-body {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  transform: rotate(0deg); /* لا تدوير */
-}
-
-/* صندوق المحتوى الرئيسي */
-#app {
-  width: 100vw;
-  height: 100vh;
-  display: flex;
-  flex-direction: row; /* أفقي */
+  max-width: 100%;
+  overflow-x: hidden;
 }
 
 
@@ -292,7 +274,6 @@ form#surveyForm {
     font-size: 14px;
   }
 }
-
 
 
 
