@@ -10,10 +10,42 @@
 
 
 
+/* على الموبايل، اجعل العمود الجانبي عائم وخفي افتراضيًا */
 @media (max-width: 768px) {
-  #app {
-    flex-direction: column; /* العرض الطولي بدل الأفقي */
-    align-items: center;
+  .side {
+    position: fixed; /* عائم فوق المحتوى */
+    top: 80px;       /* بعد الهيدر */
+    right: 10px;     /* في الجانب */
+    width: 280px;
+    max-height: 80%;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.2);
+    padding: 10px;
+    overflow-y: auto;
+    z-index: 1000;
+    transform: translateX(300px); /* مخفي افتراضياً خارج الشاشة */
+    transition: transform 0.3s ease;
+  }
+
+  /* عند فتحه */
+  .side.show {
+    transform: translateX(0);
+  }
+
+  /* زر لإظهار/إخفاء الكارت الجانبي */
+  #toggleSide {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 1100;
+    padding: 10px 14px;
+    border-radius: 10px;
+    border: none;
+    background: var(--primary);
+    color: #fff;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
   }
 }
 
@@ -375,6 +407,8 @@ form#surveyForm {
         </select>
       </div>
     </div>
+
+    <button id="toggleSide">📊</button>
 
 
 
@@ -813,6 +847,16 @@ document.addEventListener("DOMContentLoaded", async () => {
     console.error("خطأ فى قراءة البيانات من الشيت:", e);
   }
 });
+
+
+
+  const toggleBtn = document.getElementById('toggleSide');
+  const side = document.querySelector('.side');
+
+  toggleBtn.addEventListener('click', () => {
+    side.classList.toggle('show');
+  });
+
 
 </script>
 
