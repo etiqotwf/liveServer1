@@ -13,47 +13,46 @@
 /* على الموبايل، اجعل العمود الجانبي عائم وخفي افتراضيًا */
 @media (max-width: 768px) {
 
-  /* ===== زر الإحصاء الجديد أسفل الجانب ===== */
+  /* زر الإحصاء العائم - نسخة أسفل وذهبي */
   #toggleSide {
     position: fixed;
-    bottom: 20px;      /* أصبح أسفل الشاشة */
-    right: 20px;
-    width: 70px;
-    height: 70px;
+    bottom: 12px;
+    right: 12px;
+    width: 55px;
+    height: 55px;
     border-radius: 50%;
-    background: linear-gradient(45deg, #FFD700, #E5B400); /* ذهبي */
-    border: 2px solid #fff;
+    background: linear-gradient(145deg, #ffd700, #e6c200);
+    border: 2px solid #fff4aa;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 38px;
+    font-size: 28px;
     cursor: pointer;
     z-index: 1100;
-    color: #000;
-    font-weight: bold;
-    box-shadow: 0 6px 20px rgba(0,0,0,0.25);
-    transition: 0.3s;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.22);
+    transition: 0.25s;
   }
 
   #toggleSide:hover {
-    transform: scale(1.12);
+    transform: scale(1.08);
+    background: linear-gradient(145deg, #ffe76a, #e6c200);
   }
 
-  /* ===== الكارت الجانبي (side) ===== */
+  /* الكارت الجانبي نفسه - بدون تغيير */
   .side {
     position: fixed;
-    top: 0;
-    right: 0;
+    top: 65px;
+    right: 10px;
     width: 290px;
-    height: 100vh;
+    max-height: 80%;
     background: #fff;
-    border-radius: 0;
-    box-shadow: -4px 0 16px rgba(0,0,0,0.18);
-    padding: 12px;
+    border-radius: 14px;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.22);
+    padding: 10px;
     overflow-y: auto;
     z-index: 1000;
     transform: translateX(320px);
-    transition: transform 0.35s ease;
+    transition: transform 0.35s cubic-bezier(.25,.8,.25,1);
   }
 
   .side.show {
@@ -61,20 +60,6 @@
   }
 }
 
-#hintMessage {
-  position: fixed;
-  top: 20px;
-  right: -300px; /* خارج الشاشة */
-  background: linear-gradient(90deg, #ffdd57, #ffb300);
-  color: #000;
-  padding: 12px 20px;
-  font-weight: bold;
-  font-size: 16px;
-  border-radius: 8px;
-  box-shadow: 0 4px 14px rgba(0,0,0,0.2);
-  z-index: 1200;
-  transition: right 0.7s ease;
-}
 
 
 
@@ -424,8 +409,6 @@ form#surveyForm {
     </div>
 
     <button id="toggleSide">📊</button>
-    <div id="hintMessage">📢 اضغط على الزر الذهبي لرؤية الإحصائيات</div>
-
 
 
 
@@ -874,33 +857,23 @@ document.addEventListener("DOMContentLoaded", async () => {
     side.classList.toggle('show');
   });
 
-  // إظهار الرسالة ثم إخفاؤها بعد 3 ثواني
-  window.addEventListener("load", () => {
-    const msg = document.getElementById("hintMessage");
-    
-    setTimeout(() => { msg.style.right = "20px"; }, 1200);   // الدخول
-    setTimeout(() => { msg.style.right = "-300px"; }, 4200); // الخروج
-  });
+
 
   const toggleBtn = document.getElementById('toggleSide');
   const side = document.querySelector('.side');
 
-  // فتح وإغلاق الزر يدويًا
+  // زر الفتح والغلق
   toggleBtn.addEventListener('click', () => {
     side.classList.toggle('show');
   });
 
-  // ظهور السيد تلقائيًا عند تحميل الصفحة لمدة 10 ثواني
-  window.addEventListener("load", () => {
-    // افتح الـ side أول 10 ثواني
-    side.classList.add("show");
-
+  // ⭐ فتح السيد أول 10 ثواني عند تحميل الصفحة
+  window.addEventListener('load', () => {
+    side.classList.add('show');   // يظهر السيد
     setTimeout(() => {
-      side.classList.remove("show");
-    }, 10000);
+      side.classList.remove('show');  // يختفي بعد 10 ثواني
+    }, 10000); // 10000 = 10 ثواني
   });
-
-
 
 
 </script>
