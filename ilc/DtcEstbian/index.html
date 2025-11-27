@@ -616,8 +616,19 @@ function renderStats(data){
 }
 
 // أزرار التحميل والتصدير
-document.getElementById('previewBtn').addEventListener('click',fetchData);
+
+// كلمة السر المطلوبة
+const EXPORT_PASSWORD = "1234";  // ← غيرها لأي كلمة مرور
+
+
 document.getElementById('exportCSV').addEventListener('click', async () => {
+
+  const pass = prompt("🔐 من فضلك أدخل كلمة المرور للتحميل");
+  if (pass !== EXPORT_PASSWORD) {
+    alert("❌ كلمة المرور غير صحيحة");
+    return;
+  }
+
   const res = await fetch(SHEET_URL);
   const data = await res.json();
 
@@ -626,15 +637,12 @@ document.getElementById('exportCSV').addEventListener('click', async () => {
     return;
   }
 
-  // ⇦ إضافة BOM لإصلاح مشكلة الرموز الغريبة في Excel
   const csv = ['\uFEFF🧑‍🎓 الاسم,🏢 الإدارة,📊 المستوى,📚 الموضوعات,📝 الصيغة,📅 التاريخ'];
 
-  // الصفوف
   data.forEach(r => csv.push(
     `"${r["🧑‍🎓 الاسم"]}","${r["🏢 الإدارة"]}","${r["💼 المهارة"]}","${r["📚 المواضيع"]}","${r["📦 شكل المشاركة"]}","${r["📅 التاريخ"]}"`
   ));
 
-  // إنشاء ملف CSV بترميز UTF-8 الصحيح
   const blob = new Blob([csv.join('\n')], { type: 'text/csv;charset=utf-8;' });
   const url = URL.createObjectURL(blob);
 
@@ -646,13 +654,36 @@ document.getElementById('exportCSV').addEventListener('click', async () => {
   URL.revokeObjectURL(url);
 });
 
-document.getElementById('downloadJSON').addEventListener('click',async ()=>{
+document.getElementById('downloadJSON').addEventListener('click', async () => {
+
+  const pass = prompt("🔐 من فضلك أدخل كلمة المرور للتحميل");
+  if (pass !== EXPORT_PASSWORD) {
+    alert("❌ كلمة المرور غير صحيحة");
+    return;
+  }
+
   const res = await fetch(SHEET_URL);
   const data = await res.json();
-  if(!data.length){alert('لا توجد بيانات للتحميل'); return;}
-  const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'}); const url=URL.createObjectURL(blob);
-  const a=document.createElement('a'); a.href=url; a.download='training_responses.json'; a.click(); URL.revokeObjectURL(url);
+
+  if (!data.length) {
+    alert('لا توجد بيانات للتحميل');
+    return;
+  }
+
+  const blob = new Blob([JSON.stringify(data, null, 2)], {
+    type: 'application/json'
+  });
+
+  const url = URL.createObjectURL(blob);
+
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'training_responses.json';
+  a.click();
+
+  URL.revokeObjectURL(url);
 });
+
 document.getElementById('copySummary').addEventListener('click',async ()=>{
   const res = await fetch(SHEET_URL);
   const data = await res.json();
@@ -835,10 +866,14 @@ document.addEventListener("DOMContentLoaded", async () => {
             }
           },
           x: {
-            grid: {
-              color: "rgba(0,0,0,0.05)"
-            }
-          }
+  ticks: {
+    display: false        // إخفاء أسماء الإدارات
+  },
+  grid: {
+    color: "rgba(0,0,0,0.05)"
+  }
+}
+
         }
       }
     });
