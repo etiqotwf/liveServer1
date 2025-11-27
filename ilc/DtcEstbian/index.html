@@ -42,13 +42,13 @@
 
 .side {
   position: fixed;
-  left: 0; /* بداية من اليسار */
+  right: 0; /* بداية من اليمين */
   top: 0;
   width: 300px;
   height: 100vh;
   background: #fff;
   z-index: 9999;
-  transform: translateX(-100%); /* مخفي على يسار الشاشة */
+  transform: translateX(100%); /* مخفي على اليمين */
   transition: 0.5s ease;
 }
 
@@ -847,14 +847,6 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 });
 
-
-
-  const toggleBtn = document.getElementById('toggleSide');
-  const side = document.querySelector('.side');
-
-  toggleBtn.addEventListener('click', () => {
-    side.classList.toggle('show');
-  });
 
 
 
