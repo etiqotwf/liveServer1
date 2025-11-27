@@ -859,22 +859,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
 
 
-  const toggleBtn = document.getElementById('toggleSide');
-  const side = document.querySelector('.side');
-
-  // زر الفتح والغلق
-  toggleBtn.addEventListener('click', () => {
-    side.classList.toggle('show');
-  });
-
-  // ⭐ فتح السيد أول 10 ثواني عند تحميل الصفحة
-  window.addEventListener('load', () => {
-    side.classList.add('show');   // يظهر السيد
-    setTimeout(() => {
-      side.classList.remove('show');  // يختفي بعد 10 ثواني
-    }, 10000); // 10000 = 10 ثواني
-  });
-
+  
 
 </script>
 
