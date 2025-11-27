@@ -872,6 +872,27 @@ document.addEventListener("DOMContentLoaded", async () => {
 </script>
 
 
+<script>
+  const toggleBtn = document.getElementById('toggleSide');
+  const side = document.querySelector('.side');
+
+  // تشغيل زر الفتح والغلق
+  toggleBtn.addEventListener('click', () => {
+    side.classList.toggle('show');
+  });
+
+  // ⭐ يظهر السيد فورًا قبل تحميل الصفحة
+  side.classList.add('show');
+
+  // ⭐ عند اكتمال تحميل الصفحة — انتظر 10 ثواني ثم أخفيه
+  window.addEventListener('load', () => {
+    setTimeout(() => {
+      side.classList.remove('show'); // إخفاء بعد اكتمال التحميل + 10 ثواني
+    }, 10000); // 10 ثواني
+  });
+</script>
+
+
 
 </body>
 </html>
