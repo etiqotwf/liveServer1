@@ -1,899 +1,266 @@
 <!DOCTYPE html>
-<html lang="ar">
+<html lang="ar" dir="rtl">
 <head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>نظام تسجيل المتدربين</title>
+
+<!-- مكتبات خارجية -->
 <script src="xlsx.full.min.js"></script>
 <script src="chart.js"></script>
 
-
-
-  <meta charset="UTF-8">
-  
-  <title>نظام تسجيل المتدربين</title>
-  <style>
-
-
-
-
-
-    body {
-      font-family: Arial, sans-serif;
-      direction: rtl;
-      background-color: #f0f0f0;
-      padding: 20px;
-    }
-    
-    input, select, button {
-      padding: 8px;
-      margin: 5px 0;
-      width: 100%;
-      box-sizing: border-box;
-    }
-    .container {
-  width: 90%; /* أو استخدم 100% إذا أردت أن يملأ الشاشة بالكامل */
-  max-width: 100%; /* يمنع التقييد بعرض ثابت */
-  margin: auto;
-  background-color: white;
-  padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0 0 10px rgba(0,0,0,0.1);
-}
-
-    .buttons {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-    }
-    #resultScreen, #traineesTable {
-      display: none;
-    }
-
-    
-#traineesTable {
-  display: none;
-  overflow-x: auto;
-  max-width: 100%;
-  white-space: nowrap;
-}
-
-
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 15px;
-    }
-    th, td {
-      padding: 8px;
-      border: 1px solid #ccc;
-      text-align: right;
-    }
-    th {
-      background-color: #eee;
-    }
-  </style>
-</head>
-<body>
-
-   <!-- النموذج أو المحتوى الرئيسي -->
-  <form id="container">
-    <!-- محتويات النموذج -->
-  </form>
-
-  <script>
-    // عند الضغط على أي مكان في الصفحة، أدخل وضع ملء الشاشة
-    document.addEventListener("click", () => {
-      const elem = document.documentElement; // أو document.getElementById("myForm")
-      if (document.fullscreenElement) return; // لا تفعل شيء إذا كنا بالفعل في ملء الشاشة
-
-      if (elem.requestFullscreen) {
-        elem.requestFullscreen();
-      } else if (elem.webkitRequestFullscreen) { /* Safari */
-        elem.webkitRequestFullscreen();
-      } else if (elem.msRequestFullscreen) { /* IE11 */
-        elem.msRequestFullscreen();
-      }
-    });
-  </script>
-
-
-  <div class="container">
-   <style>
-  h2 {
-    text-align: center;
-    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-    margin: 5px 0;
-    color: #004080;
-  }
-
-  h2:nth-child(4) {
-    font-size: 1.8em;      /* أكبر حجم للعنوان الرابع */
-    font-weight: bold;
-    margin-top: 5px;
-    color: #007acc;
-  }
-  
-</style>
-
-
-
-<div style="
-  position: relative;
-  text-align: center;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  margin-top: 10px;
-  margin-bottom: 30px;
-">
-
-  
-
-  </div>
-
-  <!-- العناوين الرئيسية -->
-  
-  <h2>𝒯𝒽𝑒 𝐵𝓇𝒾𝓉𝒾𝓈𝒽 𝐼𝓃𝓉𝑒𝓇𝓃𝒶𝓉𝒾𝑜𝓃𝒶𝓁 𝐿𝑒𝒶𝓇𝓃𝒾𝓃𝑔 𝒞𝑒𝓃𝓉𝑒𝓇 (𝐼𝐿𝐶)
-
-</h2>
-  <h2>🔹 Trainees Database Management Quiz Form </h2>
-</div>
-
-
-
 <style>
+/* ====== عام ====== */
 
-
-#toggleFormBtn {
-  display: block;
-  width: 60%;               /* تقليل العرض عن 100% */
-  margin: 15px auto;        /* وسط الصفحة أفقياً */
-  font-size: 20px;
-  font-weight: bold;
-  padding: 14px 28px;
-  background-color: #004085;
-  color: white;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.15);
-  transition: background-color 0.3s ease;
-  text-align: center;
-}
-
-#toggleFormBtn:hover {
-  background-color: #002752;
-}
-
-
-</style>
-
-
-
-
-
-<style>
-  .db-button {
-    font-size: 18px;     /* حجم الخط فقط */
-    font-weight: bold;   /* تخانة الخط */
-    background-color: #b3cffc;
-    color: #003366;
-    border: 1px solid #000000;
-    border-radius: 8px;
-    padding: 8px 16px;
-    cursor: pointer;
-    transition: 0.2s ease-in-out;
-  }
-
-  .db-button:hover {
-    background-color: #cce0ff;
-  }
-
-  
-</style>
-
-<!-- الأزرار -->
-<!-- الحاوية لكل الأزرار -->
-<div class="buttons-row" style="display:flex; flex-wrap: wrap; gap: 12px; justify-content: center; margin-bottom: 20px;">
-
-  <!-- Backup -->
-  <button class="btn btn-metal-gaming" onclick="backupIndexedDB()">🔄 Backup </button>
-
-  <!-- Restore -->
-  <button class="btn btn-metal-gaming" onclick="document.getElementById('restoreFile').click()">♻️ Restore </button>
-  <input type="file" id="restoreFile" style="display:none;" onchange="restoreIndexedDB(event)" accept=".json" />
-
-  <!-- Refresh Data -->
-<!-- Refresh Data -->
-<button class="btn btn-metal-gaming" onclick="refreshData()">
-  <svg viewBox="0 0 24 24" width="18" height="18" style="vertical-align:middle; margin-right:6px;">
-    <path d="M18 6L6 18M6 6l12 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-  </svg>
-   Refresh 
-</button>
-
-
-
- 
-
-  <!-- Print Results -->
-  <button class="btn btn-metal-gaming" onclick="toggleAllTrainees()">
-    <svg viewBox="0 0 24 24" width="18" height="18" style="vertical-align:middle; margin-right:6px;">
-      <circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="2"/>
-      <path d="M2 12a10 10 0 0 1 20 0 10 10 0 0 1-20 0z" stroke="currentColor" stroke-width="2"/>
-    </svg>
-      Print 
-  </button>
-
-</div>
-
-<!-- ستايل Metallic Red Gaming -->
-<style>
-/* زرار Metallic Gaming */
-.btn-metal-gaming {
-  background: linear-gradient(145deg, #ff1a1a, #ff4d4d, #b30000);
+body {
+  font-family: 'Cairo', "Segoe UI", Tahoma, Arial, sans-serif;
+  background: linear-gradient(135deg, #1e1e2f, #2c3e50);
   color: #fff;
-  font-weight: bold;
-  border: 1px solid #ff6666;
+  margin: 0;
+  padding: 20px;
+  direction: rtl;
+}
+
+.container {
+  width: 95%;
+  max-width: 1200px;
+  margin: auto;
+  background: #1f2937;
+  padding: 30px;
+  border-radius: 20px;
+  box-shadow: 0 12px 40px rgba(0,0,0,0.5);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.container:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 16px 60px rgba(0,0,0,0.6);
+}
+
+/* ====== العناوين ====== */
+h2 {
+  text-align: center;
+  font-size: 40px;
+  font-weight: 900;
+  color: #ff7f50; /* لون برتقالي */
+  margin: 15px 0 25px 0;
+  letter-spacing: 1px;
+  text-shadow: 2px 2px 8px rgba(0,0,0,0.5);
+}
+
+@media (max-width: 768px) {
+  h2 {
+    font-size: 32px;
+  }
+}
+
+/* ====== الفورم والمدخلات ====== */
+input, select, button {
+  font-family: inherit;
+  font-size: 20px;
+  padding: 12px 16px;
   border-radius: 12px;
-  padding: 14px 24px; /* حجم أساسي أكبر */
-  font-size: 18px;
+  border: none;
+  outline: none;
+  transition: all 0.3s ease;
+}
+
+input:focus, select:focus {
+  box-shadow: 0 0 12px #ff7f50;
+  border: 1px solid #ff7f50;
+}
+
+/* ====== أزرار ====== */
+button {
   cursor: pointer;
-  box-shadow:
-    0 4px 12px rgba(255,50,50,0.5),
-    0 0 8px rgba(255,80,80,0.6) inset,
-    0 0 12px rgba(255,0,0,0.4);
+  font-weight: 900;
+  border-radius: 12px;
+  padding: 14px 28px;
+  transition: all 0.3s ease;
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.3s ease;
-  position: relative;
-  overflow: hidden;
+  font-size: 18px;
+  text-transform: uppercase;
 }
 
-/* Hover متوهج */
-.btn-metal-gaming:hover {
-  transform: translateY(-3px);
-  background: linear-gradient(145deg, #ff4d4d, #ff1a1a, #cc0000);
-  box-shadow:
-    0 8px 24px rgba(255,100,100,0.8),
-    0 0 20px rgba(255,0,0,0.6) inset,
-    0 0 28px rgba(255,50,50,0.7);
+button:hover {
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.3);
 }
 
-/* حركة لمعان */
-.btn-metal-gaming::after {
-  content: "";
-  position: absolute;
-  top: -50%;
-  left: -50%;
-  width: 200%;
-  height: 200%;
-  background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.4), transparent 60%);
-  opacity: 0;
-  transition: opacity 0.3s ease, transform 0.5s ease;
-  transform: rotate(45deg);
-}
-.btn-metal-gaming:hover::after {
-  opacity: 0.25;
-  transform: rotate(25deg) translate(10%,10%);
+/* ألوان الأزرار */
+.btn-primary {
+  background: linear-gradient(45deg, #ff7f50, #ff6347);
+  color: #fff;
 }
 
-/* svg داخل الزر */
-.btn-metal-gaming svg {
-  stroke: #fff;
-  width: 20px;
-  height: 20px;
+.btn-primary:hover {
+  background: linear-gradient(45deg, #ff6347, #ff4500);
 }
 
-/* ======== تكبير الأزرار على الموبايل ======== */
+.btn-danger {
+  background: linear-gradient(45deg, #ff4d4d, #ff1a1a);
+  color: #fff;
+}
+
+.btn-danger:hover {
+  background: linear-gradient(45deg, #ff1a1a, #cc0000);
+}
+
+#traineesTable {
+  display: none;
+  margin-top: 35px;
+  overflow-x: auto;
+  border-radius: 16px;
+  box-shadow: 0 12px 36px rgba(0,0,0,0.5);
+  background: #ffffff; /* هنا غيرنا الخلفية للابيض */
+  padding: 25px;
+  color: #1c1c1c; /* نص داكن للوضوح */
+}
+
+#traineesTable h3 {
+  text-align: center;
+  font-size: 32px;
+  font-weight: 800;
+  margin-bottom: 20px;
+  color: #ff7f50; /* برتقالي للعناوين */
+  text-shadow: none; /* إزالة الظل إذا ظهر على الأبيض */
+}
+
+#traineesTable th {
+  background: #1e3a8a; /* كحلي غامق */
+  color: #ffffff;       /* نص أبيض واضح */
+  font-weight: 800;
+  text-shadow: 1px 1px 3px rgba(0,0,0,0.3); /* تأثير بروز خفيف للنص */
+  box-shadow: inset 0 -3px 6px rgba(255,255,255,0.2); /* تأثير بروز داخلي */
+  border-bottom: 2px solid #0f1f5e; /* خط فاصل يبرز العنوان */
+}
+
+
+
+#traineesTable td {
+  background: #ffffff; /* كل الصفوف بالابيض */
+  color: #1c1c1c; /* نص داكن للوضوح */
+  font-weight: 600;
+    font-weight: bold;   /* كل النصوص بولد */
+      font-size: 19px;     /* تكبير الخط */
+
+
+}
+
+
+
+/* ====== البحث ====== */
+.search-bar {
+  display: flex;
+  justify-content: center;
+  margin: 25px 0;
+  gap: 0;
+}
+
+#searchInput {
+  flex: 1;
+  max-width: 400px;
+  border-radius: 12px 0 0 12px;
+  font-size: 20px;
+  padding: 12px;
+}
+
+#searchBtn {
+  border-radius: 0 12px 12px 0;
+  background: #ff7f50;
+  color: #fff;
+  font-weight: 900;
+  font-size: 18px;
+}
+
+/* ====== أزرار التحكم ====== */
+.buttons-row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+/* responsive */
 @media (max-width: 768px) {
-  .btn-metal-gaming {
-    padding: 20px 32px !important;
-    font-size: 22px !important;
-    border-radius: 16px !important;
-    gap: 12px !important;
-  }
-
-  .btn-metal-gaming svg {
-    width: 28px !important;
-    height: 28px !important;
-  }
-
-  /* خلي الأزرار تمتد أفقياً على الموبايل */
   .buttons-row {
     flex-direction: column;
-    align-items: center;
+  }
+
+  #searchInput {
+    width: 70%;
+  }
+
+  #searchBtn {
+    width: 30%;
   }
 }
 
-</style>
-
-
-
-
-
-<div style="text-align:center; margin: 15px 0;">
-  <input 
-    type="text" 
-    id="searchInput" 
-    placeholder="ابحث بالاسم، الدورة، التاريخ، ..." 
-    style="
-      width: 320px; 
-      padding: 10px 15px; 
-      font-size: 20px; 
-      border: 1.5px solid #007BFF; 
-      border-radius: 5px 0 0 5px; 
-      outline: none;
-      transition: border-color 0.3s ease;
-    "
-    onfocus="this.style.borderColor='#0056b3'"
-    onblur="this.style.borderColor='#007BFF'"
-  >
-  <button 
-    onclick="searchTrainees()" 
-    class="btn btn-metal-red-small"
->
-    🔍 بحث
-</button>
-
-<style>
-/* زر بحث صغير أحمر ميتاليك جيم */
-.btn-metal-red-small {
-    padding: 10px 18px;
-    font-size: 15px;
-    font-weight: 600;
-    color: #fff;
-    background: linear-gradient(145deg, #ff4d4d, #ff0000, #b30000);
-    border: 1px solid #ff9999;
-    border-radius: 5px;
-    cursor: pointer;
-    box-shadow: 0 4px 12px rgba(255,50,50,0.5), inset 0 1px 2px rgba(255,255,255,0.2);
-    display: inline-flex;
-    align-items: center;
-    gap: 5px;
-    transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.3s ease;
-}
-
-/* Hover */
-.btn-metal-red-small:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 22px rgba(255,100,100,0.7), inset 0 1px 2px rgba(255,255,255,0.25);
-    background: linear-gradient(145deg, #ff6666, #ff1a1a, #cc0000);
+/* ====== Fullscreen effect ====== */
+html, body {
+  height: 100%;
 }
 </style>
 
+</head>
+<body>
 
+<div class="container">
+  <h2>British International Learning Center (ILC)</h2>
+  <h2>🔹 Trainees Database Management Quiz Form </h2>
+
+  <!-- Search -->
+  <div class="search-bar">
+    <input type="text" id="searchInput" placeholder="ابحث بالاسم، الدورة، التاريخ، ...">
+    <button id="searchBtn" onclick="searchTrainees()" class="btn btn-primary">🔍 بحث</button>
   </div>
 
-<!-- ===== أضفت هنا ستايل GAMING إضافي دون حذف أي سطر من الكود الأصلي ===== -->
-<!-- هذا الستايل سيطغى على الاستايلات السابقة ويعطي شكل Dark Blue Neon Gaming UI -->
-<style>
-/* عام - خلفية داكنة نيون */
-body {
-  background: radial-gradient(1200px 600px at 10% 10%, #071029 0%, #00030a 30%, #000000 100%) !important;
-  color: #dbeeff !important;
-  font-family: "Cairo", "Segoe UI", Tahoma, Arial, sans-serif !important;
-}
+  <!-- Buttons -->
+  <div class="buttons-row">
+    <button class="btn btn-primary" onclick="backupIndexedDB()">🔄 Backup</button>
+    <button class="btn btn-primary" onclick="document.getElementById('restoreFile').click()">♻️ Restore</button>
+    <input type="file" id="restoreFile" style="display:none;" onchange="restoreIndexedDB(event)" accept=".json" />
+    <button class="btn btn-primary" onclick="refreshData()">🔄 Refresh</button>
+    <button class="btn btn-primary" onclick="toggleAllTrainees()">🖨️ Print</button>
+  </div>
 
-/* الكونتينر الأساسي - لمسة زجاجية ونيون */
-.container {
-  background: linear-gradient(180deg, rgba(12,20,40,0.75), rgba(6,12,25,0.55)) !important;
-  border: 1px solid rgba(0,145,255,0.12) !important;
-  box-shadow: 0 12px 40px rgba(0,90,180,0.18) !important;
-  color: #e6f4ff !important;
-  transition: transform 0.18s ease, box-shadow 0.18s ease;
-}
-
-/* تدرج متحرك خفيف عند المرور */
-.container:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 20px 60px rgba(0,110,230,0.22);
-}
-
-/* العناوين */
-h2 {
-  color: #63e0ff !important;
-  text-shadow: 0 0 14px rgba(99,224,255,0.18) !important;
-  letter-spacing: 0.6px;
-  font-weight: 800;
-  font-size: 40px !important; /* تكبير الخط الأساسي */
-  line-height: 1.2;           /* تحسين ارتفاع السطر */
-  text-align: center;          /* وسط النص */
-}
-
-/* ======== تكبير أكثر على الموبايل ======== */
-@media (max-width: 768px) {
-  h2 {
-    font-size: 44px !important;  /* تكبير إضافي على الموبايل */
-    letter-spacing: 0.8px;
-  }
-}
-
-
-/* toggle button ستايل جديد */
-#toggleFormBtn {
-  background: linear-gradient(90deg, #0078ff, #00e4ff) !important;
-  color: #001428 !important;
-  box-shadow: 0 10px 30px rgba(0,132,255,0.25) !important;
-  border-radius: 12px !important;
-  border: 1px solid rgba(255,255,255,0.04) !important;
-  font-size: 20px !important;
-  padding: 12px 22px !important;
-}
-
-/* مودال كلمة المرور - ظلال ونيون */
-#passwordModal {
-  background: rgba(0,0,0,0.66) !important;
-  display: flex !important;
-  align-items: center;
-  justify-content: center;
-}
-#passwordModal > div {
-  background: linear-gradient(180deg, #071428, #071a2a) !important;
-  border: 1px solid rgba(0,190,255,0.12) !important;
-  box-shadow: 0 20px 60px rgba(0,140,240,0.25) !important;
-}
-
-/* input داخل المودال والأماكن الأخرى */
-#passwordModal input,
-input[type="password"],
-input[type="text"],
-select {
-  background: rgba(255,255,255,0.03) !important;
-  border: 1.6px solid rgba(0,150,255,0.18) !important;
-  color: #e6f7ff !important;
-  box-shadow: inset 0 1px 0 rgba(255,255,255,0.02);
-}
-
-/* أزرار المودال */
-#passwordModal button {
-  background: linear-gradient(180deg,#0a63c6,#004a9f) !important;
-  color: #fff !important;
-  border-radius: 10px !important;
-  box-shadow: 0 8px 20px rgba(2,89,200,0.28) !important;
-}
-
-/* db-button - مظهر نيوني */
-.db-button {
-  background: linear-gradient(90deg,#0a4fe0,#00e6ff) !important;
-  color: #001430 !important;
-  border: none !important;
-  box-shadow: 0 8px 26px rgba(0,140,255,0.18) !important;
-  border-radius: 12px !important;
-  padding: 10px 16px !important;
-}
-
-/* ازرار العمليات */
-
-/* مربع البحث - Yellow Metallic Gaming */
-#searchInput {
-  background: linear-gradient(145deg, #fff159, #ffea00, #ffcc00) !important; /* تدرج أصفر ميتاليك */
-  border: 1.8px solid #ffd700 !important; /* حد أصفر لامع */
-  color: #222 !important; /* نص داكن للوضوح */
-  box-shadow:
-    0 4px 12px rgba(255,215,0,0.5), /* ظل خارجي ذهبي خفيف */
-    inset 0 2px 6px rgba(255,255,255,0.3); /* لمعان داخلي */
-  border-radius: 8px 0 0 8px !important;
-  padding: 10px 16px !important;
-  font-weight: bold;
-  transition: background 0.3s ease, box-shadow 0.3s ease, transform 0.2s ease;
-}
-
-/* تأثير Hover */
-#searchInput:hover {
-  background: linear-gradient(145deg, #fff775, #ffee33, #ffdd00);
-  box-shadow:
-    0 6px 20px rgba(255,223,0,0.7),
-    inset 0 3px 8px rgba(255, 0, 0, 0.35);
-  transform: translateY(-1px);
-}
-
-/* Placeholder */
-#searchInput::placeholder {
-  color: rgba(34,34,34,0.6) !important;
-  font-weight: 500;
-}
-
-
-/* زر البحث */
-#searchInput + button {
-  background: linear-gradient(90deg,#00b4ff,#0062d6) !important;
-  color: #fff !important;
-  border-radius: 0 8px 8px 0 !important;
-  border: none !important;
-  box-shadow: 0 8px 26px rgba(0,120,230,0.2) !important;
-}
-
-/* الطباعة - نحتفظ بالأسود والأبيض كما في الأصلي لكن متوافق */
-@media print {
-  body * {
-    visibility: hidden !important;
-  }
-  #statsInfo, #statsInfo * {
-    visibility: visible !important;
-    font-weight: 900 !important;
-    color: #000 !important;
-  }
-  #statsInfo {
-    position: absolute;
-    top: 40px;
-    right: 0;
-    left: 0;
-    margin: 0 auto;
-    padding: 10px 15px;
-    box-sizing: border-box;
-    font-size: 16pt !important;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important;
-  }
-  #statsInfo div {
-    height: auto !important;
-    overflow: visible !important;
-    page-break-inside: avoid;
-  }
-  #statsInfo::before {
-    content: "الإحصاءات التفصيلية للمتدربين";
-    position: fixed;
-    top: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 100%;
-    text-align: center;
-    font-weight: 900;
-    font-size: 20pt;
-    color: #000;
-    margin-bottom: 8px;
-    border-bottom: 3px solid #000;
-    padding-bottom: 6px;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: white;
-    z-index: 9999;
-  }
-  #traineesTable,
-  #allTrainees,
-  #searchInput {
-    display: none !important;
-  }
-}
-
-/* الجدول - مظهر جيم نيون */
-table {
-  background: linear-gradient(180deg, rgba(4,12,30,0.45), rgba(6,10,20,0.6)) !important;
-  border-radius: 10px !important;
-  overflow: hidden !important;
-  box-shadow: 0 12px 34px rgba(0,110,220,0.12) !important;
-  border: 1px solid rgba(0,150,255,0.08) !important;
-}
-th {
-  background: linear-gradient(90deg, rgba(0,130,255,0.12), rgba(0,190,255,0.08)) !important;
-  color: #dffaff !important;
-  padding: 12px !important;
-  font-size: 15px !important;
-}
-td {
-  background: rgba(255,255,255,0.01) !important;
-  color: #dbeeff !important;
-  padding: 10px !important;
-  border-bottom: 1px solid rgba(0,140,255,0.04) !important;
-}
-
-/* responsive بسيط */
-@media (max-width: 720px) {
-  #toggleFormBtn { width: 90% !important; }
-  .db-button, .btn { width: 100% !important; display: block !important; margin-bottom: 10px !important; }
-  #searchInput { width: 65% !important; display:inline-block !important; }
-}
-
-/* نجعل أي نص داخل الأزرار بالعربية يظل واضح */
-button, .db-button, .btn {
-  font-family: "Cairo", "Segoe UI", Tahoma, Arial, sans-serif !important;
-}
-
-/* نيون خفيف للحواف الخارجية للصفحة */
-body::before {
-  content: '';
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  box-shadow: inset 0 0 120px rgba(0,80,160,0.06);
-  z-index: 0;
-}
-</style>
-
-
-
-
-        <style>
-
-
-#registrationForm {
-      font-size: 20px;
-      font-weight: bold;
-      direction: rtl;
-    }
-
-    #registrationForm label {
-      display: block;
-      margin-top: 10px;
-    }
-
-    #registrationForm input,
-    #registrationForm select {
-      font-size: 18px;
-      font-weight: bold;
-      padding: 8px;
-      width: 100%;
-      margin-bottom: 10px;
-      box-sizing: border-box;
-    }
-
-
-
- .btn-container {
-    display: flex;
-    justify-content: center; /* مركز الأزرار أفقياً */
-    gap: 20px;               /* زيادة المسافة بين الأزرار */
-    margin-top: 20px;
-    flex-wrap: wrap;          /* لو الشاشة ضيقة تتكسر الأسطر */
-}
-
-/* الأزرار */
-.btn {
-    font-size: 33px;          /* تكبير الخط */
-    padding: 18px 24px;       /* تكبير مساحة الضغط */
-    border: 1px solid #555;
-    border-radius: 12px;      /* زيادة نصف القطر للراحة */
-    color: #222;
-    background-color: #f8f9fa;
-    cursor: pointer;
-    display: inline-flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 6px;                 /* زيادة المسافة بين النص والأيقونة */
-    width: 150px;             /* تكبير عرض الزر */
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1); /* ظل خفيف */
-    font-weight: 700;
-    transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s ease;
-    user-select: none;
-}
-
-/* Hover effect */
-.btn:hover {
-    background-color: #e2e6ea;
-    transform: translateY(-3px);
-}
-
-/* ======== تكبير الأزرار على الموبايل ======== */
-@media (max-width: 768px) {
-    .btn {
-        font-size: 32px !important;   /* تكبير الخط للموبايل */
-        padding: 22px 28px !important; /* زيادة البادينج */
-        width: 90%;                    /* الزرار يشغل معظم عرض الشاشة */
-        border-radius: 16px !important;
-        gap: 8px !important;
-    }
-
-    .btn-container {
-        flex-direction: column;        /* ترتيب الأزرار عمودي على الموبايل */
-        align-items: center;
-        gap: 16px;
-    }
-}
-
-
-  .btn:hover {
-    background-color: #e2e6ea;
-    color: #000;
-  }
-  .btn:active {
-    background-color: #ced4da;
-  }
-
-  /* ألوان رسمية */
-  .btn-submit {
-    border-color: #1c3d5a;
-    color: #1c3d5a;
-    background-color: #dbe9f4;
-  }
-  .btn-submit:hover {
-    background-color: #c4dbf2;
-  }
-
-  .btn-add {
-    border-color: #375a7f;
-    color: #375a7f;
-    background-color: #d3e0eb;
-  }
-  .btn-add:hover {
-    background-color: #bbd1e4;
-  }
-
-  .btn-clear {
-    border-color: #8b1c1c;
-    color: #8b1c1c;
-    background-color: #f2dede;
-  }
-  .btn-clear:hover {
-    background-color: #e4baba;
-  }
-
-  .btn-export {
-    border-color: #3a5f7d;
-    color: #3a5f7d;
-    background-color: #d1dde6;
-  }
-  .btn-export:hover {
-    background-color: #b9c9db;
-  }
-
-  .btn-show {
-    border-color: #565656;
-    color: #565656;
-    background-color: #e9e9e9;
-  }
-  .btn-show:hover {
-    background-color: #d6d6d6;
-  }
-
-  .btn svg {
-    width: 28px;
-    height: 28px;
-    fill: currentColor;
-  }
-</style>
-
-
-
-
-
+  <!-- Table -->
+  <div id="traineesTable">
+    <h3>🧑‍🎓📊 Search Trainees Table</h3>
+    <table id="allTrainees">
+      <thead>
+        <tr>
+          <th>🕒 تاريخ ووقت التسجيل</th>
+          <th>📝 اسم الاختبار</th>
+          <th>👤 الاسم</th>
+          <th>📞 الهاتف</th>
+          <th>⏰ وقت البدء</th>
+          <th>⏳ المدة المستغرقة</th>
+          <th>🎯 النتيجة</th>
+          <th>🔑 كود المتدرب</th>
+          <th>🗑️ إجراء</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </div>
 </div>
 
+<script>
+  // Fullscreen on click
+  document.addEventListener("click", () => {
+    const elem = document.documentElement;
+    if (!document.fullscreenElement) {
+      elem.requestFullscreen?.() || elem.webkitRequestFullscreen?.() || elem.msRequestFullscreen?.();
+    }
+  });
+</script>
 
-      </div>
-    </form>
-
-    <style>
-  #resultScreen {
-    font-size: 18px;       /* تكبير الخط داخل القسم بالكامل */
-    font-weight: bold;     /* جعل الخط ثقيل */
-    direction: rtl;        /* لتناسق النص العربي */
-    font-family: "Arial", sans-serif;
-    margin-top: 20px;
-  }
-
-  #resultScreen h3 {
-    font-size: 20px;
-    margin-bottom: 15px;
-    color: #2c3e50;
-  }
-
-  #resultScreen table {
-    width: 100%;
-    border-collapse: collapse;
-  }
-
-  #resultScreen th,
-  #resultScreen td {
-    padding: 12px 16px;
-    border: 1px solid #ccc;
-    text-align: right;
-    font-size: 22px;
-  }
-
-  #resultScreen th {
-    background-color: #f4f6f8;
-    color: #333;
-  }
-</style>
-
-
-
-
-
-
-
-   <style>
-  .buttons {
-    display: flex;
-    gap: 16px; /* المسافة بين الأزرار */
-    justify-content: center;
-    margin-top: 20px;
-  }
-
-  .buttons button {
-    font-size: 18px;       /* تكبير حجم الخط */
-    font-weight: bold;     /* جعل الخط ثقيل */
-    padding: 12px 20px;
-    border: 1px solid #555;
-    border-radius: 6px;
-    background-color: #f8f9fa;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-  }
-
-  .buttons button:hover {
-    background-color: #2784e0;
-  }
-</style>
-
-
-
-
-   
-
-<style>
- #traineesTable {
-  background-color: rgb(233, 62, 62); /* خلفية بلون فاتح */
-  padding: 15px;                       /* مسافة داخلية */
-  border-radius: 15px;                 /* حواف مدورة */
-  border: 5px dotted #2d1246;             /* الإطار المنقط */
-}
-
-  /* تنسيق الجدول داخل الديف عشان يطلع مرتب */
-  #traineesTable table {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 18px;         /* حجم الخط الكبير */
-    font-weight: bold;       /* يجعل الخط ثقيل */
-  }
-
-  #traineesTable th, #traineesTable td {
-    border: 2px solid #ffffff;
-    padding: 10px;
-    text-align: center;
-  }
-
-  #traineesTable th {
-    background-color: #ffffff; /* لون مغاير شوي مناسب مع البيج */
-  }
-
- #traineesTable h3 {
-    text-align: center;      /* يوسّط العنوان */
-    font-weight: bold;       /* يجعل الخط ثقيل */
-    text-decoration: underline; /* يضيف خط تحت العنوان */
-    margin-bottom: 15px;     /* مساحة تحت العنوان */
-    font-size: 28px;         /* حجم الخط الكبير */
-  }
-
-</style>
-
-
-<div id="traineesTable">
-  <h1 style="
-    font-weight: 900; 
-    font-size: 24px;        /* تكبير الحجم */
-    color: #FFFF00;         /* أصفر فائق */
-    display: flex; 
-    align-items: center; 
-    gap: 8px;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    margin: 0;           
-    padding-top: 16px;     
-  ">
-    🧑‍🎓📊 <span>Search Trainees Table</span>
-  </h1>
-
-  <table id="allTrainees">
-    <thead>
-      <tr>
-       <tr>
-   <th>🕒 تاريخ ووقت التسجيل</th>
-<th>📝 اسم الاختبار</th>
-<th>👤 الاسم</th>
-<th>📞 الهاتف</th>
-<th>⏰ وقت البدء</th>
-<th>⏳ المدة المستغرقة</th>
-<th>🎯 النتيجة</th>
-<th>🔑 كود المتدرب</th>     <!-- العمود الجديد لكود المتدرب -->
-<th>🗑️ إجراء</th>
-
-</tr>
-
-    </thead>
-    <tbody></tbody>
-  </table>
-</div>
-
-
-
-
+</body>
+</html>
 
 
 
@@ -1740,7 +1107,7 @@ const fields = ["datetime", "course", "name", "phone", "startTime", "timeTaken",
   } else if (field === "score") {
     let scoreText = d.score || "";
     if (typeof scoreText === "string" && scoreText.includes("/")) {
-cell.innerHTML = `<strong style="font-size: 18px; color: #FFD700;">🎯 ${scoreText}</strong>`;
+cell.innerHTML = `<strong style="font-size: 18px; color: #FF0000;">🎯 ${scoreText}</strong>`;
     } else {
       cell.textContent = scoreText;
     }
