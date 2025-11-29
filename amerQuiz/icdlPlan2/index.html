@@ -552,7 +552,7 @@ h2 {
 
 
 
-<h2>📅 ICDL Schedule — 7 Groups (6 Weeks)</h2>
+<h2>📅 ICDL Schedule — 9 Groups (8 Weeks)</h2>
 <div class="meta">Training Days: Sunday → Thursday · Time: 3:00 – 6:00 PM · 3 sessions per day</div>
 
 <div class="instructions">
@@ -628,14 +628,15 @@ h2 {
     👉 لحجز المجموعات الجديدة اضغط 👉
   </h2>
 
-  <!-- أزرار G8 + G9 -->
-  <div class="groups-buttons">
+  <!-- أزرار G8 + G9 + G10 + G11 -->
+<div class="groups-buttons">
 
-    <button id="btnG8" class="group-btn g8">🚀 G8</button>
+  <button id="btnG9" class="group-btn g9">🌟 G9</button>
+  <button id="btnG10" class="group-btn g10">🔥 G10</button>
+  <button id="btnG11" class="group-btn g11">💎 G11</button>
 
-    <button id="btnG9" class="group-btn g9">🌟 G9</button>
+</div>
 
-  </div>
 
   <!-- الواتساب -->
   <div class="material-container">
@@ -706,88 +707,104 @@ const scriptURL = "https://script.google.com/macros/s/AKfycbzbUWAlJ4oI-OF0xrGQmO
 (function(){
  // كان عندك 15 مجموعة وتاريخ 31 أغسطس
 // استبدلها بهذا:
-const groups = Array.from({length: 9}, (_, i) => 'G' + (i + 1));
-
+const groups = Array.from({length: 11}, (_, i) => 'G' + (i + 1));
 const colors = [
-  '#FFCDD2', // مجموعة 1
-  '#BBDEFB', // مجموعة 2
-  '#C8E6C9', // مجموعة 3
-  '#FFF9C4', // مجموعة 4
-  '#FFCCBC', // مجموعة 5
-  '#D1C4E9', // مجموعة 6
-  '#B2EBF2', // مجموعة 7
-  '#FFE082', // مجموعة 8 - لون جديد
-  '#D7CCC8'  // مجموعة 9 - لون فاتح جديد
+  '#FFCDD2', '#BBDEFB', '#C8E6C9', '#FFF9C4',
+  '#FFCCBC', '#D1C4E9', '#B2EBF2', '#FFE082',
+  '#D7CCC8', '#F5F5F5', '#90A4AE' // G10 فاتح
 ];
 
-
-let startDate = new Date(2025, 10, 16); // 2 نوفمبر 2025 (شهر 10 لأن العد يبدأ من صفر)
-
+let startDate = new Date(2025, 10, 16); // 16 نوفمبر 2025
+const g9StartDate = new Date(2025, 11, 8); // 2 ديسمبر 2025 (الأسبوع الثاني)
 const dayNames = ['Sunday','Monday','Tuesday','Wednesday','Thursday'];
+const tbody = document.getElementById('tbody');
 
-  const tbody=document.getElementById('tbody');
+const maxSessions = 12;
+let groupCounts = {};
+groups.forEach(g => groupCounts[g] = 0);
 
-  // ✅ توزيع ثابت للجروبات
- // ✅ جدول ثابت: كل مجموعة لها يوم وساعة محددة
- const scheduleMap = [
-  // الأحد
-  {group:'G1', day:0, slot:0},
-  {group:'G2', day:0, slot:1},
-  {group:'G3', day:0, slot:2},
-  // الاثنين
-  {group:'G4', day:1, slot:0},
-  {group:'G5', day:1, slot:1},
-  {group:'G6', day:1, slot:2},
-  // الثلاثاء
-  {group:'G7', day:2, slot:0},
-  {group:'G1', day:2, slot:1},
-  {group:'G2', day:2, slot:2},
-  // الأربعاء
-  {group:'G3', day:3, slot:0},
-  {group:'G4', day:3, slot:1},
-  {group:'G5', day:3, slot:2},
-  // الخميس
-  {group:'G6', day:4, slot:0},
-  {group:'G7', day:4, slot:1},
-  {group:'G1', day:4, slot:2},
+let fixedSchedule = [
+  ['G1','G2','G3'], ['G4','G5','G6'], ['G7','G1','G2'], ['G3','G4','G5'], ['G6','G7','G1'],
+  ['G1','G2','G3'], ['G4','G5','G6'], ['G7','G1','G2'], ['G3','G4','G5'], ['G6','G7','G1'],
+  ['G1','G2','G3'], ['G4','G5','G6'], ['G7','G1','G2'], ['G3','G4','G5'], ['G6','G7','G1'],
+  ['G1','G2','G3'], ['G2','G8','G4'], ['G2','G3','G5'], ['G6','G1','G3'], ['G3','G8','G7'],
+  ['G3','G6','G8'], ['G5','G5','G7'], ['G8','G3','G5'], ['G8','G5','G5'], ['G4','G6','G7'],
+  ['G1','G2','G4'], ['G3','G5','G6'], ['G1','G2','G3'], ['G4','G5','G7'], ['G1','G2','G6'],
+  ['G3','G4','G7'], ['G5','G6','G1'], ['G2','G3','G4'], ['G5','G7','G1'], ['G6','G2','G3'],
+  ['G4','G5','G6'], ['G1','G3','G7'], ['G2','G4','G5'], ['G1','G2','G3'], ['G6','G7','G4']
 ];
 
+// تعديل الجدول مع منع ظهور G9 قبل التاريخ المحدد
+let adjustedSchedule = fixedSchedule.map((row, index) => {
+  let usedToday = new Set();
+  const currentDate = new Date(startDate);
+  currentDate.setDate(startDate.getDate() + index);
 
-// 🧩 إنشاء الجدول (12 أسبوع × 5 أيام × 3 فترات)
-for (let w = 1; w <= 6; w++) { // 6 أسابيع فقط (كل مجموعة = 12 جلسة)
-  for(let d=0; d<5; d++){ // الأحد إلى الخميس
-    const tr = document.createElement('tr');
-    const thisDate = new Date(startDate);
-    thisDate.setDate(startDate.getDate() + (w-1)*7 + d);
-
-    const tdDay = document.createElement('td');
-    tdDay.innerHTML = `Week ${w} — ${dayNames[d]} (${thisDate.toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'})})`;
-    tr.appendChild(tdDay);
-
-    for(let s=0; s<3; s++){
-      const match = scheduleMap.find(m => m.day===d && m.slot===s);
-      const td = document.createElement('td');
-      if(match){
-        td.textContent = match.group;
-        td.style.background = colors[groups.indexOf(match.group)];
-        td.style.cursor = "pointer";
-        td.addEventListener("click", ()=>openModal(match.group));
-      } else {
-        td.innerHTML = "-";
-        td.style.color = "#888";
-        td.style.textAlign = "center";
-      }
-      tr.appendChild(td);
+  return row.map(g => {
+    // منع ظهور G9 قبل التاريخ
+    if(g === 'G9' && currentDate < g9StartDate){
+      g = '-';
     }
-    tbody.appendChild(tr);
+
+    if(groupCounts[g] < maxSessions && g !== '-' && !usedToday.has(g)){
+      groupCounts[g]++;
+      usedToday.add(g);
+      return g;
+    } else {
+      // اختر G8–G11 إذا لم يصلوا الحد ولم يظهروا اليوم (مع مراعاة تاريخ G9)
+      for(let extra of ['G8','G9','G10','G11']){
+        if(extra === 'G9' && currentDate < g9StartDate) continue;
+        if(groupCounts[extra] < maxSessions && !usedToday.has(extra)){
+          groupCounts[extra]++;
+          usedToday.add(extra);
+          return extra;
+        }
+      }
+      const available = groups.find(x => groupCounts[x] < maxSessions && !usedToday.has(x));
+      if(available){
+        groupCounts[available]++;
+        usedToday.add(available);
+        return available;
+      }
+      return '-';
+    }
+  });
+});
+
+// ملء DOM كما قبل
+let week = 1;
+const fullDayNames = ['Sunday','Monday','Tuesday','Wednesday','Thursday']; // أيام الأسبوع فقط
+
+for(let i = 0; i < adjustedSchedule.length; i++){
+  const tr = document.createElement('tr');
+  const date = new Date(startDate);
+  date.setDate(startDate.getDate() + i);
+
+  const tdDay = document.createElement('td');
+  const dayIndex = i % 5; // لأن لديك 5 أيام فقط لكل أسبوع
+  tdDay.textContent = `Week ${week} — ${fullDayNames[dayIndex]} (${date.toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'})})`;
+  tr.appendChild(tdDay);
+
+  for(let g of adjustedSchedule[i]){
+    const td = document.createElement('td');
+    td.textContent = g;
+    td.style.background = g !== "-" ? colors[groups.indexOf(g)] : "#eee";
+    td.style.textAlign = "center";
+    td.style.cursor = g !== "-" ? "pointer" : "default";
+    if(g !== "-") td.addEventListener("click", ()=>openModal(g));
+    tr.appendChild(td);
   }
+
+  tbody.appendChild(tr);
+
+  if((i + 1) % 5 === 0) week++; // بعد كل 5 أيام، انتقل للأسبوع التالي
 }
 
-// 🎯 ربط أزرار G8 و G9 بفتح المودال
-document.getElementById("btnG8").addEventListener("click", () => openModal("G8"));
-document.getElementById("btnG9").addEventListener("click", () => openModal("G9"));
-
-
+// ربط أزرار G8–G11
+['G8','G9','G10','G11'].forEach(g=>{
+  const btn = document.getElementById('btn'+g);
+  if(btn) btn.addEventListener('click', ()=>openModal(g));
+});
 
   // ✅ modal handling
   const modal=document.getElementById("nameModal");

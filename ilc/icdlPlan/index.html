@@ -773,28 +773,31 @@ let adjustedSchedule = fixedSchedule.map((row, index) => {
 
 // ملء DOM كما قبل
 let week = 1;
-for(let i=0; i<adjustedSchedule.length; i++){
+const fullDayNames = ['Sunday','Monday','Tuesday','Wednesday','Thursday']; // أيام الأسبوع فقط
+
+for(let i = 0; i < adjustedSchedule.length; i++){
   const tr = document.createElement('tr');
   const date = new Date(startDate);
   date.setDate(startDate.getDate() + i);
-const fullDayNames = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
 
-const tdDay = document.createElement('td');
-tdDay.textContent = `Week ${week} — ${fullDayNames[date.getDay()]} (${date.toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'})})`;
+  const tdDay = document.createElement('td');
+  const dayIndex = i % 5; // لأن لديك 5 أيام فقط لكل أسبوع
+  tdDay.textContent = `Week ${week} — ${fullDayNames[dayIndex]} (${date.toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'})})`;
   tr.appendChild(tdDay);
 
   for(let g of adjustedSchedule[i]){
     const td = document.createElement('td');
     td.textContent = g;
-    td.style.background = g!=="-" ? colors[groups.indexOf(g)] : "#eee";
+    td.style.background = g !== "-" ? colors[groups.indexOf(g)] : "#eee";
     td.style.textAlign = "center";
-    td.style.cursor = g!=="-" ? "pointer" : "default";
-    if(g!=="-") td.addEventListener("click", ()=>openModal(g));
+    td.style.cursor = g !== "-" ? "pointer" : "default";
+    if(g !== "-") td.addEventListener("click", ()=>openModal(g));
     tr.appendChild(td);
   }
 
   tbody.appendChild(tr);
-  if((i+1)%5===0) week++;
+
+  if((i + 1) % 5 === 0) week++; // بعد كل 5 أيام، انتقل للأسبوع التالي
 }
 
 // ربط أزرار G8–G11
