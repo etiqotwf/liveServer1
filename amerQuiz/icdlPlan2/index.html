@@ -706,24 +706,31 @@ const scriptURL = "https://script.google.com/macros/s/AKfycbzbUWAlJ4oI-OF0xrGQmO
 
 (function(){
  // كان عندك 15 مجموعة وتاريخ 31 أغسطس
-// استبدلها بهذا:
 const groups = Array.from({length: 11}, (_, i) => 'G' + (i + 1)); // G1–G11
 const tableGroups = groups.slice(0, 8); // G1–G8 فقط للجدول
+
 const colors = [
   '#FFCDD2', '#BBDEFB', '#C8E6C9', '#FFF9C4',
   '#FFCCBC', '#D1C4E9', '#B2EBF2', '#FFE082',
-  '#D7CCC8', '#F5F5F5', '#90A4AE' // ألوان G9–G11 للكروت
+  '#D7CCC8', '#F5F5F5', '#90A4AE'
 ];
 
-let startDate = new Date(2025, 10, 16);
+const startDate = new Date(Date.UTC(2025, 10, 16, 0, 0)); // Sunday 16 Nov 2025
 const dayNames = ['Sunday','Monday','Tuesday','Wednesday','Thursday'];
-const tbody = document.getElementById('tbody');
+
+function getEgyptDate(date){
+  return new Date(date.getTime() + 2 * 60 * 60 * 1000);
+}
+
+function getEgyptDay(date){
+  return getEgyptDate(date).getDay(); // 0=Sunday … 4=Thursday
+}
 
 const maxSessions = 12;
 let groupCounts = {};
 groups.forEach(g => groupCounts[g] = 0);
 
-// جدول ثابت (يمكن يحتوي G9–G11 لكن سيتم تعديلهم)
+// جدول ثابت كما هو
 let fixedSchedule = [
   ['G1','G2','G3'], ['G4','G5','G6'], ['G7','G1','G2'], ['G3','G4','G5'], ['G6','G7','G1'],
   ['G1','G2','G3'], ['G4','G5','G6'], ['G7','G1','G2'], ['G3','G4','G5'], ['G6','G7','G1'],
@@ -735,16 +742,30 @@ let fixedSchedule = [
   ['G4','G5','G6'], ['G1','G3','G7'], ['G2','G4','G5'], ['G1','G2','G3'], ['G6','G7','G4']
 ];
 
-// تعديل الجدول: استبدال G9–G11 بـ '-' وتوزيع G1–G8
-let adjustedSchedule = fixedSchedule.map(row => {
+// تعديل الجدول + تأجيل G8 + ملء الفارغ لضمان 12 مرة لكل مجموعة
+let adjustedSchedule = fixedSchedule.map((row, rowIndex) => {
   let usedToday = new Set();
+
   return row.map(g => {
-    if(!tableGroups.includes(g)) g = '-'; // G9–G11 يظهروا كـ '-' في الجدول
+    if (!tableGroups.includes(g)) g = '-';
+
+    const rowDate = new Date(startDate);
+    rowDate.setUTCDate(startDate.getUTCDate() + rowIndex);
+    while(getEgyptDay(rowDate) === 5 || getEgyptDay(rowDate) === 6){
+      rowDate.setUTCDate(rowDate.getUTCDate() + 1);
+    }
+
+    const g8Start = new Date(Date.UTC(2025, 11, 2, 0, 0));
+    if(g === 'G8' && rowDate < g8Start){
+      g = '-';
+    }
+
     if(g !== '-' && groupCounts[g] < maxSessions && !usedToday.has(g)){
       groupCounts[g]++;
       usedToday.add(g);
       return g;
     } else {
+      // تعبئة الخانات الفارغة بالمجموعات التي لم تصل 12 مرة بعد
       const available = tableGroups.find(x => groupCounts[x] < maxSessions && !usedToday.has(x));
       if(available){
         groupCounts[available]++;
@@ -758,14 +779,20 @@ let adjustedSchedule = fixedSchedule.map(row => {
 
 // ملء DOM
 let week = 1;
+let currentDate = new Date(startDate);
+
 for(let i = 0; i < adjustedSchedule.length; i++){
+  while(getEgyptDay(currentDate) === 5 || getEgyptDay(currentDate) === 6){
+    currentDate.setUTCDate(currentDate.getUTCDate() + 1);
+  }
+
   const tr = document.createElement('tr');
-  const date = new Date(startDate);
-  date.setDate(startDate.getDate() + i);
+  const dayIndex = getEgyptDay(currentDate);
+  const egyptDate = getEgyptDate(currentDate);
 
   const tdDay = document.createElement('td');
-  const dayIndex = i % 5;
-  tdDay.textContent = `Week ${week} — ${dayNames[dayIndex]} (${date.toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'})})`;
+  tdDay.textContent =
+    `Week ${week} — ${dayNames[dayIndex]} (${egyptDate.toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'})})`;
   tr.appendChild(tdDay);
 
   for(let g of adjustedSchedule[i]){
@@ -774,15 +801,19 @@ for(let i = 0; i < adjustedSchedule.length; i++){
     td.style.background = g !== "-" ? colors[groups.indexOf(g)] : "#eee";
     td.style.textAlign = "center";
     td.style.cursor = g !== "-" ? "pointer" : "default";
+
     if(g !== "-") td.addEventListener("click", ()=>openModal(g));
+
     tr.appendChild(td);
   }
 
   tbody.appendChild(tr);
-  if((i + 1) % 5 === 0) week++;
+  currentDate.setUTCDate(currentDate.getUTCDate() + 1);
+
+  if(dayIndex === 4) week++;
 }
 
-// ربط الأزرار لجميع المجموعات G1–G11
+// الكروت (G1–G11)
 groups.forEach(g=>{
   const btn = document.getElementById('btn'+g);
   if(btn) btn.addEventListener('click', ()=>openModal(g));
