@@ -303,7 +303,7 @@ overflow: hidden;
     📘 Course Name:
   </label>
 
-  <input type="text" id="courseName" value="Placement" readonly 
+  <input type="text" id="courseName" value="(placenent)" readonly 
     style="
       font-size: 25px;
       padding:12px;
@@ -809,7 +809,7 @@ function launchFireworks() {
 
     
    <script>
-        document.getElementById("date").innerText = new Date().toLocaleDateString("en-US");
+      document.getElementById("date").innerText = new Date().toLocaleDateString("en-US");
     
         const trueFalseQuestions = [
   {
@@ -1168,6 +1168,8 @@ const questions = [
 ];
 
 
+
+
     
         let currentTFQuestion = 0;
         let tfCorrectAnswers = 0;
@@ -1410,7 +1412,7 @@ if (startButton) {
   }
 
   // لو كل شيء تمام: ضع بيانات المتدرب وابدأ الامتحان
-  quizTitle.textContent = course || "Placement";
+  quizTitle.textContent = course || "(placenent)";
   window.traineeData = { name, phone, traineeCode, course };
 
   document.getElementById("startScreen").style.display = "none";
