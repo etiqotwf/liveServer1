@@ -707,15 +707,15 @@ const scriptURL = "https://script.google.com/macros/s/AKfycbzbUWAlJ4oI-OF0xrGQmO
 (function(){
  // كان عندك 15 مجموعة وتاريخ 31 أغسطس
 // استبدلها بهذا:
-const groups = Array.from({length: 11}, (_, i) => 'G' + (i + 1));
+const groups = Array.from({length: 11}, (_, i) => 'G' + (i + 1)); // G1–G11
+const tableGroups = groups.slice(0, 8); // G1–G8 فقط للجدول
 const colors = [
   '#FFCDD2', '#BBDEFB', '#C8E6C9', '#FFF9C4',
   '#FFCCBC', '#D1C4E9', '#B2EBF2', '#FFE082',
-  '#D7CCC8', '#F5F5F5', '#90A4AE' // G10 فاتح
+  '#D7CCC8', '#F5F5F5', '#90A4AE' // ألوان G9–G11 للكروت
 ];
 
-let startDate = new Date(2025, 10, 16); // 16 نوفمبر 2025
-const g9StartDate = new Date(2025, 11, 8); // 2 ديسمبر 2025 (الأسبوع الثاني)
+let startDate = new Date(2025, 10, 16);
 const dayNames = ['Sunday','Monday','Tuesday','Wednesday','Thursday'];
 const tbody = document.getElementById('tbody');
 
@@ -723,6 +723,7 @@ const maxSessions = 12;
 let groupCounts = {};
 groups.forEach(g => groupCounts[g] = 0);
 
+// جدول ثابت (يمكن يحتوي G9–G11 لكن سيتم تعديلهم)
 let fixedSchedule = [
   ['G1','G2','G3'], ['G4','G5','G6'], ['G7','G1','G2'], ['G3','G4','G5'], ['G6','G7','G1'],
   ['G1','G2','G3'], ['G4','G5','G6'], ['G7','G1','G2'], ['G3','G4','G5'], ['G6','G7','G1'],
@@ -734,33 +735,17 @@ let fixedSchedule = [
   ['G4','G5','G6'], ['G1','G3','G7'], ['G2','G4','G5'], ['G1','G2','G3'], ['G6','G7','G4']
 ];
 
-// تعديل الجدول مع منع ظهور G9 قبل التاريخ المحدد
-let adjustedSchedule = fixedSchedule.map((row, index) => {
+// تعديل الجدول: استبدال G9–G11 بـ '-' وتوزيع G1–G8
+let adjustedSchedule = fixedSchedule.map(row => {
   let usedToday = new Set();
-  const currentDate = new Date(startDate);
-  currentDate.setDate(startDate.getDate() + index);
-
   return row.map(g => {
-    // منع ظهور G9 قبل التاريخ
-    if(g === 'G9' && currentDate < g9StartDate){
-      g = '-';
-    }
-
-    if(groupCounts[g] < maxSessions && g !== '-' && !usedToday.has(g)){
+    if(!tableGroups.includes(g)) g = '-'; // G9–G11 يظهروا كـ '-' في الجدول
+    if(g !== '-' && groupCounts[g] < maxSessions && !usedToday.has(g)){
       groupCounts[g]++;
       usedToday.add(g);
       return g;
     } else {
-      // اختر G8–G11 إذا لم يصلوا الحد ولم يظهروا اليوم (مع مراعاة تاريخ G9)
-      for(let extra of ['G8','G9','G10','G11']){
-        if(extra === 'G9' && currentDate < g9StartDate) continue;
-        if(groupCounts[extra] < maxSessions && !usedToday.has(extra)){
-          groupCounts[extra]++;
-          usedToday.add(extra);
-          return extra;
-        }
-      }
-      const available = groups.find(x => groupCounts[x] < maxSessions && !usedToday.has(x));
+      const available = tableGroups.find(x => groupCounts[x] < maxSessions && !usedToday.has(x));
       if(available){
         groupCounts[available]++;
         usedToday.add(available);
@@ -771,18 +756,16 @@ let adjustedSchedule = fixedSchedule.map((row, index) => {
   });
 });
 
-// ملء DOM كما قبل
+// ملء DOM
 let week = 1;
-const fullDayNames = ['Sunday','Monday','Tuesday','Wednesday','Thursday']; // أيام الأسبوع فقط
-
 for(let i = 0; i < adjustedSchedule.length; i++){
   const tr = document.createElement('tr');
   const date = new Date(startDate);
   date.setDate(startDate.getDate() + i);
 
   const tdDay = document.createElement('td');
-  const dayIndex = i % 5; // لأن لديك 5 أيام فقط لكل أسبوع
-  tdDay.textContent = `Week ${week} — ${fullDayNames[dayIndex]} (${date.toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'})})`;
+  const dayIndex = i % 5;
+  tdDay.textContent = `Week ${week} — ${dayNames[dayIndex]} (${date.toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'})})`;
   tr.appendChild(tdDay);
 
   for(let g of adjustedSchedule[i]){
@@ -796,12 +779,11 @@ for(let i = 0; i < adjustedSchedule.length; i++){
   }
 
   tbody.appendChild(tr);
-
-  if((i + 1) % 5 === 0) week++; // بعد كل 5 أيام، انتقل للأسبوع التالي
+  if((i + 1) % 5 === 0) week++;
 }
 
-// ربط أزرار G8–G11
-['G8','G9','G10','G11'].forEach(g=>{
+// ربط الأزرار لجميع المجموعات G1–G11
+groups.forEach(g=>{
   const btn = document.getElementById('btn'+g);
   if(btn) btn.addEventListener('click', ()=>openModal(g));
 });
