@@ -62,8 +62,10 @@
 
 .news-ticker {
   width: 100%;
-  background: linear-gradient(90deg, #1976d2, #da4a26);
-  color: #fff;
+  background: #fff;        /* خلفية بيضاء */
+  color: #000;             /* كتابة سوداء */
+    display: inline-flex;    /* يخلي العرض على قد المحتوى */
+      width: auto;             /* إلغاء العرض الكامل */
   font-size: 15pt;
   font-weight: bold;
   display: flex;
@@ -78,6 +80,7 @@
 
 .ticker-title {
   background: #000; /* بدل rgba(0,0,0,0.25) خليها صلبة */
+    background: #fff;        /* خلفية بيضاء */
   padding: 6px 14px;
   margin-left: 10px;
   flex-shrink: 0;
