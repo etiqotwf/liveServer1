@@ -60,6 +60,74 @@
   }
 }
 
+.news-ticker {
+  width: 100%;
+  background: #fff;        /* خلفية بيضاء */
+  color: hsl(0, 0%, 0%);             /* كتابة سوداء */
+  font-size: 12pt;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  white-space: nowrap;
+  padding: 6px 0; /* رفع الشريط لأعلى */
+  box-shadow: 0 2px 6px rgba(0,0,0,0.25);
+  margin-top: 10px; /* قربه من العنصر السابق */
+  border-radius: 6px;
+}
+
+.ticker-title {
+  background: #000; /* بدل rgba(0,0,0,0.25) خليها صلبة */
+    background: #fff;        /* خلفية بيضاء */
+  padding: 6px 14px;
+  margin-left: 10px;
+  flex-shrink: 0;
+    z-index: 2;            /* تبقى فوق النص */
+  border-radius: 4px;
+  animation: toggleTitle 25s linear infinite;
+}
+
+
+.ticker-content {
+  display: inline-block;
+  white-space: nowrap;
+  animation: ticker 25s linear infinite; /* أسرع */
+  padding-left: 100%;
+  direction: rtl;
+}
+
+.ticker-content span {
+  padding-right: 300px; 
+  /*
+   هذه أهم نقطة:
+   padding-right كبير يخلي النص يختفي قبل ما يوصل إلى "تنبيه"
+  */
+  display: inline-block;
+}
+
+@keyframes ticker {
+  0%   { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+@keyframes toggleTitle {
+  0%   { opacity: 0; }
+  20%  { opacity: 0; }
+  40%  { opacity: 1; }
+  100% { opacity: 1; }
+}
+
+/* تكبير الشريط على الموبايل */
+@media (max-width: 768px) {
+  .news-ticker {
+    font-size: 18pt;       /* زيادة حجم الخط */
+    padding: 15px 0;       /* زيادة المسافة الرأسية */
+  }
+
+  .ticker-title {
+    padding: 8px 16px;     /* تكبير كلمة تنبيه */
+  }
+}
 
 
 
@@ -385,6 +453,13 @@ form#surveyForm {
         <p class="small">ساعدنا على تصميم برامج تدريبية تلائم احتياجاتك. الإجابة لا تستغرق أكثر من دقيقة.</p>
       </div>
     </header>
+
+<div class="news-ticker">
+  <div class="ticker-title">🔔 تنبيه</div>
+  <div class="ticker-content">
+    <span>أهلاً بك في التطبيق — هذا هو شريط الأخبار المتحرك ويمكن نقله لأي تطبيق كما هو تماماً…</span>
+  </div>
+</div>
 
 
 
@@ -907,6 +982,10 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
 });
+
+document.querySelector(".ticker-content span").textContent =
+  "سوف يتم انعقاد ندوة  الذكاء الاصطناعى اساسيات ومفاهيم بتاريخ 14-12-2025 بمركز تدريب الصرف بطنطا...";
+
 
 </script>
 
