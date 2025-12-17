@@ -813,53 +813,96 @@ function launchFireworks() {
     
         const trueFalseQuestions = [
   {
-    passage: `Unusual Homes<br>
+  passage: `Unusual Homes<br>
 Shusaku Arakawa and Madeline Gins are famous designers. Their nine lofts near Tokyo, Japan, are very colorful. The apartments are blue, pink, red, yellow, and other bright colors. Inside, the walls are colourful, too. The floors go up and down, and some rooms are round. The windows have strange shapes, so there are no curtains. There are small doors to the outside. Inside, there aren't any closets. The bookcase is in the middle of the living room.
 Dan Philips likes to help people. He builds houses for artists and other low-income people in Huntville, Texas, in the United States. One house, the "tree house", is in a large tree in the forest. It has windows on the floor! It also has a small kitchen. The bed is on the upstairs floor. There is a wood-burning stove from an old ship in the living room. Philips teaches people how to build houses with recycled materials.`,
-    q: " There are -------------------",
-    a: "a",
-    options: ["Colorful walls", "Closets", "Bookcase", "Windows on the floor"]
-  },
-  {
-    passage: `Unusual Homes<br>
+  q: "In Arakawa and Gins' lofts, there are -------------------",
+  a: "a",
+  options: [
+    "Colorful walls",
+    "Closets",
+    "Bookcase",
+    "Windows on the floor",
+    "Bed on the upstairs floor",
+    "Wood-burning stove"
+  ]
+},
+{
+  passage: `Unusual Homes<br>
 Shusaku Arakawa and Madeline Gins are famous designers. Their nine lofts near Tokyo, Japan, are very colorful. The apartments are blue, pink, red, yellow, and other bright colors. Inside, the walls are colourful, too. The floors go up and down, and some rooms are round. The windows have strange shapes, so there are no curtains. There are small doors to the outside. Inside, there aren't any closets. The bookcase is in the middle of the living room.
 Dan Philips likes to help people. He builds houses for artists and other low-income people in Huntville, Texas, in the United States. One house, the "tree house", is in a large tree in the forest. It has windows on the floor! It also has a small kitchen. The bed is on the upstairs floor. There is a wood-burning stove from an old ship in the living room. Philips teaches people how to build houses with recycled materials.`,
-    q: " There aren't any -----------------------------",
-    a: "b",
-    options: ["Colorful walls", "Closets", "Bookcase", "Windows on the floor"]
-  },
-  {
-    passage: `Unusual Homes<br>
+  q: "In Arakawa and Gins' lofts, there aren't any -----------------------------",
+  a: "b",
+  options: [
+    "Colorful walls",
+    "Closets",
+    "Bookcase",
+    "Windows on the floor",
+    "Bed on the upstairs floor",
+    "Wood-burning stove"
+  ]
+},
+{
+  passage: `Unusual Homes<br>
 Shusaku Arakawa and Madeline Gins are famous designers. Their nine lofts near Tokyo, Japan, are very colorful. The apartments are blue, pink, red, yellow, and other bright colors. Inside, the walls are colourful, too. The floors go up and down, and some rooms are round. The windows have strange shapes, so there are no curtains. There are small doors to the outside. Inside, there aren't any closets. The bookcase is in the middle of the living room.
 Dan Philips likes to help people. He builds houses for artists and other low-income people in Huntville, Texas, in the United States. One house, the "tree house", is in a large tree in the forest. It has windows on the floor! It also has a small kitchen. The bed is on the upstairs floor. There is a wood-burning stove from an old ship in the living room. Philips teaches people how to build houses with recycled materials.`,
-    q: " There is a ----------------------------------in the middle of the living room",
-    a: "c",
-    options: ["Colorful walls", "Closets", "Bookcase", "Windows on the floor"]
-  },
-  {
-    passage: `Unusual Homes<br>
+  q: "In Arakawa and Gins' lofts, there is a ---------------------------------- in the middle of the living room",
+  a: "c",
+  options: [
+    "Colorful walls",
+    "Closets",
+    "Bookcase",
+    "Windows on the floor",
+    "Bed on the upstairs floor",
+    "Wood-burning stove"
+  ]
+},
+{
+  passage: `Unusual Homes<br>
 Shusaku Arakawa and Madeline Gins are famous designers. Their nine lofts near Tokyo, Japan, are very colorful. The apartments are blue, pink, red, yellow, and other bright colors. Inside, the walls are colourful, too. The floors go up and down, and some rooms are round. The windows have strange shapes, so there are no curtains. There are small doors to the outside. Inside, there aren't any closets. The bookcase is in the middle of the living room.
 Dan Philips likes to help people. He builds houses for artists and other low-income people in Huntville, Texas, in the United States. One house, the "tree house", is in a large tree in the forest. It has windows on the floor! It also has a small kitchen. The bed is on the upstairs floor. There is a wood-burning stove from an old ship in the living room. Philips teaches people how to build houses with recycled materials.`,
-    q: " There are ------------------------------------",
-    a: "d",
-    options: ["Colorful walls", "Closets", "Bookcase", "Windows on the floor"]
-  },
-  {
-    passage: `Unusual Homes<br>
+  q: "In Dan Philips's tree house, there are ------------------------------------",
+  a: "d",
+  options: [
+    "Colorful walls",
+    "Closets",
+    "Bookcase",
+    "Windows on the floor",
+    "Bed on the upstairs floor",
+    "Wood-burning stove"
+  ]
+},
+{
+  passage: `Unusual Homes<br>
 Shusaku Arakawa and Madeline Gins are famous designers. Their nine lofts near Tokyo, Japan, are very colorful. The apartments are blue, pink, red, yellow, and other bright colors. Inside, the walls are colourful, too. The floors go up and down, and some rooms are round. The windows have strange shapes, so there are no curtains. There are small doors to the outside. Inside, there aren't any closets. The bookcase is in the middle of the living room.
 Dan Philips likes to help people. He builds houses for artists and other low-income people in Huntville, Texas, in the United States. One house, the "tree house", is in a large tree in the forest. It has windows on the floor! It also has a small kitchen. The bed is on the upstairs floor. There is a wood-burning stove from an old ship in the living room. Philips teaches people how to build houses with recycled materials.`,
-    q: " There is a -----------------------------------",
-    a: "c",
-    options: ["Colorful walls", "Closets", "Wood-burning stove", "Bed on the upstairs floor"]
-  },
-  {
-    passage: `Unusual Homes<br>
+  q: "In Dan Philips's tree house, there is a -----------------------------------",
+  a: "f",
+  options: [
+    "Colorful walls",
+    "Closets",
+    "Bookcase",
+    "Windows on the floor",
+    "Bed on the upstairs floor",
+    "Wood-burning stove"
+  ]
+},
+{
+  passage: `Unusual Homes<br>
 Shusaku Arakawa and Madeline Gins are famous designers. Their nine lofts near Tokyo, Japan, are very colorful. The apartments are blue, pink, red, yellow, and other bright colors. Inside, the walls are colourful, too. The floors go up and down, and some rooms are round. The windows have strange shapes, so there are no curtains. There are small doors to the outside. Inside, there aren't any closets. The bookcase is in the middle of the living room.
 Dan Philips likes to help people. He builds houses for artists and other low-income people in Huntville, Texas, in the United States. One house, the "tree house", is in a large tree in the forest. It has windows on the floor! It also has a small kitchen. The bed is on the upstairs floor. There is a wood-burning stove from an old ship in the living room. Philips teaches people how to build houses with recycled materials.`,
-    q: " There is a -----------------------------------",
-    a: "d",
-    options: ["Colorful walls", "Closets", "Bookcase", "Bed on the upstairs floor"]
-  }
+  q: "In Dan Philips's tree house, there is a -----------------------------------",
+  a: "e",
+  options: [
+    "Colorful walls",
+    "Closets",
+    "Bookcase",
+    "Windows on the floor",
+    "Bed on the upstairs floor",
+    "Wood-burning stove"
+  ]
+}
+
 ];
 
 const questions = [
