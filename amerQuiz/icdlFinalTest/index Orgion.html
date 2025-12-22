@@ -174,24 +174,25 @@ input[type="radio"] {
   <!-- Course Name -->
   <p style="font-size: 20px; margin: 15px 0;">
     📘 Course Name: 
-    <input type="text" id="courseName" value="icdlTrainingTest" readonly 
+    <input type="text" id="courseName" value="icdlFinalTest" readonly 
       style="font-size:18px; padding:12px; width:60%; border:none; border-radius:8px; background:#f0f0f0; text-align:center;">
   </p>
 
-  <!--
+  <!-- Trainee Name -->
   <p style="font-size: 20px; margin: 15px 0;">
     👤 Enter Your Name: 
     <input type="text" id="traineeName" placeholder="Type your name..." 
       style="font-size:18px; padding:12px; width:60%; border:1px solid #ccc; border-radius:8px; text-align:center;">
   </p>
 
+  <!-- Trainee Phone -->
   <p style="font-size: 20px; margin: 15px 0;">
     📱 Enter Your Phone Number: 
     <input type="text" id="traineePhone" placeholder="Type your phone number..." 
       style="font-size:18px; padding:12px; width:60%; border:1px solid #ccc; border-radius:8px; text-align:center;">
   </p>
--->
 
+  <!-- Password -->
   <p style="font-size: 20px; margin: 15px 0;">
     🔑 Enter Password: 
     <input type="password" id="password" placeholder="Enter password..." 
@@ -3883,18 +3884,23 @@ const questions = [
         let timerInterval;
         let startTime;
     
-       function startQuiz() {
-    let nameInput = document.getElementById("traineeName");
-    let phoneInput = document.getElementById("traineePhone");
-
-    let name = nameInput ? nameInput.value.trim() : "Not Provided";
-    let phone = phoneInput ? phoneInput.value.trim() : "Not Provided";
-
+        function startQuiz() {
+    let name = document.getElementById("traineeName").value.trim();
+    let phone = document.getElementById("traineePhone").value.trim();
     let password = document.getElementById("password").value;
-    let course = document.getElementById("courseName").value.trim();
-    let quizTitle = document.getElementById("quizTitle");
+    let course = document.getElementById("courseName").value.trim(); // 🆕 قراءة اسم الكورس
+    let quizTitle = document.getElementById("quizTitle"); // 🆕 العنوان اللي هيتغير
 
-    // ❗ الباسورد فقط هو الإجباري
+    if (!name) {
+        alert("❗ برجاء إدخال الاسم.");
+        return;
+    }
+
+    if (!phone) {
+        alert("❗ برجاء إدخال رقم التليفون.");
+        return;
+    }
+
     if (password !== "1550") {
         alert("❌ كلمة المرور غير صحيحة! الرجاء المحاولة مرة أخرى.");
         return;
@@ -3905,7 +3911,6 @@ const questions = [
 
     document.getElementById("startScreen").style.display = "none";
     document.getElementById("quizContainer").style.display = "block";
-
     startTime = new Date();
     startTimer();
     loadTFQuestion();
@@ -3914,12 +3919,15 @@ const questions = [
     let elem = document.documentElement;
     if (elem.requestFullscreen) {
         elem.requestFullscreen();
+    } else if (elem.mozRequestFullScreen) {
+        elem.mozRequestFullScreen();
     } else if (elem.webkitRequestFullscreen) {
         elem.webkitRequestFullscreen();
     } else if (elem.msRequestFullscreen) {
         elem.msRequestFullscreen();
     }
 }
+
 
 
     
@@ -4069,23 +4077,19 @@ function showResult() {
     let minutesTaken = Math.floor(timeTaken / 60);
     let secondsTaken = timeTaken % 60;
 
-    let nameInput = document.getElementById("traineeName");
-    let phoneInput = document.getElementById("traineePhone");
-
-    let name = nameInput ? nameInput.value.trim() : "Not Provided";
-    let phone = phoneInput ? phoneInput.value.trim() : "Not Provided";
-
+    let name = document.getElementById("traineeName").value || "Unknown";
+    let phone = document.getElementById("traineePhone").value || "Unknown";
     let date = new Date().toLocaleDateString("en-US");
-    let course = document.getElementById("courseName")?.value || "Unknown";
+    let course = document.getElementById("courseName").value || "Unknown";
 
     let totalQuestions = trueFalseQuestions.length + questions.length;
     let totalCorrectAnswers = tfCorrectAnswers + correctAnswers;
 
     let resultData = {
-        name,
-        phone,
-        date,
-        course,
+        name: name,
+        phone: phone,
+        date: date,
+        course: course,
         startTime: startTime.toLocaleString("en-GB", {
             timeZone: "Africa/Cairo",
             year: "numeric",
@@ -4100,22 +4104,51 @@ function showResult() {
         score: `${totalCorrectAnswers} / ${totalQuestions}`
     };
 
+    // إرسال البيانات إلى السيرفر إذا تم تحميل الرابط
+    if (!serverUrl) {
+        console.log("⏳ انتظار تحميل رابط السيرفر...");
+        fetchServerUrl().then(() => {
+            if (serverUrl) {
+                sendDataToServer(resultData);
+            } else {
+                console.error("❌ لم يتم تحميل رابط السيرفر بعد.");
+                alert("⚠️ تعذر إرسال البيانات! تأكد من اتصال الإنترنت وأعد المحاولة.");
+            }
+        });
+    } else {
+        sendDataToServer(resultData);
+    }
+
+    // إرسال البيانات إلى Google Sheets
+    sendDataToGoogleSheet(resultData);
+
     // تحديث واجهة المستخدم
     document.getElementById("resultCourse").innerText = course;
     document.getElementById("resultName").innerText = name;
     document.getElementById("resultPhone").innerText = phone;
     document.getElementById("resultDate").innerText = date;
     document.getElementById("resultStartTime").innerText = startTime.toLocaleTimeString();
-    document.getElementById("resultTime").innerText = resultData.timeTaken;
-    document.getElementById("resultScore").innerText = resultData.score;
+    document.getElementById("resultTime").innerText = `${minutesTaken} min ${secondsTaken} sec`;
+    document.getElementById("resultScore").innerText = `${totalCorrectAnswers} / ${totalQuestions}`;
 
     document.getElementById("quizContainer").style.display = "none";
     document.getElementById("resultScreen").style.display = "block";
-
-    // الإرسال
-    sendDataToGoogleSheet(resultData);
-    if (serverUrl) sendDataToServer(resultData);
 }
+
+// إرسال البيانات إلى السيرفر الأساسي
+function sendDataToServer(resultData) {
+    fetch(`${serverUrl}/submit`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(resultData)
+    })
+    .then(response => response.json())
+    .then(data => console.log("✅ تم الإرسال إلى السيرفر بنجاح:", data))
+    .catch(error => console.error("❌ خطأ أثناء الإرسال إلى السيرفر:", error));
+}
+
 
 
 
