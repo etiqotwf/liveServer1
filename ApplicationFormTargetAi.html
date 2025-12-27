@@ -452,99 +452,141 @@ box-shadow:
 
 </style>
 
+<style>
 
 
-<div id="passwordModal" style="
-  display: none;
+/* ===== شاشة الباسورد في منتصف التطبيق ===== */
+#loginScreen{
   position: fixed;
   inset: 0;
-  background-color: rgba(0, 0, 0, 0.6);
-  z-index: 9999;
+  display: flex;
   justify-content: center;
   align-items: center;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  /* لا تضف display:flex هنا */
-">
 
-  <div style="
-    background: #ffffff;
-    padding: 30px 40px;
-    border-radius: 14px;
-    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.25);
-    text-align: center;
-    width: 360px;
-    max-width: 90%;
-  ">
-    <h3 style="
-      margin-bottom: 22px;
-      font-weight: 700;
-      font-size: 24px;
-      color: #222222;
-      letter-spacing: 0.03em;
-    ">
-      Password Confirmation
-    </h3>
-    <input
-      type="password"
-      id="passwordInput"
-      placeholder="Enter your password"
-      style="
-        width: 100%;
-        padding: 14px 16px;
-        font-size: 16px;
-        border: 1.8px solid #ddd;
-        border-radius: 10px;
-        box-sizing: border-box;
-        transition: border-color 0.3s ease;
-        outline-offset: 2px;
-      "
-      onfocus="this.style.borderColor='#4a90e2'"
-      onblur="this.style.borderColor='#ddd'"
-    />
-    <div style="margin-top: 28px; display: flex; justify-content: center; gap: 16px;">
-      <button
-        onclick="confirmPassword()"
-        style="
-          flex: 1;
-          padding: 14px 0;
-          font-size: 16px;
-          font-weight: 600;
-          background-color: #2979ff;
-          color: white;
-          border: none;
-          border-radius: 10px;
-          cursor: pointer;
-          box-shadow: 0 6px 14px rgba(41, 121, 255, 0.45);
-          transition: background-color 0.3s ease, box-shadow 0.3s ease;
-        "
-        onmouseover="this.style.backgroundColor='#1565c0'; this.style.boxShadow='0 8px 20px rgba(21, 101, 192, 0.6)'"
-        onmouseout="this.style.backgroundColor='#2979ff'; this.style.boxShadow='0 6px 14px rgba(41, 121, 255, 0.45)'"
-      >
-        Confirm
-      </button>
-      <button
-        onclick="closePasswordModal()"
-        style="
-          flex: 1;
-          padding: 14px 0;
-          font-size: 16px;
-          font-weight: 600;
-          background-color: #f0f0f0;
-          color: #555555;
-          border: none;
-          border-radius: 10px;
-          cursor: pointer;
-          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-          transition: background-color 0.3s ease;
-        "
-        onmouseover="this.style.backgroundColor='#d6d6d6'"
-        onmouseout="this.style.backgroundColor='#f0f0f0'"
-      >
-        Cancel
-      </button>
-    </div>
-  </div>
-</div>
+  /* ❌ شيل أي لون خلفية */
+  background: transparent;
+
+  /* لو حابب تعتيم خفيف جدًا (اختياري) */
+  /* background: rgba(0,0,0,0.25); */
+
+  z-index: 9999;
+}
+
+
+/* ===== صندوق الدخول ===== */
+.login-box{
+  width: 360px;
+  max-width: 92%;
+  padding: 38px 32px;
+  border-radius: 18px;
+  text-align: center;
+
+  background:
+    linear-gradient(145deg,#1b1f24,#0a0d11);
+
+  border: 1px solid rgba(0,255,255,.45);
+
+  box-shadow:
+    0 0 40px rgba(0,255,255,.35),
+    inset 0 0 25px rgba(0,0,0,.85);
+
+  position: relative;
+}
+
+/* لمسة نيون إطار */
+.login-box::before{
+  content:"";
+  position:absolute;
+  inset:-2px;
+  border-radius:20px;
+  background:
+    linear-gradient(120deg,#00f7ff,#005f66,#00f7ff);
+  opacity:.35;
+  z-index:-1;
+  filter: blur(8px);
+}
+
+/* ===== العنوان ===== */
+.login-box h2{
+  color:#00f7ff;
+  font-size:26px;
+  margin-bottom:28px;
+  letter-spacing:3px;
+  text-shadow:
+    0 0 10px #00f7ff,
+    0 0 25px rgba(0,255,255,.6);
+}
+
+/* ===== حقل الباسورد ===== */
+#passwordInput{
+  width:100%;
+  padding:15px;
+  font-size:16px;
+  letter-spacing:2px;
+  border-radius:12px;
+  outline:none;
+
+  background:#05080c;
+  color:#00f7ff;
+
+  border:1px solid rgba(0,255,255,.6);
+
+  box-shadow:
+    inset 0 0 15px rgba(0,255,255,.25);
+}
+
+#passwordInput::placeholder{
+  color:rgba(0,255,255,.45);
+}
+
+/* تأثير فوكس */
+#passwordInput:focus{
+  box-shadow:
+    0 0 15px rgba(0,255,255,.9),
+    inset 0 0 20px rgba(0,255,255,.4);
+}
+
+/* ===== زر الدخول ===== */
+.login-box button{
+  margin-top:26px;
+  width:100%;
+  padding:15px 0;
+
+  font-size:15px;
+  font-weight:bold;
+  letter-spacing:3px;
+
+  border:none;
+  border-radius:14px;
+  cursor:pointer;
+
+  background:
+    linear-gradient(145deg,#00f7ff,#007c85);
+
+  color:#000;
+
+  box-shadow:
+    0 0 20px rgba(0,255,255,.8);
+
+  transition:.3s ease;
+}
+
+.login-box button:hover{
+  transform: scale(1.05);
+  box-shadow:
+    0 0 35px rgba(0,255,255,1);
+}
+
+/* ===== رسالة الخطأ ===== */
+#errorMsg{
+  display:none;
+  margin-top:18px;
+  color:#ff4d4d;
+  font-weight:bold;
+  letter-spacing:1px;
+  text-shadow:0 0 10px rgba(255,0,0,.6);
+}
+<style>
 
 
 <style>
