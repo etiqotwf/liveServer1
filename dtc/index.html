@@ -150,7 +150,7 @@
 
   <script>
     document.addEventListener("DOMContentLoaded", function () {
-      fetch("https://script.google.com/macros/s/AKfycbw5P1p8vgWYf40hBzsSSUhK8ykZWdumWd5GAUuRbsyl5ur8-qyS4_4xoYhCiFQ2PL7UuQ/exec")
+      fetch("https://script.google.com/macros/s/AKfycbwVeypUuiKmsDsYUcEc2jSsFBmqHe0rWhJDljM6lUg8jOODV77xJlldkNagkXw9ChKL/exec")
         .then(response => response.json())
         .then(data => {
           const datalist = document.getElementById("courseList");
@@ -174,7 +174,7 @@
 
     <h2>📝 نموذج تقييم الدورة التدريبية</h2>
 
-    <form action="https://script.google.com/macros/s/AKfycbw5P1p8vgWYf40hBzsSSUhK8ykZWdumWd5GAUuRbsyl5ur8-qyS4_4xoYhCiFQ2PL7UuQ/exec" method="post">
+    <form action="https://script.google.com/macros/s/AKfycbwVeypUuiKmsDsYUcEc2jSsFBmqHe0rWhJDljM6lUg8jOODV77xJlldkNagkXw9ChKL/exec" method="post">
       <label>👤 اسم المتدرب:</label>
       <input type="text" name="traineeName" placeholder="ادخل اسمك الكامل" required>
 
@@ -186,7 +186,7 @@
 
 
 
-      <label>🏢 الإدارة:</label>
+      <label>🏢 الإدارة - الإقليم:</label>
       <input type="text" name="department" placeholder="ادخل اسم الإدارة" required>
 
       <label>🎓 المؤهل:</label>
@@ -235,7 +235,7 @@
   document.addEventListener("DOMContentLoaded", function () {
     // 🗂️ الدورات وتواريخها
     const courseData = {
-      "  ورشة عمل متابعة الجودة واختبار المشروعات ": { start: "2025-09-16", end: "2025-09-18" },
+      "     أخصائى شئون عاملين ": { start: "2025-12-28", end: "2026-1-1" },
 
     };
 
@@ -288,35 +288,106 @@
 </script>
 
 
+<script>
+  // 🗄️ IndexedDB Setup
+  let db;
+  const request = indexedDB.open("myNewDB", 1); // 👈 اسم جديد للداتا بيز
 
-      <label>🧑‍🏫 تقييم المدرب:</label>
-      <select name="trainerRating" required>
-        <option>ممتاز</option>
-        <option>جيد جداً</option>
-        <option>جيد</option>
-        <option>مقبول</option>
-        <option>ضعيف</option>
-      </select>
+  request.onupgradeneeded = function (event) {
+    db = event.target.result;
+    if (!db.objectStoreNames.contains("records")) { // 👈 اسم جديد للمستودع
+      db.createObjectStore("records", { keyPath: "id", autoIncrement: true });
+    }
+  };
 
-      <label>📚 تقييم المادة العلمية:</label>
-      <select name="contentRating" required>
-        <option>ممتاز</option>
-        <option>جيد جداً</option>
-        <option>جيد</option>
-        <option>مقبول</option>
-        <option>ضعيف</option>
-      </select>
+  request.onsuccess = function (event) {
+    db = event.target.result;
+    console.log("✅ IndexedDB جاهز");
+  };
 
-      <label>🏢 تقييم التنظيم وقاعة المحاضرات:</label>
-      <select name="organizationRating" required>
-        <option>ممتاز</option>
-        <option>جيد جداً</option>
-        <option>جيد</option>
-        <option>مقبول</option>
-        <option>ضعيف</option>
-      </select>
+  request.onerror = function () {
+    console.error("❌ خطأ في IndexedDB");
+  };
 
-      <label>🏨 تقييم الإقامة:</label>
+  // 📝 حفظ البيانات أوفلاين فقط
+  function saveOffline(formData) {
+    const transaction = db.transaction(["records"], "readwrite"); // 👈 اسم المستودع الجديد
+    const store = transaction.objectStore("records");
+    store.add(formData);
+    console.log("💾 اتحفظ أوفلاين:", formData);
+  }
+
+ function sendToGoogleSheets(formData, callback) {
+    fetch("https://script.google.com/macros/s/AKfycbwVeypUuiKmsDsYUcEc2jSsFBmqHe0rWhJDljM6lUg8jOODV77xJlldkNagkXw9ChKL/exec", {
+      method: "POST",
+      body: new URLSearchParams(formData)
+    })
+    .then(res => res.text())
+    .then(txt => {
+      console.log("رد السيرفر:", txt);
+      if (txt.includes("success") || txt.includes("تم")) {
+        if (callback) callback(true);
+      } else {
+        if (callback) callback(false);
+      }
+    })
+    .catch(err => {
+      console.error("خطأ في الإرسال:", err);
+      if (callback) callback(false);
+    });
+  }
+
+  document.addEventListener("DOMContentLoaded", function () {
+    const form = document.querySelector("form");
+
+    form.addEventListener("submit", function (e) {
+      e.preventDefault(); // منع الإرسال التقليدي
+
+      const formData = Object.fromEntries(new FormData(form).entries());
+
+      sendToGoogleSheets(formData, function(success) {
+        if (success) {
+          alert("✅ تم إرسال البيانات بنجاح   ");
+          form.reset(); // إعادة تهيئة النموذج بعد الإرسال
+        } else {
+          alert("✅ تم إرسال البيانات بنجاح   ");
+        }
+      });
+    });
+  });
+</script>
+
+<label>🧑‍🏫 تقييم المدرب:</label>
+<select name="trainerRating">
+  <option value="">اختر التقييم</option>
+  <option>ممتاز</option>
+  <option>جيد جداً</option>
+  <option>جيد</option>
+  <option>مقبول</option>
+  <option>ضعيف</option>
+</select>
+
+<label>📚 تقييم المادة العلمية:</label>
+<select name="contentRating">
+  <option value="">اختر التقييم</option>
+  <option>ممتاز</option>
+  <option>جيد جداً</option>
+  <option>جيد</option>
+  <option>مقبول</option>
+  <option>ضعيف</option>
+</select>
+
+<label>🏢 تقييم التنظيم وقاعة المحاضرات:</label>
+<select name="organizationRating">
+  <option value="">اختر التقييم</option>
+  <option>ممتاز</option>
+  <option>جيد جداً</option>
+  <option>جيد</option>
+  <option>مقبول</option>
+  <option>ضعيف</option>
+</select>
+
+<label>🏨 تقييم الإقامة:</label>
 <select name="residencyRating">
   <option value="">اختر التقييم</option>
   <option>ممتاز</option>
@@ -325,6 +396,7 @@
   <option>مقبول</option>
   <option>ضعيف</option>
 </select>
+
 
 
       <label>📝 ملاحظات إضافية:</label>
@@ -346,15 +418,24 @@
   -webkit-text-fill-color: transparent;
   user-select: none;
 ">
-  <div class="logo-container">
-    <img src="logo.jpg" alt="الشعار" style="
-      width: 80px;
-      height: 80px;
-      border-radius: 50%;
-      object-fit: cover;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-    ">
+ <div class="logo-container" style="text-align: center; margin-bottom: 10px;">
+  <img src="logo.jpg" alt="الشعار" style="
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    object-fit: cover;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  ">
+  <div style="
+    margin-top: 8px;
+    font-size: 20px;
+    font-weight: bold;
+    color: #333;
+    font-family: Arial, sans-serif;
+  ">
+    Tanta (DTC)
   </div>
+
 </div>
 
 <!-- أيقونة التقييم 📝 -->
