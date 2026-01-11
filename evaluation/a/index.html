@@ -150,7 +150,7 @@
 
   <script>
     document.addEventListener("DOMContentLoaded", function () {
-      fetch("https://script.google.com/macros/s/AKfycbw5P1p8vgWYf40hBzsSSUhK8ykZWdumWd5GAUuRbsyl5ur8-qyS4_4xoYhCiFQ2PL7UuQ/exec")
+      fetch("https://script.google.com/macros/s/AKfycbyuc8O08Xe6Q1gSvsvfZ2WePsUl_5SzZYMRuBQH_1-ohTzubg_zfNQvGtyK38a89E4q/exec")
         .then(response => response.json())
         .then(data => {
           const datalist = document.getElementById("courseList");
@@ -174,7 +174,7 @@
 
     <h2>📝 نموذج تقييم الدورة التدريبية</h2>
 
-    <form action="https://script.google.com/macros/s/AKfycbw5P1p8vgWYf40hBzsSSUhK8ykZWdumWd5GAUuRbsyl5ur8-qyS4_4xoYhCiFQ2PL7UuQ/exec" method="post">
+    <form action="https://script.google.com/macros/s/AKfycbyuc8O08Xe6Q1gSvsvfZ2WePsUl_5SzZYMRuBQH_1-ohTzubg_zfNQvGtyK38a89E4q/exec" method="post">
       <label>👤 اسم المتدرب:</label>
       <input type="text" name="traineeName" placeholder="ادخل اسمك الكامل" required>
 
@@ -235,7 +235,7 @@
   document.addEventListener("DOMContentLoaded", function () {
     // 🗂️ الدورات وتواريخها
     const courseData = {
-      "  Ms Excel ": { start: "2025-9-28", end: "2025-10-2" },
+      "  now ": { start: "2026-1-11", end: "2026-1-15" },
 
     };
 
@@ -319,7 +319,7 @@
 
   // ☁️ محاولة إرسال للـ Google Sheet
   function sendToGoogleSheets(formData, callback) {
-    fetch("https://script.google.com/macros/s/AKfycbw5P1p8vgWYf40hBzsSSUhK8ykZWdumWd5GAUuRbsyl5ur8-qyS4_4xoYhCiFQ2PL7UuQ/exec", {
+    fetch("https://script.google.com/macros/s/AKfycbyuc8O08Xe6Q1gSvsvfZ2WePsUl_5SzZYMRuBQH_1-ohTzubg_zfNQvGtyK38a89E4q/exec", {
       method: "POST",
       body: new URLSearchParams(formData)
     })
