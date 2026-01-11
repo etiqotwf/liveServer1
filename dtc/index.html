@@ -150,7 +150,7 @@
 
   <script>
     document.addEventListener("DOMContentLoaded", function () {
-      fetch("https://script.google.com/macros/s/AKfycbwVeypUuiKmsDsYUcEc2jSsFBmqHe0rWhJDljM6lUg8jOODV77xJlldkNagkXw9ChKL/exec")
+      fetch("https://script.google.com/macros/s/AKfycbw8IYH0bF3f61TDpLNSL3Y4y1Vcdbi47i1m85bYoHCyCwn-xoVAHCcM-s_M0Zrs_mkF/exec")
         .then(response => response.json())
         .then(data => {
           const datalist = document.getElementById("courseList");
@@ -174,7 +174,7 @@
 
     <h2>📝 نموذج تقييم الدورة التدريبية</h2>
 
-    <form action="https://script.google.com/macros/s/AKfycbwVeypUuiKmsDsYUcEc2jSsFBmqHe0rWhJDljM6lUg8jOODV77xJlldkNagkXw9ChKL/exec" method="post">
+    <form action="https://script.google.com/macros/s/AKfycbw8IYH0bF3f61TDpLNSL3Y4y1Vcdbi47i1m85bYoHCyCwn-xoVAHCcM-s_M0Zrs_mkF/exec" method="post">
       <label>👤 اسم المتدرب:</label>
       <input type="text" name="traineeName" placeholder="ادخل اسمك الكامل" required>
 
@@ -235,7 +235,7 @@
   document.addEventListener("DOMContentLoaded", function () {
     // 🗂️ الدورات وتواريخها
     const courseData = {
-      "  المعاشات والقوانين المنظمة لها ": { start: "2025-12-24", end: "2025-12-25" },
+      "test": { start: "2026-1-11", end: "2026-1-15" },
 
     };
 
@@ -287,15 +287,16 @@
   });
 </script>
 
-
 <script>
-  // 🗄️ IndexedDB Setup
+  /***********************
+   * 🗄️ IndexedDB Setup
+   ***********************/
   let db;
-  const request = indexedDB.open("myNewDB", 1); // 👈 اسم جديد للداتا بيز
+  const request = indexedDB.open("myNewDB", 1);
 
   request.onupgradeneeded = function (event) {
     db = event.target.result;
-    if (!db.objectStoreNames.contains("records")) { // 👈 اسم جديد للمستودع
+    if (!db.objectStoreNames.contains("records")) {
       db.createObjectStore("records", { keyPath: "id", autoIncrement: true });
     }
   };
@@ -309,54 +310,80 @@
     console.error("❌ خطأ في IndexedDB");
   };
 
-  // 📝 حفظ البيانات أوفلاين فقط
+  /***********************
+   * 📝 حفظ البيانات أوفلاين
+   ***********************/
   function saveOffline(formData) {
-    const transaction = db.transaction(["records"], "readwrite"); // 👈 اسم المستودع الجديد
+    if (!db) {
+      console.warn("⚠️ IndexedDB غير جاهز");
+      return;
+    }
+    const transaction = db.transaction(["records"], "readwrite");
     const store = transaction.objectStore("records");
     store.add(formData);
-    console.log("💾 اتحفظ أوفلاين:", formData);
+    console.log("💾 تم الحفظ أوفلاين:", formData);
   }
 
- function sendToGoogleSheets(formData, callback) {
-    fetch("https://script.google.com/macros/s/AKfycbwVeypUuiKmsDsYUcEc2jSsFBmqHe0rWhJDljM6lUg8jOODV77xJlldkNagkXw9ChKL/exec", {
+  /***********************
+   * 🌐 الإرسال إلى Google Sheets
+   ***********************/
+  function sendToGoogleSheets(formData, callback) {
+    fetch("https://script.google.com/macros/s/AKfycbw8IYH0bF3f61TDpLNSL3Y4y1Vcdbi47i1m85bYoHCyCwn-xoVAHCcM-s_M0Zrs_mkF/exec", {
       method: "POST",
       body: new URLSearchParams(formData)
     })
     .then(res => res.text())
     .then(txt => {
-      console.log("رد السيرفر:", txt);
-      if (txt.includes("success") || txt.includes("تم")) {
-        if (callback) callback(true);
+      console.log("📨 رد السيرفر:", txt);
+
+      if (txt.includes("STATUS:SUCCESS")) {
+        callback("success");
+      } else if (txt.includes("STATUS:DUPLICATE")) {
+        callback("duplicate");
+      } else if (txt.includes("STATUS:WAIT")) {
+        callback("wait");
       } else {
-        if (callback) callback(false);
+        callback("error");
       }
     })
     .catch(err => {
-      console.error("خطأ في الإرسال:", err);
-      if (callback) callback(false);
+      console.error("❌ خطأ في الإرسال:", err);
+      callback("error");
     });
   }
 
+  /***********************
+   * 🧾 التعامل مع الفورم
+   ***********************/
   document.addEventListener("DOMContentLoaded", function () {
     const form = document.querySelector("form");
 
     form.addEventListener("submit", function (e) {
-      e.preventDefault(); // منع الإرسال التقليدي
+      e.preventDefault();
 
       const formData = Object.fromEntries(new FormData(form).entries());
 
-      sendToGoogleSheets(formData, function(success) {
-        if (success) {
-          alert("✅ تم إرسال البيانات بنجاح   ");
-          form.reset(); // إعادة تهيئة النموذج بعد الإرسال
+      sendToGoogleSheets(formData, function (status) {
+
+        if (status === "success") {
+          alert("✅ تم إرسال التقييم وتوليد الشهادة بنجاح");
+          form.reset();
+
+        } else if (status === "duplicate") {
+          alert("⚠️ لقد قمت بإرسال تقييم لهذه الدورة من قبل");
+
+        } else if (status === "wait") {
+          alert("⏱️ برجاء الانتظار دقيقة قبل إرسال تقييم آخر");
+
         } else {
-          alert("✅ تم إرسال البيانات بنجاح   ");
+          alert("❌ فشل الإرسال – تم حفظ البيانات وسيتم الإرسال لاحقًا");
+          saveOffline(formData);
         }
+
       });
     });
   });
 </script>
-
 <label>🧑‍🏫 تقييم المدرب:</label>
 <select name="trainerRating">
   <option value="">اختر التقييم</option>
