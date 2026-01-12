@@ -162,8 +162,8 @@ io.on("connection", socket => {
     console.log(`📚 User joined course: ${courseId}`);
   });
 
- socket.on("sendMessage", data => {
-  console.log(`📩 رسالة من كورس ${data.courseId}: ${data.message}`);
+socket.on("sendMessage", data => {
+  console.log(`📩 رسالة من كورس ${data.courseId} من ${data.user}: ${data.text}`);
   io.to(data.courseId).emit("newMessage", data);
 });
 
