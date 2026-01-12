@@ -163,7 +163,7 @@ io.on("connection", socket => {
   });
 
 socket.on("sendMessage", data => {
-  console.log(`📩 رسالة من كورس ${data.courseId} من ${data.user}: ${data.text}`);
+  console.log(`📩 Message from course ${data.courseId} by ${data.user}: ${data.text}`);
   io.to(data.courseId).emit("newMessage", data);
 });
 
