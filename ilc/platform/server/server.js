@@ -162,9 +162,11 @@ io.on("connection", socket => {
     console.log(`📚 User joined course: ${courseId}`);
   });
 
-  socket.on("sendMessage", data => {
-    io.to(data.courseId).emit("newMessage", data);
-  });
+ socket.on("sendMessage", data => {
+  console.log(`📩 رسالة من كورس ${data.courseId}: ${data.message}`);
+  io.to(data.courseId).emit("newMessage", data);
+});
+
 
   socket.on("disconnect", () => {
     console.log("🔴 User disconnected:", socket.id);
