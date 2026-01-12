@@ -18,9 +18,20 @@ const app = express();
 const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
-    origin: "*"
-  }
+    origin: "*",
+    methods: ["GET", "POST"]
+  },
+  transports: ["websocket", "polling"],
+  allowEIO3: true
 });
+
+
+io.engine.on("connection_error", (err) => {
+  console.log("❌ Engine error:", err.code);
+  console.log(err.message);
+});
+
+
 const PORT = 3000;
 
 
@@ -161,8 +172,8 @@ server.listen(PORT, () => {
   console.log(`🚀 Server running at http://localhost:${PORT}`);
 
     exec("pgrep -f 'ngrok' && pkill -f 'ngrok'", () => {
-        exec("ngrok.exe http 3000 --log=stdout", (err) => {
-            if (err) {
+exec("ngrok.exe http 3000 --log=stdout", (err) => {
+if (err) {
                 console.error("❌ Error starting ngrok:", err);
                 return;
             }
