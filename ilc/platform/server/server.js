@@ -26,6 +26,12 @@ const io = new Server(server, {
 });
 
 
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'index.html'));
+});
+
+
+
 io.engine.on("connection_error", (err) => {
   console.log("❌ Engine error:", err.code);
   console.log(err.message);
