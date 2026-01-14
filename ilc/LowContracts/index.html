@@ -339,7 +339,7 @@ overflow: hidden;
 <!-- Enter Trainee Code -->
 <p style="font-size: 20px;">
   <span style="color: #0056b3; font-weight: bold;">
-    🧾 Enter Your Code:
+    🧾 Enter Your Department:
   </span>
   <input type="text" id="traineeCode" placeholder="Enter your code..." 
     style="font-size:18px; padding:12px; width:60%; border:1px solid #ccc; border-radius:8px; text-align:center; color:#000;">
@@ -603,7 +603,7 @@ stopEmojiRain();
   <!-- شاشة الأسئلة -->
   <div class="container" id="quizContainer">
     <h2 id="quizTitle">Placement Test</h2>
-    <p class="author"> 🌍 The International British Institute  🌍 
+    <p class="author"> 🌍 Drainage Training Center - Tanta  🌍 
     <p>Date: <span id="date"></span></p>
      <!-- Emoji Sticky Animation -->
  <div id="emoji-character" style="
@@ -754,10 +754,13 @@ function calculateRating(score, maxScore) {
   if (score === undefined || maxScore === undefined) return "غير محدد ❓";
 
   // التقديرات حسب طلب المدرس
-  if (score >= 0 && score < 5) return "Good 🙂";
-  else if (score >= 5 && score < 15) return "Very Good 👍";
-  else if (score >= 15 && score <= maxScore) return "Excellent 🌟";
-  else return "غير محدد ❓";
+if (score >= 0 && score < 5) return "Fail ❌";
+else if (score >= 5 && score < 10) return "Pass 🙂";
+else if (score >= 10 && score < 15) return "Good 👍";
+else if (score >= 15 && score < 20) return "Very Good 👏";
+else if (score >= 20 && score <= maxScore) return "Excellent 🌟";
+else return "غير محدد ❓";
+
 }
 
 
