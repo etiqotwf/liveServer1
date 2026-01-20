@@ -209,7 +209,8 @@ html, body {
 <body>
 
 <div class="container">
-  <h2>British International Learning Center (ILC)</h2>
+  <h2>🌍 Drainage Training Center - Alexandria 🌍
+</h2>
   <h2>🔹 Trainees Database Management Quiz Form </h2>
 
   <!-- Search -->
@@ -281,7 +282,7 @@ function syncWithGoogleSheets() {
     const count = countRequest.result;
     const lastIndex = (count === 0) ? 0 : (parseInt(localStorage.getItem("lastSyncedIndex")) || 0);
 
-    fetch(`https://script.google.com/macros/s/AKfycbz7CNkSP5Hibxj9Ir1NK6MH3QuY1s2ZpOBF4yN0vGn9RhkmeBnWIJjUSYi14zMqMYYyFw/exec`)
+    fetch(`https://script.google.com/macros/s/AKfycbyE5pF9LROkISrJcHTBxKZTnArhbO-ghgM2s1gzKJ_-dmrxIGIKxkj1B_zaz6I0wbbL/exec`)
       .then(response => response.json())
       .then(data => {
         if (!Array.isArray(data)) {
