@@ -349,6 +349,714 @@ function goToQuestion() {
     
 
 
+
+
+{
+  "passage": `
+<div style="margin-top: 120px;">
+  <div style="font-family: Segoe UI, Arial, sans-serif; background-color: #f9fbff; color: #333; padding: 25px; border: 2px solid #cce0ff; border-radius: 15px; font-size: 18px; box-shadow: 0 4px 10px rgba(0,0,0,0.05);">
+    
+    <strong style="font-size: 24px; color: #0056b3;">🔹 WHAT IS PROGRAMMING AND WHY JAVASCRIPT?</strong><br><br>
+    
+    <em><u style="color:#0056b3;">Definition:</u></em><br>
+    Programming is writing instructions for computers to solve problems or perform specific tasks. 🚀<br><br>
+
+    <!-- History & Evolution (Expanded) -->
+    <strong style="font-size: 20px; color:#004080;">📜 History & Evolution of JavaScript (1995 → Today) — Detailed</strong><br><br>
+    <div style="background:#fff; border-left:6px solid #7b68ee; border-radius:12px; padding:18px; box-shadow:0 4px 10px rgba(0,0,0,0.06);">
+      
+      <!-- 1995 -->
+      <div style="margin-bottom:12px;">
+        <b style="color:#5a4fcf;">1995 — Birth (Context & Purpose)</b>
+        <p style="margin:6px 0;">
+          Brendan Eich created the first version of JavaScript at Netscape in 1995 (originally named <em>Mocha</em>, then <em>LiveScript</em>). The main goal was to provide a lightweight scripting language that could run inside the browser to make pages interactive (form validation, small UI behaviors) without requiring a server round-trip.
+        </p>
+        <p style="margin:6px 0;">
+          <b>Impact:</b> Provided the first practical way to make websites interactive on the client side, directly in the browser.
+        </p>
+      </div>
+
+      <!-- 1997-1999 -->
+      <div style="margin-bottom:12px;">
+        <b style="color:#5a4fcf;">1997–1999 — Standardization (ECMAScript)</b>
+        <p style="margin:6px 0;">
+          JavaScript was standardized as ECMAScript to ensure consistent behavior across different browsers and implementations. The standard defined syntax, built-in objects, and expected semantics so browsers could implement the same language features.
+        </p>
+        <p style="margin:6px 0;">
+          <b>Why it matters:</b> Standardization allowed developers to write portable code and gave vendors a common roadmap for language improvements.
+        </p>
+      </div>
+
+      <!-- 2005-2009 -->
+      <div style="margin-bottom:12px;">
+        <b style="color:#5a4fcf;">2005–2009 — Web 2.0 & Tooling</b>
+        <p style="margin:6px 0;">
+          The rise of AJAX enabled richer, asynchronous web apps. Libraries like jQuery simplified DOM manipulation and cross-browser differences, making advanced UI patterns accessible. Tooling and patterns started emerging to manage larger codebases.
+        </p>
+        <p style="margin:6px 0;">
+          <b>ES5 (2009):</b> Introduced strict mode, JSON support, and many Array helpers — setting a base for modern JS.
+        </p>
+      </div>
+
+      <!-- 2009 -->
+      <div style="margin-bottom:12px;">
+        <b style="color:#5a4fcf;">2009 — Node.js & Server-side JavaScript</b>
+        <p style="margin:6px 0;">
+          Node.js introduced JavaScript on the server with a non-blocking, event-driven I/O model. This allowed JS to handle many concurrent connections efficiently and opened the door to full-stack JavaScript (same language on client & server).
+        </p>
+        <p style="margin:6px 0;">
+          <b>Impact:</b> Unified stacks, faster prototyping, huge growth in backend libraries and tooling.
+        </p>
+      </div>
+
+      <!-- 2015 -->
+      <div style="margin-bottom:12px;">
+        <b style="color:#5a4fcf;">2015 — ES6 / ES2015 (Major Language Upgrade)</b>
+        <p style="margin:6px 0;">
+          ES6 brought foundational language features: <code>let</code> / <code>const</code>, arrow functions, classes (syntactic sugar), modules (<code>import/export</code>), template strings, destructuring, promises, and more. These features made code cleaner, modular, and more maintainable.
+        </p>
+        <p style="margin:6px 0;">
+          <b>Result:</b> Modern JS became suitable for complex applications and large teams.
+        </p>
+      </div>
+
+      <!-- 2016 -> Now -->
+      <div style="margin-bottom:12px;">
+        <b style="color:#5a4fcf;">2016 → Now — Rapid Iteration & Ecosystem Maturity</b>
+        <p style="margin:6px 0;">
+          ECMAScript switched to annual, incremental releases. At the same time, the ecosystem matured with tools (bundlers, transpilers), TypeScript (optional static typing), powerful frameworks (React, Vue, Angular), and faster JS engines (V8). WebAssembly also appeared to solve heavy-compute use cases by enabling non-JS modules in the browser.
+        </p>
+        <p style="margin:6px 0;">
+          <b>Tooling:</b> Babel, Webpack, Rollup, and Vite help write modern code while maintaining browser compatibility.
+        </p>
+      </div>
+
+      <!-- Today -->
+      <div style="margin-bottom:6px;">
+        <b style="color:#5a4fcf;">Today — Ubiquity & Polyglot Integration</b>
+        <p style="margin:6px 0;">
+          JavaScript powers user interfaces, APIs, mobile apps, desktop apps, IoT devices, and in-browser ML. It benefits from huge community support, an enormous package registry, and continuous performance improvements.
+        </p>
+      </div>
+
+    </div>
+
+    <br>
+
+    <!-- Additional: Architecture, Differences, Advantages -->
+    <strong style="font-size: 20px; color:#004080;">🔧 JavaScript: Architecture, Key Differences & Advantages</strong><br><br>
+    <div style="background:#fff; border-left:6px solid #20b2aa; border-radius:12px; padding:18px; box-shadow:0 4px 10px rgba(0,0,0,0.06);">
+
+      <!-- Spec & Engines -->
+      <div style="margin-bottom:12px;">
+        <b style="color:#0f9d86;">ECMAScript Spec vs Implementations</b>
+        <p style="margin:6px 0;">
+          ECMAScript is the language specification: it defines behavior and features. Engines like <b>V8</b> (Chrome/Node), <b>SpiderMonkey</b> (Firefox), and <b>JavaScriptCore</b> (Safari) implement that spec. Differences are rare but engines focus on performance and advanced optimizations (JIT compilation).
+        </p>
+      </div>
+
+      <!-- Prototype vs Class -->
+      <div style="margin-bottom:12px;">
+        <b style="color:#0f9d86;">Prototype-based vs Class-based (What’s special)</b>
+        <p style="margin:6px 0;">
+          JavaScript uses prototype-based inheritance: objects can inherit directly from other objects. ES6 added <code>class</code> syntax, but classes are syntactic sugar over prototypes. This gives great runtime flexibility (modify objects on the fly) unlike strictly class-based languages (Java/C++).
+        </p>
+      </div>
+
+      <!-- Concurrency / Event Loop -->
+      <div style="margin-bottom:12px;">
+        <b style="color:#0f9d86;">Concurrency Model — Event Loop & Async</b>
+        <p style="margin:6px 0;">
+          JS runs on a single-threaded event loop (in typical environments). Concurrency is achieved via non-blocking I/O, callbacks, Promises and <code>async/await</code>. For CPU-intensive work, Web Workers or offloading to native modules / WebAssembly are used.
+        </p>
+      </div>
+
+      <!-- Typing & Memory -->
+      <div style="margin-bottom:12px;">
+        <b style="color:#0f9d86;">Dynamic Typing & Memory Management</b>
+        <p style="margin:6px 0;">
+          JS is dynamically typed (variables can hold any type) and garbage-collected. This increases developer speed and flexibility, but can introduce runtime type errors and requires good testing or optional static typing (TypeScript) for larger codebases.
+        </p>
+      </div>
+
+      <!-- Comparison with Other Languages -->
+      <div style="margin-bottom:12px;">
+        <b style="color:#0f9d86;">How JS differs from other mainstream languages (brief)</b>
+        <ul style="margin:6px 0 6px 18px;">
+          <li><b>Vs Java/C++:</b> JS is dynamic, JIT'ed, prototype-based and single-threaded (event loop). Java/C++ are statically typed, compiled (to bytecode or native), class-based, and use multi-threading more directly.</li>
+          <li><b>Vs Python:</b> Both are dynamic; JS is designed for the browser and asynchronous I/O is central. Python traditionally focuses on synchronous code and has different concurrency models (GIL), though async features exist.</li>
+          <li><b>Vs Functional Languages:</b> JS supports functional style (first-class functions, closures) but is multi-paradigm—not purely functional.</li>
+        </ul>
+      </div>
+
+      <!-- Advantages -->
+      <div style="margin-bottom:6px;">
+        <b style="color:#0f9d86;">Key Advantages</b>
+        <ul style="margin:6px 0 6px 18px;">
+          <li>Ubiquity: runs in all browsers and many runtimes.</li>
+          <li>Massive ecosystem & package registry (npm) — speed up development.</li>
+          <li>Fast runtime engines (V8) with JIT optimizations.</li>
+          <li>Unified language for client & server (full-stack JS).</li>
+          <li>Rich tooling: transpilers, bundlers, linters, formatters, type systems.</li>
+        </ul>
+      </div>
+
+      <!-- Trade-offs -->
+      <div style="margin-bottom:6px;">
+        <b style="color:#0f9d86;">Trade-offs & Considerations</b>
+        <ul style="margin:6px 0 6px 18px;">
+          <li>Dynamic typing can lead to runtime errors without extra checks (TypeScript helps).</li>
+          <li>Not ideal for heavy CPU-bound tasks unless using WebAssembly or native modules.</li>
+          <li>Security: running code in the browser requires careful handling to avoid XSS and supply-chain risks from third-party packages.</li>
+        </ul>
+      </div>
+
+      <!-- Extra evolution points -->
+      <div style="margin-top:8px;">
+        <b style="color:#0f9d86;">Other Evolution Highlights to Note</b>
+        <ol style="margin:6px 0 6px 18px;">
+          <li><b>Module systems:</b> CommonJS → ES Modules (modern standard) for better static analysis and tooling.</li>
+          <li><b>Transpilation & Polyfills:</b> Babel and core-js let you use new features while supporting older browsers.</li>
+          <li><b>TypeScript:</b> Adopted widely to provide static typing and better developer tooling for large codebases.</li>
+          <li><b>Performance:</b> Continuous engine improvements (inline caches, JIT tiers) dramatically raised JS performance over the past decade.</li>
+          <li><b>WebAssembly:</b> Lets you run near-native code in the browser alongside JS for compute-heavy tasks.</li>
+        </ol>
+      </div>
+
+    </div>
+
+    <br>
+
+    <strong style="font-size: 20px; color:#004080;">📘 Why JavaScript?</strong><br><br>
+
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 20px;">
+     
+      <!-- Card 1 -->
+      <div style="background:#fff; border-left:6px solid #0078d7; border-radius:12px; padding:20px; box-shadow:0 4px 12px rgba(0,0,0,0.1);">
+        <h3 style="color:#0078d7; font-size:20px; margin-bottom:8px;">1. Runs in Browser 🌐</h3>
+        <p>Create an <b>HTML + JavaScript</b> file and run it in the browser.</p>
+        <pre style="background:#f4f4f4; padding:10px; border-radius:8px; font-size:14px;">
+// file: index.html
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;&lt;title&gt;Hello JS&lt;/title&gt;&lt;/head&gt;
+&lt;body&gt;
+  &lt;h1&gt;Open console to see output&lt;/h1&gt;
+  &lt;script&gt;
+    console.log("Hello, World!");
+  &lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+        </pre>
+        <p><b>Breakdown:</b><br>
+        • <code>&lt;script&gt;...&lt;/script&gt;</code> tells the browser to execute JavaScript.<br>
+        • <code>console.log(...)</code> prints a message to the DevTools console.<br>
+        • Minimal setup—no build tools required for first steps.</p>
+        <p><b>Try:</b> Save as <code>index.html</code> → Open in browser → F12 → Console ✅</p>
+      </div>
+
+      <!-- Card 2 -->
+      <div style="background:#fff; border-left:6px solid #00b294; border-radius:12px; padding:20px; box-shadow:0 4px 12px rgba(0,0,0,0.1);">
+        <h3 style="color:#00b294; font-size:20px; margin-bottom:8px;">2. Frontend & Backend ⚡</h3>
+        <p>Try both browser code and a Node.js server.</p>
+        <pre style="background:#f4f4f4; padding:10px; border-radius:8px; font-size:14px;">
+// file: frontend.html
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;body&gt;
+  &lt;button onclick="document.body.style.background='lightblue'"&gt;Click me&lt;/button&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+
+// file: server.js (Node.js)
+const http = require("http");
+http.createServer((req,res) => {
+  res.end("Hello from Node.js!");
+}).listen(3000, ()=>console.log("Server running at http://localhost:3000"));
+        </pre>
+        <p><b>Breakdown (Frontend):</b><br>
+        • <code>onclick</code> runs inline JS when the button is pressed.<br>
+        • <code>document.body.style.background</code> manipulates CSS dynamically.</p>
+        <p><b>Breakdown (Backend):</b><br>
+        • <code>require("http")</code> loads Node's HTTP module.<br>
+        • <code>http.createServer(...)</code> creates a basic server.<br>
+        • <code>res.end(...)</code> sends the response.<br>
+        • <code>.listen(3000,...)</code> binds to port 3000 and logs when ready.</p>
+        <p><b>Try:</b> Run <code>node server.js</code> in VS Code terminal ✅</p>
+      </div>
+
+      <!-- Card 3 -->
+      <div style="background:#fff; border-left:6px solid #e81123; border-radius:12px; padding:20px; box-shadow:0 4px 12px rgba(0,0,0,0.1);">
+        <h3 style="color:#e81123; font-size:20px; margin-bottom:8px;">3. Libraries & Frameworks 📚</h3>
+        <p>React example component.</p>
+        <pre style="background:#f4f4f4; padding:10px; border-radius:8px; font-size:14px;">
+// file: App.js
+export default function App() {
+  return (
+    &lt;h1&gt;Hello React!&lt;/h1&gt;
+  );
+}
+        </pre>
+        <p><b>Breakdown:</b><br>
+        • <code>export default</code> exposes the component to be imported elsewhere.<br>
+        • <code>function App()</code> defines a functional component.<br>
+        • JSX <code>&lt;h1&gt;...&lt;/h1&gt;</code> compiles to <code>React.createElement</code>.<br>
+        • Components make UIs modular, reusable, and testable.</p>
+        <p><b>Try:</b> <code>npx create-react-app myapp</code> → Replace <code>App.js</code> → <code>npm start</code> ✅</p>
+      </div>
+
+      <!-- Card 4 -->
+      <div style="background:#fff; border-left:6px solid #ffb900; border-radius:12px; padding:20px; box-shadow:0 4px 12px rgba(0,0,0,0.1);">
+        <h3 style="color:#ffb900; font-size:20px; margin-bottom:8px;">4. AI & Machine Learning 🤖</h3>
+        <p>Simple TensorFlow.js demo in the browser.</p>
+        <pre style="background:#f4f4f4; padding:10px; border-radius:8px; font-size:14px;">
+// file: ai.html
+&lt;script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs"&gt;&lt;/script&gt;
+&lt;script&gt;
+  const model = tf.sequential();
+  model.add(tf.layers.dense({units: 1, inputShape: [1]}));
+  console.log("Model created ✅");
+&lt;/script&gt;
+        </pre>
+        <p><b>Breakdown:</b><br>
+        • <code>tf.sequential()</code> creates a linear stack of layers.<br>
+        • <code>tf.layers.dense({ units:1, inputShape:[1] })</code> adds a fully-connected layer.<br>
+        • This snippet defines a model (no training yet). You can then compile & train in the browser.</p>
+        <p><b>Try:</b> Save as <code>ai.html</code> → Open in browser ✅</p>
+      </div>
+
+      <!-- Card 5 -->
+      <div style="background:#fff; border-left:6px solid #605e5c; border-radius:12px; padding:20px; box-shadow:0 4px 12px rgba(0,0,0,0.1);">
+        <h3 style="color:#605e5c; font-size:20px; margin-bottom:8px;">5. Data Visualization 📊</h3>
+        <p>Bar chart with D3.js.</p>
+        <pre style="background:#f4f4f4; padding:10px; border-radius:8px; font-size:14px;">
+// file: chart.html
+&lt;script src="https://d3js.org/d3.v7.min.js"&gt;&lt;/script&gt;
+&lt;svg width="300" height="200"&gt;&lt;/svg&gt;
+&lt;script&gt;
+  const data = [30, 80, 45, 60];
+  d3.select("svg")
+    .selectAll("rect")
+    .data(data)
+    .enter()
+    .append("rect")
+    .attr("x",(d,i)=>i*70)
+    .attr("y",d=>200-d)
+    .attr("width",50)
+    .attr("height",d=>d)
+    .attr("fill","steelblue");
+&lt;/script&gt;
+        </pre>
+        <p><b>Breakdown:</b><br>
+        • <code>selectAll("rect").data(data)</code> binds data array to (future) rectangles.<br>
+        • <code>.enter().append("rect")</code> creates one rect per datum.<br>
+        • <code>x</code> positions bars; <code>y</code> in SVG grows downward, so <code>200 - d</code> inverts height.<br>
+        • <code>height</code> equals the data value — a simple vertical bar chart.</p>
+        <p><b>Try:</b> Save as <code>chart.html</code> → Open in browser ✅</p>
+      </div>
+
+      <!-- Card 6 -->
+      <div style="background:#fff; border-left:6px solid #107c10; border-radius:12px; padding:20px; box-shadow:0 4px 12px rgba(0,0,0,0.1);">
+        <h3 style="color:#107c10; font-size:20px; margin-bottom:8px;">6. Chatbots & NLP 💬</h3>
+        <p>Simple keyword detection.</p>
+        <pre style="background:#f4f4f4; padding:10px; border-radius:8px; font-size:14px;">
+// file: chatbot.js
+const text = "I love JavaScript!";
+if(text.includes("JavaScript")) {
+  console.log("Positive! ✅");
+} else {
+  console.log("No match ❌");
+}
+        </pre>
+        <p><b>Breakdown:</b><br>
+        • <code>includes("JavaScript")</code> checks substring presence (case-sensitive).<br>
+        • <code>if / else</code> branches on the condition.<br>
+        • <code>console.log</code> outputs the classification result.</p>
+        <p><b>Try:</b> Run <code>node chatbot.js</code> in VS Code terminal ✅</p>
+      </div>
+
+      <!-- Card 7 (New) -->
+      <div style="background:#fff; border-left:6px solid #8a2be2; border-radius:12px; padding:20px; box-shadow:0 4px 12px rgba(0,0,0,0.1);">
+        <h3 style="color:#8a2be2; font-size:20px; margin-bottom:8px;">7. Async & Fetch ⏳</h3>
+        <p>Non-blocking requests with <b>async/await</b>.</p>
+        <pre style="background:#f4f4f4; padding:10px; border-radius:8px; font-size:14px;">
+// file: fetch-example.js
+async function fetchTodo() {
+  try {
+    const res = await fetch("https://jsonplaceholder.typicode.com/todos/1");
+    const data = await res.json();
+    console.log(data.title);
+  } catch (err) {
+    console.error("Failed:", err.message);
+  }
+}
+fetchTodo();
+        </pre>
+        <p><b>Breakdown:</b><br>
+        • <code>async</code> marks a function that uses <code>await</code>.<br>
+        • <code>fetch(...)</code> returns a Promise (HTTP request).<br>
+        • <code>await res.json()</code> parses JSON body.<br>
+        • <code>try/catch</code> handles network or parsing errors.</p>
+        <p><b>Try:</b> Run with Node (v18+) or in the browser console ✅</p>
+      </div>
+
+      <!-- Card 8 (New) -->
+      <div style="background:#fff; border-left:6px solid #ff69b4; border-radius:12px; padding:20px; box-shadow:0 4px 12px rgba(0,0,0,0.1);">
+        <h3 style="color:#ff69b4; font-size:20px; margin-bottom:8px;">8. Cross-Platform Apps 📱🖥️</h3>
+        <p>Build mobile and desktop apps with JS.</p>
+        <pre style="background:#f4f4f4; padding:10px; border-radius:8px; font-size:14px;">
+// React Native snippet
+import { Text, View } from "react-native";
+export default function App() {
+  return (&lt;View&gt;&lt;Text&gt;Hello Mobile!&lt;/Text&gt;&lt;/View&gt;);
+}
+
+// Electron main process (minimal)
+const { app, BrowserWindow } = require("electron");
+app.whenReady().then(() => {
+  const win = new BrowserWindow({ width: 800, height: 600 });
+  win.loadURL("https://example.com");
+});
+        </pre>
+        <p><b>Breakdown:</b><br>
+        • <b>React Native</b> renders native UI on iOS/Android using JS/JSX.<br>
+        • <b>Electron</b> wraps web tech in a desktop shell (Chromium + Node).</p>
+        <p><b>Try:</b> Explore <code>npx react-native</code> or <code>npm create electron-app</code> ✅</p>
+      </div>
+
+      <!-- Card 9 (New) -->
+      <div style="background:#fff; border-left:6px solid #1abc9c; border-radius:12px; padding:20px; box-shadow:0 4px 12px rgba(0,0,0,0.1);">
+        <h3 style="color:#1abc9c; font-size:20px; margin-bottom:8px;">9. Community & npm Ecosystem 🌐</h3>
+        <p>Millions of packages and a massive open-source community.</p>
+        <pre style="background:#f4f4f4; padding:10px; border-radius:8px; font-size:14px;">
+// Install and use a package
+// terminal:
+npm init -y
+npm install lodash
+
+// file: index.js
+const _ = require("lodash");
+console.log(_.chunk([1,2,3,4,5], 2)); // [[1,2],[3,4],[5]]
+        </pre>
+        <p><b>Breakdown:</b><br>
+        • <code>npm</code> initializes a project and installs dependencies.<br>
+        • <code>lodash</code> provides utility functions to speed up development.<br>
+        • Import and use just like standard modules.</p>
+        <p><b>Try:</b> Initialize a project and install your first package ✅</p>
+      </div>
+
+<!-- Card 10 (New) -->
+<div style="background:#fff; border-left:6px solid #e67e22; border-radius:12px; padding:20px; box-shadow:0 4px 12px rgba(0,0,0,0.1);">
+  <h3 style="color:#e67e22; font-size:20px; margin-bottom:8px;">10. Browser APIs & Interactivity 🖥️</h3>
+  <p>JavaScript integrates directly with powerful browser APIs for real-world interactions.</p>
+  <pre style="background:#f4f4f4; padding:10px; border-radius:8px; font-size:14px;">
+// Example: Geolocation API
+navigator.geolocation.getCurrentPosition(
+  (pos) => {
+    console.log("Latitude:", pos.coords.latitude);
+    console.log("Longitude:", pos.coords.longitude);
+  },
+  (err) => {
+    console.error("Error:", err.message);
+  }
+);
+  </pre>
+  <p><b>Breakdown:</b><br>
+  • <code>navigator.geolocation</code> lets JS access device location.<br>
+  • Asynchronous callback handles success or error.<br>
+  • Works directly in supported browsers, no extra libraries needed.</p>
+  <p><b>Try:</b> Run it in your browser console and watch how the app fetches your location 🌍</p>
+</div>
+
+
+<!-- Card 11 (New) -->
+<div style="background:#fff; border-left:6px solid #3498db; border-radius:12px; padding:20px; box-shadow:0 4px 12px rgba(0,0,0,0.1);">
+  <h3 style="color:#3498db; font-size:20px; margin-bottom:8px;">11. Web Storage API 💾</h3>
+  <p>Store data directly in the browser with <code>localStorage</code> and <code>sessionStorage</code>.</p>
+  <pre style="background:#f4f4f4; padding:10px; border-radius:8px; font-size:14px;">
+// Save data
+localStorage.setItem("username", "Kareem");
+
+// Retrieve data
+const user = localStorage.getItem("username");
+console.log(user); // "Kareem"
+
+// Remove data
+localStorage.removeItem("username");
+  </pre>
+  <p><b>Breakdown:</b><br>
+  • <code>localStorage</code> keeps data even after browser is closed.<br>
+  • <code>sessionStorage</code> clears data once the tab is closed.<br>
+  • Great for saving user preferences, settings, or temporary data.</p>
+  <p><b>Try:</b> Open browser console → copy & paste → refresh → check persistence 🔄</p>
+</div>
+
+
+<!-- Card 12 (New) -->
+<div style="background:#fff; border-left:6px solid #9b59b6; border-radius:12px; padding:20px; box-shadow:0 4px 12px rgba(0,0,0,0.1);">
+  <h3 style="color:#9b59b6; font-size:20px; margin-bottom:8px;">12. Fetch API & Networking 🌐</h3>
+  <p>Modern way to request and send data between browser and server.</p>
+  <pre style="background:#f4f4f4; padding:10px; border-radius:8px; font-size:14px;">
+// Example: Fetch JSON from an API
+fetch("https://jsonplaceholder.typicode.com/posts/1")
+  .then(response => response.json())
+  .then(data => console.log(data))
+  .catch(error => console.error("Error:", error));
+  </pre>
+  <p><b>Breakdown:</b><br>
+  • <code>fetch()</code> sends HTTP requests (GET, POST, etc.).<br>
+  • Returns a <code>Promise</code> that resolves with the response.<br>
+  • Can parse data as <code>JSON</code>, text, or other formats.<br>
+  • Works natively in most modern browsers.</p>
+  <p><b>Try:</b> Run in browser console and see API response 📡</p>
+</div>
+
+
+<!-- Card 13 (New) -->
+<div style="background:#fff; border-left:6px solid #e67e22; border-radius:12px; padding:20px; box-shadow:0 4px 12px rgba(0,0,0,0.1);">
+  <h3 style="color:#e67e22; font-size:20px; margin-bottom:8px;">13. Async / Await ⏳</h3>
+  <p>Simplified syntax for handling asynchronous operations in JavaScript.</p>
+  <pre style="background:#f4f4f4; padding:10px; border-radius:8px; font-size:14px;">
+// Example: Fetch with async/await
+async function getPost() {
+  try {
+    const response = await fetch("https://jsonplaceholder.typicode.com/posts/1");
+    const data = await response.json();
+    console.log(data);
+  } catch (error) {
+    console.error("Error:", error);
+  }
+}
+getPost();
+  </pre>
+  <p><b>Breakdown:</b><br>
+  • <code>async</code> makes a function return a Promise.<br>
+  • <code>await</code> pauses execution until the Promise resolves.<br>
+  • Cleaner and easier to read than chaining <code>.then()</code>.<br>
+  • Error handling with <code>try...catch</code> feels like synchronous code.</p>
+  <p><b>Try:</b> Copy into browser console or VS Code and run ✅</p>
+</div>
+
+
+<!-- Card 14 (New) -->
+<div style="background:#fff; border-left:6px solid #c0392b; border-radius:12px; padding:20px; box-shadow:0 4px 12px rgba(0,0,0,0.1);">
+  <h3 style="color:#c0392b; font-size:20px; margin-bottom:8px;">14. Error Handling & Debugging 🛠️</h3>
+  <p>Techniques to catch errors and fix bugs effectively in JavaScript.</p>
+  <pre style="background:#f4f4f4; padding:10px; border-radius:8px; font-size:14px;">
+// Example: Error handling with try/catch
+function divide(a, b) {
+  try {
+    if (b === 0) throw new Error("Division by zero ❌");
+    return a / b;
+  } catch (error) {
+    console.error("Caught error:", error.message);
+  } finally {
+    console.log("Operation attempted ✅");
+  }
+}
+divide(10, 0);
+  </pre>
+  <p><b>Breakdown:</b><br>
+  • <code>try</code> encloses risky code.<br>
+  • <code>catch</code> handles errors gracefully.<br>
+  • <code>finally</code> runs cleanup code regardless of success/failure.<br>
+  • Use <code>console.log()</code>, <code>console.error()</code>, and browser <b>DevTools</b> for step-by-step debugging.<br>
+  • Set <b>breakpoints</b> in Chrome/Firefox DevTools for live debugging.</p>
+  <p><b>Try:</b> Run the code in browser console and check both error & log ✅</p>
+</div>
+
+<!-- Card 15 (New) -->
+<div style="background:#fff; border-left:6px solid #16a085; border-radius:12px; padding:20px; box-shadow:0 4px 12px rgba(0,0,0,0.1);">
+  <h3 style="color:#16a085; font-size:20px; margin-bottom:8px;">15. DevTools & Performance Monitoring 🚀</h3>
+  <p>Using browser tools to analyze, debug, and optimize JavaScript apps.</p>
+  <pre style="background:#f4f4f4; padding:10px; border-radius:8px; font-size:14px;">
+// Example: Simple performance check
+console.time("Loop Test");
+for (let i = 0; i < 1e6; i++) {}
+console.timeEnd("Loop Test");
+  </pre>
+  <p><b>Breakdown:</b><br>
+  • <code>console.time()</code> & <code>console.timeEnd()</code> measure execution time.<br>
+  • Browser <b>DevTools → Performance Tab</b>: record runtime, find bottlenecks.<br>
+  • <b>Memory Tab</b>: detect leaks and monitor garbage collection.<br>
+  • <b>Lighthouse</b>: built-in auditing for performance, accessibility, SEO, and best practices.<br>
+  • Network panel shows loading times, API calls, and caching issues.</p>
+  <p><b>Try:</b> Open Chrome DevTools → Performance tab → record while running code ✅</p>
+</div>
+
+
+    </div>
+  </div>
+</div><br>
+
+<b style="font-size: 17px; color:#cc0000;">Tip:</b> 
+<span style="color:#333;">Always create real files in VS Code and run them to practice ✅.</span>`,
+  
+  "q": "Which JavaScript library allows AI and Machine Learning directly in the browser?",
+  "a": "c",
+  "options": [
+    "React",
+    "Vue",
+    "TensorFlow.js",
+    "D3.js"
+  ]
+},
+
+
+
+
+{
+  "passage": `<div style="margin-top: 120px;">
+  <div style="font-family: Segoe UI, Arial, sans-serif; background-color: #f9fbff; color: #333; padding: 25px; border: 2px solid #cce0ff; border-radius: 15px; font-size: 18px; box-shadow: 0 4px 10px rgba(0,0,0,0.05);">
+    
+    <strong style="font-size: 24px; color: #0056b3;">💻 Key Features of <span style="color:#0078d7;">JavaScript</span></strong><br><br>
+
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 20px;">
+      
+      <!-- Card 1 -->
+      <div style="background:#fff; border-left:6px solid #0078d7; border-radius:12px; padding:20px; box-shadow:0 4px 12px rgba(0,0,0,0.1);">
+        <h3 style="color:#0078d7; font-size:20px; margin-bottom:8px;">1. Dynamic Language 🔄</h3>
+        <p>No need to declare variable types. Variables can change type at runtime.</p>
+        <pre style="background:#f4f4f4; padding:10px; border-radius:8px; font-size:14px;">
+let data = 5;     // number
+data = "Hello";   // string
+console.log(data); // Hello ✅
+        </pre>
+        <p><b>Comparison:</b> In Java ➝ <code>int num = 5;</code> (type must be fixed).</p>
+      </div>
+
+      <!-- Card 2 -->
+      <div style="background:#fff; border-left:6px solid #00b294; border-radius:12px; padding:20px; box-shadow:0 4px 12px rgba(0,0,0,0.1);">
+        <h3 style="color:#00b294; font-size:20px; margin-bottom:8px;">2. Functional Programming 🧩</h3>
+        <p>Functions are first-class citizens: stored in variables, passed, and returned.</p>
+        <pre style="background:#f4f4f4; padding:10px; border-radius:8px; font-size:14px;">
+function greet(name) {
+  return "Hello, " + name;
+}
+const sayHello = greet;  
+console.log(sayHello("Kareem")); // Hello, Kareem ✅
+        </pre>
+        <p><b>Comparison:</b> In C++/Java you need <i>function pointers</i> or <i>interfaces</i>.</p>
+      </div>
+
+      <!-- Card 3 -->
+      <div style="background:#fff; border-left:6px solid #e81123; border-radius:12px; padding:20px; box-shadow:0 4px 12px rgba(0,0,0,0.1);">
+        <h3 style="color:#e81123; font-size:20px; margin-bottom:8px;">3. Prototype Inheritance ⚙️</h3>
+        <p>JavaScript uses prototypes instead of classical inheritance.</p>
+        <pre style="background:#f4f4f4; padding:10px; border-radius:8px; font-size:14px;">
+const car = {
+  brand: "Toyota",
+  start() {
+    console.log("Car started");
+  }
+};
+const myCar = Object.create(car);
+console.log(myCar.brand); // Toyota
+myCar.start(); // Car started ✅
+        </pre>
+        <p><b>Comparison:</b> In Java, inheritance requires <code>class Car extends ...</code></p>
+      </div>
+
+      <!-- Card 4 -->
+      <div style="background:#fff; border-left:6px solid #ffb900; border-radius:12px; padding:20px; box-shadow:0 4px 12px rgba(0,0,0,0.1);">
+        <h3 style="color:#ffb900; font-size:20px; margin-bottom:8px;">4. Loose Typing 🎭</h3>
+        <p>JavaScript auto-converts types during operations.</p>
+        <pre style="background:#f4f4f4; padding:10px; border-radius:8px; font-size:14px;">
+function sum(a, b) {
+  return a + b;
+}
+console.log(sum(5, 10));   // 15
+console.log(sum(5, "10")); // 510 ✅
+        </pre>
+        <p><b>Note:</b> Can be flexible but sometimes cause bugs.</p>
+      </div>
+
+      <!-- Card 5 -->
+      <div style="background:#fff; border-left:6px solid #605e5c; border-radius:12px; padding:20px; box-shadow:0 4px 12px rgba(0,0,0,0.1);">
+        <h3 style="color:#605e5c; font-size:20px; margin-bottom:8px;">5. Event-Driven 🖱️</h3>
+        <p>Designed to handle user interactions easily.</p>
+        <pre style="background:#f4f4f4; padding:10px; border-radius:8px; font-size:14px;">
+document.getElementById("myBtn")
+  .addEventListener("click", () => {
+    alert("Button Clicked!");
+  });
+        </pre>
+        <p><b>Comparison:</b> Java requires <i>listener interfaces</i>.</p>
+      </div>
+
+      <!-- Card 6 -->
+      <div style="background:#fff; border-left:6px solid #107c10; border-radius:12px; padding:20px; box-shadow:0 4px 12px rgba(0,0,0,0.1);">
+        <h3 style="color:#107c10; font-size:20px; margin-bottom:8px;">6. Asynchronous Support ⏳</h3>
+        <p>Supports async with callbacks, promises, and async/await.</p>
+        <pre style="background:#f4f4f4; padding:10px; border-radius:8px; font-size:14px;">
+function fetchData() {
+  return new Promise(resolve => {
+    setTimeout(() => resolve("Data Loaded!"), 2000);
+  });
+}
+fetchData().then(console.log); // after 2s: Data Loaded ✅
+        </pre>
+      </div>
+
+      <!-- Card 7 -->
+      <div style="background:#fff; border-left:6px solid #800080; border-radius:12px; padding:20px; box-shadow:0 4px 12px rgba(0,0,0,0.1);">
+        <h3 style="color:#800080; font-size:20px; margin-bottom:8px;">7. Runs in Browsers 🚀</h3>
+        <p>No compilation required. Runs instantly.</p>
+        <pre style="background:#f4f4f4; padding:10px; border-radius:8px; font-size:14px;">
+&lt;script&gt;
+  console.log("Hello JavaScript!");
+&lt;/script&gt;
+        </pre>
+        <p><b>Comparison:</b> Java/C++ need compilation first.</p>
+      </div>
+
+      <!-- Card 8 -->
+      <div style="background:#fff; border-left:6px solid #ff6600; border-radius:12px; padding:20px; box-shadow:0 4px 12px rgba(0,0,0,0.1);">
+        <h3 style="color:#ff6600; font-size:20px; margin-bottom:8px;">8. Cross-Platform 🌍</h3>
+        <p>Runs on any browser: Chrome, Firefox, Edge, Safari.</p>
+        <p><b>Comparison:</b> Java needs JVM, C++ needs compiler.</p>
+      </div>
+
+    </div>
+
+    <br>
+    <strong style="font-size:20px; color:#004080;">📊 Summary:</strong>
+    <table border="1" cellpadding="8" style="border-collapse: collapse; width:100%; text-align:center; margin-top:10px;">
+      <tr style="background:#e6f0ff;">
+        <th>Feature</th><th>JavaScript</th><th>Java / C++</th>
+      </tr>
+      <tr><td>Dynamic Typing</td><td>✔ Implicit conversion</td><td>❌ Explicit types required</td></tr>
+      <tr><td>Event Handling</td><td>✔ addEventListener</td><td>❌ Listener Interfaces</td></tr>
+      <tr><td>Direct Execution</td><td>✔ Runs in browser</td><td>❌ Needs compilation</td></tr>
+      <tr><td>Functional Programming</td><td>✔ First-class functions</td><td>❌ Extra structures</td></tr>
+      <tr><td>Inheritance</td><td>✔ Prototype-based</td><td>❌ Class-based</td></tr>
+      <tr><td>Async Support</td><td>✔ Promises & async/await</td><td>❌ Threads</td></tr>
+    </table>
+
+    <br>
+    <strong style="font-size:20px; color:#004080;">💡 When to use JavaScript?</strong><br>
+    ✅ For Web & Mobile Applications<br>
+    ✅ For Interactive UIs<br>
+    ✅ For APIs & Async Data<br>
+    ✅ For Real-time Event Handling<br>
+
+  </div>
+</div><br>
+
+<b style="font-size: 17px; color:#cc0000;">Tip:</b> 
+<span style="color:#333;">Open <b>F12 → Console</b> in your browser and try each code snippet step by step ✅.</span>`,
+  
+  "q": "Which feature allows JavaScript to handle tasks like waiting for data while keeping the UI responsive?",
+  "a": "c",
+  "options": [
+    "Dynamic Typing",
+    "Event Handling",
+    "Asynchronous Programming",
+    "Prototype Inheritance"
+  ]
+},
+
+
     {
   "passage": `<div style="margin-top: 120px;">
   <div style="font-family: Segoe UI, Arial, sans-serif; background-color: #f9fbff; color: #333; padding: 25px; border: 2px solid #cce0ff; border-radius: 15px; font-size: 18px; box-shadow: 0 4px 10px rgba(0,0,0,0.05);">
@@ -1278,550 +1986,131 @@ for (let v of values) {
 },
 
 
-    
-
-{
+    {
   "passage": `
 <div style="margin-top: 120px;">
   <div style="font-family: Segoe UI, Arial, sans-serif; background-color: #f9fbff; color: #333; padding: 25px; border: 2px solid #cce0ff; border-radius: 15px; font-size: 18px; box-shadow: 0 4px 10px rgba(0,0,0,0.05);">
-    
-    <strong style="font-size: 24px; color: #0056b3;">🔹 WHAT IS PROGRAMMING AND WHY JAVASCRIPT?</strong><br><br>
-    
+
+    <strong style="font-size: 24px; color: #0056b3;">🔹 WHAT IS ARTIFICIAL INTELLIGENCE (AI)?</strong><br><br>
+
     <em><u style="color:#0056b3;">Definition:</u></em><br>
-    Programming is writing instructions for computers to solve problems or perform specific tasks. 🚀<br><br>
+    Artificial Intelligence (AI) is a branch of computer science that focuses on building systems capable of simulating human intelligence such as learning, reasoning, decision-making, and problem solving 🤖.<br><br>
 
-    <!-- History & Evolution (Expanded) -->
-    <strong style="font-size: 20px; color:#004080;">📜 History & Evolution of JavaScript (1995 → Today) — Detailed</strong><br><br>
-    <div style="background:#fff; border-left:6px solid #7b68ee; border-radius:12px; padding:18px; box-shadow:0 4px 10px rgba(0,0,0,0.06);">
-      
-      <!-- 1995 -->
-      <div style="margin-bottom:12px;">
-        <b style="color:#5a4fcf;">1995 — Birth (Context & Purpose)</b>
-        <p style="margin:6px 0;">
-          Brendan Eich created the first version of JavaScript at Netscape in 1995 (originally named <em>Mocha</em>, then <em>LiveScript</em>). The main goal was to provide a lightweight scripting language that could run inside the browser to make pages interactive (form validation, small UI behaviors) without requiring a server round-trip.
-        </p>
-        <p style="margin:6px 0;">
-          <b>Impact:</b> Provided the first practical way to make websites interactive on the client side, directly in the browser.
-        </p>
-      </div>
-
-      <!-- 1997-1999 -->
-      <div style="margin-bottom:12px;">
-        <b style="color:#5a4fcf;">1997–1999 — Standardization (ECMAScript)</b>
-        <p style="margin:6px 0;">
-          JavaScript was standardized as ECMAScript to ensure consistent behavior across different browsers and implementations. The standard defined syntax, built-in objects, and expected semantics so browsers could implement the same language features.
-        </p>
-        <p style="margin:6px 0;">
-          <b>Why it matters:</b> Standardization allowed developers to write portable code and gave vendors a common roadmap for language improvements.
-        </p>
-      </div>
-
-      <!-- 2005-2009 -->
-      <div style="margin-bottom:12px;">
-        <b style="color:#5a4fcf;">2005–2009 — Web 2.0 & Tooling</b>
-        <p style="margin:6px 0;">
-          The rise of AJAX enabled richer, asynchronous web apps. Libraries like jQuery simplified DOM manipulation and cross-browser differences, making advanced UI patterns accessible. Tooling and patterns started emerging to manage larger codebases.
-        </p>
-        <p style="margin:6px 0;">
-          <b>ES5 (2009):</b> Introduced strict mode, JSON support, and many Array helpers — setting a base for modern JS.
-        </p>
-      </div>
-
-      <!-- 2009 -->
-      <div style="margin-bottom:12px;">
-        <b style="color:#5a4fcf;">2009 — Node.js & Server-side JavaScript</b>
-        <p style="margin:6px 0;">
-          Node.js introduced JavaScript on the server with a non-blocking, event-driven I/O model. This allowed JS to handle many concurrent connections efficiently and opened the door to full-stack JavaScript (same language on client & server).
-        </p>
-        <p style="margin:6px 0;">
-          <b>Impact:</b> Unified stacks, faster prototyping, huge growth in backend libraries and tooling.
-        </p>
-      </div>
-
-      <!-- 2015 -->
-      <div style="margin-bottom:12px;">
-        <b style="color:#5a4fcf;">2015 — ES6 / ES2015 (Major Language Upgrade)</b>
-        <p style="margin:6px 0;">
-          ES6 brought foundational language features: <code>let</code> / <code>const</code>, arrow functions, classes (syntactic sugar), modules (<code>import/export</code>), template strings, destructuring, promises, and more. These features made code cleaner, modular, and more maintainable.
-        </p>
-        <p style="margin:6px 0;">
-          <b>Result:</b> Modern JS became suitable for complex applications and large teams.
-        </p>
-      </div>
-
-      <!-- 2016 -> Now -->
-      <div style="margin-bottom:12px;">
-        <b style="color:#5a4fcf;">2016 → Now — Rapid Iteration & Ecosystem Maturity</b>
-        <p style="margin:6px 0;">
-          ECMAScript switched to annual, incremental releases. At the same time, the ecosystem matured with tools (bundlers, transpilers), TypeScript (optional static typing), powerful frameworks (React, Vue, Angular), and faster JS engines (V8). WebAssembly also appeared to solve heavy-compute use cases by enabling non-JS modules in the browser.
-        </p>
-        <p style="margin:6px 0;">
-          <b>Tooling:</b> Babel, Webpack, Rollup, and Vite help write modern code while maintaining browser compatibility.
-        </p>
-      </div>
-
-      <!-- Today -->
-      <div style="margin-bottom:6px;">
-        <b style="color:#5a4fcf;">Today — Ubiquity & Polyglot Integration</b>
-        <p style="margin:6px 0;">
-          JavaScript powers user interfaces, APIs, mobile apps, desktop apps, IoT devices, and in-browser ML. It benefits from huge community support, an enormous package registry, and continuous performance improvements.
-        </p>
-      </div>
-
-    </div>
-
-    <br>
-
-    <!-- Additional: Architecture, Differences, Advantages -->
-    <strong style="font-size: 20px; color:#004080;">🔧 JavaScript: Architecture, Key Differences & Advantages</strong><br><br>
-    <div style="background:#fff; border-left:6px solid #20b2aa; border-radius:12px; padding:18px; box-shadow:0 4px 10px rgba(0,0,0,0.06);">
-
-      <!-- Spec & Engines -->
-      <div style="margin-bottom:12px;">
-        <b style="color:#0f9d86;">ECMAScript Spec vs Implementations</b>
-        <p style="margin:6px 0;">
-          ECMAScript is the language specification: it defines behavior and features. Engines like <b>V8</b> (Chrome/Node), <b>SpiderMonkey</b> (Firefox), and <b>JavaScriptCore</b> (Safari) implement that spec. Differences are rare but engines focus on performance and advanced optimizations (JIT compilation).
-        </p>
-      </div>
-
-      <!-- Prototype vs Class -->
-      <div style="margin-bottom:12px;">
-        <b style="color:#0f9d86;">Prototype-based vs Class-based (What’s special)</b>
-        <p style="margin:6px 0;">
-          JavaScript uses prototype-based inheritance: objects can inherit directly from other objects. ES6 added <code>class</code> syntax, but classes are syntactic sugar over prototypes. This gives great runtime flexibility (modify objects on the fly) unlike strictly class-based languages (Java/C++).
-        </p>
-      </div>
-
-      <!-- Concurrency / Event Loop -->
-      <div style="margin-bottom:12px;">
-        <b style="color:#0f9d86;">Concurrency Model — Event Loop & Async</b>
-        <p style="margin:6px 0;">
-          JS runs on a single-threaded event loop (in typical environments). Concurrency is achieved via non-blocking I/O, callbacks, Promises and <code>async/await</code>. For CPU-intensive work, Web Workers or offloading to native modules / WebAssembly are used.
-        </p>
-      </div>
-
-      <!-- Typing & Memory -->
-      <div style="margin-bottom:12px;">
-        <b style="color:#0f9d86;">Dynamic Typing & Memory Management</b>
-        <p style="margin:6px 0;">
-          JS is dynamically typed (variables can hold any type) and garbage-collected. This increases developer speed and flexibility, but can introduce runtime type errors and requires good testing or optional static typing (TypeScript) for larger codebases.
-        </p>
-      </div>
-
-      <!-- Comparison with Other Languages -->
-      <div style="margin-bottom:12px;">
-        <b style="color:#0f9d86;">How JS differs from other mainstream languages (brief)</b>
-        <ul style="margin:6px 0 6px 18px;">
-          <li><b>Vs Java/C++:</b> JS is dynamic, JIT'ed, prototype-based and single-threaded (event loop). Java/C++ are statically typed, compiled (to bytecode or native), class-based, and use multi-threading more directly.</li>
-          <li><b>Vs Python:</b> Both are dynamic; JS is designed for the browser and asynchronous I/O is central. Python traditionally focuses on synchronous code and has different concurrency models (GIL), though async features exist.</li>
-          <li><b>Vs Functional Languages:</b> JS supports functional style (first-class functions, closures) but is multi-paradigm—not purely functional.</li>
-        </ul>
-      </div>
-
-      <!-- Advantages -->
-      <div style="margin-bottom:6px;">
-        <b style="color:#0f9d86;">Key Advantages</b>
-        <ul style="margin:6px 0 6px 18px;">
-          <li>Ubiquity: runs in all browsers and many runtimes.</li>
-          <li>Massive ecosystem & package registry (npm) — speed up development.</li>
-          <li>Fast runtime engines (V8) with JIT optimizations.</li>
-          <li>Unified language for client & server (full-stack JS).</li>
-          <li>Rich tooling: transpilers, bundlers, linters, formatters, type systems.</li>
-        </ul>
-      </div>
-
-      <!-- Trade-offs -->
-      <div style="margin-bottom:6px;">
-        <b style="color:#0f9d86;">Trade-offs & Considerations</b>
-        <ul style="margin:6px 0 6px 18px;">
-          <li>Dynamic typing can lead to runtime errors without extra checks (TypeScript helps).</li>
-          <li>Not ideal for heavy CPU-bound tasks unless using WebAssembly or native modules.</li>
-          <li>Security: running code in the browser requires careful handling to avoid XSS and supply-chain risks from third-party packages.</li>
-        </ul>
-      </div>
-
-      <!-- Extra evolution points -->
-      <div style="margin-top:8px;">
-        <b style="color:#0f9d86;">Other Evolution Highlights to Note</b>
-        <ol style="margin:6px 0 6px 18px;">
-          <li><b>Module systems:</b> CommonJS → ES Modules (modern standard) for better static analysis and tooling.</li>
-          <li><b>Transpilation & Polyfills:</b> Babel and core-js let you use new features while supporting older browsers.</li>
-          <li><b>TypeScript:</b> Adopted widely to provide static typing and better developer tooling for large codebases.</li>
-          <li><b>Performance:</b> Continuous engine improvements (inline caches, JIT tiers) dramatically raised JS performance over the past decade.</li>
-          <li><b>WebAssembly:</b> Lets you run near-native code in the browser alongside JS for compute-heavy tasks.</li>
-        </ol>
-      </div>
-
-    </div>
-
-    <br>
-
-    <strong style="font-size: 20px; color:#004080;">📘 Why JavaScript?</strong><br><br>
+    <strong style="font-size: 20px; color:#004080;">🧠 How Does AI Work?</strong><br><br>
 
     <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 20px;">
-     
+
       <!-- Card 1 -->
       <div style="background:#fff; border-left:6px solid #0078d7; border-radius:12px; padding:20px; box-shadow:0 4px 12px rgba(0,0,0,0.1);">
-        <h3 style="color:#0078d7; font-size:20px; margin-bottom:8px;">1. Runs in Browser 🌐</h3>
-        <p>Create an <b>HTML + JavaScript</b> file and run it in the browser.</p>
-        <pre style="background:#f4f4f4; padding:10px; border-radius:8px; font-size:14px;">
-// file: index.html
-&lt;!DOCTYPE html&gt;
-&lt;html&gt;
-&lt;head&gt;&lt;title&gt;Hello JS&lt;/title&gt;&lt;/head&gt;
-&lt;body&gt;
-  &lt;h1&gt;Open console to see output&lt;/h1&gt;
-  &lt;script&gt;
-    console.log("Hello, World!");
-  &lt;/script&gt;
-&lt;/body&gt;
-&lt;/html&gt;
-        </pre>
-        <p><b>Breakdown:</b><br>
-        • <code>&lt;script&gt;...&lt;/script&gt;</code> tells the browser to execute JavaScript.<br>
-        • <code>console.log(...)</code> prints a message to the DevTools console.<br>
-        • Minimal setup—no build tools required for first steps.</p>
-        <p><b>Try:</b> Save as <code>index.html</code> → Open in browser → F12 → Console ✅</p>
+        <h3 style="color:#0078d7;">1. Data Collection 📊</h3>
+        <p>Data is the <b>fuel of AI</b>. Systems learn from large amounts of data.</p>
+        <ul>
+          <li>Images 📷</li>
+          <li>Text 📝</li>
+          <li>Numbers 🔢</li>
+          <li>Videos 🎥</li>
+        </ul>
+        <p><b>Example:</b> Handwritten digit recognition uses thousands of images.</p>
       </div>
 
       <!-- Card 2 -->
       <div style="background:#fff; border-left:6px solid #00b294; border-radius:12px; padding:20px; box-shadow:0 4px 12px rgba(0,0,0,0.1);">
-        <h3 style="color:#00b294; font-size:20px; margin-bottom:8px;">2. Frontend & Backend ⚡</h3>
-        <p>Try both browser code and a Node.js server.</p>
-        <pre style="background:#f4f4f4; padding:10px; border-radius:8px; font-size:14px;">
-// file: frontend.html
-&lt;!DOCTYPE html&gt;
-&lt;html&gt;
-&lt;body&gt;
-  &lt;button onclick="document.body.style.background='lightblue'"&gt;Click me&lt;/button&gt;
-&lt;/body&gt;
-&lt;/html&gt;
-
-// file: server.js (Node.js)
-const http = require("http");
-http.createServer((req,res) => {
-  res.end("Hello from Node.js!");
-}).listen(3000, ()=>console.log("Server running at http://localhost:3000"));
-        </pre>
-        <p><b>Breakdown (Frontend):</b><br>
-        • <code>onclick</code> runs inline JS when the button is pressed.<br>
-        • <code>document.body.style.background</code> manipulates CSS dynamically.</p>
-        <p><b>Breakdown (Backend):</b><br>
-        • <code>require("http")</code> loads Node's HTTP module.<br>
-        • <code>http.createServer(...)</code> creates a basic server.<br>
-        • <code>res.end(...)</code> sends the response.<br>
-        • <code>.listen(3000,...)</code> binds to port 3000 and logs when ready.</p>
-        <p><b>Try:</b> Run <code>node server.js</code> in VS Code terminal ✅</p>
+        <h3 style="color:#00b294;">2. Data Processing ⚙️</h3>
+        <p>AI cleans and prepares data before learning.</p>
+        <ul>
+          <li>Removing duplicates</li>
+          <li>Analyzing patterns</li>
+          <li>Transforming data into numbers</li>
+        </ul>
+        <p><b>Example:</b> Images are converted into pixel values.</p>
       </div>
 
       <!-- Card 3 -->
       <div style="background:#fff; border-left:6px solid #e81123; border-radius:12px; padding:20px; box-shadow:0 4px 12px rgba(0,0,0,0.1);">
-        <h3 style="color:#e81123; font-size:20px; margin-bottom:8px;">3. Libraries & Frameworks 📚</h3>
-        <p>React example component.</p>
-        <pre style="background:#f4f4f4; padding:10px; border-radius:8px; font-size:14px;">
-// file: App.js
-export default function App() {
-  return (
-    &lt;h1&gt;Hello React!&lt;/h1&gt;
-  );
-}
-        </pre>
-        <p><b>Breakdown:</b><br>
-        • <code>export default</code> exposes the component to be imported elsewhere.<br>
-        • <code>function App()</code> defines a functional component.<br>
-        • JSX <code>&lt;h1&gt;...&lt;/h1&gt;</code> compiles to <code>React.createElement</code>.<br>
-        • Components make UIs modular, reusable, and testable.</p>
-        <p><b>Try:</b> <code>npx create-react-app myapp</code> → Replace <code>App.js</code> → <code>npm start</code> ✅</p>
+        <h3 style="color:#e81123;">3. Decision Making ✅</h3>
+        <p>AI uses algorithms to make smart decisions.</p>
+        <ul>
+          <li>Classification (Spam / Not Spam)</li>
+          <li>Prediction (Weather, prices)</li>
+          <li>Search (Best route on GPS)</li>
+        </ul>
+        <p><b>Example:</b> Google search ranking results.</p>
       </div>
 
       <!-- Card 4 -->
       <div style="background:#fff; border-left:6px solid #ffb900; border-radius:12px; padding:20px; box-shadow:0 4px 12px rgba(0,0,0,0.1);">
-        <h3 style="color:#ffb900; font-size:20px; margin-bottom:8px;">4. AI & Machine Learning 🤖</h3>
-        <p>Simple TensorFlow.js demo in the browser.</p>
-        <pre style="background:#f4f4f4; padding:10px; border-radius:8px; font-size:14px;">
-// file: ai.html
-&lt;script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs"&gt;&lt;/script&gt;
-&lt;script&gt;
-  const model = tf.sequential();
-  model.add(tf.layers.dense({units: 1, inputShape: [1]}));
-  console.log("Model created ✅");
-&lt;/script&gt;
-        </pre>
-        <p><b>Breakdown:</b><br>
-        • <code>tf.sequential()</code> creates a linear stack of layers.<br>
-        • <code>tf.layers.dense({ units:1, inputShape:[1] })</code> adds a fully-connected layer.<br>
-        • This snippet defines a model (no training yet). You can then compile & train in the browser.</p>
-        <p><b>Try:</b> Save as <code>ai.html</code> → Open in browser ✅</p>
+        <h3 style="color:#ffb900;">4. Self Learning 🤖</h3>
+        <p>AI improves itself using Machine Learning.</p>
+        <ul>
+          <li>Supervised Learning</li>
+          <li>Unsupervised Learning</li>
+        </ul>
+        <p><b>Example:</b> YouTube recommendations.</p>
       </div>
 
       <!-- Card 5 -->
       <div style="background:#fff; border-left:6px solid #605e5c; border-radius:12px; padding:20px; box-shadow:0 4px 12px rgba(0,0,0,0.1);">
-        <h3 style="color:#605e5c; font-size:20px; margin-bottom:8px;">5. Data Visualization 📊</h3>
-        <p>Bar chart with D3.js.</p>
-        <pre style="background:#f4f4f4; padding:10px; border-radius:8px; font-size:14px;">
-// file: chart.html
-&lt;script src="https://d3js.org/d3.v7.min.js"&gt;&lt;/script&gt;
-&lt;svg width="300" height="200"&gt;&lt;/svg&gt;
-&lt;script&gt;
-  const data = [30, 80, 45, 60];
-  d3.select("svg")
-    .selectAll("rect")
-    .data(data)
-    .enter()
-    .append("rect")
-    .attr("x",(d,i)=>i*70)
-    .attr("y",d=>200-d)
-    .attr("width",50)
-    .attr("height",d=>d)
-    .attr("fill","steelblue");
-&lt;/script&gt;
-        </pre>
-        <p><b>Breakdown:</b><br>
-        • <code>selectAll("rect").data(data)</code> binds data array to (future) rectangles.<br>
-        • <code>.enter().append("rect")</code> creates one rect per datum.<br>
-        • <code>x</code> positions bars; <code>y</code> in SVG grows downward, so <code>200 - d</code> inverts height.<br>
-        • <code>height</code> equals the data value — a simple vertical bar chart.</p>
-        <p><b>Try:</b> Save as <code>chart.html</code> → Open in browser ✅</p>
+        <h3 style="color:#605e5c;">5. AI in Daily Life 🌍</h3>
+        <ul>
+          <li>Voice assistants (Siri, Alexa)</li>
+          <li>Smart cameras</li>
+          <li>Self-driving cars</li>
+          <li>Movie recommendations</li>
+        </ul>
       </div>
 
       <!-- Card 6 -->
       <div style="background:#fff; border-left:6px solid #107c10; border-radius:12px; padding:20px; box-shadow:0 4px 12px rgba(0,0,0,0.1);">
-        <h3 style="color:#107c10; font-size:20px; margin-bottom:8px;">6. Chatbots & NLP 💬</h3>
-        <p>Simple keyword detection.</p>
+        <h3 style="color:#107c10;">6. AI with JavaScript 💻</h3>
         <pre style="background:#f4f4f4; padding:10px; border-radius:8px; font-size:14px;">
-// file: chatbot.js
-const text = "I love JavaScript!";
-if(text.includes("JavaScript")) {
-  console.log("Positive! ✅");
-} else {
-  console.log("No match ❌");
+function lovesCoffee(timeOfDay, isTired) {
+  if (timeOfDay === "morning" || isTired) {
+    return "You need coffee ☕";
+  } else {
+    return "You are active 🚀";
+  }
 }
         </pre>
-        <p><b>Breakdown:</b><br>
-        • <code>includes("JavaScript")</code> checks substring presence (case-sensitive).<br>
-        • <code>if / else</code> branches on the condition.<br>
-        • <code>console.log</code> outputs the classification result.</p>
-        <p><b>Try:</b> Run <code>node chatbot.js</code> in VS Code terminal ✅</p>
+        <p>Simple decision-making logic similar to AI thinking.</p>
       </div>
 
-      <!-- Card 7 (New) -->
+      <!-- Card 7 -->
       <div style="background:#fff; border-left:6px solid #8a2be2; border-radius:12px; padding:20px; box-shadow:0 4px 12px rgba(0,0,0,0.1);">
-        <h3 style="color:#8a2be2; font-size:20px; margin-bottom:8px;">7. Async & Fetch ⏳</h3>
-        <p>Non-blocking requests with <b>async/await</b>.</p>
-        <pre style="background:#f4f4f4; padding:10px; border-radius:8px; font-size:14px;">
-// file: fetch-example.js
-async function fetchTodo() {
-  try {
-    const res = await fetch("https://jsonplaceholder.typicode.com/todos/1");
-    const data = await res.json();
-    console.log(data.title);
-  } catch (err) {
-    console.error("Failed:", err.message);
-  }
-}
-fetchTodo();
-        </pre>
-        <p><b>Breakdown:</b><br>
-        • <code>async</code> marks a function that uses <code>await</code>.<br>
-        • <code>fetch(...)</code> returns a Promise (HTTP request).<br>
-        • <code>await res.json()</code> parses JSON body.<br>
-        • <code>try/catch</code> handles network or parsing errors.</p>
-        <p><b>Try:</b> Run with Node (v18+) or in the browser console ✅</p>
+        <h3 style="color:#8a2be2;">7. Machine Learning 🧠</h3>
+        <p>AI systems learn patterns automatically from data.</p>
+        <p><b>Key idea:</b> No hard-coded rules.</p>
       </div>
 
-      <!-- Card 8 (New) -->
+      <!-- Card 8 -->
       <div style="background:#fff; border-left:6px solid #ff69b4; border-radius:12px; padding:20px; box-shadow:0 4px 12px rgba(0,0,0,0.1);">
-        <h3 style="color:#ff69b4; font-size:20px; margin-bottom:8px;">8. Cross-Platform Apps 📱🖥️</h3>
-        <p>Build mobile and desktop apps with JS.</p>
-        <pre style="background:#f4f4f4; padding:10px; border-radius:8px; font-size:14px;">
-// React Native snippet
-import { Text, View } from "react-native";
-export default function App() {
-  return (&lt;View&gt;&lt;Text&gt;Hello Mobile!&lt;/Text&gt;&lt;/View&gt;);
-}
-
-// Electron main process (minimal)
-const { app, BrowserWindow } = require("electron");
-app.whenReady().then(() => {
-  const win = new BrowserWindow({ width: 800, height: 600 });
-  win.loadURL("https://example.com");
-});
-        </pre>
-        <p><b>Breakdown:</b><br>
-        • <b>React Native</b> renders native UI on iOS/Android using JS/JSX.<br>
-        • <b>Electron</b> wraps web tech in a desktop shell (Chromium + Node).</p>
-        <p><b>Try:</b> Explore <code>npx react-native</code> or <code>npm create electron-app</code> ✅</p>
+        <h3 style="color:#ff69b4;">8. AI Libraries 📚</h3>
+        <ul>
+          <li>TensorFlow.js</li>
+          <li>Brain.js</li>
+          <li>Python AI libraries</li>
+        </ul>
       </div>
 
-      <!-- Card 9 (New) -->
+      <!-- Card 9 -->
       <div style="background:#fff; border-left:6px solid #1abc9c; border-radius:12px; padding:20px; box-shadow:0 4px 12px rgba(0,0,0,0.1);">
-        <h3 style="color:#1abc9c; font-size:20px; margin-bottom:8px;">9. Community & npm Ecosystem 🌐</h3>
-        <p>Millions of packages and a massive open-source community.</p>
-        <pre style="background:#f4f4f4; padding:10px; border-radius:8px; font-size:14px;">
-// Install and use a package
-// terminal:
-npm init -y
-npm install lodash
-
-// file: index.js
-const _ = require("lodash");
-console.log(_.chunk([1,2,3,4,5], 2)); // [[1,2],[3,4],[5]]
-        </pre>
-        <p><b>Breakdown:</b><br>
-        • <code>npm</code> initializes a project and installs dependencies.<br>
-        • <code>lodash</code> provides utility functions to speed up development.<br>
-        • Import and use just like standard modules.</p>
-        <p><b>Try:</b> Initialize a project and install your first package ✅</p>
+        <h3 style="color:#1abc9c;">9. AI Learning Path 🚀</h3>
+        <ul>
+          <li>Data Science</li>
+          <li>Neural Networks</li>
+          <li>NLP</li>
+          <li>Machine Learning</li>
+        </ul>
       </div>
-
-<!-- Card 10 (New) -->
-<div style="background:#fff; border-left:6px solid #e67e22; border-radius:12px; padding:20px; box-shadow:0 4px 12px rgba(0,0,0,0.1);">
-  <h3 style="color:#e67e22; font-size:20px; margin-bottom:8px;">10. Browser APIs & Interactivity 🖥️</h3>
-  <p>JavaScript integrates directly with powerful browser APIs for real-world interactions.</p>
-  <pre style="background:#f4f4f4; padding:10px; border-radius:8px; font-size:14px;">
-// Example: Geolocation API
-navigator.geolocation.getCurrentPosition(
-  (pos) => {
-    console.log("Latitude:", pos.coords.latitude);
-    console.log("Longitude:", pos.coords.longitude);
-  },
-  (err) => {
-    console.error("Error:", err.message);
-  }
-);
-  </pre>
-  <p><b>Breakdown:</b><br>
-  • <code>navigator.geolocation</code> lets JS access device location.<br>
-  • Asynchronous callback handles success or error.<br>
-  • Works directly in supported browsers, no extra libraries needed.</p>
-  <p><b>Try:</b> Run it in your browser console and watch how the app fetches your location 🌍</p>
-</div>
-
-
-<!-- Card 11 (New) -->
-<div style="background:#fff; border-left:6px solid #3498db; border-radius:12px; padding:20px; box-shadow:0 4px 12px rgba(0,0,0,0.1);">
-  <h3 style="color:#3498db; font-size:20px; margin-bottom:8px;">11. Web Storage API 💾</h3>
-  <p>Store data directly in the browser with <code>localStorage</code> and <code>sessionStorage</code>.</p>
-  <pre style="background:#f4f4f4; padding:10px; border-radius:8px; font-size:14px;">
-// Save data
-localStorage.setItem("username", "Kareem");
-
-// Retrieve data
-const user = localStorage.getItem("username");
-console.log(user); // "Kareem"
-
-// Remove data
-localStorage.removeItem("username");
-  </pre>
-  <p><b>Breakdown:</b><br>
-  • <code>localStorage</code> keeps data even after browser is closed.<br>
-  • <code>sessionStorage</code> clears data once the tab is closed.<br>
-  • Great for saving user preferences, settings, or temporary data.</p>
-  <p><b>Try:</b> Open browser console → copy & paste → refresh → check persistence 🔄</p>
-</div>
-
-
-<!-- Card 12 (New) -->
-<div style="background:#fff; border-left:6px solid #9b59b6; border-radius:12px; padding:20px; box-shadow:0 4px 12px rgba(0,0,0,0.1);">
-  <h3 style="color:#9b59b6; font-size:20px; margin-bottom:8px;">12. Fetch API & Networking 🌐</h3>
-  <p>Modern way to request and send data between browser and server.</p>
-  <pre style="background:#f4f4f4; padding:10px; border-radius:8px; font-size:14px;">
-// Example: Fetch JSON from an API
-fetch("https://jsonplaceholder.typicode.com/posts/1")
-  .then(response => response.json())
-  .then(data => console.log(data))
-  .catch(error => console.error("Error:", error));
-  </pre>
-  <p><b>Breakdown:</b><br>
-  • <code>fetch()</code> sends HTTP requests (GET, POST, etc.).<br>
-  • Returns a <code>Promise</code> that resolves with the response.<br>
-  • Can parse data as <code>JSON</code>, text, or other formats.<br>
-  • Works natively in most modern browsers.</p>
-  <p><b>Try:</b> Run in browser console and see API response 📡</p>
-</div>
-
-
-<!-- Card 13 (New) -->
-<div style="background:#fff; border-left:6px solid #e67e22; border-radius:12px; padding:20px; box-shadow:0 4px 12px rgba(0,0,0,0.1);">
-  <h3 style="color:#e67e22; font-size:20px; margin-bottom:8px;">13. Async / Await ⏳</h3>
-  <p>Simplified syntax for handling asynchronous operations in JavaScript.</p>
-  <pre style="background:#f4f4f4; padding:10px; border-radius:8px; font-size:14px;">
-// Example: Fetch with async/await
-async function getPost() {
-  try {
-    const response = await fetch("https://jsonplaceholder.typicode.com/posts/1");
-    const data = await response.json();
-    console.log(data);
-  } catch (error) {
-    console.error("Error:", error);
-  }
-}
-getPost();
-  </pre>
-  <p><b>Breakdown:</b><br>
-  • <code>async</code> makes a function return a Promise.<br>
-  • <code>await</code> pauses execution until the Promise resolves.<br>
-  • Cleaner and easier to read than chaining <code>.then()</code>.<br>
-  • Error handling with <code>try...catch</code> feels like synchronous code.</p>
-  <p><b>Try:</b> Copy into browser console or VS Code and run ✅</p>
-</div>
-
-
-<!-- Card 14 (New) -->
-<div style="background:#fff; border-left:6px solid #c0392b; border-radius:12px; padding:20px; box-shadow:0 4px 12px rgba(0,0,0,0.1);">
-  <h3 style="color:#c0392b; font-size:20px; margin-bottom:8px;">14. Error Handling & Debugging 🛠️</h3>
-  <p>Techniques to catch errors and fix bugs effectively in JavaScript.</p>
-  <pre style="background:#f4f4f4; padding:10px; border-radius:8px; font-size:14px;">
-// Example: Error handling with try/catch
-function divide(a, b) {
-  try {
-    if (b === 0) throw new Error("Division by zero ❌");
-    return a / b;
-  } catch (error) {
-    console.error("Caught error:", error.message);
-  } finally {
-    console.log("Operation attempted ✅");
-  }
-}
-divide(10, 0);
-  </pre>
-  <p><b>Breakdown:</b><br>
-  • <code>try</code> encloses risky code.<br>
-  • <code>catch</code> handles errors gracefully.<br>
-  • <code>finally</code> runs cleanup code regardless of success/failure.<br>
-  • Use <code>console.log()</code>, <code>console.error()</code>, and browser <b>DevTools</b> for step-by-step debugging.<br>
-  • Set <b>breakpoints</b> in Chrome/Firefox DevTools for live debugging.</p>
-  <p><b>Try:</b> Run the code in browser console and check both error & log ✅</p>
-</div>
-
-<!-- Card 15 (New) -->
-<div style="background:#fff; border-left:6px solid #16a085; border-radius:12px; padding:20px; box-shadow:0 4px 12px rgba(0,0,0,0.1);">
-  <h3 style="color:#16a085; font-size:20px; margin-bottom:8px;">15. DevTools & Performance Monitoring 🚀</h3>
-  <p>Using browser tools to analyze, debug, and optimize JavaScript apps.</p>
-  <pre style="background:#f4f4f4; padding:10px; border-radius:8px; font-size:14px;">
-// Example: Simple performance check
-console.time("Loop Test");
-for (let i = 0; i < 1e6; i++) {}
-console.timeEnd("Loop Test");
-  </pre>
-  <p><b>Breakdown:</b><br>
-  • <code>console.time()</code> & <code>console.timeEnd()</code> measure execution time.<br>
-  • Browser <b>DevTools → Performance Tab</b>: record runtime, find bottlenecks.<br>
-  • <b>Memory Tab</b>: detect leaks and monitor garbage collection.<br>
-  • <b>Lighthouse</b>: built-in auditing for performance, accessibility, SEO, and best practices.<br>
-  • Network panel shows loading times, API calls, and caching issues.</p>
-  <p><b>Try:</b> Open Chrome DevTools → Performance tab → record while running code ✅</p>
-</div>
-
 
     </div>
   </div>
-</div><br>
+</div>
+<br>
+<b style="font-size: 17px; color:#cc0000;">Tip:</b>
+<span>Practice AI concepts with small JavaScript examples ✅</span>
+`,
 
-<b style="font-size: 17px; color:#cc0000;">Tip:</b> 
-<span style="color:#333;">Always create real files in VS Code and run them to practice ✅.</span>`,
-  
-  "q": "Which JavaScript library allows AI and Machine Learning directly in the browser?",
+  "q": "Which JavaScript library is commonly used for Artificial Intelligence in the browser?",
   "a": "c",
   "options": [
     "React",
@@ -1832,156 +2121,318 @@ console.timeEnd("Loop Test");
 },
 
 
-
-
 {
-  "passage": `<div style="margin-top: 120px;">
+  "passage": `
+<div style="margin-top: 120px;">
   <div style="font-family: Segoe UI, Arial, sans-serif; background-color: #f9fbff; color: #333; padding: 25px; border: 2px solid #cce0ff; border-radius: 15px; font-size: 18px; box-shadow: 0 4px 10px rgba(0,0,0,0.05);">
-    
-    <strong style="font-size: 24px; color: #0056b3;">💻 Key Features of <span style="color:#0078d7;">JavaScript</span></strong><br><br>
+
+    <strong style="font-size: 24px; color: #0056b3;">🤖 WHY USE JAVASCRIPT FOR ARTIFICIAL INTELLIGENCE?</strong><br><br>
+
+    <em><u style="color:#0056b3;">Overview:</u></em><br>
+    JavaScript is no longer just for websites — it has become a powerful tool for building <b>AI-driven, interactive, and real-time applications</b> directly in the browser and beyond 🚀<br><br>
+
+    <strong style="font-size: 20px; color:#004080;">🔹 Why JavaScript in AI?</strong><br><br>
 
     <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 20px;">
-      
+
       <!-- Card 1 -->
       <div style="background:#fff; border-left:6px solid #0078d7; border-radius:12px; padding:20px; box-shadow:0 4px 12px rgba(0,0,0,0.1);">
-        <h3 style="color:#0078d7; font-size:20px; margin-bottom:8px;">1. Dynamic Language 🔄</h3>
-        <p>No need to declare variable types. Variables can change type at runtime.</p>
-        <pre style="background:#f4f4f4; padding:10px; border-radius:8px; font-size:14px;">
-let data = 5;     // number
-data = "Hello";   // string
-console.log(data); // Hello ✅
-        </pre>
-        <p><b>Comparison:</b> In Java ➝ <code>int num = 5;</code> (type must be fixed).</p>
+        <h3 style="color:#0078d7;">1. Runs Directly in the Browser 🌐</h3>
+        <p>JavaScript allows AI models to run <b>directly inside the browser</b> without powerful servers.</p>
+        <p><b>Benefit:</b> Faster execution, lower cost, and easy deployment.</p>
       </div>
 
       <!-- Card 2 -->
       <div style="background:#fff; border-left:6px solid #00b294; border-radius:12px; padding:20px; box-shadow:0 4px 12px rgba(0,0,0,0.1);">
-        <h3 style="color:#00b294; font-size:20px; margin-bottom:8px;">2. Functional Programming 🧩</h3>
-        <p>Functions are first-class citizens: stored in variables, passed, and returned.</p>
-        <pre style="background:#f4f4f4; padding:10px; border-radius:8px; font-size:14px;">
-function greet(name) {
-  return "Hello, " + name;
-}
-const sayHello = greet;  
-console.log(sayHello("Kareem")); // Hello, Kareem ✅
-        </pre>
-        <p><b>Comparison:</b> In C++/Java you need <i>function pointers</i> or <i>interfaces</i>.</p>
+        <h3 style="color:#00b294;">2. High Performance with GPU 🚀</h3>
+        <p>JavaScript can use <b>WebGL & WebGPU</b> to accelerate AI computations using the GPU.</p>
+        <p><b>Result:</b> Faster model training and prediction in the browser.</p>
       </div>
 
       <!-- Card 3 -->
       <div style="background:#fff; border-left:6px solid #e81123; border-radius:12px; padding:20px; box-shadow:0 4px 12px rgba(0,0,0,0.1);">
-        <h3 style="color:#e81123; font-size:20px; margin-bottom:8px;">3. Prototype Inheritance ⚙️</h3>
-        <p>JavaScript uses prototypes instead of classical inheritance.</p>
-        <pre style="background:#f4f4f4; padding:10px; border-radius:8px; font-size:14px;">
-const car = {
-  brand: "Toyota",
-  start() {
-    console.log("Car started");
-  }
-};
-const myCar = Object.create(car);
-console.log(myCar.brand); // Toyota
-myCar.start(); // Car started ✅
-        </pre>
-        <p><b>Comparison:</b> In Java, inheritance requires <code>class Car extends ...</code></p>
+        <h3 style="color:#e81123;">3. Seamless Web Integration 📱</h3>
+        <p>AI features like image recognition, speech analysis, and chatbots integrate easily with web apps.</p>
+        <p><b>Libraries:</b> TensorFlow.js, Brain.js</p>
       </div>
 
       <!-- Card 4 -->
       <div style="background:#fff; border-left:6px solid #ffb900; border-radius:12px; padding:20px; box-shadow:0 4px 12px rgba(0,0,0,0.1);">
-        <h3 style="color:#ffb900; font-size:20px; margin-bottom:8px;">4. Loose Typing 🎭</h3>
-        <p>JavaScript auto-converts types during operations.</p>
-        <pre style="background:#f4f4f4; padding:10px; border-radius:8px; font-size:14px;">
-function sum(a, b) {
-  return a + b;
-}
-console.log(sum(5, 10));   // 15
-console.log(sum(5, "10")); // 510 ✅
-        </pre>
-        <p><b>Note:</b> Can be flexible but sometimes cause bugs.</p>
+        <h3 style="color:#ffb900;">4. Easy for Web Developers 👨‍💻</h3>
+        <p>If you already know JavaScript, you can build AI apps without learning a new language.</p>
+        <p><b>Advantage:</b> Faster learning curve and productivity.</p>
       </div>
 
       <!-- Card 5 -->
       <div style="background:#fff; border-left:6px solid #605e5c; border-radius:12px; padding:20px; box-shadow:0 4px 12px rgba(0,0,0,0.1);">
-        <h3 style="color:#605e5c; font-size:20px; margin-bottom:8px;">5. Event-Driven 🖱️</h3>
-        <p>Designed to handle user interactions easily.</p>
-        <pre style="background:#f4f4f4; padding:10px; border-radius:8px; font-size:14px;">
-document.getElementById("myBtn")
-  .addEventListener("click", () => {
-    alert("Button Clicked!");
-  });
-        </pre>
-        <p><b>Comparison:</b> Java requires <i>listener interfaces</i>.</p>
-      </div>
-
-      <!-- Card 6 -->
-      <div style="background:#fff; border-left:6px solid #107c10; border-radius:12px; padding:20px; box-shadow:0 4px 12px rgba(0,0,0,0.1);">
-        <h3 style="color:#107c10; font-size:20px; margin-bottom:8px;">6. Asynchronous Support ⏳</h3>
-        <p>Supports async with callbacks, promises, and async/await.</p>
-        <pre style="background:#f4f4f4; padding:10px; border-radius:8px; font-size:14px;">
-function fetchData() {
-  return new Promise(resolve => {
-    setTimeout(() => resolve("Data Loaded!"), 2000);
-  });
-}
-fetchData().then(console.log); // after 2s: Data Loaded ✅
-        </pre>
-      </div>
-
-      <!-- Card 7 -->
-      <div style="background:#fff; border-left:6px solid #800080; border-radius:12px; padding:20px; box-shadow:0 4px 12px rgba(0,0,0,0.1);">
-        <h3 style="color:#800080; font-size:20px; margin-bottom:8px;">7. Runs in Browsers 🚀</h3>
-        <p>No compilation required. Runs instantly.</p>
-        <pre style="background:#f4f4f4; padding:10px; border-radius:8px; font-size:14px;">
-&lt;script&gt;
-  console.log("Hello JavaScript!");
-&lt;/script&gt;
-        </pre>
-        <p><b>Comparison:</b> Java/C++ need compilation first.</p>
-      </div>
-
-      <!-- Card 8 -->
-      <div style="background:#fff; border-left:6px solid #ff6600; border-radius:12px; padding:20px; box-shadow:0 4px 12px rgba(0,0,0,0.1);">
-        <h3 style="color:#ff6600; font-size:20px; margin-bottom:8px;">8. Cross-Platform 🌍</h3>
-        <p>Runs on any browser: Chrome, Firefox, Edge, Safari.</p>
-        <p><b>Comparison:</b> Java needs JVM, C++ needs compiler.</p>
+        <h3 style="color:#605e5c;">5. Run Models Locally 🖥️</h3>
+        <p>AI models can run on the user’s device instead of sending data to servers.</p>
+        <p><b>Benefit:</b> Better privacy and lower latency.</p>
       </div>
 
     </div>
 
     <br>
-    <strong style="font-size:20px; color:#004080;">📊 Summary:</strong>
-    <table border="1" cellpadding="8" style="border-collapse: collapse; width:100%; text-align:center; margin-top:10px;">
-      <tr style="background:#e6f0ff;">
-        <th>Feature</th><th>JavaScript</th><th>Java / C++</th>
-      </tr>
-      <tr><td>Dynamic Typing</td><td>✔ Implicit conversion</td><td>❌ Explicit types required</td></tr>
-      <tr><td>Event Handling</td><td>✔ addEventListener</td><td>❌ Listener Interfaces</td></tr>
-      <tr><td>Direct Execution</td><td>✔ Runs in browser</td><td>❌ Needs compilation</td></tr>
-      <tr><td>Functional Programming</td><td>✔ First-class functions</td><td>❌ Extra structures</td></tr>
-      <tr><td>Inheritance</td><td>✔ Prototype-based</td><td>❌ Class-based</td></tr>
-      <tr><td>Async Support</td><td>✔ Promises & async/await</td><td>❌ Threads</td></tr>
-    </table>
+
+    <strong style="font-size: 20px; color:#004080;">📚 Top JavaScript AI Libraries</strong><br><br>
+
+    <ul>
+      <li><b>TensorFlow.js</b> → Train & run AI models in the browser.</li>
+      <li><b>Brain.js</b> → Simple neural networks in JavaScript.</li>
+      <li><b>Synaptic.js</b> → Flexible neural network architecture.</li>
+      <li><b>ml5.js</b> → Beginner-friendly AI library.</li>
+    </ul>
 
     <br>
-    <strong style="font-size:20px; color:#004080;">💡 When to use JavaScript?</strong><br>
-    ✅ For Web & Mobile Applications<br>
-    ✅ For Interactive UIs<br>
-    ✅ For APIs & Async Data<br>
-    ✅ For Real-time Event Handling<br>
+
+    <strong style="font-size: 20px; color:#004080;">🧪 Practical Example (TensorFlow.js)</strong><br><br>
+
+    <pre style="background:#f4f4f4; padding:15px; border-radius:10px; font-size:14px;">
+// Simple prediction model
+const model = tf.sequential();
+model.add(tf.layers.dense({ units: 1, inputShape: [1] }));
+
+model.compile({
+  loss: 'meanSquaredError',
+  optimizer: 'sgd'
+});
+
+const xs = tf.tensor2d([1,2,3,4],[4,1]);
+const ys = tf.tensor2d([1,3,5,7],[4,1]);
+
+model.fit(xs, ys, { epochs: 250 }).then(() => {
+  model.predict(tf.tensor2d([5],[1,1])).print();
+});
+    </pre>
+
+    <p><b>What happens?</b><br>
+    ✔ The model learns a numeric pattern.<br>
+    ✔ Predicts new values automatically.<br>
+    ✔ Runs completely in JavaScript.</p>
 
   </div>
-</div><br>
-
-<b style="font-size: 17px; color:#cc0000;">Tip:</b> 
-<span style="color:#333;">Open <b>F12 → Console</b> in your browser and try each code snippet step by step ✅.</span>`,
-  
-  "q": "Which feature allows JavaScript to handle tasks like waiting for data while keeping the UI responsive?",
-  "a": "c",
+</div>
+<br>
+<b style="color:#cc0000;">Tip:</b> JavaScript AI is perfect for <b>interactive, fast, and privacy-friendly applications</b> ✅
+`,
+  "q": "Why is JavaScript suitable for running AI models directly in the browser?",
+  "a": "b",
   "options": [
-    "Dynamic Typing",
-    "Event Handling",
-    "Asynchronous Programming",
-    "Prototype Inheritance"
+    "Because it replaces Python completely",
+    "Because it runs locally and supports GPU acceleration",
+    "Because it only works on servers",
+    "Because it does not support AI libraries"
+  ]
+},
+
+
+
+{
+  "passage": `
+<div style="margin-top: 120px;">
+  <div style="font-family: Segoe UI, Arial, sans-serif; background-color: #f9fbff; color: #333; padding: 25px; border: 2px solid #cce0ff; border-radius: 15px; font-size: 18px; box-shadow: 0 4px 10px rgba(0,0,0,0.05);">
+
+    <strong style="font-size: 24px; color: #0056b3;">🌳 DECISION TREE USING JAVASCRIPT</strong><br><br>
+
+    <em><u style="color:#0056b3;">Overview:</u></em><br>
+    هذا المثال يوضح فكرة <b>Decision Tree</b> باستخدام JavaScript، حيث يتم اتخاذ قرار (ذكر / أنثى) اعتمادًا على قواعد منطقية بسيطة 🧠<br><br>
+
+    <div style="background:#fff; border-left:6px solid #0078d7; border-radius:12px; padding:20px; box-shadow:0 4px 12px rgba(0,0,0,0.1);">
+
+      <h3 style="color:#0078d7;">🧪 Practical Example with Full Explanation</h3>
+
+      <pre style="background:#f4f4f4; padding:15px; border-radius:10px; font-size:14px; white-space:pre-wrap;">
+// تعريف كلاس باسم DecisionTree
+// الكلاس يمثل نموذج شجرة قرار بسيط
+class DecisionTree {
+
+  // constructor يتم استدعاؤه تلقائيًا عند إنشاء كائن جديد
+  constructor(data) {
+    // data هي بيانات التدريب
+    // يتم بناء الشجرة وتخزينها داخل this.tree
+    this.tree = this.buildTree(data);
+  }
+
+  // دالة buildTree مسؤولة عن إنشاء قواعد شجرة القرار
+  buildTree(data) {
+
+    // تصفية بيانات التدريب لاستخراج الذكور فقط
+    let males = data.filter(d => d.gender === 'male');
+
+    // تصفية بيانات التدريب لاستخراج الإناث فقط
+    let females = data.filter(d => d.gender === 'female');
+
+    // إرجاع كائن يمثل الشجرة
+    return {
+
+      // rule: قاعدة اتخاذ القرار
+      // تستقبل رقم الهوية id
+      rule: (id) => {
+
+        // تحويل رقم الهوية إلى نص ثم استخراج الرقمين الثالث والرابع
+        let extractedNumber = parseInt(
+          id.toString().substring(2, 4)
+        );
+
+        // إذا كان الرقم فرديًا → true
+        // إذا كان زوجيًا → false
+        return extractedNumber % 2 !== 0;
+      },
+
+      // left يمثل القرار في حالة TRUE (رقم فردي)
+      // يتم اختيار النوع الأكثر تكرارًا في بيانات التدريب
+      left: males.length > females.length ? 'male' : 'female',
+
+      // right يمثل القرار في حالة FALSE (رقم زوجي)
+      right: females.length >= males.length ? 'female' : 'male'
+    };
+  }
+
+  // دالة التنبؤ
+  // تستقبل رقم هوية جديد
+  predict(id) {
+
+    // يتم تطبيق القاعدة rule
+    // إذا كانت النتيجة true → left
+    // إذا كانت false → right
+    return this.tree.rule(id)
+      ? this.tree.left
+      : this.tree.right;
+  }
+}
+
+// بيانات التدريب المستخدمة لتعليم النموذج
+let trainingData = [
+  { id: 123456789, gender: 'male' },
+  { id: 987654321, gender: 'female' },
+  { id: 135792468, gender: 'male' },
+  { id: 246813579, gender: 'female' }
+];
+
+// إنشاء نموذج Decision Tree باستخدام بيانات التدريب
+let model = new DecisionTree(trainingData);
+
+// اختبار النموذج برقم هوية جديد
+// سيتم طباعة النوع المتوقع في الكونسول
+console.log(model.predict(314159265));
+      </pre>
+
+      <p>
+        ✔ كل سطر في الكود موضح بالتعليق<br>
+        ✔ يشرح فكرة <b>Decision Tree</b> بدون تعقيد<br>
+        ✔ يعتمد على المنطق وليس الحفظ<br>
+        ✔ مناسب جدًا للشرح الأكاديمي والمبتدئين
+      </p>
+
+    </div>
+
+  </div>
+</div>
+<br>
+<b style="color:#cc0000;">Tip:</b> Decision Tree تساعد على فهم كيف يحوّل الذكاء الاصطناعي القواعد المنطقية إلى قرارات فعلية ✅
+`,
+  "q": "What does the rule function do in the Decision Tree?",
+  "a": "b",
+  "options": [
+    "Stores the training data",
+    "Determines which branch to follow based on a condition",
+    "Prints the result only",
+    "Connects to a database"
+  ]
+},
+
+{
+  "passage": `
+<div style="margin-top:120px;">
+  <div style="font-family:Segoe UI, Arial, sans-serif; background:#f9fbff; color:#333; padding:25px; border:2px solid #cce0ff; border-radius:15px; font-size:18px; box-shadow:0 4px 10px rgba(0,0,0,0.05);">
+
+    <strong style="font-size:24px; color:#0056b3;">🤖 أشهر خوارزميات الذكاء الاصطناعي (AI Algorithms)</strong><br><br>
+
+    <em><u style="color:#0056b3;">Overview:</u></em><br>
+    تعتمد أنظمة الذكاء الاصطناعي على خوارزميات مختلفة، وكل خوارزمية لها <b>طريقة تفكير</b> واستخدام مناسب حسب نوع البيانات والمشكلة المطلوب حلها 🧠<br><br>
+
+    <div style="background:#fff; border-left:6px solid #0078d7; border-radius:12px; padding:20px; box-shadow:0 4px 12px rgba(0,0,0,0.1);">
+
+<b>1️⃣ Decision Tree</b><br>
+تعتمد على تقسيم البيانات باستخدام أسئلة شرطية للوصول إلى قرار نهائي. سهلة الفهم وتستخدم في التصنيف والتنبؤ.<br><br>
+
+<b>2️⃣ Logistic Regression</b><br>
+تُستخدم للتصنيف الثنائي (نعم / لا)، وتعتمد على الاحتمالات وليس القيم المباشرة.<br><br>
+
+<b>3️⃣ Linear Regression</b><br>
+تُستخدم للتنبؤ بقيمة رقمية اعتمادًا على علاقة خطية بين المتغيرات.<br><br>
+
+<b>4️⃣ Random Forest</b><br>
+تتكون من مجموعة كبيرة من أشجار القرار، وتُعطي نتائج أدق من شجرة واحدة.<br><br>
+
+<b>5️⃣ K-Nearest Neighbors (KNN)</b><br>
+تُصنّف البيانات بناءً على أقرب الجيران لها في الخصائص.<br><br>
+
+<b>6️⃣ Naïve Bayes</b><br>
+تعتمد على الاحتمالات وقاعدة بايز، وتُستخدم كثيرًا في تحليل النصوص والبريد المزعج.<br><br>
+
+<b>7️⃣ Artificial Neural Networks (ANN)</b><br>
+تحاكي طريقة عمل المخ البشري باستخدام طبقات من الخلايا العصبية.<br><br>
+
+<b>8️⃣ Gradient Boosting</b><br>
+تحسّن الأداء تدريجيًا عن طريق تصحيح أخطاء النماذج السابقة (مثل XGBoost).<br><br>
+
+<b>9️⃣ K-Means Clustering</b><br>
+خوارزمية تجميع غير مُراقبة تقوم بتقسيم البيانات إلى مجموعات متشابهة.<br><br>
+
+<b>🔟 Principal Component Analysis (PCA)</b><br>
+تُستخدم لتقليل أبعاد البيانات مع الحفاظ على أهم المعلومات.<br><br>
+
+<b>1️⃣1️⃣ Support Vector Machines (SVM)</b><br>
+تفصل البيانات باستخدام حدود رياضية دقيقة وتُستخدم في التصنيف المعقد.<br><br>
+
+<b>1️⃣2️⃣ Recurrent Neural Networks (RNN)</b><br>
+مناسبة للبيانات المتسلسلة مثل النصوص والزمن.<br><br>
+
+<b>1️⃣3️⃣ Long Short-Term Memory (LSTM)</b><br>
+نوع متقدم من RNN قادر على تذكّر المعلومات لفترات طويلة.<br><br>
+
+<b>1️⃣4️⃣ Convolutional Neural Networks (CNN)</b><br>
+مُتخصصة في معالجة الصور والفيديو واكتشاف الأنماط البصرية.<br><br>
+
+<b>1️⃣5️⃣ Bayesian Networks</b><br>
+تمثل العلاقات الاحتمالية بين المتغيرات باستخدام الشبكات.<br><br>
+
+<b>1️⃣6️⃣ Genetic Algorithms</b><br>
+تعتمد على مبدأ التطور والانتقاء الطبيعي لإيجاد الحل الأمثل.<br><br>
+
+<b>1️⃣7️⃣ Deep Q-Networks (DQN)</b><br>
+تُستخدم في التعلم المعزز لاتخاذ قرارات ذكية في الألعاب والروبوتات.<br><br>
+
+<b>1️⃣8️⃣ Autoencoders</b><br>
+تُستخدم لاكتشاف الأنماط وتقليل الضوضاء في البيانات.<br><br>
+
+<b>1️⃣9️⃣ Self-Organizing Maps (SOM)</b><br>
+تُحوّل البيانات المعقدة إلى خرائط ثنائية الأبعاد سهلة الفهم.<br><br>
+
+<b>2️⃣0️⃣ Restricted Boltzmann Machines (RBM)</b><br>
+شبكات احتمالية تُستخدم في التعلم غير المراقب.<br><br>
+
+<b>2️⃣1️⃣ Markov Chains</b><br>
+نماذج تعتمد على أن الحالة القادمة تعتمد فقط على الحالة الحالية.<br><br>
+
+✔ كل خوارزمية لها استخدام محدد<br>
+✔ اختيار الخوارزمية الصح = نتائج أفضل<br>
+✔ لا توجد خوارزمية واحدة تصلح لكل المشاكل
+
+    </div>
+  </div>
+</div>
+<br>
+<b style="color:#cc0000;">Tip:</b> فهم الخوارزميات أهم من حفظ أسمائها — الذكاء الحقيقي في اختيار المناسب 🎯
+`,
+  "q": "Why are different AI algorithms used for different problems?",
+  "a": "b",
+  "options": [
+    "Because all algorithms give the same results",
+    "Because each algorithm is suited for specific data and problems",
+    "Because AI works without data",
+    "Because algorithms replace human thinking"
   ]
 },
 
