@@ -754,11 +754,15 @@ function calculateRating(score, maxScore) {
   if (score === undefined || maxScore === undefined) return "غير محدد ❓";
 
   // التقديرات حسب طلب المدرس
-  if (score >= 0 && score < 5) return "Good 🙂";
-  else if (score >= 5 && score < 15) return "Very Good 👍";
-  else if (score >= 15 && score <= maxScore) return "Excellent 🌟";
-  else return "غير محدد ❓";
+if (score >= 0 && score < 5) return "Fail ❌";
+else if (score >= 5 && score < 10) return "Pass 🙂";
+else if (score >= 10 && score < 15) return "Good 👍";
+else if (score >= 15 && score < 30) return "Very Good 👏";
+else if (score >= 30 && score <= maxScore) return "Excellent 🌟";
+else return "غير محدد ❓";
+
 }
+
 
 // دالة لإظهار التقدير مباشرة من الرقم
 function displayRatingFromNumber(score, maxScore) {
