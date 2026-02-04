@@ -1167,7 +1167,7 @@ function syncWithGoogleSheets() {
 
 
 function openDB() {
-  const request = indexedDB.open("TraineeAlex", 1);
+  const request = indexedDB.open("Trainee", 1);
 
   request.onupgradeneeded = function (e) {
   db = e.target.result;
