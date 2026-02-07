@@ -411,6 +411,128 @@ th {
 }
 
 
+/* ===== Gaming Search Panel ===== */
+.gaming-search {
+    background: linear-gradient(145deg, #0b1020, #111827);
+    border-radius: 18px;
+    box-shadow:
+        0 20px 45px rgba(0,0,0,0.65),
+        inset 0 0 0 1px rgba(255,255,255,0.05);
+}
+
+/* عنوان */
+.gaming-search h2 {
+    color: #38bdf8;
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 22px;
+    letter-spacing: 1px;
+}
+
+/* شريط البحث */
+.search-panel {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+/* input جيمينج */
+.search-panel input {
+    flex: 1;
+    background: linear-gradient(145deg, #020617, #020617);
+    color: #e5e7eb;
+    border: 2px solid #1e293b;
+    border-radius: 14px;
+    padding: 16px 18px;
+    font-size: 16px;
+    transition: 0.3s;
+}
+
+.search-panel input::placeholder {
+    color: #94a3b8;
+}
+
+.search-panel input:focus {
+    outline: none;
+    border-color: #22d3ee;
+    box-shadow: 0 0 18px rgba(34,211,238,0.7);
+}
+
+/* زر البحث */
+.search-panel button {
+    padding: 16px 26px;
+    font-size: 18px;
+    font-weight: bold;
+    border-radius: 14px;
+    border: none;
+    cursor: pointer;
+    color: #fff;
+    background: linear-gradient(135deg, #16a34a, #22c55e);
+    box-shadow:
+        0 8px 22px rgba(0,0,0,0.6),
+        0 0 15px rgba(34,197,94,0.6);
+    transition: 0.25s;
+}
+
+.search-panel button:hover {
+    transform: translateY(-2px) scale(1.03);
+    box-shadow:
+        0 12px 30px rgba(0,0,0,0.8),
+        0 0 22px rgba(34,197,94,0.9);
+}
+
+.search-panel button:active {
+    transform: scale(0.95);
+}
+
+/* أزرار الأدوات */
+.tools-actions {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.tools-actions button {
+    flex: 1;
+    padding: 16px;
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 14px;
+    border: none;
+    cursor: pointer;
+    color: #fff;
+    background: linear-gradient(135deg, #1e40af, #2563eb);
+    box-shadow:
+        0 8px 22px rgba(0,0,0,0.6);
+    transition: 0.25s;
+}
+
+.tools-actions button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 28px rgba(0,0,0,0.8);
+}
+
+.tools-actions button:nth-child(2) {
+    background: linear-gradient(135deg, #7c2d12, #f97316);
+}
+
+.tools-actions button:nth-child(3) {
+    background: linear-gradient(135deg, #581c87, #9333ea);
+}
+
+/* موبايل */
+@media (max-width: 768px) {
+    .search-panel {
+        flex-direction: column;
+    }
+
+    .tools-actions {
+        flex-direction: column;
+    }
+}
+
+
+
 </style>
 </head>
 
@@ -438,6 +560,26 @@ th {
         (عرض تفصيلي مبسّط يدعم اتخاذ القرار)
     </p>
 </header>
+
+
+<div class="container section tools-box gaming-search">
+
+    <h2>🛠️ أدوات التطبيق</h2>
+
+    <div class="search-panel">
+        <input type="text" id="searchInput" placeholder="🔍 ابحث برقم السيارة أو نوعها">
+        <button onclick="searchInDB()">بحث</button>
+    </div>
+
+    <div class="tools-actions">
+        <button onclick="backupDB()">💾 Backup</button>
+        <button onclick="restoreDB()">♻️ Restore</button>
+        <button onclick="printFromDB()">🖨️ طباعة من قاعدة البيانات</button>
+    </div>
+
+</div>
+
+
 
  <!-- زر المخالفات -->
     <div class="section">
@@ -1105,8 +1247,18 @@ const request = indexedDB.open("CentralAuditReply", 1);
 
 request.onupgradeneeded = function (e) {
     db = e.target.result;
-    db.createObjectStore("general", { keyPath: "id" });
-    db.createObjectStore("cars", { autoIncrement: true });
+
+    if (!db.objectStoreNames.contains("general"))
+        db.createObjectStore("general", { keyPath: "id" });
+
+    if (!db.objectStoreNames.contains("cars"))
+        db.createObjectStore("cars", { autoIncrement: true });
+
+    if (!db.objectStoreNames.contains("cards"))
+        db.createObjectStore("cards", { autoIncrement: true });
+
+    if (!db.objectStoreNames.contains("financial"))
+        db.createObjectStore("financial", { autoIncrement: true });
 };
 
 request.onsuccess = function (e) {
@@ -1509,6 +1661,133 @@ function saveFinancialV7() {
 
     alert("💾 تم حفظ وتحليل بيانات المخالفة السابعة");
 }
+
+
+function searchInDB() {
+    const keyword = document.getElementById("searchInput").value.trim();
+    if (!keyword) {
+        alert("اكتب كلمة للبحث");
+        return;
+    }
+
+    const tx = db.transaction("cars", "readonly");
+    const store = tx.objectStore("cars");
+    const request = store.getAll();
+
+    request.onsuccess = () => {
+        const results = request.result.filter(item =>
+            Object.values(item).some(val =>
+                String(val).includes(keyword)
+            )
+        );
+
+        if (results.length === 0) {
+            alert("لا توجد نتائج");
+            return;
+        }
+
+        let text = "نتائج البحث:\n\n";
+        results.forEach((r, i) => {
+            text += `${i + 1}- سيارة: ${r.carNumber || "غير محدد"} | الوقود: ${r.fuel || "-"}\n`;
+        });
+
+        alert(text);
+    };
+}
+
+
+function backupDB() {
+    const stores = ["general", "cars", "cards", "financial"];
+    const backup = {};
+    let completed = 0;
+
+    stores.forEach(storeName => {
+        const tx = db.transaction(storeName, "readonly");
+        const store = tx.objectStore(storeName);
+        const req = store.getAll();
+
+        req.onsuccess = () => {
+            backup[storeName] = req.result;
+            completed++;
+
+            if (completed === stores.length) {
+                const blob = new Blob([JSON.stringify(backup)], { type: "application/json" });
+                const a = document.createElement("a");
+                a.href = URL.createObjectURL(blob);
+                a.download = "inspection_backup.json";
+                a.click();
+            }
+        };
+    });
+}
+
+
+function restoreDB() {
+    const input = document.createElement("input");
+    input.type = "file";
+    input.accept = ".json";
+
+    input.onchange = e => {
+        const file = e.target.files[0];
+        const reader = new FileReader();
+
+        reader.onload = () => {
+            const data = JSON.parse(reader.result);
+
+            Object.keys(data).forEach(storeName => {
+                const tx = db.transaction(storeName, "readwrite");
+                const store = tx.objectStore(storeName);
+
+                data[storeName].forEach(item => store.add(item));
+            });
+
+            alert("✅ تم استرجاع البيانات بنجاح");
+        };
+
+        reader.readAsText(file);
+    };
+
+    input.click();
+}
+
+
+function printFromDB() {
+    const tx = db.transaction("cars", "readonly");
+    const store = tx.objectStore("cars");
+    const req = store.getAll();
+
+    req.onsuccess = () => {
+        const data = req.result;
+
+        let html = `
+        <h2>تقرير بيانات السيارات</h2>
+        <table border="1" cellspacing="0" cellpadding="6">
+          <tr>
+            <th>رقم السيارة</th>
+            <th>النوع</th>
+            <th>الوقود</th>
+            <th>ملاحظات</th>
+          </tr>`;
+
+        data.forEach(d => {
+            html += `
+            <tr>
+              <td>${d.carNumber || ""}</td>
+              <td>${d.type || ""}</td>
+              <td>${d.fuel || ""}</td>
+              <td>${d.notes || ""}</td>
+            </tr>`;
+        });
+
+        html += "</table>";
+
+        const win = window.open("", "", "width=900,height=700");
+        win.document.write(html);
+        win.document.close();
+        win.print();
+    };
+}
+
 
 </script>
 
