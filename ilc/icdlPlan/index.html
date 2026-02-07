@@ -631,9 +631,9 @@ h2 {
   <!-- أزرار G8 + G9 + G10 + G11 -->
 <div class="groups-buttons">
 
-  <button id="btnG12" class="group-btn g12">🌟 G12</button>
-  <button id="btnG13" class="group-btn g13">🔥 G13</button>
-  <button id="btnG14" class="group-btn g14">💎 G14</button>
+  <button id="btnG15" class="group-btn g15">🌟 G15</button>
+  <button id="btnG16" class="group-btn g16">🔥 G16</button>
+  <button id="btnG17" class="group-btn g17">💎 G17</button>
 
 </div>
 
@@ -705,22 +705,27 @@ const scriptURL = "https://script.google.com/macros/s/AKfycbzbUWAlJ4oI-OF0xrGQmO
 
 (function(){
  // كان عندك 15 مجموعة وتاريخ 31 أغسطس
-const groups = Array.from({length: 14}, (_, i) => 'G' + (i + 1)); // G1–G14
-const tableGroups = groups.slice(7, 11); // G1–G8 فقط للجدول
+// =======================
+// تعريف المجموعات
+// =======================
+const groups = Array.from({ length: 17 }, (_, i) => 'G' + (i + 1)); // G1–G17
+
+// المجموعات المستخدمة في الجدول فقط
+const tableGroups = ['G12', 'G13', 'G14'];
 
 const colors = [
   '#FFCDD2', '#BBDEFB', '#C8E6C9', '#FFF9C4',
   '#FFCCBC', '#D1C4E9', '#B2EBF2', '#FFE082',
   '#D7CCC8', '#F5F5F5', '#90A4AE',
 
-// ✅ ألوان G12 –   
-  '#A5D6A7', // G12
-  '#CE93D8', // G13
-  '#81D4FA'  // G14
-
+  // G15 – G17 (مش مستخدمين في الجدول حاليًا)
+  '#A5D6A7', // G15
+  '#CE93D8', // G16
+  '#81D4FA'  // G17
 ];
 
-const startDate = new Date(Date.UTC(2025, 11, 28, 0, 0)); // Sunday 16 Nov 2025
+
+const startDate = new Date(Date.UTC(2026, 1, 8, 0, 0)); // Sunday 16 Nov 2025
 const dayNames = ['Sunday','Monday','Tuesday','Wednesday','Thursday'];
 
 function getEgyptDate(date){
@@ -736,32 +741,32 @@ let groupCounts = {};
 groups.forEach(g => groupCounts[g] = 0);
 
 let fixedSchedule = [
-  ['G8','G9'],
-  ['G10','G11'],
-  ['G9','G10'],
-  ['G11','G8'],
-  ['G8','G10'],
-  ['G9','G11'],
-  ['G10','G8'],
-  ['G11','G9'],
-  ['G8','G11'],
-  ['G9','G10'],
-  ['G10','G11'],
-  ['G8','G9'],
+  ['G12','G13'],
+  ['G12','G14'],
+  ['G13','G14'],
+  ['G12','G13'],
+  ['G12','G14'],
+  ['G13','G14'],
+  ['G12','G13'],
+  ['G12','G14'],
+  ['G13','G14'],
+  ['G12','G13'],
+  ['G12','G14'],
+  ['G13','G14'],
 
   // تكرار نفس الدورة مرة ثانية
-  ['G8','G9'],
-  ['G10','G11'],
-  ['G9','G10'],
-  ['G11','G8'],
-  ['G8','G10'],
-  ['G9','G11'],
-  ['G10','G8'],
-  ['G11','G9'],
-  ['G8','G11'],
-  ['G9','G10'],
-  ['G10','G11'],
-  ['G8','G9']
+  ['G12','G13'],
+  ['G12','G14'],
+  ['G13','G14'],
+  ['G12','G13'],
+  ['G12','G14'],
+  ['G13','G14'],
+  ['G12','G13'],
+  ['G12','G14'],
+  ['G13','G14'],
+  ['G12','G13'],
+  ['G12','G14'],
+  ['G13','G14']
 ];
 
 
