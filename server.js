@@ -128,13 +128,17 @@ app.listen(PORT, () => {
     console.log(`🚀 Server running at http://localhost:${PORT}`);
 
     exec("pgrep -f 'ngrok' && pkill -f 'ngrok'", () => {
-        exec("ngrok.exe http 3000 --log=stdout", (err) => {
-            if (err) {
-                console.error("❌ Error starting ngrok:", err);
-                return;
-            }
-            console.log("✅ ngrok started successfully!");
-        });
+      exec("ngrok.exe http 3000 --log=stdout", (err) => {
+    if (err) {
+        console.error("❌ ngrok failed, continuing without it...");
+        
+        // ✅ كمل GitHub حتى بدون ngrok
+        pushToGitHub();
+        return;
+    }
+    console.log("✅ ngrok started successfully!");
+});
+
 
         setTimeout(() => {
             exec("curl -s http://127.0.0.1:4040/api/tunnels", (err, stdout) => {
@@ -164,14 +168,21 @@ function processNgrokResponse(response) {
         if (serverUrl) {
             console.log(`✅ Server is available at: 🔗 ${serverUrl}`);
             fs.writeFileSync("serverUrl.json", JSON.stringify({ serverUrl }));
-            pushToGitHub();
         } else {
-            console.log("⚠️ No ngrok URL found.");
+            console.log("⚠️ No ngrok URL found, continuing without it...");
         }
+
+        // ✅ في كل الأحوال ارفع على GitHub
+        pushToGitHub();
+
     } catch (parseError) {
         console.error("❌ Error parsing ngrok response:", parseError);
+
+        // ✅ حتى لو parsing فشل → كمّل GitHub
+        pushToGitHub();
     }
 }
+
 
 // ✅ رفع الملفات إلى GitHub
 function runCommand(command, args, callback) {

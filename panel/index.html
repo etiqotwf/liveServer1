@@ -315,10 +315,120 @@ th {
 }
 
 
+/* طبقة تغطية شفافة */
+.lock-layer {
+  position: fixed;
+  inset: 0;
+  backdrop-filter: blur(6px) brightness(0.7);
+  background: rgba(0, 0, 0, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+/* صندوق الباسورد */
+.lock-box {
+  width: 320px;
+  padding: 30px;
+  border-radius: 16px;
+  text-align: center;
+  color: #fff;
+  background: linear-gradient(145deg, #1f1f1f, #2b2b2b);
+  box-shadow:
+    0 0 20px rgba(0, 123, 255, 0.6),
+    0 0 60px rgba(0, 123, 255, 0.2);
+  animation: popIn 0.6s ease;
+}
+
+/* عنوان */
+.lock-box h2 {
+  margin-bottom: 10px;
+  font-size: 26px;
+  letter-spacing: 2px;
+  text-shadow: 0 0 10px #0d6efd;
+}
+
+/* الإدخال */
+.lock-box input {
+  width: 100%;
+  padding: 12px;
+  margin: 15px 0;
+  font-size: 18px;
+  border-radius: 8px;
+  border: none;
+  outline: none;
+  text-align: center;
+  background: #111;
+  color: #0d6efd;
+  box-shadow: inset 0 0 10px rgba(13,110,253,.6);
+}
+
+/* زر الدخول */
+.lock-box button {
+  width: 100%;
+  padding: 12px;
+  font-size: 18px;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  color: #fff;
+  background: linear-gradient(135deg, #0d6efd, #6610f2);
+  box-shadow: 0 0 15px rgba(13,110,253,.8);
+  transition: transform .2s, box-shadow .2s;
+}
+
+.lock-box button:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 30px rgba(13,110,253,1);
+}
+
+/* رسالة الخطأ */
+.error-msg {
+  margin-top: 10px;
+  color: #ff4d4d;
+  display: none;
+  animation: shake .3s;
+}
+
+/* أنيميشن الدخول */
+@keyframes popIn {
+  from {
+    transform: scale(.7);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* اهتزاز عند الخطأ */
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-5px); }
+  75% { transform: translateX(5px); }
+}
+
+
 </style>
 </head>
 
 <body>
+
+<!-- طبقة القفل -->
+<div id="lockLayer" class="lock-layer">
+  <div class="lock-box">
+    <h2>🔐 ACCESS</h2>
+    <p>أدخل كلمة المرور للمتابعة</p>
+
+    <input type="password" id="passwordInput" placeholder="••••••">
+    <button onclick="checkPassword()">🚀 دخول</button>
+
+    <div id="loginError" class="error-msg">❌ كلمة المرور غير صحيحة</div>
+  </div>
+</div>
+
 
 <header>
     <h1>الرد على تقرير الجهاز المركزي للمحاسبات</h1>
@@ -1403,6 +1513,27 @@ function saveFinancialV7() {
 </script>
 
 
+<script>
+const APP_PASSWORD = "1550";
+
+/* تأكد إن القفل ظاهر دايمًا أول ما الصفحة تفتح */
+window.addEventListener("load", () => {
+  sessionStorage.removeItem("appUnlocked"); // 👈 إجبار ظهور القفل
+  document.getElementById("lockLayer").style.display = "flex";
+});
+
+function checkPassword() {
+  const input = document.getElementById("passwordInput").value;
+  const error = document.getElementById("loginError");
+
+  if (input === APP_PASSWORD) {
+    sessionStorage.setItem("appUnlocked", "true");
+    document.getElementById("lockLayer").style.display = "none";
+  } else {
+    error.style.display = "block";
+  }
+}
+</script>
 
 
 <script>
