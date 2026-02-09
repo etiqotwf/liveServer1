@@ -1780,7 +1780,6 @@ function searchInDB() {
     };
 }
 
-
 function backupDB() {
     const stores = ["general", "cars", "cards", "financial"];
     const backup = {};
@@ -1796,24 +1795,34 @@ function backupDB() {
             completed++;
 
             if (completed === stores.length) {
-                const blob = new Blob([JSON.stringify(backup)], { type: "application/json" });
+                const blob = new Blob(
+                    [JSON.stringify(backup, null, 2)],
+                    { type: "application/json" }
+                );
+
+                const url = URL.createObjectURL(blob);
                 const a = document.createElement("a");
-                a.href = URL.createObjectURL(blob);
+                a.href = url;
                 a.download = "inspection_backup.json";
+
+                document.body.appendChild(a); // مهم جدًا للموبايل
                 a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
             }
         };
     });
 }
 
-
 function restoreDB() {
     const input = document.createElement("input");
     input.type = "file";
-    input.accept = ".json";
+    input.accept = "application/json";
 
     input.onchange = e => {
         const file = e.target.files[0];
+        if (!file) return;
+
         const reader = new FileReader();
 
         reader.onload = () => {
@@ -1823,7 +1832,12 @@ function restoreDB() {
                 const tx = db.transaction(storeName, "readwrite");
                 const store = tx.objectStore(storeName);
 
-                data[storeName].forEach(item => store.add(item));
+                // مسح القديم
+                store.clear().onsuccess = () => {
+                    data[storeName].forEach(item => {
+                        store.put(item); // put أفضل من add
+                    });
+                };
             });
 
             alert("✅ تم استرجاع البيانات بنجاح");
@@ -1832,8 +1846,9 @@ function restoreDB() {
         reader.readAsText(file);
     };
 
-    input.click();
+    input.click(); // يعمل لأن الدالة من زر
 }
+
 
 
 function printFromDB() {
