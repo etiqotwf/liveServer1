@@ -1781,12 +1781,6 @@ function searchInDB() {
 }
 
 async function backupDB() {
-
-    if (!db) {
-        alert("❌ قاعدة البيانات غير جاهزة");
-        return;
-    }
-
     const stores = ["general", "cars", "cards", "financial"];
     const backup = {};
     let completed = 0;
@@ -1807,11 +1801,12 @@ async function backupDB() {
                     { type: "application/json" }
                 );
 
-                const file = new File([blob], "inspection_backup.json", {
-                    type: "application/json"
-                });
+                const file = new File(
+                    [blob],
+                    "inspection_backup.json",
+                    { type: "application/json" }
+                );
 
-                // ✅ موبايل فقط
                 if (navigator.canShare && navigator.canShare({ files: [file] })) {
                     await navigator.share({
                         title: "Backup",
@@ -1825,7 +1820,6 @@ async function backupDB() {
         };
     });
 }
-
 
 
 function restoreDB() {
