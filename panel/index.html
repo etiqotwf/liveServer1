@@ -1780,7 +1780,13 @@ function searchInDB() {
     };
 }
 
-function backupDB() {
+async function backupDB() {
+
+    if (!db) {
+        alert("❌ قاعدة البيانات غير جاهزة");
+        return;
+    }
+
     const stores = ["general", "cars", "cards", "financial"];
     const backup = {};
     let completed = 0;
@@ -1790,39 +1796,45 @@ function backupDB() {
         const store = tx.objectStore(storeName);
         const req = store.getAll();
 
-        req.onsuccess = () => {
+        req.onsuccess = async () => {
             backup[storeName] = req.result;
             completed++;
 
             if (completed === stores.length) {
+
                 const blob = new Blob(
                     [JSON.stringify(backup, null, 2)],
                     { type: "application/json" }
                 );
 
-                const url = URL.createObjectURL(blob);
-                const a = document.createElement("a");
-                a.href = url;
-                a.download = "inspection_backup.json";
+                const file = new File([blob], "inspection_backup.json", {
+                    type: "application/json"
+                });
 
-                document.body.appendChild(a); // مهم جدًا للموبايل
-                a.click();
-                document.body.removeChild(a);
-                URL.revokeObjectURL(url);
+                // ✅ موبايل فقط
+                if (navigator.canShare && navigator.canShare({ files: [file] })) {
+                    await navigator.share({
+                        title: "Backup",
+                        text: "نسخة احتياطية من التطبيق",
+                        files: [file]
+                    });
+                } else {
+                    alert("❌ جهازك لا يدعم مشاركة الملفات");
+                }
             }
         };
     });
 }
 
+
+
 function restoreDB() {
     const input = document.createElement("input");
     input.type = "file";
-    input.accept = "application/json";
+    input.accept = ".json";
 
     input.onchange = e => {
         const file = e.target.files[0];
-        if (!file) return;
-
         const reader = new FileReader();
 
         reader.onload = () => {
@@ -1832,12 +1844,7 @@ function restoreDB() {
                 const tx = db.transaction(storeName, "readwrite");
                 const store = tx.objectStore(storeName);
 
-                // مسح القديم
-                store.clear().onsuccess = () => {
-                    data[storeName].forEach(item => {
-                        store.put(item); // put أفضل من add
-                    });
-                };
+                data[storeName].forEach(item => store.add(item));
             });
 
             alert("✅ تم استرجاع البيانات بنجاح");
@@ -1846,9 +1853,8 @@ function restoreDB() {
         reader.readAsText(file);
     };
 
-    input.click(); // يعمل لأن الدالة من زر
+    input.click();
 }
-
 
 
 function printFromDB() {
