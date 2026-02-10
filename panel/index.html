@@ -570,6 +570,43 @@ th {
 
 
 
+#toolsToggleBtn {
+  width: 100%;
+  padding: 18px;
+font-size: 20px;
+letter-spacing: 1px;
+text-shadow: 0 0 8px rgba(255,255,255,.4);
+  font-weight: bold;
+  border-radius: 14px;
+  border: none;
+  cursor: pointer;
+  color: #fff;
+  background: linear-gradient(135deg, #2563eb, #0ea5e9);
+  box-shadow: 0 0 18px rgba(37,99,235,.7);
+  margin-bottom: 10px;
+  transition: .3s;
+}
+
+#toolsToggleBtn:hover {
+  transform: scale(1.02);
+}
+
+#toolsPanel {
+  overflow: hidden;
+  transition: all .5s ease;
+}
+
+#toolsPanel.closed {
+  max-height: 0;
+  opacity: 0;
+}
+
+#toolsPanel.open {
+  max-height: 800px;
+  opacity: 1;
+}
+
+
 
 </style>
 </head>
@@ -599,27 +636,32 @@ th {
     </p>
 </header>
 
+<!-- زر فتح / غلق أدوات التطبيق -->
+<button id="toolsToggleBtn" onclick="toggleTools()">
+  🛠️ أدوات التطبيق
+</button>
 
 <!-- صندوق الأدوات -->
+<div id="toolsPanel" class="closed">
 
   <div class="container section tools-box gaming-search">
 
-    <h2>🛠️ أدوات التطبيق</h2>
+      <h2>🛠️ أدوات التطبيق</h2>
 
-    <div class="search-panel">
-        <input type="text" id="searchInput" placeholder="🔍 ابحث برقم السيارة أو نوعها">
-        <button onclick="searchInDB()">بحث</button>
-    </div>
+      <div class="search-panel">
+          <input type="text" id="searchInput" placeholder="🔍 ابحث برقم السيارة أو نوعها">
+          <button onclick="searchInDB()">بحث</button>
+      </div>
 
-    <div class="tools-actions">
-        <button onclick="backupDB()">💾 Backup</button>
-        <button onclick="restoreDB()">♻️ Restore</button>
-        <button onclick="printFromDB()">🖨️ طباعة من قاعدة البيانات</button>
-    </div>
+      <div class="tools-actions">
+          <button onclick="backupDB()">💾 Backup</button>
+          <button onclick="restoreDB()">♻️ Restore</button>
+          <button onclick="printFromDB()">🖨️ طباعة من قاعدة البيانات</button>
+      </div>
+
+  </div>
 
 </div>
-
-
 
 
 
@@ -1831,6 +1873,21 @@ function printFromDB() {
     };
 }
 
+
+function toggleTools() {
+  const panel = document.getElementById("toolsPanel");
+  const btn = document.getElementById("toolsToggleBtn");
+
+  if (panel.classList.contains("closed")) {
+    panel.classList.remove("closed");
+    panel.classList.add("open");
+    btn.innerHTML = "❌ إغلاق أدوات التطبيق";
+  } else {
+    panel.classList.remove("open");
+    panel.classList.add("closed");
+    btn.innerHTML = "🛠️ أدوات التطبيق";
+  }
+}
 
 
 </script>
