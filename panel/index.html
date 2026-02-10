@@ -656,6 +656,9 @@ text-shadow: 0 0 8px rgba(255,255,255,.4);
       <div class="tools-actions">
           <button onclick="backupDB()">💾 Backup</button>
           <button onclick="restoreDB()">♻️ Restore</button>
+          <input type="file" id="restoreFile" accept=".json">
+<button onclick="restoreDBMobile()">استرجاع</button>
+
           <button onclick="printFromDB()">🖨️ طباعة من قاعدة البيانات</button>
       </div>
 
@@ -1888,6 +1891,65 @@ function toggleTools() {
     btn.innerHTML = "🛠️ أدوات التطبيق";
   }
 }
+
+
+
+function restoreDBMobile() {
+  const file = document.getElementById("restoreFile").files[0];
+  if (!file) return alert("اختر ملف أولاً");
+
+  const reader = new FileReader();
+  reader.onload = () => {
+    const data = JSON.parse(reader.result);
+
+    Object.keys(data).forEach(storeName => {
+      const tx = db.transaction(storeName, "readwrite");
+      const store = tx.objectStore(storeName);
+
+      data[storeName].forEach(item => store.put(item));
+    });
+
+    alert("✅ تم الاسترجاع بنجاح");
+  };
+
+  reader.readAsText(file);
+}
+
+
+
+function backupDBMobile() {
+  const stores = ["general", "cars", "cards", "financial"];
+  const backup = {};
+  let index = 0;
+
+  function readNext() {
+    if (index === stores.length) {
+      const blob = new Blob(
+        [JSON.stringify(backup, null, 2)],
+        { type: "application/json" }
+      );
+      const a = document.createElement("a");
+      a.href = URL.createObjectURL(blob);
+      a.download = "inspection_backup.json";
+      a.click();
+      return;
+    }
+
+    const storeName = stores[index];
+    const tx = db.transaction(storeName, "readonly");
+    const store = tx.objectStore(storeName);
+    const req = store.getAll();
+
+    req.onsuccess = () => {
+      backup[storeName] = req.result;
+      index++;
+      readNext();
+    };
+  }
+
+  readNext();
+}
+
 
 
 </script>
