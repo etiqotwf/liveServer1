@@ -654,8 +654,8 @@ text-shadow: 0 0 8px rgba(255,255,255,.4);
       </div>
 
       <div class="tools-actions">
-          <button onclick="backupDB()">💾 Backup</button>
-          <button onclick="restoreDB()">♻️ Restore</button>
+         <button onclick="backupDB()">📦 Backup</button>
+         <button onclick="restoreDB()">♻️ Restore</button>
           <button onclick="printFromDB()">🖨️ طباعة من قاعدة البيانات</button>
       </div>
 
@@ -1780,53 +1780,88 @@ function searchInDB() {
     };
 }
 
+async function backupDB() {
 
-function backupDB() {
+    if (!db) {
+        alert("❌ قاعدة البيانات غير جاهزة");
+        return;
+    }
+
     const stores = ["general", "cars", "cards", "financial"];
-    const backup = {};
-    let completed = 0;
+    const backupData = await readAllStores(db, stores);
+    const json = JSON.stringify(backupData, null, 2);
+    const blob = new Blob([json], { type: "application/json" });
 
-    stores.forEach(storeName => {
-        const tx = db.transaction(storeName, "readonly");
-        const store = tx.objectStore(storeName);
-        const req = store.getAll();
+    /* 🟢 Android Chrome */
+    if (window.showSaveFilePicker) {
+        const handle = await showSaveFilePicker({
+            suggestedName: "inspection_backup.json",
+            types: [{
+                description: "JSON",
+                accept: { "application/json": [".json"] }
+            }]
+        });
 
-        req.onsuccess = () => {
-            backup[storeName] = req.result;
-            completed++;
+        const writable = await handle.createWritable();
+        await writable.write(blob);
+        await writable.close();
+        return;
+    }
 
-            if (completed === stores.length) {
-                const blob = new Blob([JSON.stringify(backup)], { type: "application/json" });
-                const a = document.createElement("a");
-                a.href = URL.createObjectURL(blob);
-                a.download = "inspection_backup.json";
-                a.click();
-            }
-        };
-    });
+    /* 🟡 iOS + Mobile */
+    if (navigator.canShare) {
+        const file = new File([blob], "inspection_backup.json", {
+            type: "application/json"
+        });
+
+        await navigator.share({
+            title: "Backup",
+            files: [file]
+        });
+        return;
+    }
+
+    /* 🔵 Desktop fallback */
+    const a = document.createElement("a");
+    const url = URL.createObjectURL(blob);
+    a.href = url;
+    a.download = "inspection_backup.json";
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
 }
-
-
 function restoreDB() {
+
     const input = document.createElement("input");
     input.type = "file";
-    input.accept = ".json";
+    input.accept = "application/json";
 
     input.onchange = e => {
         const file = e.target.files[0];
+        if (!file) return;
+
         const reader = new FileReader();
 
-        reader.onload = () => {
+        reader.onload = async () => {
             const data = JSON.parse(reader.result);
 
-            Object.keys(data).forEach(storeName => {
+            for (const storeName in data) {
                 const tx = db.transaction(storeName, "readwrite");
                 const store = tx.objectStore(storeName);
 
-                data[storeName].forEach(item => store.add(item));
-            });
+                // مسح القديم
+                await new Promise(res => {
+                    store.clear().onsuccess = res;
+                });
 
-            alert("✅ تم استرجاع البيانات بنجاح");
+                // إدخال الجديد
+                data[storeName].forEach(item => {
+                    store.put(item); // put = آمن
+                });
+            }
+
+            alert("✅ تم الاسترجاع بنجاح");
         };
 
         reader.readAsText(file);
@@ -1888,6 +1923,33 @@ function toggleTools() {
     btn.innerHTML = "🛠️ أدوات التطبيق";
   }
 }
+
+
+async function readAllStores(db, stores) {
+    const result = {};
+
+    for (const storeName of stores) {
+        result[storeName] = [];
+
+        const tx = db.transaction(storeName, "readonly");
+        const store = tx.objectStore(storeName);
+
+        await new Promise(resolve => {
+            store.openCursor().onsuccess = e => {
+                const cursor = e.target.result;
+                if (cursor) {
+                    result[storeName].push(cursor.value);
+                    cursor.continue();
+                } else {
+                    resolve();
+                }
+            };
+        });
+    }
+
+    return result;
+}
+
 
 
 </script>
