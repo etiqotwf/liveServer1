@@ -1780,45 +1780,49 @@ function searchInDB() {
     };
 }
 
-async function backupDB() {
+function backupDB() {
+
     const stores = ["general", "cars", "cards", "financial"];
     const backup = {};
-    let completed = 0;
+    let storeIndex = 0;
 
-    stores.forEach(storeName => {
+    function readNextStore() {
+
+        if (storeIndex >= stores.length) {
+            // ✅ هنا ما زلنا داخل نفس السياق
+            const json = JSON.stringify(backup, null, 2);
+            const blob = new Blob([json], { type: "application/json" });
+            const url = URL.createObjectURL(blob);
+
+            const a = document.createElement("a");
+            a.href = url;
+            a.download = "inspection_backup.json";
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            return;
+        }
+
+        const storeName = stores[storeIndex];
+        backup[storeName] = [];
+
         const tx = db.transaction(storeName, "readonly");
         const store = tx.objectStore(storeName);
-        const req = store.getAll();
 
-        req.onsuccess = async () => {
-            backup[storeName] = req.result;
-            completed++;
-
-            if (completed === stores.length) {
-
-                const blob = new Blob(
-                    [JSON.stringify(backup, null, 2)],
-                    { type: "application/json" }
-                );
-
-                const file = new File(
-                    [blob],
-                    "inspection_backup.json",
-                    { type: "application/json" }
-                );
-
-                if (navigator.canShare && navigator.canShare({ files: [file] })) {
-                    await navigator.share({
-                        title: "Backup",
-                        text: "نسخة احتياطية من التطبيق",
-                        files: [file]
-                    });
-                } else {
-                    alert("❌ جهازك لا يدعم مشاركة الملفات");
-                }
+        store.openCursor().onsuccess = e => {
+            const cursor = e.target.result;
+            if (cursor) {
+                backup[storeName].push(cursor.value);
+                cursor.continue();
+            } else {
+                storeIndex++;
+                readNextStore(); // 👉 التالي
             }
         };
-    });
+    }
+
+    readNextStore(); // البداية
 }
 
 
