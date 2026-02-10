@@ -1780,49 +1780,48 @@ function searchInDB() {
     };
 }
 
-function backupDB() {
+async function backupDB() {
+
+    if (!window.showSaveFilePicker) {
+        alert("❌ المتصفح لا يدعم حفظ الملفات مباشرة");
+        return;
+    }
 
     const stores = ["general", "cars", "cards", "financial"];
     const backup = {};
-    let storeIndex = 0;
 
-    function readNextStore() {
-
-        if (storeIndex >= stores.length) {
-            // ✅ هنا ما زلنا داخل نفس السياق
-            const json = JSON.stringify(backup, null, 2);
-            const blob = new Blob([json], { type: "application/json" });
-            const url = URL.createObjectURL(blob);
-
-            const a = document.createElement("a");
-            a.href = url;
-            a.download = "inspection_backup.json";
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-            URL.revokeObjectURL(url);
-            return;
-        }
-
-        const storeName = stores[storeIndex];
+    // 1️⃣ اقرأ البيانات
+    for (const storeName of stores) {
         backup[storeName] = [];
 
         const tx = db.transaction(storeName, "readonly");
         const store = tx.objectStore(storeName);
 
-        store.openCursor().onsuccess = e => {
-            const cursor = e.target.result;
-            if (cursor) {
-                backup[storeName].push(cursor.value);
-                cursor.continue();
-            } else {
-                storeIndex++;
-                readNextStore(); // 👉 التالي
-            }
-        };
+        await new Promise(resolve => {
+            store.openCursor().onsuccess = e => {
+                const cursor = e.target.result;
+                if (cursor) {
+                    backup[storeName].push(cursor.value);
+                    cursor.continue();
+                } else {
+                    resolve();
+                }
+            };
+        });
     }
 
-    readNextStore(); // البداية
+    // 2️⃣ هنا يظهر Save Dialog (User Gesture محفوظ)
+    const handle = await showSaveFilePicker({
+        suggestedName: "inspection_backup.json",
+        types: [{
+            description: "JSON",
+            accept: { "application/json": [".json"] }
+        }]
+    });
+
+    const writable = await handle.createWritable();
+    await writable.write(JSON.stringify(backup, null, 2));
+    await writable.close();
 }
 
 
