@@ -1780,48 +1780,57 @@ function searchInDB() {
     };
 }
 
-async function backupDB() {
-
-    if (!window.showSaveFilePicker) {
-        alert("❌ المتصفح لا يدعم حفظ الملفات مباشرة");
+function backupDB() {
+    if (!db) {
+        alert("قاعدة البيانات غير جاهزة");
         return;
     }
 
-    const stores = ["general", "cars", "cards", "financial"];
-    const backup = {};
+    const backup = {
+        general: [],
+        cars: [],
+        cards: [],
+        financial: []
+    };
 
-    // 1️⃣ اقرأ البيانات
-    for (const storeName of stores) {
-        backup[storeName] = [];
+    let pending = 4;
 
-        const tx = db.transaction(storeName, "readonly");
-        const store = tx.objectStore(storeName);
-
-        await new Promise(resolve => {
-            store.openCursor().onsuccess = e => {
-                const cursor = e.target.result;
-                if (cursor) {
-                    backup[storeName].push(cursor.value);
-                    cursor.continue();
-                } else {
-                    resolve();
-                }
-            };
-        });
+    function done() {
+        pending--;
+        if (pending === 0) {
+            downloadBackup(backup);
+        }
     }
 
-    // 2️⃣ هنا يظهر Save Dialog (User Gesture محفوظ)
-    const handle = await showSaveFilePicker({
-        suggestedName: "inspection_backup.json",
-        types: [{
-            description: "JSON",
-            accept: { "application/json": [".json"] }
-        }]
-    });
+    ["general", "cars", "cards", "financial"].forEach(storeName => {
+        const tx = db.transaction(storeName, "readonly");
+        const store = tx.objectStore(storeName);
+        const req = store.getAll();
 
-    const writable = await handle.createWritable();
-    await writable.write(JSON.stringify(backup, null, 2));
-    await writable.close();
+        req.onsuccess = () => {
+            backup[storeName] = req.result;
+            done();
+        };
+
+        req.onerror = done;
+    });
+}
+
+function downloadBackup(data) {
+    const json = JSON.stringify(data, null, 2);
+    const blob = new Blob([json], { type: "application/json" });
+
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = "CentralAuditBackup.json";
+
+    document.body.appendChild(a);
+    a.click();
+
+    setTimeout(() => {
+        URL.revokeObjectURL(a.href);
+        a.remove();
+    }, 100);
 }
 
 
