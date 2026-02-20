@@ -1,0 +1,910 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+
+<script src="libs/html2canvas.min.js"></script>
+<script src="libs/jspdf.umd.min.js"></script>
+
+
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تقييم الدورة التدريبية</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #1e1e2e;
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 20px;
+        }
+
+        .container {
+            background: #282a36;
+            padding: 30px;
+            border-radius: 10px;
+            width: 100%;
+            max-width: 700px;
+        }
+
+       h1, h2 {
+    text-align: center;
+    font-size: 30px;
+    font-weight: bold;
+    position: relative;
+    margin-bottom: 20px;
+}
+
+h2::after {
+    content: "";
+    display: block;
+    width: 60%;
+    height: 5px;
+    background-color: #ff79c6;
+    margin: 15px auto 0;
+    border-radius: 5px;
+}
+
+
+        label {
+            display: block;
+            margin-top: 15px;
+            font-size: 30px;
+        }
+
+        select, input[type="text"], textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border-radius: 5px;
+            border: none;
+            font-size: 16px;
+        }
+
+        textarea {
+            resize: vertical;
+            height: 80px;
+        }
+
+        .btn {
+            background: #ff5555;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            cursor: pointer;
+            border-radius: 5px;
+            margin-top: 20px;
+            font-size: 20px;
+            font-weight: bolder;
+            width: 100%;
+        }
+
+        .btn:hover {
+            background: #ff79c6;
+        }
+
+
+.header {
+    text-align: center;
+    margin-top: -20px;
+    margin-bottom: 20px;
+}
+
+.header h1 {
+    font-size: 40px;
+    font-weight: bold;
+    margin: 10px 0 5px;
+    color: #ffffff;
+}
+
+.header h2 {
+    font-size: 30px;
+    font-weight: bold;
+    margin: 0;
+    color: #ffffff;
+}
+
+.dtc {
+    font-size: 30px;
+    color: #ff79c6;
+    font-weight: bold;
+}
+
+
+select, input[type="text"], textarea {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    border-radius: 5px;
+    border: none;
+    font-size: 25px;
+    font-weight: bold;
+    color: #000; /* لون الكتابة داخل البوكسات */
+}
+
+
+
+input[list], select {
+    font-size: 20px;
+    font-weight: bold;
+    height: 50px;
+    padding: 10px;
+    border-radius: 5px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+
+#evaluationModal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.85);
+    display: flex; /* بدلاً من none مؤقتاً */
+    justify-content: center;
+    align-items: flex-start; /* ✅ المحاذاة من الأعلى */
+    z-index: 9999;
+    padding-top: 40px; /* مسافة من الأعلى */
+}
+
+
+#evaluationsDisplay {
+    width: 98%;
+    height: 95%;
+    background-color: transparent;
+    border-radius: 15px;
+    overflow-y: auto;
+    padding: 30px;
+    direction: rtl;
+    margin: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#evaluationsDisplay table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 30px; /* ✅ تكبير الخط */
+    font-weight: bold;
+    background-color: #ffffff;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+    color: #111;
+}
+
+#evaluationsDisplay th {
+    background-color: #004466;
+    color: white;
+    padding: 15px;
+    border: 1px solid #ccc;
+    text-align: center;
+    font-size: 21px;
+}
+
+#evaluationsDisplay td {
+    background-color: #ffffff;
+    color: #111;
+    padding: 14px;
+    border: 1px solid #ccc;
+    text-align: center;
+    font-size: 20px;
+}
+
+#evaluationsDisplay thead {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+}
+
+#evaluationsDisplay tbody tr:nth-child(even) {
+    background-color: #f5f5f5;
+}
+
+#evaluationsDisplay tbody tr:hover {
+    background-color: #d0f0ff;
+}
+
+
+
+
+
+
+
+    </style>
+</head>
+<body>
+
+    
+    <div class="container">
+<div class="header">
+    <h1>مركز تدريب الصرف بطنطا</h1>
+    <h2>Drainage Training Center - Tanta <span class="dtc">(DTC)</span></h2>
+</div>
+        <h2>نموذج تقييم الدورة التدريبية</h2>
+
+        <label>اسم المتدرب:</label>
+        <input type="text" id="traineeName">
+
+        <label>رقم الهاتف:</label>
+        <input type="text" id="traineePhone">
+
+        <label>اسم الدورة:</label>
+<input type="text" id="courseName" list="courseList" placeholder="اكتب أو اختر اسم الدورة">
+<datalist id="courseList"></datalist>
+
+        <label>تقييم المدرب:</label>
+        <select id="trainerRating">
+            <option>ممتاز</option>
+            <option>جيد جداً</option>
+            <option>جيد</option>
+            <option>مقبول</option>
+            <option>ضعيف</option>
+        </select>
+
+        <label>تقييم المادة العلمية:</label>
+        <select id="contentRating">
+            <option>ممتاز</option>
+            <option>جيد جداً</option>
+            <option>جيد</option>
+            <option>مقبول</option>
+            <option>ضعيف</option>
+        </select>
+
+        <label>تقييم الاقامة والتنظيم:</label>
+        <select id="timeRating">
+            <option>ممتاز</option>
+            <option>جيد جداً</option>
+            <option>جيد</option>
+            <option>مقبول</option>
+            <option>ضعيف</option>
+        </select>
+
+        <label>ملاحظات إضافية:</label>
+        <textarea id="comments" placeholder="اكتب ملاحظاتك إن وجدت..."></textarea>
+
+        <button class="btn" onclick="submitEvaluation()">
+  📝 إرسال التقييم
+</button>
+
+<button class="btn" onclick="showEvaluations()">
+  📊 عرض التقييمات
+</button>
+
+<button class="btn" onclick="backupData()">
+  💾 عمل نسخة احتياطية
+</button>
+
+<button class="btn" onclick="restoreData()">
+  ♻️ استعادة البيانات
+</button>
+
+
+
+    </div>
+
+    <!-- نافذة عرض التقييمات -->
+<div id="evaluationModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:#1e1e2ecc; z-index:1000; padding:10px; overflow-y:auto;">
+<div style="
+    position: relative;
+    background: #282a36;
+    border-radius: 10px;
+    padding: 20px;
+    width: 100%;
+    max-width: 1000px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+">
+        
+        <!-- زر الإغلاق على يسار الجدول ومحاذي له -->
+        <button onclick="closeEvaluations()" 
+            style="
+                position: absolute;
+                top: 5px;
+                right: 10px;
+                background: #ff5555;
+                color: white;
+                border: none;
+                padding: 10px 20px;
+                border-radius: 5px;
+                cursor: pointer;
+                font-size: 16px;
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                transition: background 0.3s ease;
+            "
+            onmouseover="this.style.background='#ff3333';"
+            onmouseout="this.style.background='#ff5555';">
+            <span style="font-weight: bold; font-size: 18px;">&#10005;</span>
+            إغلاق
+        </button>
+
+        <!-- عنوان التقييمات -->
+        <h2 style="text-align:center; margin-top:10px; margin-bottom:10px; font-size:30px;">جميع التقييمات</h2>
+
+       <div style="display: flex; justify-content: center; align-items: center; gap: 10px; margin-bottom: 20px;">
+  <input type="text" id="searchInput" placeholder="ابحث بالاسم أو الدورة أو المدرب..." 
+    style="padding: 10px; width: 300px; font-size: 16px; border-radius: 5px; border: 1px solid #ccc;">
+  <button onclick="searchEvaluations()" 
+    style="padding: 10px 20px; font-size: 20px; border-radius: 5px; background-color: #004466; color: white; cursor: pointer;">
+    🔍 بحث
+  </button>
+  <button onclick="printSearchResults()" 
+    style="padding: 10px 20px; font-size: 20px; border-radius: 5px; background-color: #00695c; color: white; cursor: pointer;">
+    🖨️ طباعة PDF
+  </button>
+</div>
+
+
+
+
+
+        <div id="evaluationsDisplay"></div>
+    </div>
+</div>
+
+
+  <!-- عبارة التصميم في أقصى اليسار -->
+  <div style="
+  position: absolute;
+  top: 80px; /* أنزل العنصر لأسفل */
+  left: 70px;
+  font-size: 14px; /* تكبير الخط */
+  font-weight: 800;
+    background: whitesmoke;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  user-select: none;
+">
+
+    🎨     Designed by Ahmed Amer
+
+
+  
+
+   
+  <!-- الصورة الدائرية في أعلى اليسار -->
+  <img src="logo.jpg" alt="الشعار" style="
+    top: 80;
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    object-fit: cover;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  ">
+
+
+  </div>
+<div style="
+  position: fixed;
+  top: 80px;
+  right: 80px;
+  font-size: 100px;
+  font-weight: bold;
+  color: gold;
+">
+  📝 
+</div>
+
+
+<script>
+document.body.addEventListener("click", function () {
+    if (!document.fullscreenElement) {
+        const elem = document.documentElement; // يمكن استخدام body أيضاً
+        if (elem.requestFullscreen) {
+            elem.requestFullscreen();
+        } else if (elem.webkitRequestFullscreen) { // Safari
+            elem.webkitRequestFullscreen();
+        } else if (elem.msRequestFullscreen) { // IE11
+            elem.msRequestFullscreen();
+        }
+    }
+});
+</script>
+
+    <script>
+    // قاعدة بيانات التقييمات
+    let db;
+    const request = indexedDB.open("CourseEvaluationDB", 1);
+
+    request.onupgradeneeded = function (event) {
+        db = event.target.result;
+        if (!db.objectStoreNames.contains("Evaluations")) {
+            db.createObjectStore("Evaluations", { keyPath: "id", autoIncrement: true });
+        }
+    };
+
+    request.onsuccess = function (event) {
+        db = event.target.result;
+        console.log("✅ تم فتح قاعدة بيانات التقييمات.");
+    };
+
+    request.onerror = function () {
+        console.error("❌ خطأ في فتح قاعدة بيانات التقييمات.");
+    };
+
+    // قاعدة بيانات أسماء الدورات
+    let courseDB;
+    const courseDBRequest = indexedDB.open("CoursesDB", 1);
+
+    courseDBRequest.onupgradeneeded = function (event) {
+        courseDB = event.target.result;
+        if (!courseDB.objectStoreNames.contains("courses")) {
+            courseDB.createObjectStore("courses", { keyPath: "name" });
+        }
+    };
+
+    courseDBRequest.onsuccess = function (event) {
+        courseDB = event.target.result;
+        loadCourses(); // تحميل أسماء الدورات عند الفتح
+    };
+
+    courseDBRequest.onerror = function () {
+        console.error("❌ خطأ في فتح قاعدة بيانات الدورات.");
+    };
+
+    function saveCourseName(courseName) {
+        const tx = courseDB.transaction("courses", "readwrite");
+        const store = tx.objectStore("courses");
+        const getReq = store.get(courseName);
+        getReq.onsuccess = function () {
+            if (!getReq.result) {
+                store.add({ name: courseName });
+            }
+        };
+    }
+
+    function loadCourses() {
+        const tx = courseDB.transaction("courses", "readonly");
+        const store = tx.objectStore("courses");
+        const request = store.openCursor();
+        const dataList = document.getElementById("courseList");
+        dataList.innerHTML = "";
+        request.onsuccess = function (e) {
+            const cursor = e.target.result;
+            if (cursor) {
+                const option = document.createElement("option");
+                option.value = cursor.value.name;
+                dataList.appendChild(option);
+                cursor.continue();
+            }
+        };
+    }
+
+    function submitEvaluation() {
+        const traineeName = document.getElementById("traineeName").value.trim();
+        const traineePhone = document.getElementById("traineePhone").value.trim();
+        const courseName = document.getElementById("courseName").value;
+        const trainerRating = document.getElementById("trainerRating").value;
+        const contentRating = document.getElementById("contentRating").value;
+        const timeRating = document.getElementById("timeRating").value;
+        const comments = document.getElementById("comments").value.trim();
+
+        if (!traineeName || !traineePhone) {
+            alert("من فضلك أدخل اسمك ورقم الهاتف.");
+            return;
+        }
+
+        // ✅ حفظ اسم الدورة في قاعدة بيانات الدورات
+        saveCourseName(courseName);
+
+        const evaluation = {
+            name: traineeName,
+            phone: traineePhone,
+            course: courseName,
+            trainer: trainerRating,
+            content: contentRating,
+            time: timeRating,
+            comments: comments,
+            date: new Date().toISOString()
+        };
+
+        const transaction = db.transaction(["Evaluations"], "readwrite");
+        const store = transaction.objectStore("Evaluations");
+        const addRequest = store.add(evaluation);
+
+        addRequest.onsuccess = function () {
+            alert("✅ تم إرسال التقييم بنجاح. شكراً لمشاركتك!");
+            document.getElementById("traineeName").value = "";
+            document.getElementById("traineePhone").value = "";
+            document.getElementById("courseName").value = "";
+            document.getElementById("trainerRating").selectedIndex = 0;
+            document.getElementById("contentRating").selectedIndex = 0;
+            document.getElementById("timeRating").selectedIndex = 0;
+            document.getElementById("comments").value = "";
+        };
+
+        addRequest.onerror = function () {
+            alert("❌ حدث خطأ أثناء حفظ التقييم. حاول مرة أخرى.");
+        };
+    }
+
+  function showEvaluations() {
+    const modal = document.getElementById("evaluationModal");
+    const displayDiv = document.getElementById("evaluationsDisplay");
+    modal.style.display = "block";
+    displayDiv.innerHTML = "<p style='text-align:center;'>جارٍ تحميل التقييمات...</p>";
+
+    // ✅ التحقق من فتح قاعدة البيانات
+    if (!db) {
+        const request = indexedDB.open("CourseEvaluationDB", 1);
+
+        request.onsuccess = function (event) {
+            db = event.target.result;
+            loadEvaluations(); // بعد التأكد من فتح القاعدة، نستدعي الدالة
+        };
+
+        request.onerror = function () {
+            displayDiv.innerHTML = "<p>فشل في فتح قاعدة البيانات.</p>";
+        };
+    } else {
+        loadEvaluations(); // القاعدة مفتوحة بالفعل
+    }
+
+    // ✅ دالة تحميل التقييمات
+    function loadEvaluations() {
+        const transaction = db.transaction(["Evaluations"], "readonly");
+        const store = transaction.objectStore("Evaluations");
+        const request = store.getAll();
+
+        request.onsuccess = function (event) {
+            const evaluations = event.target.result;
+
+            if (evaluations.length === 0) {
+                displayDiv.innerHTML = "<p style='text-align:center;'>لا توجد تقييمات حتى الآن.</p>";
+                return;
+            }
+
+            let html = `
+                <table style="width: 100%; border-collapse: collapse; background: #444; color: white; border-radius: 10px; overflow: hidden; font-size: 18px;">
+                    <thead>
+                        <tr style="background: #ff5555; text-align: center;">
+                            <th style="padding: 12px;">الاسم</th>
+                            <th style="padding: 12px;">الهاتف</th>
+                            <th style="padding: 12px;">الدورة</th>
+                            <th style="padding: 12px;">المدرب</th>
+                            <th style="padding: 12px;">المادة العلمية</th>
+                            <th style="padding: 12px;">الإقامة والتنظيم</th>
+                            <th style="padding: 12px;">ملاحظات</th>
+                            <th style="padding: 30px;">التاريخ</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            `;
+
+            evaluations.forEach(ev => {
+                html += `
+                    <tr style="border-top: 1px solid #666; text-align: center;">
+                        <td style="padding: 12px;">${ev.name}</td>
+                        <td style="padding: 12px;">${ev.phone}</td>
+                        <td style="padding: 12px;">${ev.course}</td>
+                        <td style="padding: 12px;">${ev.trainer}</td>
+                        <td style="padding: 12px;">${ev.content}</td>
+                        <td style="padding: 12px;">${ev.time}</td>
+                        <td style="padding: 12px;">${ev.comments || "-"}</td>
+                        <td style="padding: 12px; font-size: 14px;">${new Date(ev.date).toLocaleString("ar-EG")}</td>
+                    </tr>
+                `;
+            });
+
+            html += `</tbody></table>`;
+            displayDiv.innerHTML = html;
+        };
+
+        request.onerror = function () {
+            displayDiv.innerHTML = "<p>حدث خطأ أثناء تحميل التقييمات.</p>";
+        };
+    }
+}
+
+
+function closeEvaluations() {
+    document.getElementById("evaluationModal").style.display = "none";
+}
+
+
+
+function searchEvaluations() {
+  const searchTerm = document.getElementById("searchInput").value.trim().toLowerCase();
+  const display = document.getElementById("evaluationsDisplay");
+
+  if (!searchTerm) return;
+
+  const request = indexedDB.open("CourseEvaluationDB", 1);
+
+  request.onsuccess = function (event) {
+    const db = event.target.result;
+    const transaction = db.transaction("Evaluations", "readonly");
+    const store = transaction.objectStore("Evaluations");
+
+    const results = [];
+    store.openCursor().onsuccess = function (event) {
+      const cursor = event.target.result;
+      if (cursor) {
+        const item = cursor.value;
+
+        // ابحث داخل كل الحقول المهمة
+        const values = [
+          item.name,
+          item.phone,
+          item.course,
+          item.trainer,
+          item.content,
+          item.time,
+          item.comments,
+          item.date
+        ];
+
+        const match = values.some(v => v && v.toLowerCase().includes(searchTerm));
+        if (match) results.push(item);
+
+        cursor.continue();
+      } else {
+        displaySearchResults(results);
+      }
+    };
+  };
+
+  request.onerror = function () {
+    display.innerHTML = "<p>فشل في فتح قاعدة البيانات أثناء البحث.</p>";
+  };
+}
+
+
+
+function displaySearchResults(dataArray) {
+  const container = document.getElementById("evaluationsDisplay");
+
+  if (dataArray.length === 0) {
+    container.innerHTML = "<p style='color:white; text-align:center;'>لا توجد نتائج مطابقة.</p>";
+    return;
+  }
+
+  let html = `
+    <table style="width: 100%; border-collapse: collapse; background: #444; color: white; font-size: 18px;">
+      <thead>
+        <tr style="background: #007bff;">
+          <th style="padding:10px;">اسم المتدرب</th>
+          <th style="padding:10px;">رقم الهاتف</th>
+          <th style="padding:10px;">اسم الدورة</th>
+          <th style="padding:10px;">تقييم المدرب</th>
+          <th style="padding:10px;">تقييم المادة</th>
+          <th style="padding:10px;">تقييم الاقامة والتنظيم</th>
+          <th style="padding:10px;">ملاحظات</th>
+          <th style="padding:10px;">التاريخ</th>
+        </tr>
+      </thead>
+      <tbody>
+  `;
+
+  dataArray.forEach(item => {
+    html += `
+      <tr style="text-align: center; border-top: 1px solid #666;">
+        <td style="padding:10px;">${item.name || ""}</td>
+        <td style="padding:10px;">${item.phone || ""}</td>
+        <td style="padding:10px;">${item.course || ""}</td>
+        <td style="padding:10px;">${item.trainer || ""}</td>
+        <td style="padding:10px;">${item.content || ""}</td>
+        <td style="padding:10px;">${item.time || ""}</td>
+        <td style="padding:10px;">${item.comments || "-"}</td>
+        <td style="padding:10px;">${new Date(item.date).toLocaleString("ar-EG")}</td>
+      </tr>
+    `;
+  });
+
+  html += "</tbody></table>";
+  container.innerHTML = html;
+}
+
+
+
+function printSearchResults() {
+  const displayDiv = document.getElementById("evaluationsDisplay");
+
+  // تحقق من وجود نتائج
+  if (!displayDiv || displayDiv.innerText.trim() === "" || displayDiv.innerText.includes("لا توجد نتائج")) {
+    alert("No results to print.");
+    return;
+  }
+
+  // استخدم html2canvas و jsPDF
+  html2canvas(displayDiv).then(canvas => {
+    const imgData = canvas.toDataURL("image/png");
+    const { jsPDF } = window.jspdf;
+    const pdf = new jsPDF("l", "mm", "a4");
+
+    const pdfWidth = pdf.internal.pageSize.getWidth();
+    const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
+
+    // توليد التاريخ والوقت الحالي
+    const now = new Date();
+    const formattedDate = now.toLocaleString("en-GB", {
+      day: "2-digit",
+      month: "2-digit",
+      year: "numeric",
+      hour: "2-digit",
+      minute: "2-digit"
+    }).replace(",", " -");
+
+    // إضافة العنوان مع التاريخ والوقت
+    pdf.setFont("Helvetica", "bold");
+    pdf.setFontSize(20);
+// العنوان الرئيسي مع التاريخ
+pdf.setFont("Helvetica", "bold");
+pdf.setFontSize(20);
+pdf.text(`Course Evaluation Form - ${formattedDate}`, pdfWidth / 2, 15, { align: "center" });
+
+// العنوان الفرعي
+pdf.setFontSize(19);
+pdf.text("Drainage Training Center - Tanta (DTC)", pdfWidth / 2, 23, { align: "center" });
+
+    // إضافة الصورة أسفل العنوان
+    pdf.addImage(imgData, "PNG", 0, 25, pdfWidth, pdfHeight);
+    pdf.save("Search_Results.pdf");
+  });
+}
+
+
+function backupData() {
+  const exportObj = {};
+
+  const db1Request = indexedDB.open("CourseEvaluationDB", 1);
+  db1Request.onsuccess = function (event) {
+    const db1 = event.target.result;
+    const tx1 = db1.transaction("Evaluations", "readonly");
+    const store1 = tx1.objectStore("Evaluations");
+    store1.getAll().onsuccess = function (event1) {
+      exportObj["CourseEvaluationDB"] = event1.target.result;
+
+      const db2Request = indexedDB.open("CoursesDB", 1);
+      db2Request.onsuccess = function (event2) {
+        const db2 = event2.target.result;
+        const tx2 = db2.transaction("courses", "readonly");
+        const store2 = tx2.objectStore("courses");
+        store2.getAll().onsuccess = function (event3) {
+          exportObj["CoursesDB"] = event3.target.result;
+
+          // تصدير الملف
+          const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(exportObj));
+          const downloadAnchor = document.createElement("a");
+          downloadAnchor.setAttribute("href", dataStr);
+          downloadAnchor.setAttribute("download", "backup_indexeddb.json");
+          document.body.appendChild(downloadAnchor);
+          downloadAnchor.click();
+          document.body.removeChild(downloadAnchor);
+        };
+      };
+    };
+  };
+}
+
+function restoreData() {
+  const input = document.createElement("input");
+  input.type = "file";
+  input.accept = ".json";
+
+  input.onchange = function (event) {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = function (e) {
+      const jsonData = JSON.parse(e.target.result);
+
+      // استعادة قاعدة CourseEvaluationDB
+      const db1Request = indexedDB.open("CourseEvaluationDB", 1);
+      db1Request.onsuccess = function (event1) {
+        const db1 = event1.target.result;
+        const tx1 = db1.transaction("Evaluations", "readwrite");
+        const store1 = tx1.objectStore("Evaluations");
+
+        jsonData["CourseEvaluationDB"].forEach(item => {
+          store1.put(item);
+        });
+
+        // استعادة CoursesDB
+        const db2Request = indexedDB.open("CoursesDB", 1);
+        db2Request.onsuccess = function (event2) {
+          const db2 = event2.target.result;
+          const tx2 = db2.transaction("courses", "readwrite");
+          const store2 = tx2.objectStore("courses");
+
+          jsonData["CoursesDB"].forEach(item => {
+            store2.put(item);
+          });
+
+          alert("✅ تم استعادة قواعد البيانات بنجاح.");
+        };
+      };
+    };
+    reader.readAsText(file);
+  };
+
+  input.click();
+}
+
+
+
+
+</script>
+
+
+
+<script>
+    // إنشاء قاعدة البيانات
+    let db;
+    const request = indexedDB.open("CourseEvaluationDB", 1);
+
+    request.onupgradeneeded = function (event) {
+        db = event.target.result;
+        if (!db.objectStoreNames.contains("Evaluations")) {
+            db.createObjectStore("Evaluations", { keyPath: "id", autoIncrement: true });
+        }
+    };
+
+    request.onsuccess = function (event) {
+        db = event.target.result;
+        console.log("✅ تم فتح قاعدة بيانات التقييمات.");
+        fetchAndStoreData();
+    };
+
+    request.onerror = function () {
+        console.error("❌ خطأ في فتح قاعدة بيانات التقييمات.");
+    };
+
+    function fetchAndStoreData() {
+        fetch("https://script.google.com/macros/s/AKfycbz1LoEPJYiPa0ptSxef9riXHt4zuPZk39BdjlcEXvvtspiGVGDt-r4Eq0DZnYfn7ZnuPw/exec")
+            .then(response => response.json())
+            .then(data => {
+                const tx = db.transaction("Evaluations", "readwrite");
+                const store = tx.objectStore("Evaluations");
+
+                // امسح القديم
+                store.clear();
+
+                // أضف الجديد
+                data.forEach((row, index) => {
+                    const record = {
+                        id: index + 1,
+                        name: row["👤 الاسم "] || "",
+                        phone: row["📞  الهاتف"] || "",
+                        email: row["📧 البريد الإلكتروني"] || "",
+                        department: row["🏢 الإدارة"] || "",
+                        qualification: row["🎓 المؤهل"] || "",
+                        jobTitle: row["💼 الوظيفة"] || "",
+                        residencyStatus: row["🏨  الإقامة"] || "",
+                        courseName: row["📘 اسم الدورة"] || "",
+                        startDate: row["📅  بداية الدورة"] || "",
+                        endDate: row["📅  نهاية الدورة"] || "",
+                        trainerRating: row["🧑‍🏫  المدرب"] || "",
+                        contentRating: row["📖  المادة العلمية"] || "",
+                        organizationRating: row["🏢  التنظيم  "] || "",
+                        residencyRating: row["🏨  الإقامة"] || "",
+                        comments: row["📝 ملاحظات "] || "",
+                        timestamp: row["📅  والوقت"] || ""
+                    };
+
+                    store.add(record);
+                });
+
+                tx.oncomplete = () => {
+                    console.log("✅ تم تحديث بيانات التقييمات من Google Sheet.");
+                };
+            })
+            .catch(error => {
+                console.error("❌ فشل في جلب البيانات من Google Sheet:", error);
+            });
+    }
+</script>
+
+
+</body>
+</html>

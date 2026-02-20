@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const form = document.querySelector("form");
+    const submitBtn = form.querySelector("button[type='submit']");
+
+    form.addEventListener("submit", function () {
+      submitBtn.disabled = true;
+      submitBtn.textContent = "📤 جارٍ الإرسال..."; // يمكن تعديل النص حسب الحاجة
+    });
+  });
+</script>
+
+
+  <title>نموذج تقييم الدورة</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #1e1e2e;
+      color: white;
+      display: flex;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .container {
+      background: #282a36;
+      padding: 30px;
+      border-radius: 10px;
+      width: 100%;
+      max-width: 750px;
+      font-size: 20px;
+    }
+
+    h2 {
+      text-align: center;
+      font-size: 32px;
+      font-weight: bold;
+      margin-bottom: 20px;
+    }
+
+    label {
+      display: block;
+      margin-top: 15px;
+      font-size: 22px;
+    }
+
+    select, input[type="text"], input[type="date"], input[type="email"], textarea {
+      width: 100%;
+      padding: 12px;
+      margin-top: 5px;
+      border-radius: 5px;
+      border: none;
+      font-size: 20px;
+      font-weight: bold;
+      color: #000;
+    }
+
+    textarea {
+      resize: vertical;
+      height: 100px;
+    }
+
+    .btn {
+      background: #ff5555;
+      color: white;
+      border: none;
+      padding: 15px 25px;
+      cursor: pointer;
+      border-radius: 5px;
+      margin-top: 25px;
+      font-size: 22px;
+      font-weight: bold;
+      width: 100%;
+    }
+
+    .btn:hover {
+      background: #ff79c6;
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .header h1 {
+      font-size: 34px;
+      font-weight: bold;
+      color: #ffffff;
+      margin-bottom: 5px;
+    }
+
+    .header h2 {
+      font-size: 26px;
+      font-weight: bold;
+      color: #ffffff;
+    }
+
+    .dtc {
+      color: #ff79c6;
+    }
+
+@media (max-width: 600px) {
+  .logo-container img {
+    width: 50px !important;
+    height: 50px !important;
+  }
+
+  .design-text {
+    font-size: 10px !important;
+    left: 20px !important;
+    top: 60px !important;
+  }
+
+  .emoji-icon {
+    font-size: 50px !important;
+    top: 40px !important;
+    right: 30px !important;
+  }
+}
+  </style>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      document.body.addEventListener("click", function () {
+        const elem = document.documentElement;
+        if (
+          !document.fullscreenElement &&
+          !document.webkitFullscreenElement &&
+          !document.msFullscreenElement
+        ) {
+          if (elem.requestFullscreen) {
+            elem.requestFullscreen();
+          } else if (elem.webkitRequestFullscreen) {
+            elem.webkitRequestFullscreen(); // Safari
+          } else if (elem.msRequestFullscreen) {
+            elem.msRequestFullscreen(); // IE11
+          } else {
+            alert("المتصفح لا يدعم fullscreen.");
+          }
+        }
+      }, { once: true });
+    });
+  </script>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      fetch("https://script.google.com/macros/s/AKfycbz7FaP2dNrWk1zJ4AjKKytrZw2V7xuPma9BvFvbD7Iv7pZCfFGrTSr-yEaZfFMy-qvD8Q/exec")
+        .then(response => response.json())
+        .then(data => {
+          const datalist = document.getElementById("courseList");
+          data.forEach(course => {
+            const option = document.createElement("option");
+            option.value = course;
+            datalist.appendChild(option);
+          });
+        })
+        .catch(error => console.error("❌ خطأ في تحميل أسماء الدورات:", error));
+    });
+  </script>
+</head>
+
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>مركز تدريب الصرف بطنطا</h1>
+      <h2>Drainage Training Center - Tanta <span class="dtc">(DTC)</span></h2>
+    </div>
+
+    <h2>📝 نموذج تقييم الدورة التدريبية</h2>
+
+    <form action="https://script.google.com/macros/s/AKfycbz7FaP2dNrWk1zJ4AjKKytrZw2V7xuPma9BvFvbD7Iv7pZCfFGrTSr-yEaZfFMy-qvD8Q/exec" method="post">
+      <label>👤 اسم المتدرب:</label>
+      <input type="text" name="traineeName" placeholder="ادخل اسمك الكامل" required>
+
+      <label>📱 رقم الهاتف:</label>
+      <input type="text" name="traineePhone" placeholder="ادخل رقم الهاتف" required>
+
+      <label>📧 البريد الإلكتروني:</label>
+<input type="email" name="traineeEmail" value="tantadtc@gmail.com" readonly>
+
+
+
+      <label>🏢 الإدارة:</label>
+      <input type="text" name="department" placeholder="ادخل اسم الإدارة" required>
+
+      <label>🎓 المؤهل:</label>
+      <input type="text" name="qualification" placeholder="ادخل المؤهل الدراسي" required>
+
+      <label>💼 الوظيفة:</label>
+      <input type="text" name="jobTitle" placeholder="ادخل الوظيفة الحالية" required>
+
+      <label>🏨 حالة الإقامة:</label>
+<select name="residencyStatus" required>
+  <option value="">اختر الحالة</option>
+  <option value="مقيم">مقيم</option>
+  <option value="مقيمة">مقيمة</option>
+  <option value="غير مقيم">غير مقيم</option>
+  <option value="غير مقيمة">غير مقيمة</option>
+</select>
+
+
+<style>
+  select:disabled {
+    background-color: white;
+    color: black;
+  }
+</style>
+
+<label>📘 اسم الدورة:</label>
+<select id="courseName" name="courseName" required>
+  <option value="">اختر اسم الدورة</option>
+</select>
+
+<br><br>
+
+<label>📅 تاريخ بداية الدورة:</label>
+<select id="courseStartDate" name="courseStartDate" disabled required>
+  <option value="">---</option>
+</select>
+
+<br><br>
+
+<label>📅 تاريخ نهاية الدورة:</label>
+<select id="courseEndDate" name="courseEndDate" disabled required>
+  <option value="">---</option>
+</select>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    // 🗂️ الدورات وتواريخها
+    const courseData = {
+      "جافا سكريبت مستوى ثانى": { start: "2025-07-10", end: "2025-07-15" },
+      "  ": { start: "2024-09-08", end: "2024-09-12" },
+      "  ": { start: "2024-09-15", end: "2024-09-19" },
+      "  ": { start: "2024-09-22", end: "2024-09-26" },
+      "  ": { start: "2024-09-29", end: "2024-10-03" }
+    };
+
+    const courseSelect = document.getElementById("courseName");
+    const startSelect = document.getElementById("courseStartDate");
+    const endSelect = document.getElementById("courseEndDate");
+
+    // 🧩 توليد أسماء الدورات تلقائيًا
+    Object.keys(courseData).forEach(courseName => {
+      const option = document.createElement("option");
+      option.value = courseName;
+      option.textContent = courseName;
+      courseSelect.appendChild(option);
+    });
+
+    courseSelect.addEventListener("change", function () {
+      const selectedCourse = this.value;
+
+      // إعادة تعيين القوائم
+      startSelect.innerHTML = '<option value="">---</option>';
+      endSelect.innerHTML = '<option value="">---</option>';
+
+      if (selectedCourse && courseData[selectedCourse]) {
+        const startDate = courseData[selectedCourse].start;
+        const endDate = courseData[selectedCourse].end;
+
+        // توليد خيار واحد لكل من البداية والنهاية
+        const startOption = document.createElement("option");
+        startOption.value = startDate;
+        startOption.textContent = startDate;
+        startSelect.appendChild(startOption);
+
+        const endOption = document.createElement("option");
+        endOption.value = endDate;
+        endOption.textContent = endDate;
+        endSelect.appendChild(endOption);
+
+        startSelect.disabled = false;
+        endSelect.disabled = false;
+
+        // تعيين القيم تلقائيًا
+        startSelect.value = startDate;
+        endSelect.value = endDate;
+      } else {
+        startSelect.disabled = true;
+        endSelect.disabled = true;
+      }
+    });
+  });
+</script>
+
+
+
+      <label>🧑‍🏫 تقييم المدرب:</label>
+      <select name="trainerRating" required>
+        <option>ممتاز</option>
+        <option>جيد جداً</option>
+        <option>جيد</option>
+        <option>مقبول</option>
+        <option>ضعيف</option>
+      </select>
+
+      <label>📚 تقييم المادة العلمية:</label>
+      <select name="contentRating" required>
+        <option>ممتاز</option>
+        <option>جيد جداً</option>
+        <option>جيد</option>
+        <option>مقبول</option>
+        <option>ضعيف</option>
+      </select>
+
+      <label>🏢 تقييم التنظيم وقاعة المحاضرات:</label>
+      <select name="organizationRating" required>
+        <option>ممتاز</option>
+        <option>جيد جداً</option>
+        <option>جيد</option>
+        <option>مقبول</option>
+        <option>ضعيف</option>
+      </select>
+
+      <label>🏨 تقييم الإقامة:</label>
+<select name="residencyRating">
+  <option value="">اختر التقييم</option>
+  <option>ممتاز</option>
+  <option>جيد جداً</option>
+  <option>جيد</option>
+  <option>مقبول</option>
+  <option>ضعيف</option>
+</select>
+
+
+      <label>📝 ملاحظات إضافية:</label>
+      <textarea name="comments" placeholder="اكتب ملاحظاتك إن وجدت..."></textarea>
+
+      <button class="btn" type="submit">📤 إرسال التقييم</button>
+    </form>
+  </div>
+
+<!-- عبارة التصميم في أقصى اليسار -->
+<div class="design-text" style="
+  position: absolute;
+  top: 80px;
+  left: 70px;
+  font-size: 14px;
+  font-weight: 800;
+  background: whitesmoke;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  user-select: none;
+">
+  <div class="logo-container">
+    <img src="logo.jpg" alt="الشعار" style="
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      object-fit: cover;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    ">
+  </div>
+</div>
+
+<!-- أيقونة التقييم 📝 -->
+<div class="emoji-icon" style="
+  position: fixed;
+  top: 80px;
+  right: 50px;
+  font-size: 70px;
+  font-weight: bold;
+  color: gold;
+">
+  📝
+</div>
+</body>
+</html>

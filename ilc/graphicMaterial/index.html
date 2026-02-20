@@ -1,0 +1,1928 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reading Comprehension Quiz</title>
+    <style>
+   body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    margin: 0;
+    background: #1e1e2e;
+    color: white;
+}
+
+.container {
+    margin-top: 5px; /* مسافة صغيرة جدًا */
+    width: 95%;
+    max-width: 1200px;
+    background: #282a36;
+    padding: 10px 30px 30px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.5);
+    text-align: left;
+}
+
+h1, h2, p {
+    margin-top: 0;
+}
+
+
+        .question {
+            font-weight: bold;
+            font-size: 30px;
+            margin-bottom: 20px;
+        }
+        .options label {
+            display: block;
+            padding: 10px;
+        }
+        .btn {
+            background: #ff5555;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            cursor: pointer;
+            border-radius: 5px;
+            margin-top: 200px;
+            font-size: 18px;
+            display: block;
+        }
+        .btn:hover {
+            background: #ff79c6;
+        }
+
+        .result-screen {
+    display: none;
+    background: #44475a;
+    padding: 30px;
+    border-radius: 10px;
+    text-align: center;
+    width: 100%;
+  }
+
+  #resultScore {
+    font-size: 36px;
+    font-weight: bold;
+    color: #ffffff;
+    margin-top: 20px;
+  }
+
+  .result-screen p {
+    font-size: 20px;
+    font-weight: bold;
+    color: #f8f8f2;
+  }
+
+  #timer {
+    font-size: 28px;         /* حجم أكبر */
+    color: rgb(255, 255, 255);           /* اللون أصفر */
+    font-weight: bold;       /* خط عريض */
+    padding: 20px;
+    border-radius: 10px;
+    width: fit-content;
+    margin: 20px auto;
+  }
+
+      
+      .author {
+  font-size: 24px;        /* تكبير الخط */
+  color: #ffd700;         /* لون ذهبي مميز */
+  text-align: center;
+  font-weight: bold;      /* جعله عريض */
+  margin-bottom: 15px;
+  position: relative;     /* إزالة الوضع المطلق حتى يظهر في مكانه الطبيعي */
+  top: auto;
+}
+
+
+
+
+label {
+  font-size: 22px; /* حجم نص الاختيار */
+  padding: 10px;
+  display: block;
+}
+
+input[type="radio"] {
+  transform: scale(1.5); /* تكبير حجم الدائرة */
+  margin-right: 10px;
+}
+
+
+  #passage {
+    font-size: 16px;     /* حجم الخط */
+    font-weight: bold;   /* خط عريض */
+  }
+
+
+#startScreen p {
+  font-size: 22px;
+  font-weight: bold;
+}
+#startScreen input {
+  font-size: 20px;
+  font-weight: bold;
+  padding: 8px;
+}
+
+  
+
+#startScreen h1 {
+  font-size: 40px; /* حجم الخط */
+  font-weight: bold; /* عريض */
+  color: #ffd700; /* لون مميز مثل الذهبي (اختياري) */
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+
+
+
+    </style>
+</head>
+<body>
+
+
+
+
+   <div class="container" id="startScreen" 
+     style="max-width: 550px; margin: 60px auto; padding: 45px; 
+            background: #ffffff; border-radius: 25px; 
+            box-shadow: 0 14px 35px rgba(0,0,0,0.2); 
+            text-align: center; font-family: 'Segoe UI', sans-serif; 
+            animation: zoomFade 1.2s ease; position: relative; overflow:hidden;">
+
+  <!-- Floating Emoji Animation -->
+  <div class="floating-emojis" id="emojiBox">🤖</div>
+
+  <h1 style="font-size: 28px; color:#1e3c72; margin-bottom: 25px; line-height:1.5;">
+    📘 The British International Learning Center (ILC)
+  </h1>
+
+  <p style="font-size:18px; color:#333; text-align:left; margin:18px 0 10px;">
+    📦 Course Name:
+  </p>
+  <input type="text" id="courseName" value="GraphicDesignLevel1" 
+         readonly 
+         style="width:100%; padding:18px; border:none; 
+                border-radius:16px; background:#f0f0f0; font-size:17px;">
+
+  <p style="font-size:18px; color:#333; text-align:left; margin:25px 0 10px;">
+    🔑 Enter Password:
+  </p>
+  <input type="password" id="password" placeholder="Enter your password here"
+         style="width:100%; padding:18px; border:1px solid #ccc; 
+                border-radius:16px; font-size:17px; transition:0.3s;">
+  
+  <button class="btn" onclick="startQuiz()"
+          style="margin-top:35px; width:100%; padding:18px; border:none; 
+                 border-radius:50px; font-size:18px; font-weight:bold; 
+                 background:linear-gradient(135deg,#1e3c72,#2a5298); 
+                 color:#fff; cursor:pointer; transition:0.3s;">
+    🚀 Start Quiz
+  </button>
+
+  <p style="margin-top:35px; font-size:15px; color:#777; font-style:italic;">
+    ✍️ Edited by Ahmed Amer
+  </p>
+</div>
+
+<style>
+@keyframes zoomFade {
+  from {opacity: 0; transform: scale(0.9);}
+  to {opacity: 1; transform: scale(1);}
+}
+
+.floating-emojis {
+  position: absolute;
+  top: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 36px;
+  animation: floatUp 6s infinite linear;
+  opacity: 0.9;
+}
+
+@keyframes floatUp {
+  0%   { transform: translateX(-50%) translateY(120%); opacity: 0; }
+  20%  { opacity: 1; }
+  50%  { transform: translateX(-50%) translateY(40%); opacity: 0.95; }
+  80%  { opacity: 1; }
+  100% { transform: translateX(-50%) translateY(-120%); opacity: 0; }
+}
+
+.btn:hover {
+  box-shadow: 0 0 15px rgba(30,60,114,0.4);
+  transform: translateY(-3px);
+}
+</style>
+
+<script>
+  // Array of AI-related emojis
+  const emojis = ["🤖"];
+  const emojiBox = document.getElementById("emojiBox");
+
+  setInterval(() => {
+    const randomEmoji = emojis[Math.floor(Math.random() * emojis.length)];
+    emojiBox.textContent = randomEmoji;
+  }, 2000); // change every 2 seconds
+</script>
+
+
+    <div class="container" id="quizContainer" style="display: none;">
+        <h2 id="quizTitle">Placement Test</h2>
+        <p class="author"> Drainage Training Center - Tanta (DTC)
+ </p>
+        <p>Date: <span id="date"></span></p>
+        <p id="timer"> ----- </p>
+
+ <!-- 🔎 مربع السيرش -->
+<div style="margin: 15px 0; text-align:center;">
+    <div style="display:inline-flex; align-items:center; border-radius:5px; overflow:hidden;">
+        <input type="number" id="searchQuestion" placeholder="Enter Question Number" 
+               style="padding:10px; width:200px; border:none; outline:none; font-size:16px;">
+        <button class="btn" style="margin:0; border-radius:0;" onclick="goToQuestion()">Go To Task</button>
+    </div>
+</div>
+
+
+
+        <div id="passage">
+  <h3>Read the following passage carefully and answer the following questions:</h3>
+  <p style="font-size: 22px;">
+    
+                        </div>
+        <div id="quiz"></div>
+    </div>
+    
+    <div class="result-screen" id="resultScreen" style="display: none;">
+        <h2>Test Result</h2>
+        <p class="author">Created by: Ahmed Amer</p>
+        <p><strong>Course Name:</strong> <span id="resultCourse"></span></p>
+        <p><strong>Name:</strong> <span id="resultName"></span></p>
+        <p><strong>Phone Number:</strong> <span id="resultPhone"></span></p>
+        <p><strong>Test Date:</strong> <span id="resultDate"></span></p>
+        <p><strong>Start Time:</strong> <span id="resultStartTime"></span></p>
+        <p><strong>Time Taken:</strong> <span id="resultTime"></span></p>
+        <p><strong>Score:</strong> <span id="resultScore"></span></p>
+    </div>
+
+
+ 
+
+ 
+
+  </div>
+<div style="
+  position: fixed;
+  top: 40px;
+  right: 40px;
+  font-size: 60px;
+  font-weight: bold;
+  color: #ffd700;
+">
+
+🎨
+  
+</div>
+
+
+<script>
+    // عند الضغط على أي مكان في الصفحة، أدخل وضع ملء الشاشة
+    document.addEventListener("click", () => {
+      const elem = document.documentElement; // أو document.getElementById("myForm")
+      if (document.fullscreenElement) return; // لا تفعل شيء إذا كنا بالفعل في ملء الشاشة
+
+      if (elem.requestFullscreen) {
+        elem.requestFullscreen();
+      } else if (elem.webkitRequestFullscreen) { /* Safari */
+        elem.webkitRequestFullscreen();
+      } else if (elem.msRequestFullscreen) { /* IE11 */
+        elem.msRequestFullscreen();
+      }
+    });
+
+
+function goToQuestion() {
+    let num = parseInt(document.getElementById("searchQuestion").value);
+
+    if (isNaN(num) || num <= 0) {
+        alert("⚠️ برجاء إدخال رقم سؤال صحيح.");
+        return;
+    }
+
+    // ✅ أسئلة True/False أولاً
+    if (num <= trueFalseQuestions.length) {
+        currentTFQuestion = num - 1;
+        loadTFQuestion();
+    } 
+    // ✅ ثم الأسئلة الاختيارية
+    else {
+        let mcqNumber = num - trueFalseQuestions.length;
+        if (mcqNumber > 0 && mcqNumber <= questions.length) {
+            // إخفاء القطعة النصية لو وصلنا للاختياري
+            document.getElementById("passage").style.display = "none";
+            document.getElementById("quizTitle").innerText = 
+                "Choose the correct answer from a, b, c or d: (44 marks)";
+            
+            currentQuestion = mcqNumber - 1;
+            loadQuestion();
+        } else {
+            alert("⚠️ رقم السؤال غير موجود.");
+        }
+    }
+}
+
+
+  </script>
+
+    
+    <script>
+        document.getElementById("date").innerText = new Date().toLocaleDateString("en-US");
+    
+    const trueFalseQuestions = [
+    
+
+{
+  "passage": `
+<div style="margin-top: 120px;">
+  <div style="font-family: Segoe UI, Arial, sans-serif; background-color: #f9fbff; color: #333; padding: 25px; border: 2px solid #cce0ff; border-radius: 15px; font-size: 18px; box-shadow: 0 4px 10px rgba(0,0,0,0.05);">
+
+    <!-- Course Overview Image -->
+    <div style="text-align:center; margin-bottom:30px;">
+      <img 
+        src="course-overview.png"
+        alt="Graphic Design Course Overview"
+        style="
+          max-width:100%;
+          border-radius:18px;
+          box-shadow:0 10px 25px rgba(0,0,0,0.18);
+        "
+      />
+    </div>
+
+    <strong style="font-size: 24px; color: #6a1b9a;">🎨 ما هو تصميم الجرافيك؟</strong><br><br>
+    تصميم الجرافيك هو فن <b>التواصل البصري</b> باستخدام الصور، الألوان، الخطوط، والأشكال لنقل فكرة أو رسالة واضحة للجمهور المستهدف.<br><br>
+
+    <strong style="font-size: 20px; color:#4a148c;">🧩 مكونات العمل الجرافيكي الاحترافي</strong><br><br>
+
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 20px;">
+
+      <!-- Card 1 -->
+      <div style="background:#fff; border-left:6px solid #512da8; border-radius:12px; padding:20px; box-shadow:0 4px 12px rgba(0,0,0,0.1);">
+        <h3 style="color:#512da8;">1️⃣ الخلفية (Background)</h3>
+        <p>الخلفية هي الأساس البصري لأي تصميم، ويمكن أن تكون:</p>
+        <ul>
+          <li>لون واحد أو تدرج لوني (Gradient)</li>
+          <li>صورة فوتوغرافية</li>
+          <li>رسمة أو نمط (Pattern)</li>
+        </ul>
+        <p><b>الأداة الأساسية:</b> Photoshop</p>
+        <p><b>أدوات مستخدمة:</b><br>🟣 Gradient Tool<br>🟣 Brush Tool<br>🟣 Layer Masks</p>
+      </div>
+
+      <!-- Card 2 -->
+      <div style="background:#fff; border-left:6px solid #1976d2; border-radius:12px; padding:20px; box-shadow:0 4px 12px rgba(0,0,0,0.1);">
+        <h3 style="color:#1976d2;">2️⃣ الصور ومعالجتها</h3>
+        <ul>
+          <li>القص والتعديل</li>
+          <li>تحسين الإضاءة والألوان</li>
+          <li>الدمج مع التصميم</li>
+        </ul>
+        <p><b>البرنامج:</b> Photoshop</p>
+      </div>
+
+      <!-- Card 3 -->
+      <div style="background:#fff; border-left:6px solid #2e7d32; border-radius:12px; padding:20px; box-shadow:0 4px 12px rgba(0,0,0,0.1);">
+        <h3 style="color:#2e7d32;">3️⃣ النصوص والخطوط (Typography)</h3>
+        <ul>
+          <li>اختيار الخط المناسب</li>
+          <li>المحاذاة والمسافات</li>
+          <li>تحويل النص إلى عنصر بصري</li>
+        </ul>
+        <p><b>البرنامج:</b> Illustrator</p>
+      </div>
+
+      <!-- Card 4 -->
+      <div style="background:#fff; border-left:6px solid #ef6c00; border-radius:12px; padding:20px; box-shadow:0 4px 12px rgba(0,0,0,0.1);">
+        <h3 style="color:#ef6c00;">4️⃣ الرسومات (Vector Art)</h3>
+        <p><b>البرنامج:</b> Illustrator</p>
+        <p>تُستخدم في الأيقونات والإنفوجرافيك.</p>
+      </div>
+
+      <!-- Card 5 -->
+      <div style="background:#fff; border-left:6px solid #c2185b; border-radius:12px; padding:20px; box-shadow:0 4px 12px rgba(0,0,0,0.1);">
+        <h3 style="color:#c2185b;">5️⃣ تصميم الشعارات</h3>
+        <p>الشعار يجب أن يكون بسيط وقابل للتكبير.</p>
+        <p><b>البرنامج:</b> Illustrator</p>
+      </div>
+
+      <!-- Card 6 -->
+      <div style="background:#fff; border-left:6px solid #455a64; border-radius:12px; padding:20px; box-shadow:0 4px 12px rgba(0,0,0,0.1);">
+        <h3 style="color:#455a64;">6️⃣ Smart Layers & Workflow</h3>
+        <ul>
+          <li>Smart Objects</li>
+          <li>Layer Groups</li>
+          <li>Non-destructive Editing</li>
+        </ul>
+      </div>
+
+      <!-- Card 7 -->
+      <div style="background:#fff; border-left:6px solid #1a237e; border-radius:12px; padding:20px; box-shadow:0 4px 12px rgba(0,0,0,0.1);">
+        <h3 style="color:#1a237e;">7️⃣ دور Adobe Premiere</h3>
+        <p>المونتاج ومعالجة الفيديو.</p>
+      </div>
+
+      <!-- Card 8 -->
+      <div style="background:#fff; border-left:6px solid #00695c; border-radius:12px; padding:20px; box-shadow:0 4px 12px rgba(0,0,0,0.1);">
+        <h3 style="color:#00695c;">8️⃣ تكامل البرامج معًا</h3>
+        <p>العمل الاحترافي يعتمد على تكامل الأدوات.</p>
+      </div>
+
+    </div>
+  </div>
+</div><br>
+
+<b style="color:#cc0000;">معلومة مهمة:</b>
+<span>مصمم الجرافيك المحترف لا يعتمد على برنامج واحد فقط.</span>
+`,
+  "q": "أي برنامج يُستخدم بشكل أساسي في تصميم الشعارات والرسومات الخطية؟",
+  "options": [
+    "Photoshop",
+    "Illustrator",
+    "Premiere",
+    "After Effects"
+  ],
+  "a": "b"
+},
+
+
+{
+  "passage": `
+<div style="margin-top: 120px;">
+  <div style="font-family: Segoe UI, Arial, sans-serif; background-color: #f9fbff; color: #333; padding: 25px; border: 2px solid #cce0ff; border-radius: 15px; font-size: 18px; box-shadow: 0 4px 10px rgba(0,0,0,0.05);">
+
+    <strong style="font-size: 24px; color: #0d47a1;">🎨 الخلفية (Background) في التصميم الجرافيكي</strong><br><br>
+    الخلفية هي **القاعدة البصرية الأساسية** التي يُبنى عليها التصميم بالكامل، وهي أول عنصر يؤثر على إحساس المشاهد وقراءته للمحتوى.<br><br>
+
+    <strong style="font-size: 20px; color:#1565c0;">🧩 أنواع الخلفيات الاحترافية</strong><br><br>
+
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 20px;">
+
+      <!-- Card 1 -->
+      <div style="background:#fff; border-left:6px solid #1e88e5; border-radius:12px; padding:20px; box-shadow:0 4px 12px rgba(0,0,0,0.1);">
+        <h3 style="color:#1e88e5;">1️⃣ الخلفية اللونية (Solid Color)</h3>
+        <p>
+          تعتمد على لون واحد فقط، وتُستخدم في:
+        </p>
+        <ul>
+          <li>التصميمات الرسمية</li>
+          <li>العروض التقديمية</li>
+          <li>الهوية البصرية</li>
+        </ul>
+        <p><b>أفضل أداة:</b> Photoshop</p>
+        <p><b>أدوات:</b><br>
+          🎨 Color Picker<br>
+          🎨 Fill Tool
+        </p>
+      </div>
+
+      <!-- Card 2 -->
+      <div style="background:#fff; border-left:6px solid #3949ab; border-radius:12px; padding:20px; box-shadow:0 4px 12px rgba(0,0,0,0.1);">
+        <h3 style="color:#3949ab;">2️⃣ الخلفية المتدرجة (Gradient)</h3>
+        <p>
+          تدرج لوني بين لونين أو أكثر لإضافة عمق بصري.
+        </p>
+        <ul>
+          <li>Linear Gradient</li>
+          <li>Radial Gradient</li>
+        </ul>
+        <p><b>الأداة الأساسية:</b> Gradient Tool</p>
+        <p><b>ميزة:</b> تعطي إحساسًا بالحركة والاحترافية</p>
+      </div>
+
+      <!-- Card 3 -->
+      <div style="background:#fff; border-left:6px solid #2e7d32; border-radius:12px; padding:20px; box-shadow:0 4px 12px rgba(0,0,0,0.1);">
+        <h3 style="color:#2e7d32;">3️⃣ الخلفية الصورية (Image Background)</h3>
+        <p>
+          تعتمد على صورة فوتوغرافية كخلفية.
+        </p>
+        <ul>
+          <li>تحتاج دقة عالية</li>
+          <li>يجب مراعاة وضوح النص فوقها</li>
+        </ul>
+        <p><b>أدوات:</b><br>
+          📸 Adjustment Layers<br>
+          📸 Blur / Overlay
+        </p>
+      </div>
+
+      <!-- Card 4 -->
+      <div style="background:#fff; border-left:6px solid #ef6c00; border-radius:12px; padding:20px; box-shadow:0 4px 12px rgba(0,0,0,0.1);">
+        <h3 style="color:#ef6c00;">4️⃣ الخلفيات الزخرفية (Patterns)</h3>
+        <p>
+          نمط متكرر يُستخدم لإضافة طابع فني.
+        </p>
+        <ul>
+          <li>خلفيات مواقع</li>
+          <li>تصميمات خفيفة</li>
+        </ul>
+        <p><b>أداة:</b> Pattern Overlay</p>
+      </div>
+
+      <!-- Card 5 -->
+      <div style="background:#fff; border-left:6px solid #6a1b9a; border-radius:12px; padding:20px; box-shadow:0 4px 12px rgba(0,0,0,0.1);">
+        <h3 style="color:#6a1b9a;">5️⃣ الخلفية الذكية (Smart Background)</h3>
+        <p>
+          تُنشأ باستخدام Smart Objects للسماح بالتعديل المستقبلي.
+        </p>
+        <ul>
+          <li>Non-Destructive Editing</li>
+          <li>احترافية عالية</li>
+        </ul>
+        <p><b>مناسبة:</b> للمشاريع الكبيرة</p>
+      </div>
+
+    </div>
+  </div>
+</div><br>
+
+<b style="color:#cc0000;">معلومة مهمة:</b>
+<span>اختيار الخلفية الخاطئة قد يُفشل التصميم مهما كانت بقية العناصر احترافية.</span>
+`,
+  "q": "ما الأداة الأكثر استخدامًا لإنشاء الخلفيات المتدرجة في Photoshop؟",
+  "a": "b",
+  "options": [
+    "Brush Tool",
+    "Gradient Tool",
+    "Pen Tool",
+    "Crop Tool"
+  ]
+}, 
+
+{
+  "passage": `
+<div style="margin-top: 120px;">
+  <div style="font-family: Segoe UI, Arial, sans-serif; background-color: #f9fbff; color: #333; padding: 25px; border: 2px solid #cce0ff; border-radius: 15px; font-size: 18px; box-shadow: 0 4px 10px rgba(0,0,0,0.05);">
+
+    <strong style="font-size: 24px; color: #1b5e20;">🖼️ الصور ومعالجتها في التصميم الجرافيكي</strong><br><br>
+    معالجة الصور هي عملية **تحسين وتعديل الصور** لتناسب الهدف البصري للتصميم، مع الحفاظ على الجودة والوضوح والاحترافية.<br><br>
+
+    <strong style="font-size: 20px; color:#2e7d32;">🧩 مراحل معالجة الصور الاحترافية</strong><br><br>
+
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 20px;">
+
+      <!-- Card 1 -->
+      <div style="background:#fff; border-left:6px solid #388e3c; border-radius:12px; padding:20px; box-shadow:0 4px 12px rgba(0,0,0,0.1);">
+        <h3 style="color:#388e3c;">1️⃣ اختيار الصورة المناسبة</h3>
+        <p>
+          البداية الصحيحة لأي تصميم هي اختيار صورة:
+        </p>
+        <ul>
+          <li>عالية الدقة (High Resolution)</li>
+          <li>واضحة الفكرة</li>
+          <li>متوافقة مع رسالة التصميم</li>
+        </ul>
+        <p><b>نصيحة:</b> تجنب الصور المشوشة أو منخفضة الجودة</p>
+      </div>
+
+      <!-- Card 2 -->
+      <div style="background:#fff; border-left:6px solid #1e88e5; border-radius:12px; padding:20px; box-shadow:0 4px 12px rgba(0,0,0,0.1);">
+        <h3 style="color:#1e88e5;">2️⃣ القص وتحديد العناصر (Cropping)</h3>
+        <p>
+          قص الصورة يهدف إلى:
+        </p>
+        <ul>
+          <li>إزالة الأجزاء غير المهمة</li>
+          <li>توجيه نظر المشاهد</li>
+          <li>تحسين التكوين البصري</li>
+        </ul>
+        <p><b>الأداة:</b> Crop Tool</p>
+      </div>
+
+      <!-- Card 3 -->
+      <div style="background:#fff; border-left:6px solid #6a1b9a; border-radius:12px; padding:20px; box-shadow:0 4px 12px rgba(0,0,0,0.1);">
+        <h3 style="color:#6a1b9a;">3️⃣ تعديل الإضاءة والألوان</h3>
+        <p>
+          ضبط الإضاءة والألوان يعطي الصورة حياة وواقعية.
+        </p>
+        <ul>
+          <li>Brightness & Contrast</li>
+          <li>Levels & Curves</li>
+          <li>Color Balance</li>
+        </ul>
+        <p><b>الطريقة الاحترافية:</b> Adjustment Layers</p>
+      </div>
+
+      <!-- Card 4 -->
+      <div style="background:#fff; border-left:6px solid #ef6c00; border-radius:12px; padding:20px; box-shadow:0 4px 12px rgba(0,0,0,0.1);">
+        <h3 style="color:#ef6c00;">4️⃣ إزالة العيوب (Retouching)</h3>
+        <p>
+          تُستخدم لمعالجة العيوب البصرية مثل:
+        </p>
+        <ul>
+          <li>الخدوش</li>
+          <li>البقع</li>
+          <li>التشويش</li>
+        </ul>
+        <p><b>أدوات:</b><br>
+          🧼 Spot Healing Brush<br>
+          🧼 Clone Stamp
+        </p>
+      </div>
+
+      <!-- Card 5 -->
+      <div style="background:#fff; border-left:6px solid #c2185b; border-radius:12px; padding:20px; box-shadow:0 4px 12px rgba(0,0,0,0.1);">
+        <h3 style="color:#c2185b;">5️⃣ دمج الصور داخل التصميم</h3>
+        <p>
+          الدمج الاحترافي يجعل الصورة جزءًا من التصميم.
+        </p>
+        <ul>
+          <li>استخدام Layer Masks</li>
+          <li>توحيد الإضاءة</li>
+          <li>الظل والعمق</li>
+        </ul>
+        <p><b>نتيجة:</b> تصميم متناسق بصريًا</p>
+      </div>
+
+      <!-- Card 6 -->
+      <div style="background:#fff; border-left:6px solid #455a64; border-radius:12px; padding:20px; box-shadow:0 4px 12px rgba(0,0,0,0.1);">
+        <h3 style="color:#455a64;">6️⃣ الحفظ والتصدير الاحترافي</h3>
+        <p>
+          اختيار الصيغة الصحيحة يحافظ على جودة الصورة.
+        </p>
+        <ul>
+          <li>JPG – للويب</li>
+          <li>PNG – للخلفيات الشفافة</li>
+          <li>PSD – للتعديل المستقبلي</li>
+        </ul>
+        <p><b>قاعدة:</b> لا تحفظ العمل النهائي بدون نسخة أصلية</p>
+      </div>
+
+    </div>
+  </div>
+</div><br>
+
+<b style="color:#cc0000;">معلومة مهمة:</b>
+<span>المعالجة الاحترافية لا تُظهر التعديل، بل تجعل الصورة تبدو طبيعية وجذابة.</span>
+`,
+  "q": "ما الطريقة الاحترافية لتعديل الإضاءة والألوان دون التأثير على الصورة الأصلية؟",
+  "a": "c",
+  "options": [
+    "Direct Editing",
+    "Crop Tool",
+    "Adjustment Layers",
+    "Brush Tool"
+  ]
+},
+
+
+{
+  "passage": `
+<div style="margin-top: 120px;">
+  <div style="font-family: Segoe UI, Arial, sans-serif; background-color: #f9fbff; color: #333; padding: 25px; border: 2px solid #cce0ff; border-radius: 15px; font-size: 18px; box-shadow: 0 4px 10px rgba(0,0,0,0.05);">
+
+    <strong style="font-size: 24px; color: #4a148c;">✍️ النصوص والخطوط (Typography)</strong><br><br>
+    Typography هي فن **تنظيم وتنسيق النصوص** بطريقة تجعل المحتوى مقروءًا، جذابًا، ويخدم الهدف البصري للتصميم.<br><br>
+
+    <strong style="font-size: 20px; color:#6a1b9a;">🧩 عناصر Typography الاحترافية</strong><br><br>
+
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 20px;">
+
+      <!-- Card 1 -->
+      <div style="background:#fff; border-left:6px solid #7b1fa2; border-radius:12px; padding:20px; box-shadow:0 4px 12px rgba(0,0,0,0.1);">
+        <h3 style="color:#7b1fa2;">1️⃣ اختيار الخط المناسب</h3>
+        <p>
+          اختيار الخط الصحيح يؤثر مباشرة على فهم الرسالة.
+        </p>
+        <ul>
+          <li>خطوط رسمية للمحتوى الجاد</li>
+          <li>خطوط بسيطة للمحتوى الرقمي</li>
+          <li>خطوط إبداعية للعناوين</li>
+        </ul>
+        <p><b>قاعدة ذهبية:</b> لا تستخدم أكثر من خطين في التصميم</p>
+      </div>
+
+      <!-- Card 2 -->
+      <div style="background:#fff; border-left:6px solid #3949ab; border-radius:12px; padding:20px; box-shadow:0 4px 12px rgba(0,0,0,0.1);">
+        <h3 style="color:#3949ab;">2️⃣ أحجام النص والتدرج البصري</h3>
+        <p>
+          التدرج في حجم الخط يساعد القارئ على:
+        </p>
+        <ul>
+          <li>تمييز العناوين</li>
+          <li>قراءة المحتوى بسهولة</li>
+          <li>فهم التسلسل الهرمي</li>
+        </ul>
+        <p><b>مصطلح:</b> Visual Hierarchy</p>
+      </div>
+
+      <!-- Card 3 -->
+      <div style="background:#fff; border-left:6px solid #2e7d32; border-radius:12px; padding:20px; box-shadow:0 4px 12px rgba(0,0,0,0.1);">
+        <h3 style="color:#2e7d32;">3️⃣ المحاذاة والمسافات</h3>
+        <p>
+          تنظيم النص لا يقل أهمية عن نوع الخط.
+        </p>
+        <ul>
+          <li>Alignment (يمين – وسط – يسار)</li>
+          <li>Line Height</li>
+          <li>Letter Spacing</li>
+        </ul>
+        <p><b>نتيجة:</b> نص مريح للعين</p>
+      </div>
+
+      <!-- Card 4 -->
+      <div style="background:#fff; border-left:6px solid #ef6c00; border-radius:12px; padding:20px; box-shadow:0 4px 12px rgba(0,0,0,0.1);">
+        <h3 style="color:#ef6c00;">4️⃣ تحويل النص إلى عنصر بصري</h3>
+        <p>
+          النص يمكن أن يصبح عنصر تصميم وليس مجرد كتابة.
+        </p>
+        <ul>
+          <li>Text Effects</li>
+          <li>Stroke & Shadow</li>
+          <li>Warp Text</li>
+        </ul>
+        <p><b>البرنامج:</b> Photoshop / Illustrator</p>
+      </div>
+
+      <!-- Card 5 -->
+      <div style="background:#fff; border-left:6px solid #c2185b; border-radius:12px; padding:20px; box-shadow:0 4px 12px rgba(0,0,0,0.1);">
+        <h3 style="color:#c2185b;">5️⃣ الخطوط العربية والإنجليزية</h3>
+        <p>
+          لكل لغة قواعدها البصرية الخاصة.
+        </p>
+        <ul>
+          <li>العربي: وضوح وتوازن</li>
+          <li>الإنجليزي: بساطة وتناسق</li>
+        </ul>
+        <p><b>مهم:</b> لا تخلط خطوط غير متوافقة</p>
+      </div>
+
+      <!-- Card 6 -->
+      <div style="background:#fff; border-left:6px solid #455a64; border-radius:12px; padding:20px; box-shadow:0 4px 12px rgba(0,0,0,0.1);">
+        <h3 style="color:#455a64;">6️⃣ تحويل النصوص إلى Vector</h3>
+        <p>
+          في التصميم الاحترافي يتم تحويل النص إلى مسارات.
+        </p>
+        <ul>
+          <li>Create Outlines</li>
+          <li>عدم فقدان الجودة</li>
+          <li>مناسب للطباعة</li>
+        </ul>
+        <p><b>البرنامج:</b> Illustrator</p>
+      </div>
+
+    </div>
+  </div>
+</div><br>
+
+<b style="color:#cc0000;">معلومة مهمة:</b>
+<span>Typography الجيدة لا تُلاحظ، لكنها تُشعَر وتُفهم بسهولة.</span>
+`,
+  "q": "ما المصطلح الذي يعبّر عن تنظيم أحجام النصوص لتوضيح العناوين والمحتوى؟",
+  "a": "b",
+  "options": [
+    "Kerning",
+    "Visual Hierarchy",
+    "Tracking",
+    "Leading"
+  ]
+},
+
+
+{
+  "passage": `
+<div style="margin-top: 120px;">
+  <div style="font-family: Segoe UI, Arial, sans-serif; background-color: #f9fbff; color: #333; padding: 25px; border: 2px solid #cce0ff; border-radius: 15px; font-size: 18px; box-shadow: 0 4px 10px rgba(0,0,0,0.05);">
+
+    <strong style="font-size: 24px; color: #0d47a1;">🖊️ الرسومات الخطية (Vector Art)</strong><br><br>
+    الرسومات الخطية هي رسومات تعتمد على **المسارات الرياضية (Paths)**، مما يجعلها دقيقة ولا تفقد جودتها عند التكبير أو التصغير.<br><br>
+
+    <strong style="font-size: 20px; color:#1565c0;">🧩 عناصر تصميم الرسومات الاحترافية</strong><br><br>
+
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 20px;">
+
+      <!-- Card 1 -->
+      <div style="background:#fff; border-left:6px solid #1976d2; border-radius:12px; padding:20px; box-shadow:0 4px 12px rgba(0,0,0,0.1);">
+        <h3 style="color:#1976d2;">1️⃣ مفهوم الرسومات الخطية</h3>
+        <p>
+          تعتمد على معادلات رياضية وليس على البيكسلات.
+        </p>
+        <ul>
+          <li>لا تتأثر بالدقة</li>
+          <li>قابلة للتكبير بلا حدود</li>
+          <li>مناسبة للطباعة</li>
+        </ul>
+        <p><b>أمثلة:</b> شعارات – أيقونات – إنفوجرافيك</p>
+      </div>
+
+      <!-- Card 2 -->
+      <div style="background:#fff; border-left:6px solid #2e7d32; border-radius:12px; padding:20px; box-shadow:0 4px 12px rgba(0,0,0,0.1);">
+        <h3 style="color:#2e7d32;">2️⃣ Pen Tool (الأداة الأساسية)</h3>
+        <p>
+          أهم أداة في تصميم الرسومات الخطية.
+        </p>
+        <ul>
+          <li>إنشاء المسارات بدقة</li>
+          <li>التحكم في المنحنيات</li>
+          <li>تصميم أشكال مخصصة</li>
+        </ul>
+        <p><b>البرنامج:</b> Illustrator</p>
+      </div>
+
+      <!-- Card 3 -->
+      <div style="background:#fff; border-left:6px solid #ef6c00; border-radius:12px; padding:20px; box-shadow:0 4px 12px rgba(0,0,0,0.1);">
+        <h3 style="color:#ef6c00;">3️⃣ الأشكال الجاهزة</h3>
+        <p>
+          تُستخدم لبناء التصميم بسرعة.
+        </p>
+        <ul>
+          <li>Rectangle</li>
+          <li>Circle</li>
+          <li>Polygon</li>
+        </ul>
+        <p><b>ميزة:</b> تسريع عملية التصميم</p>
+      </div>
+
+      <!-- Card 4 -->
+      <div style="background:#fff; border-left:6px solid #6a1b9a; border-radius:12px; padding:20px; box-shadow:0 4px 12px rgba(0,0,0,0.1);">
+        <h3 style="color:#6a1b9a;">4️⃣ دمج وتقسيم الأشكال</h3>
+        <p>
+          لإنشاء أشكال معقدة من أشكال بسيطة.
+        </p>
+        <ul>
+          <li>Shape Builder</li>
+          <li>Pathfinder</li>
+        </ul>
+        <p><b>نتيجة:</b> تحكم كامل في الشكل النهائي</p>
+      </div>
+
+      <!-- Card 5 -->
+      <div style="background:#fff; border-left:6px solid #c2185b; border-radius:12px; padding:20px; box-shadow:0 4px 12px rgba(0,0,0,0.1);">
+        <h3 style="color:#c2185b;">5️⃣ الألوان والتدرجات</h3>
+        <p>
+          الألوان في Vector نظيفة وحادة.
+        </p>
+        <ul>
+          <li>Flat Colors</li>
+          <li>Gradients</li>
+          <li>Stroke Control</li>
+        </ul>
+        <p><b>قاعدة:</b> البساطة تزيد القوة البصرية</p>
+      </div>
+
+      <!-- Card 6 -->
+      <div style="background:#fff; border-left:6px solid #455a64; border-radius:12px; padding:20px; box-shadow:0 4px 12px rgba(0,0,0,0.1);">
+        <h3 style="color:#455a64;">6️⃣ تصدير الرسومات الخطية</h3>
+        <p>
+          اختيار الصيغة الصحيحة حسب الاستخدام.
+        </p>
+        <ul>
+          <li>SVG – للويب</li>
+          <li>PDF – للطباعة</li>
+          <li>AI – للتعديل</li>
+        </ul>
+        <p><b>نصيحة:</b> احتفظ بالملف الأصلي دائمًا</p>
+      </div>
+
+    </div>
+  </div>
+</div><br>
+
+<b style="color:#cc0000;">معلومة مهمة:</b>
+<span>الرسومات الخطية هي أساس تصميم الشعارات والهوية البصرية.</span>
+`,
+  "q": "ما الأداة الأساسية المستخدمة لإنشاء المسارات في الرسومات الخطية؟",
+  "a": "a",
+  "options": [
+    "Pen Tool",
+    "Brush Tool",
+    "Crop Tool",
+    "Gradient Tool"
+  ]
+},
+
+{
+  "passage": `
+<div style="margin-top: 120px;">
+  <div style="font-family: Segoe UI, Arial, sans-serif; background-color: #f9fbff; color: #333; padding: 25px; border: 2px solid #cce0ff; border-radius: 15px; font-size: 18px; box-shadow: 0 4px 10px rgba(0,0,0,0.05);">
+
+    <strong style="font-size: 24px; color: #1a237e;">🔷 تصميم الشعارات (Logo Design)</strong><br><br>
+    الشعار هو **الهوية البصرية المختصرة** للعلامة التجارية، ويجب أن يكون بسيطًا، واضحًا، وسهل التذكّر.<br><br>
+
+    <strong style="font-size: 20px; color:#283593;">🧩 مراحل تصميم الشعار الاحترافي</strong><br><br>
+
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 20px;">
+
+      <!-- Card 1 -->
+      <div style="background:#fff; border-left:6px solid #303f9f; border-radius:12px; padding:20px; box-shadow:0 4px 12px rgba(0,0,0,0.1);">
+        <h3 style="color:#303f9f;">1️⃣ فهم الهوية والرسالة</h3>
+        <p>
+          قبل البدء في التصميم يجب فهم:
+        </p>
+        <ul>
+          <li>طبيعة النشاط</li>
+          <li>الجمهور المستهدف</li>
+          <li>قيم العلامة التجارية</li>
+        </ul>
+        <p><b>قاعدة:</b> الشعار الجيد يعبّر بدون شرح</p>
+      </div>
+
+      <!-- Card 2 -->
+      <div style="background:#fff; border-left:6px solid #1565c0; border-radius:12px; padding:20px; box-shadow:0 4px 12px rgba(0,0,0,0.1);">
+        <h3 style="color:#1565c0;">2️⃣ البحث والإلهام</h3>
+        <p>
+          يتم دراسة:
+        </p>
+        <ul>
+          <li>شعارات المنافسين</li>
+          <li>اتجاهات التصميم</li>
+          <li>الأفكار البصرية المرتبطة بالمجال</li>
+        </ul>
+        <p><b>أدوات:</b> Moodboard – Sketching</p>
+      </div>
+
+      <!-- Card 3 -->
+      <div style="background:#fff; border-left:6px solid #2e7d32; border-radius:12px; padding:20px; box-shadow:0 4px 12px rgba(0,0,0,0.1);">
+        <h3 style="color:#2e7d32;">3️⃣ الرسم المبدئي (Sketch)</h3>
+        <p>
+          يتم تحويل الفكرة إلى رسومات أولية.
+        </p>
+        <ul>
+          <li>ورقة وقلم أو Tablet</li>
+          <li>عدة أفكار قبل اختيار الأفضل</li>
+        </ul>
+        <p><b>ميزة:</b> توفير وقت التنفيذ الرقمي</p>
+      </div>
+
+      <!-- Card 4 -->
+      <div style="background:#fff; border-left:6px solid #ef6c00; border-radius:12px; padding:20px; box-shadow:0 4px 12px rgba(0,0,0,0.1);">
+        <h3 style="color:#ef6c00;">4️⃣ التنفيذ باستخدام Vector</h3>
+        <p>
+          يتم تصميم الشعار رقميًا باستخدام الرسومات الخطية.
+        </p>
+        <ul>
+          <li>Pen Tool</li>
+          <li>Shape Builder</li>
+          <li>Pathfinder</li>
+        </ul>
+        <p><b>البرنامج الأساسي:</b> Illustrator</p>
+      </div>
+
+      <!-- Card 5 -->
+      <div style="background:#fff; border-left:6px solid #6a1b9a; border-radius:12px; padding:20px; box-shadow:0 4px 12px rgba(0,0,0,0.1);">
+        <h3 style="color:#6a1b9a;">5️⃣ اختيار الألوان والخطوط</h3>
+        <p>
+          الألوان والخطوط تعكس شخصية الشعار.
+        </p>
+        <ul>
+          <li>ألوان محدودة</li>
+          <li>خط واضح ومميز</li>
+        </ul>
+        <p><b>مهم:</b> الشعار يجب أن يعمل بالأبيض والأسود</p>
+      </div>
+
+      <!-- Card 6 -->
+      <div style="background:#fff; border-left:6px solid #455a64; border-radius:12px; padding:20px; box-shadow:0 4px 12px rgba(0,0,0,0.1);">
+        <h3 style="color:#455a64;">6️⃣ اختبار وتصدير الشعار</h3>
+        <p>
+          يتم اختبار الشعار على:
+        </p>
+        <ul>
+          <li>خلفيات مختلفة</li>
+          <li>أحجام متعددة</li>
+          <li>استخدامات متنوعة</li>
+        </ul>
+        <p><b>الصيغ:</b> AI – SVG – PDF – PNG</p>
+      </div>
+
+    </div>
+  </div>
+</div><br>
+
+<b style="color:#cc0000;">معلومة مهمة:</b>
+<span>الشعار الناجح بسيط في الشكل، عميق في المعنى.</span>
+`,
+  "q": "لماذا يُفضّل تصميم الشعارات باستخدام الرسومات الخطية (Vector)؟",
+  "a": "b",
+  "options": [
+    "لأنها تعتمد على الصور",
+    "لأنها لا تفقد الجودة عند التكبير",
+    "لأنها أسهل في التلوين",
+    "لأنها أسرع في التنفيذ"
+  ]
+},
+
+
+{
+  "passage": `
+<div style="margin-top: 120px;">
+  <div style="font-family: Segoe UI, Arial, sans-serif; background-color: #f9fbff; color: #333; padding: 25px; border: 2px solid #cce0ff; border-radius: 15px; font-size: 18px; box-shadow: 0 4px 10px rgba(0,0,0,0.05);">
+
+    <strong style="font-size: 24px; color: #263238;">🧠 Smart Layers & Workflow</strong><br><br>
+    تنظيم الطبقات وسير العمل الاحترافي هو ما يميّز **المصمم المحترف** عن المبتدئ، لأنه يسمح بالتعديل السريع دون إفساد التصميم.<br><br>
+
+    <strong style="font-size: 20px; color:#37474f;">🧩 عناصر سير العمل الذكي</strong><br><br>
+
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 20px;">
+
+      <!-- Card 1 -->
+      <div style="background:#fff; border-left:6px solid #546e7a; border-radius:12px; padding:20px; box-shadow:0 4px 12px rgba(0,0,0,0.1);">
+        <h3 style="color:#546e7a;">1️⃣ Smart Objects</h3>
+        <p>
+          الطبقات الذكية تسمح بالحفاظ على جودة العناصر.
+        </p>
+        <ul>
+          <li>تعديل دون فقدان الجودة</li>
+          <li>إعادة استخدام العناصر</li>
+          <li>تحجيم بلا تشويه</li>
+        </ul>
+        <p><b>البرنامج:</b> Photoshop</p>
+      </div>
+
+      <!-- Card 2 -->
+      <div style="background:#fff; border-left:6px solid #0277bd; border-radius:12px; padding:20px; box-shadow:0 4px 12px rgba(0,0,0,0.1);">
+        <h3 style="color:#0277bd;">2️⃣ تنظيم الطبقات (Layer Groups)</h3>
+        <p>
+          تنظيم الطبقات يُسهّل إدارة التصميم.
+        </p>
+        <ul>
+          <li>تجميع العناصر المتشابهة</li>
+          <li>تسمية الطبقات بوضوح</li>
+          <li>تسريع التعديل</li>
+        </ul>
+        <p><b>نتيجة:</b> ملف منظم وسهل الفهم</p>
+      </div>
+
+      <!-- Card 3 -->
+      <div style="background:#fff; border-left:6px solid #2e7d32; border-radius:12px; padding:20px; box-shadow:0 4px 12px rgba(0,0,0,0.1);">
+        <h3 style="color:#2e7d32;">3️⃣ التعديل غير التدميري</h3>
+        <p>
+          تعديل دون المساس بالملف الأصلي.
+        </p>
+        <ul>
+          <li>Adjustment Layers</li>
+          <li>Layer Masks</li>
+          <li>Smart Filters</li>
+        </ul>
+        <p><b>ميزة:</b> أمان ومرونة عالية</p>
+      </div>
+
+      <!-- Card 4 -->
+      <div style="background:#fff; border-left:6px solid #ef6c00; border-radius:12px; padding:20px; box-shadow:0 4px 12px rgba(0,0,0,0.1);">
+        <h3 style="color:#ef6c00;">4️⃣ تسلسل العمل (Workflow)</h3>
+        <p>
+          اتباع خطوات مرتبة يوفر الوقت والجهد.
+        </p>
+        <ol>
+          <li>تحليل الفكرة</li>
+          <li>إعداد الملف</li>
+          <li>التصميم</li>
+          <li>المراجعة</li>
+        </ol>
+        <p><b>قاعدة:</b> لا تبدأ التصميم دون خطة</p>
+      </div>
+
+      <!-- Card 5 -->
+      <div style="background:#fff; border-left:6px solid #6a1b9a; border-radius:12px; padding:20px; box-shadow:0 4px 12px rgba(0,0,0,0.1);">
+        <h3 style="color:#6a1b9a;">5️⃣ العمل باحترافية الفريق</h3>
+        <p>
+          الملفات المنظمة تسهّل العمل الجماعي.
+        </p>
+        <ul>
+          <li>تسمية الطبقات</li>
+          <li>ألوان للطبقات</li>
+          <li>تعليقات واضحة</li>
+        </ul>
+        <p><b>مهم:</b> فكر دائمًا في من سيستلم الملف بعدك</p>
+      </div>
+
+      <!-- Card 6 -->
+      <div style="background:#fff; border-left:6px solid #455a64; border-radius:12px; padding:20px; box-shadow:0 4px 12px rgba(0,0,0,0.1);">
+        <h3 style="color:#455a64;">6️⃣ حفظ وتسليم الملفات</h3>
+        <p>
+          تسليم العمل بطريقة احترافية.
+        </p>
+        <ul>
+          <li>PSD مرتب</li>
+          <li>نسخة نهائية Export</li>
+          <li>نسخة احتياطية</li>
+        </ul>
+        <p><b>قاعدة ذهبية:</b> لا تُسلّم ملفًا غير منظم</p>
+      </div>
+
+    </div>
+  </div>
+</div><br>
+
+<b style="color:#cc0000;">معلومة مهمة:</b>
+<span>التصميم الجيد قد يعجب، لكن التنظيم الذكي يُبهر.</span>
+`,
+  "q": "ما الفائدة الأساسية من استخدام Smart Objects؟",
+  "a": "a",
+  "options": [
+    "التعديل دون فقدان الجودة",
+    "تصغير حجم الملف",
+    "تغيير الألوان بسرعة",
+    "زيادة سرعة البرنامج"
+  ]
+},
+
+
+{
+  "passage": `
+<div style="margin-top: 120px;">
+  <div style="font-family: Segoe UI, Arial, sans-serif; background-color: #f9fbff; color: #333; padding: 25px; border: 2px solid #cce0ff; border-radius: 15px; font-size: 18px; box-shadow: 0 4px 10px rgba(0,0,0,0.05);">
+
+    <strong style="font-size: 24px; color: #1a237e;">🎬 دور Adobe Premiere في التصميم والإنتاج المرئي</strong><br><br>
+    Adobe Premiere هو البرنامج المتخصص في **المونتاج ومعالجة الفيديو**، ويُستخدم لتحويل المواد الخام إلى محتوى مرئي احترافي.<br><br>
+
+    <strong style="font-size: 20px; color:#283593;">🧩 مراحل العمل داخل Adobe Premiere</strong><br><br>
+
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 20px;">
+
+      <!-- Card 1 -->
+      <div style="background:#fff; border-left:6px solid #303f9f; border-radius:12px; padding:20px; box-shadow:0 4px 12px rgba(0,0,0,0.1);">
+        <h3 style="color:#303f9f;">1️⃣ استيراد وتنظيم الملفات</h3>
+        <p>
+          أول خطوة هي إدخال وتنظيم المواد داخل المشروع.
+        </p>
+        <ul>
+          <li>فيديو – صوت – صور</li>
+          <li>إنشاء مجلدات (Bins)</li>
+          <li>تسمية المقاطع</li>
+        </ul>
+        <p><b>نتيجة:</b> مشروع منظم وسهل التعديل</p>
+      </div>
+
+      <!-- Card 2 -->
+      <div style="background:#fff; border-left:6px solid #1565c0; border-radius:12px; padding:20px; box-shadow:0 4px 12px rgba(0,0,0,0.1);">
+        <h3 style="color:#1565c0;">2️⃣ المونتاج على الـ Timeline</h3>
+        <p>
+          يتم ترتيب المقاطع على الخط الزمني.
+        </p>
+        <ul>
+          <li>قص وتجميع المشاهد</li>
+          <li>التحكم في التوقيت</li>
+          <li>بناء القصة</li>
+        </ul>
+        <p><b>أدوات:</b> Timeline – Razor Tool</p>
+      </div>
+
+      <!-- Card 3 -->
+      <div style="background:#fff; border-left:6px solid #2e7d32; border-radius:12px; padding:20px; box-shadow:0 4px 12px rgba(0,0,0,0.1);">
+        <h3 style="color:#2e7d32;">3️⃣ إضافة النصوص والعناوين</h3>
+        <p>
+          النصوص تُستخدم لتوضيح أو تعزيز المحتوى.
+        </p>
+        <ul>
+          <li>عناوين البداية والنهاية</li>
+          <li>Lower Third</li>
+          <li>ترجمة</li>
+        </ul>
+        <p><b>لوحة:</b> Essential Graphics</p>
+      </div>
+
+      <!-- Card 4 -->
+      <div style="background:#fff; border-left:6px solid #ef6c00; border-radius:12px; padding:20px; box-shadow:0 4px 12px rgba(0,0,0,0.1);">
+        <h3 style="color:#ef6c00;">4️⃣ المؤثرات والانتقالات</h3>
+        <p>
+          لإضافة لمسة احترافية للمونتاج.
+        </p>
+        <ul>
+          <li>Video Transitions</li>
+          <li>Visual Effects</li>
+          <li>تحسين الحركة</li>
+        </ul>
+        <p><b>لوحة:</b> Effects Panel</p>
+      </div>
+
+      <!-- Card 5 -->
+      <div style="background:#fff; border-left:6px solid #6a1b9a; border-radius:12px; padding:20px; box-shadow:0 4px 12px rgba(0,0,0,0.1);">
+        <h3 style="color:#6a1b9a;">5️⃣ معالجة الصوت</h3>
+        <p>
+          الصوت عنصر أساسي في الفيديو الاحترافي.
+        </p>
+        <ul>
+          <li>تنقية الصوت</li>
+          <li>ضبط المستوى</li>
+          <li>دمج المؤثرات</li>
+        </ul>
+        <p><b>لوحة:</b> Essential Sound</p>
+      </div>
+
+      <!-- Card 6 -->
+      <div style="background:#fff; border-left:6px solid #455a64; border-radius:12px; padding:20px; box-shadow:0 4px 12px rgba(0,0,0,0.1);">
+        <h3 style="color:#455a64;">6️⃣ التصدير النهائي</h3>
+        <p>
+          إخراج الفيديو بالصورة المناسبة للاستخدام.
+        </p>
+        <ul>
+          <li>MP4 – للويب</li>
+          <li>إعدادات الجودة</li>
+          <li>أحجام مختلفة</li>
+        </ul>
+        <p><b>قاعدة:</b> صدّر حسب منصة العرض</p>
+      </div>
+
+    </div>
+  </div>
+</div><br>
+
+<b style="color:#cc0000;">معلومة مهمة:</b>
+<span>Premiere لا يعمل وحده، بل يتكامل مع Photoshop وIllustrator لإنتاج محتوى مرئي متكامل.</span>
+`,
+  "q": "ما الأداة المسؤولة عن قص المقاطع داخل Timeline في Adobe Premiere؟",
+  "a": "b",
+  "options": [
+    "Move Tool",
+    "Razor Tool",
+    "Pen Tool",
+    "Crop Tool"
+  ]
+},
+
+
+{
+  "passage": `
+<div style="margin-top: 120px;">
+  <div style="font-family: Segoe UI, Arial, sans-serif; background-color: #f9fbff; color: #333; padding: 25px; border: 2px solid #cce0ff; border-radius: 15px; font-size: 18px; box-shadow: 0 4px 10px rgba(0,0,0,0.05);">
+
+    <strong style="font-size: 24px; color: #1a237e;">🔗 تكامل برامج Adobe معًا (Integrated Workflow)</strong><br><br>
+    يعتمد العمل الاحترافي في التصميم والإنتاج المرئي على **تكامل برامج Adobe**
+    مثل Photoshop و Illustrator و Premiere لإنشاء مشروع واحد متكامل
+    بجودة عالية وسير عمل منظم.<br><br>
+
+    <strong style="font-size: 20px; color:#283593;">🧩 مراحل تكامل البرامج داخل المشروع</strong><br><br>
+
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 20px;">
+
+      <!-- Card 1 -->
+      <div style="background:#fff; border-left:6px solid #303f9f; border-radius:12px; padding:20px; box-shadow:0 4px 12px rgba(0,0,0,0.1);">
+        <h3 style="color:#303f9f;">1️⃣ تصميم العناصر في Photoshop</h3>
+        <p>
+          يبدأ المشروع بإنشاء الصور ومعالجتها.
+        </p>
+        <ul>
+          <li>تصحيح الألوان</li>
+          <li>معالجة الصور</li>
+          <li>استخدام Smart Objects</li>
+        </ul>
+        <p><b>نتيجة:</b> عناصر جاهزة للاستخدام في باقي البرامج</p>
+      </div>
+
+      <!-- Card 2 -->
+      <div style="background:#fff; border-left:6px solid #1565c0; border-radius:12px; padding:20px; box-shadow:0 4px 12px rgba(0,0,0,0.1);">
+        <h3 style="color:#1565c0;">2️⃣ إنشاء الرسومات في Illustrator</h3>
+        <p>
+          تصميم العناصر المتجهة (Vector).
+        </p>
+        <ul>
+          <li>أيقونات</li>
+          <li>شعارات</li>
+          <li>رسومات قابلة للتكبير</li>
+        </ul>
+        <p><b>ميزة:</b> جودة ثابتة بدون فقدان دقة</p>
+      </div>
+
+      <!-- Card 3 -->
+      <div style="background:#fff; border-left:6px solid #2e7d32; border-radius:12px; padding:20px; box-shadow:0 4px 12px rgba(0,0,0,0.1);">
+        <h3 style="color:#2e7d32;">3️⃣ نقل الملفات بين البرامج</h3>
+        <p>
+          يتم استيراد الملفات دون إعادة تصميم.
+        </p>
+        <ul>
+          <li>PSD إلى Premiere</li>
+          <li>AI إلى Premiere</li>
+          <li>الحفاظ على الطبقات</li>
+        </ul>
+        <p><b>قاعدة:</b> لا تفقد الجودة أثناء النقل</p>
+      </div>
+
+      <!-- Card 4 -->
+      <div style="background:#fff; border-left:6px solid #ef6c00; border-radius:12px; padding:20px; box-shadow:0 4px 12px rgba(0,0,0,0.1);">
+        <h3 style="color:#ef6c00;">4️⃣ العمل داخل Adobe Premiere</h3>
+        <p>
+          دمج التصميمات داخل الفيديو.
+        </p>
+        <ul>
+          <li>تحريك الصور</li>
+          <li>إضافة العناوين</li>
+          <li>ترتيب المشاهد</li>
+        </ul>
+        <p><b>ميزة:</b> تعديل مباشر دون إعادة تصدير</p>
+      </div>
+
+      <!-- Card 5 -->
+      <div style="background:#fff; border-left:6px solid #6a1b9a; border-radius:12px; padding:20px; box-shadow:0 4px 12px rgba(0,0,0,0.1);">
+        <h3 style="color:#6a1b9a;">5️⃣ تنظيم سير العمل (Workflow)</h3>
+        <p>
+          تنظيم الملفات يوفر الوقت ويقلل الأخطاء.
+        </p>
+        <ul>
+          <li>تسمية الملفات</li>
+          <li>ترتيب المجلدات</li>
+          <li>إدارة التعديلات</li>
+        </ul>
+        <p><b>نتيجة:</b> مشروع احترافي وسريع التعديل</p>
+      </div>
+
+      <!-- Card 6 -->
+      <div style="background:#fff; border-left:6px solid #455a64; border-radius:12px; padding:20px; box-shadow:0 4px 12px rgba(0,0,0,0.1);">
+        <h3 style="color:#455a64;">6️⃣ الإخراج النهائي</h3>
+        <p>
+          إخراج العمل حسب الغرض المطلوب.
+        </p>
+        <ul>
+          <li>صور ثابتة</li>
+          <li>فيديو</li>
+          <li>منصات مختلفة</li>
+        </ul>
+        <p><b>قاعدة:</b> اختر الإعداد المناسب لكل استخدام</p>
+      </div>
+
+    </div>
+  </div>
+</div><br>
+
+<b style="color:#cc0000;">معلومة مهمة:</b>
+<span>تكامل برامج Adobe هو السر الحقيقي للإنتاج الاحترافي السريع.</span>
+`,
+  "q": "ما الفائدة الأساسية من تكامل Photoshop و Illustrator مع Adobe Premiere؟",
+  "options": [
+    "زيادة حجم الملفات",
+    "الحفاظ على الجودة وتسريع العمل",
+    "تحويل الصور إلى فيديو تلقائيًا",
+    "تقليل دقة التصميم"
+  ],
+  "a": "b"
+},
+
+
+{
+  "passage": `
+<div style="margin-top:120px;">
+  <div style="font-family:Segoe UI, Arial, sans-serif; background:#f9fbff; color:#333; padding:25px; border:2px solid #cce0ff; border-radius:15px; font-size:18px; box-shadow:0 4px 10px rgba(0,0,0,0.05);">
+
+    <strong style="font-size:24px; color:#0056b3;">
+      🎨 درس تصميم لوجو تايبوجرافي احترافي في Adobe Illustrator
+    </strong><br>
+    <strong style="font-size:18px; color:#0056b3;">
+      (Circular Typography Logo – أسلوب الوحدات الدائرية)
+    </strong><br><br>
+
+    <!-- Logo Image -->
+    <img 
+  src="logo.png"
+  alt="Crazy Cool Typography Logo"
+  style="
+    display:block;
+    max-width:100%;
+    margin:20px auto 30px;
+    border-radius:14px;
+    box-shadow:0 6px 15px rgba(0,0,0,0.15);
+  "
+>
+
+
+    <em><u style="color:#0056b3;">Overview:</u></em><br>
+    يهدف هذا الدرس إلى تعليم المتدرب كيفية تصميم <b>لوجو تايبوجرافي احترافي</b>
+    باستخدام فكرة هندسية بسيطة وقابلة للتطوير، من خلال الاعتماد على
+    <b>وحدة واحدة فقط (الدائرة)</b>، مع شرح منهجية التفكير التصميمي
+    قبل التنفيذ داخل البرنامج، وليس مجرد تطبيق أدوات.
+    <br><br>
+
+    <div style="background:#fff; border-left:6px solid #0078d7; border-radius:12px; padding:20px; box-shadow:0 4px 12px rgba(0,0,0,0.1);">
+
+      <b>🧠 فكرة التصميم (Concept)</b><br>
+      تعتمد الفكرة الأساسية للتصميم على استخدام <b>الدائرة كوحدة هندسية موحدة</b>.
+      يتم تكرار هذه الوحدة وحذف أجزاء محسوبة منها لتكوين الحروف،
+      مما يضمن:
+      <ul>
+        <li>تناسق بصري قوي بين جميع الحروف</li>
+        <li>هوية واضحة وسهلة التذكر</li>
+        <li>إمكانية تطوير الشعار لاحقًا بدون كسر الشكل العام</li>
+      </ul>
+      <br>
+
+      <b>🛠️ الأدوات المستخدمة</b><br>
+      تم اختيار أدوات بسيطة ومباشرة، لأن قوة التصميم هنا نابعة من
+      <b>الفكرة والبناء</b> وليس كثرة الأدوات:
+      <ul>
+        <li>Ellipse Tool (U): لرسم الدوائر الأساسية</li>
+        <li>Direct Selection Tool (A): للتحكم في نقاط ومسارات الشكل</li>
+        <li>Move / Reflect: لضمان الدقة والتماثل</li>
+        <li>Outline Stroke: لتحويل الخطوط إلى أشكال</li>
+        <li>Gradient Tool & Gaussian Blur: للمسات النهائية فقط</li>
+      </ul>
+      <br>
+
+      <b>🧩 الخطوة 1: إنشاء الوحدة الأساسية</b><br>
+      يتم رسم دائرة متساوية الأبعاد باستخدام Ellipse Tool مع الضغط
+      المستمر على مفتاح Shift، وذلك لضمان أن تكون الدائرة دقيقة 100%.
+      هذه الدائرة تمثل <b>اللبنة الأساسية</b> التي سيتم بناء جميع الحروف منها،
+      وأي خطأ في هذه المرحلة سيؤثر على الشعار بالكامل.
+      <br><br>
+
+      <b>🧩 الخطوة 2: تكرار الدوائر أفقياً</b><br>
+      بدلاً من السحب اليدوي، يتم استخدام أمر Move لإنشاء نسخ دقيقة
+      من الدائرة بنفس المسافة تمامًا. هذه الطريقة:
+      <ul>
+        <li>تحافظ على المحاذاة الصحيحة</li>
+        <li>تمنع اختلاف المسافات بين الحروف</li>
+        <li>تعطي إحساسًا احترافيًا ومنظمًا</li>
+      </ul>
+      <br>
+
+      <b>🧩 الخطوة 3: إنشاء الدوائر السفلية</b><br>
+      يتم إضافة دوائر في أماكن مدروسة أسفل بعض الحروف (مثل Z و G)
+      لدعم بناء الحرف هندسيًا. الهدف هنا هو الحفاظ على نفس اللغة البصرية
+      في جميع أجزاء الشعار.
+      <br><br>
+
+      <b>✂️ الخطوة 4: تشكيل الحروف</b><br>
+      باستخدام Direct Selection Tool، يتم حذف أجزاء محددة من الدوائر.
+      هذه المرحلة تُعتبر <b>أهم مرحلة إبداعية</b>، حيث تبدأ الحروف في الظهور.
+      لا يجب السعي للكمال فورًا، بل يتم التعديل تدريجيًا حتى الوصول
+      إلى أفضل توازن بصري.
+      <br><br>
+
+      <b>🎚️ الخطوة 5: ضبط السماكة والتفاصيل</b><br>
+      يتم توحيد سماكة الخطوط (Stroke Weight) لضمان الاتساق،
+      ثم إضافة تفاصيل بسيطة أعلى بعض الحروف لتعزيز الشخصية البصرية،
+      مع استخدام Reflect للحفاظ على التماثل الهندسي.
+      <br><br>
+
+      <b>🎨 الخطوة 6: تلوين الحروف</b><br>
+      يتم اختيار ألوان متوازنة تعكس الحيوية بدون إزعاج بصري.
+      توزيع الألوان يتم بعناية لضمان:
+      <ul>
+        <li>وضوح كل حرف</li>
+        <li>توازن بصري عام</li>
+        <li>سهولة الاستخدام في الهوية البصرية</li>
+      </ul>
+      <br>
+
+      <b>📏 الخطوة 7: ضبط المسافات والتداخل</b><br>
+      في هذه المرحلة يتم تحسين العلاقات بين الحروف،
+      مثل تمرير حرف R أمام A وداخل O، باستخدام Masking.
+      هذا التداخل يعطي الشعار عمقًا واحترافية عالية.
+      <br><br>
+
+      <b>🔄 الخطوة 8: تحويل الخطوط إلى أشكال</b><br>
+      يتم تحويل Stroke إلى Shapes باستخدام:<br>
+      <code>Object &gt; Path &gt; Outline Stroke</code><br>
+      وذلك لتجنب أي مشاكل عند الطباعة أو التصدير،
+      ولضمان ثبات التصميم في جميع الاستخدامات.
+      <br><br>
+
+      <b>🌈 الخطوة 9: إضافة Gradient</b><br>
+      يتم تطبيق تدرج لوني بسيط على بعض الحروف فقط،
+      لإضافة عمق وحداثة بدون التأثير على وضوح الشعار
+      أو بساطته الأساسية.
+      <br><br>
+
+      <b>🌫️ الخطوة 10: إضافة ظل خفيف</b><br>
+      يتم إنشاء ظل خفيف جدًا باستخدام Gaussian Blur
+      بقيمة منخفضة لإعطاء إحساس بسيط بالعمق،
+      مع الحفاظ على نظافة التصميم وعدم تشويهه.
+      <br><br>
+
+    </div>
+  </div>
+</div>
+<br>
+<b style="color:#cc0000;">Tip:</b>
+التصميم الاحترافي لا يعتمد على كثرة الأدوات، بل على فكرة ذكية
+وتنفيذ هندسي دقيق 🎯
+`,
+  "q": "What is the main design concept used in this typography logo?",
+  "a": "b",
+  "options": [
+    "Using multiple complex shapes",
+    "Using one basic circular unit to build all letters",
+    "Relying on effects more than structure",
+    "Using ready-made fonts only"
+  ]
+},
+
+
+{
+  "passage": `
+<div style="margin-top:120px;">
+  <div style="
+    font-family:Segoe UI, Arial, sans-serif;
+    background:#f9fbff;
+    color:#333;
+    padding:25px;
+    border:2px solid #cce0ff;
+    border-radius:15px;
+    font-size:18px;
+    box-shadow:0 4px 10px rgba(0,0,0,0.05);
+  ">
+
+    <strong style="font-size:24px; color:#0056b3;">
+      🎨 Double Exposure Effect – Photoshop Visual Experience
+    </strong><br>
+
+    <strong style="font-size:18px; color:#0056b3;">
+      (Online Interactive Demonstration)
+    </strong><br><br>
+
+    <em><u style="color:#0056b3;">Overview:</u></em><br>
+    في هذا الجزء ستشاهد <b>تجربة بصرية تفاعلية مباشرة</b> لتأثير
+    <b>Double Exposure</b> من خلال موقع تعليمي احترافي،
+    بهدف فهم الفكرة البصرية، توزيع الإضاءة،
+    وطريقة الدمج بين الصور قبل تنفيذ التأثير عمليًا داخل Photoshop.
+    <br><br>
+
+    <div style="
+      background:#fff;
+      border-left:6px solid #0078d7;
+      border-radius:12px;
+      padding:20px;
+      box-shadow:0 4px 12px rgba(0,0,0,0.1);
+    ">
+
+      <b>🧪 Live Double Exposure Demo</b><br>
+      استخدم التجربة التالية لملاحظة:
+      <ul>
+        <li>كيفية دمج صورتين بصريًا</li>
+        <li>تأثير الإضاءة والتباين</li>
+        <li>التوازن بين العنصر البشري والخلفية</li>
+      </ul>
+      <br>
+
+      <!-- Online Demo Button -->
+      <a
+        href="https://www.psdstack.com/photoshop-tutorials/photo-effects/double-exposure-effect-in-photoshop/"
+        target="_blank"
+        style="
+          display:inline-block;
+          padding:14px 26px;
+          background:#0078d7;
+          color:#fff;
+          font-size:18px;
+          border-radius:10px;
+          text-decoration:none;
+          box-shadow:0 4px 10px rgba(0,0,0,0.15);
+        "
+      >
+        🌐 مشاهدة تجربة Double Exposure أونلاين
+      </a>
+
+      <br><br>
+
+      <b>🎯 ملاحظة تدريبية</b><br>
+      شاهد التجربة لفهم الفكرة البصرية،
+      ثم حاول تنفيذ نفس التأثير داخل Photoshop
+      باستخدام صورك الخاصة.
+      <br><br>
+
+    </div>
+  </div>
+</div>
+
+<br>
+<b style="color:#cc0000;">Tip:</b>
+مشاهدة التأثير قبل التطبيق العملي
+تسرّع الفهم وتُحسّن جودة التنفيذ 🎯
+`,
+  "q": "What is the main purpose of viewing the Double Exposure demo?",
+  "a": "b",
+  "options": [
+    "Learning Photoshop tools only",
+    "Understanding the visual concept before applying it",
+    "Editing images directly online",
+    "Replacing Photoshop completely"
+  ]
+},
+
+
+
+];
+
+    
+const questions = [
+  
+
+  
+  
+  
+
+
+];
+
+
+
+    
+        let currentTFQuestion = 0;
+        let tfCorrectAnswers = 0;
+        let currentQuestion = 0;
+        let correctAnswers = 0;
+        let timeLeft = 3600;
+        let timerInterval;
+        let startTime;
+    
+        function startQuiz() {
+    let password = document.getElementById("password").value;
+    let course = document.getElementById("courseName").value.trim(); // 🆕 قراءة اسم الكورس
+    let quizTitle = document.getElementById("quizTitle"); // 🆕 العنوان اللي هيتغير
+
+    if (password !== "1550") {
+        alert("❌ كلمة المرور غير صحيحة! الرجاء المحاولة مرة أخرى.");
+        return;
+    }
+
+    // 🆕 تغيير العنوان بناءً على اسم الكورس
+    quizTitle.textContent = course || "Placement Test";
+
+    document.getElementById("startScreen").style.display = "none";
+    document.getElementById("quizContainer").style.display = "block";
+    startTime = new Date();
+    startTimer();
+    loadTFQuestion();
+
+    // تشغيل وضع ملء الشاشة
+    let elem = document.documentElement;
+    if (elem.requestFullscreen) {
+        elem.requestFullscreen();
+    } else if (elem.mozRequestFullScreen) {
+        elem.mozRequestFullScreen();
+    } else if (elem.webkitRequestFullscreen) {
+        elem.webkitRequestFullscreen();
+    } else if (elem.msRequestFullscreen) {
+        elem.msRequestFullscreen();
+    }
+}
+
+
+    
+        function startTimer() {
+            timerInterval = setInterval(() => {
+                let minutes = Math.floor(timeLeft / 60);
+                let seconds = timeLeft % 60;
+                document.getElementById("timer").innerText = `Time Remaining: ${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+                if (timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    showResult();
+                }
+                timeLeft--;
+            }, 1000);
+        }
+    
+      function loadTFQuestion() {
+    let quizDiv = document.getElementById("quiz");
+    let passageDiv = document.getElementById("passage");
+
+    if (currentTFQuestion < trueFalseQuestions.length) {
+        let q = trueFalseQuestions[currentTFQuestion];
+
+        // عرض المقطع
+        passageDiv.innerHTML = `
+            <h3></h3>
+            <p style="font-size: 22px;">${q.passage}</p>
+        `;
+
+        // عرض السؤال والاختيارات
+        let questionHTML = `<p class='question'><strong>${currentTFQuestion + 1}- ${q.q}</strong></p>`;
+
+        q.options.forEach((option, index) => {
+    const letter = String.fromCharCode(97 + index); // "a", "b", ...
+    questionHTML += `
+        <label>
+            <input type='radio' name='answer' value='${letter}'>
+            ${option}
+        </label><br>
+    `;
+});
+
+        questionHTML += `<button class='btn' onclick='nextTFQuestion()'>Next</button>`;
+        quizDiv.innerHTML = questionHTML;
+    }  else {
+    // الانتهاء من عرض كل الأسئلة
+    document.getElementById("passage").style.display = "none";
+    quizDiv.innerHTML = `
+      <div style="text-align:center; padding:30px; font-family:Segoe UI, Arial, sans-serif;">
+        <h2 style="color:#28a745; font-size:28px;">🎉 Congratulations! You have completed all the tasks 🎉</h2>
+        <p style="font-size:20px; color:#555;">👏 Well done, you successfully finished the quiz.</p>
+        <div style="font-size:50px; margin-top:15px;">✅🌟🏆</div>
+      </div>
+    `;
+    loadQuestion(); // لو فيه مرحلة تانية
+}
+}
+
+    
+  function nextTFQuestion() {
+  const selectedAnswer = document.querySelector("input[name='answer']:checked");
+  if (!selectedAnswer) {
+    alert("Please select an answer");
+    return;
+  }
+
+  const q = trueFalseQuestions[currentTFQuestion];
+  const selectedValue = selectedAnswer.value;
+
+  const isAnswerKeyALetter = q.a.length === 1 && ["a", "b", "c", "d"].includes(q.a.toLowerCase());
+
+  if (isAnswerKeyALetter) {
+    if (selectedValue === q.a.toLowerCase()) {
+      tfCorrectAnswers++; // ✅ صحح هنا بدل score
+    }
+  } else {
+    const selectedOptionIndex = selectedValue.charCodeAt(0) - 97;
+    const selectedOptionText = q.options[selectedOptionIndex];
+
+    if (selectedOptionText.trim().toLowerCase() === q.a.trim().toLowerCase()) {
+      tfCorrectAnswers++; // ✅ صحح هنا بدل score
+    }
+  }
+
+  currentTFQuestion++;
+  loadTFQuestion();
+}
+
+
+
+        function loadQuestion() {
+            let quizDiv = document.getElementById("quiz");
+            let q = questions[currentQuestion];
+            quizDiv.innerHTML = `<p class='question'>${q.q}</p>` +
+                q.options.map((option, index) => `<label><input type='radio' name='answer' value='${String.fromCharCode(97 + index)}'> ${option}</label>`).join('') +
+                `<button class='btn' onclick='nextQuestion()'>${currentQuestion === questions.length - 1 ? "Finish" : "Next"}</button>`;
+        }
+    
+        function nextQuestion() {
+            let selectedAnswer = document.querySelector("input[name='answer']:checked");
+            if (!selectedAnswer) return;
+            if (selectedAnswer.value === questions[currentQuestion].a) {
+                correctAnswers++;
+            }
+            if (currentQuestion < questions.length - 1) {
+                currentQuestion++;
+                loadQuestion();
+            } else {
+                showResult();
+            }
+        }
+    
+let serverUrl = ""; // سيتم تحديثه تلقائيًا عند تحميل الصفحة
+
+// دالة لجلب رابط السيرفر المخزن في GitHub
+function fetchServerUrl() {
+fetch("https://raw.githubusercontent.com/etiqotwf/liveServer1/main/serverUrl.json")
+        .then(response => response.json())
+        .then(data => {
+            if (data.serverUrl) {
+                serverUrl = data.serverUrl;
+                console.log("✅ رابط السيرفر المحدث من GitHub:", serverUrl);
+            } else {
+                console.error("❌ لم يتم العثور على رابط السيرفر في المستودع.");
+                retryFetchServerUrl();
+            }
+        })
+        .catch(error => {
+            console.error("❌ خطأ في جلب رابط السيرفر من GitHub:", error);
+            retryFetchServerUrl();
+        });
+}
+
+// دالة لإعادة المحاولة عند الفشل
+function retryFetchServerUrl() {
+    if (retryCount < MAX_RETRIES) {
+        retryCount++;
+        console.log(`🔄 إعادة المحاولة (${retryCount}/${MAX_RETRIES}) بعد 3 ثوانٍ...`);
+        setTimeout(fetchServerUrl, 3000);
+    } else {
+        console.error("⛔ تم الوصول إلى الحد الأقصى من المحاولات، تعذر جلب رابط السيرفر.");
+    }
+}
+
+// تحميل رابط السيرفر عند فتح الصفحة
+fetchServerUrl();
+
+function showResult() {
+    clearInterval(timerInterval);
+
+    let endTime = new Date();
+    let timeTaken = Math.floor((endTime - startTime) / 1000);
+    let minutesTaken = Math.floor(timeTaken / 60);
+    let secondsTaken = timeTaken % 60;
+
+    let name = document.getElementById("traineeName").value || "Unknown";
+    let phone = document.getElementById("traineePhone").value || "Unknown";
+    let date = new Date().toLocaleDateString("en-US");
+    let course = document.getElementById("courseName").value || "Unknown";
+
+    let totalQuestions = trueFalseQuestions.length + questions.length;
+    let totalCorrectAnswers = tfCorrectAnswers + correctAnswers;
+
+    let resultData = {
+        name: name,
+        phone: phone,
+        date: date,
+        course: course,
+        startTime: startTime.toLocaleString("en-GB", {
+            timeZone: "Africa/Cairo",
+            year: "numeric",
+            month: "long",
+            day: "numeric",
+            hour: "numeric",
+            minute: "numeric",
+            second: "numeric",
+            hour12: true
+        }),
+        timeTaken: `${minutesTaken} min ${secondsTaken} sec`,
+        score: `${totalCorrectAnswers} / ${totalQuestions}`
+    };
+
+    // إرسال البيانات إلى السيرفر إذا تم تحميل الرابط
+    if (!serverUrl) {
+        console.log("⏳ انتظار تحميل رابط السيرفر...");
+        fetchServerUrl().then(() => {
+            if (serverUrl) {
+                sendDataToServer(resultData);
+            } else {
+                console.error("❌ لم يتم تحميل رابط السيرفر بعد.");
+                alert("⚠️ تعذر إرسال البيانات! تأكد من اتصال الإنترنت وأعد المحاولة.");
+            }
+        });
+    } else {
+        sendDataToServer(resultData);
+    }
+
+    // إرسال البيانات إلى Google Sheets
+    sendDataToGoogleSheet(resultData);
+
+    // تحديث واجهة المستخدم
+    document.getElementById("resultCourse").innerText = course;
+    document.getElementById("resultName").innerText = name;
+    document.getElementById("resultPhone").innerText = phone;
+    document.getElementById("resultDate").innerText = date;
+    document.getElementById("resultStartTime").innerText = startTime.toLocaleTimeString();
+    document.getElementById("resultTime").innerText = `${minutesTaken} min ${secondsTaken} sec`;
+    document.getElementById("resultScore").innerText = `${totalCorrectAnswers} / ${totalQuestions}`;
+
+    document.getElementById("quizContainer").style.display = "none";
+    document.getElementById("resultScreen").style.display = "block";
+}
+
+// إرسال البيانات إلى السيرفر الأساسي
+function sendDataToServer(resultData) {
+    fetch(`${serverUrl}/submit`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(resultData)
+    })
+    .then(response => response.json())
+    .then(data => console.log("✅ تم الإرسال إلى السيرفر بنجاح:", data))
+    .catch(error => console.error("❌ خطأ أثناء الإرسال إلى السيرفر:", error));
+}
+
+
+
+
+
+function sendDataToGoogleSheet(resultData) {
+    const formData = new URLSearchParams();
+    formData.append("course", resultData.course);
+    formData.append("name", resultData.name);
+    formData.append("phone", resultData.phone);
+    formData.append("date", resultData.date);
+    formData.append("startTime", resultData.startTime);
+    formData.append("timeTaken", resultData.timeTaken);
+    formData.append("score", resultData.score);
+    formData.append("course", resultData.course);
+
+
+    fetch("https://script.google.com/macros/s/AKfycbxEYf2XYk1MT_yp_R9cMrw7xaWifGrN8D17woiDRoMxE05T4xZFQxVihdhP22TcPBypkQ/exec", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+        },
+        body: formData.toString(),
+    })
+    .then(response => response.text())
+    .then(responseText => {
+        console.log("✅ تم الإرسال إلى Google Sheet:", responseText);
+    })
+    .catch(error => {
+        console.error("❌ خطأ في الإرسال إلى Google Sheet:", error);
+    });
+}
+
+
+
+
+    </script>
+    </body>
+</html>

@@ -1,0 +1,1992 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+<meta charset="UTF-8">
+<title>الرد على تقرير الجهاز المركزي للمحاسبات</title>
+
+<style>
+
+/* =======================
+   إعدادات عامة
+======================= */
+body {
+    font-family: "Cairo", Tahoma, Arial;
+    background: #f4f6f8;
+    margin: 0;
+    padding: 0;
+    color: #333;
+}
+
+/* =======================
+   الهيدر
+======================= */
+header {
+    background: linear-gradient(135deg, #0d47a1, #1976d2);
+    color: #fff;
+    padding: 25px;
+    text-align: center;
+}
+
+header h1 {
+    margin: 0;
+    font-size: 24px;
+}
+
+header p {
+    margin-top: 10px;
+    font-size: 15px;
+    opacity: 0.95;
+}
+
+/* =======================
+   الحاويات العامة
+======================= */
+.container {
+    padding: 25px;
+    max-width: 1200px;
+    margin: auto;
+}
+
+.section {
+    background: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+}
+
+.section h2 {
+    margin-top: 0;
+    color: #0d47a1;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* =======================
+   الأزرار العامة
+======================= */
+button {
+    background: #1976d2;
+    color: #fff;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.25s ease;
+}
+
+button:hover {
+    background: #0d47a1;
+}
+
+/* =======================
+   الحقول والجداول
+======================= */
+input, textarea {
+    width: 100%;
+    padding: 8px;
+    margin-top: 5px;
+    margin-bottom: 12px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    font-family: inherit;
+    font-size: 14px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+}
+
+th, td {
+    border: 1px solid #ccc;
+    padding: 8px;
+    text-align: center;
+    font-size: 14px;
+}
+
+th {
+    background: #e3f2fd;
+}
+
+/* =======================
+   إخفاء العناصر
+======================= */
+.hidden {
+    display: none;
+}
+
+/* =======================
+   تصميم المخالفات
+======================= */
+.violation {
+    background: linear-gradient(135deg, #ffffff, #fafafa);
+    border-right: 8px solid #c62828;
+    padding: 25px 30px;
+    margin-bottom: 25px;
+    border-radius: 14px;
+    box-shadow:
+        0 10px 25px rgba(0,0,0,0.12),
+        inset 0 0 0 1px rgba(198,40,40,0.15);
+    position: relative;
+}
+
+/* شريط تحذير */
+.violation::before {
+    content: "⚠ مخالفة جسيمة";
+    position: absolute;
+    top: -14px;
+    right: 20px;
+    background: #c62828;
+    color: #fff;
+    padding: 4px 14px;
+    font-size: 13px;
+    border-radius: 6px;
+    font-weight: bold;
+}
+
+.violation h3 {
+    color: #b71c1c;
+    margin-top: 0;
+    margin-bottom: 12px;
+    font-size: 20px;
+    font-weight: 800;
+    border-bottom: 2px solid #ef9a9a;
+    padding-bottom: 8px;
+}
+
+.violation p {
+    font-size: 15px;
+    line-height: 1.9;
+    margin-bottom: 10px;
+}
+
+.violation .note {
+    background: #fff3e0;
+    border-right: 5px solid #ff9800;
+    padding: 12px 15px;
+    border-radius: 8px;
+    margin-top: 12px;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+/* =======================
+   أزرار فتح بيانات المخالفات
+======================= */
+.toggle-btn,
+.violation-toggle {
+    width: 100%;
+    padding: 18px 25px;
+    font-size: 20px;
+    font-weight: bold;
+    border-radius: 14px;
+    cursor: pointer;
+    border: none;
+    text-align: center;
+    letter-spacing: 1px;
+
+    /* ✔ تقليل المسافة بين الأزرار */
+
+    color: #fff;
+    background: linear-gradient(135deg, #b71c1c, #e53935);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.25);
+    transition: all 0.3s ease;
+}
+
+/* حركة ناعمة */
+.toggle-btn:hover,
+.violation-toggle:hover {
+    transform: translateY(-2px) scale(1.01);
+    box-shadow: 0 12px 26px rgba(0,0,0,0.35);
+}
+
+/* إحساس الضغط */
+.toggle-btn:active,
+.violation-toggle:active {
+    transform: scale(0.97);
+    box-shadow: 0 5px 14px rgba(0,0,0,0.35);
+}
+
+
+/* ===============================
+   📱 تنسيقات الموبايل
+================================ */
+@media (max-width: 768px) {
+
+    body {
+        font-size: 14px;
+    }
+
+    header {
+        padding: 18px 12px;
+    }
+
+    header h1 {
+        font-size: 18px;
+        line-height: 1.6;
+    }
+
+    header p {
+        font-size: 13px;
+    }
+
+    .container {
+        padding: 12px;
+    }
+
+    .section {
+        padding: 15px;
+        margin-bottom: 18px;
+    }
+
+    .section h2 {
+        font-size: 16px;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
+
+    /* أزرار المخالفات */
+    .violation-toggle,
+    .toggle-btn,
+    .toggle-violations-btn {
+        font-size: 16px;
+        padding: 14px;
+        border-radius: 10px;
+        margin: 6px 0;   /* 👈 تقليل المسافات بين الأزرار */
+    }
+
+    /* مربعات المخالفات */
+    .violation {
+        padding: 18px 16px;
+        margin-bottom: 20px;
+        border-right-width: 5px;
+    }
+
+    .violation h3 {
+        font-size: 16px;
+    }
+
+    .violation p {
+        font-size: 14px;
+        line-height: 1.8;
+    }
+
+    .violation::before {
+        font-size: 11px;
+        top: -12px;
+        right: 12px;
+        padding: 3px 10px;
+    }
+
+    /* المدخلات */
+    input,
+    textarea {
+        font-size: 14px;
+        padding: 10px;
+    }
+
+    /* الجداول – أهم جزء */
+    table {
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+        font-size: 13px;
+    }
+
+    th, td {
+        padding: 6px;
+    }
+
+    button {
+        width: 100%;
+        font-size: 15px;
+        padding: 12px;
+        margin-top: 8px;
+    }
+}
+
+
+/* طبقة تغطية شفافة */
+.lock-layer {
+  position: fixed;
+  inset: 0;
+  backdrop-filter: blur(6px) brightness(0.7);
+  background: rgba(0, 0, 0, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+/* صندوق الباسورد */
+.lock-box {
+  width: 320px;
+  padding: 30px;
+  border-radius: 16px;
+  text-align: center;
+  color: #fff;
+  background: linear-gradient(145deg, #1f1f1f, #2b2b2b);
+  box-shadow:
+    0 0 20px rgba(0, 123, 255, 0.6),
+    0 0 60px rgba(0, 123, 255, 0.2);
+  animation: popIn 0.6s ease;
+}
+
+/* عنوان */
+.lock-box h2 {
+  margin-bottom: 10px;
+  font-size: 26px;
+  letter-spacing: 2px;
+  text-shadow: 0 0 10px #0d6efd;
+}
+
+/* الإدخال */
+.lock-box input {
+  width: 100%;
+  padding: 12px;
+  margin: 15px 0;
+  font-size: 18px;
+  border-radius: 8px;
+  border: none;
+  outline: none;
+  text-align: center;
+  background: #111;
+  color: #0d6efd;
+  box-shadow: inset 0 0 10px rgba(13,110,253,.6);
+}
+
+/* زر الدخول */
+.lock-box button {
+  width: 100%;
+  padding: 12px;
+  font-size: 18px;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  color: #fff;
+  background: linear-gradient(135deg, #0d6efd, #6610f2);
+  box-shadow: 0 0 15px rgba(13,110,253,.8);
+  transition: transform .2s, box-shadow .2s;
+}
+
+.lock-box button:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 30px rgba(13,110,253,1);
+}
+
+/* رسالة الخطأ */
+.error-msg {
+  margin-top: 10px;
+  color: #ff4d4d;
+  display: none;
+  animation: shake .3s;
+}
+
+/* أنيميشن الدخول */
+@keyframes popIn {
+  from {
+    transform: scale(.7);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* اهتزاز عند الخطأ */
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-5px); }
+  75% { transform: translateX(5px); }
+}
+
+
+/* ===== Gaming Search Panel ===== */
+.gaming-search {
+    background: linear-gradient(145deg, #0b1020, #111827);
+    border-radius: 18px;
+    box-shadow:
+        0 20px 45px rgba(0,0,0,0.65),
+        inset 0 0 0 1px rgba(255,255,255,0.05);
+}
+
+/* عنوان */
+.gaming-search h2 {
+    color: #38bdf8;
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 22px;
+    letter-spacing: 1px;
+}
+
+/* شريط البحث */
+.search-panel {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+/* input جيمينج */
+.search-panel input {
+    flex: 1;
+    background: linear-gradient(145deg, #020617, #020617);
+    color: #e5e7eb;
+    border: 2px solid #1e293b;
+    border-radius: 14px;
+    padding: 16px 18px;
+    font-size: 16px;
+    transition: 0.3s;
+}
+
+.search-panel input::placeholder {
+    color: #94a3b8;
+}
+
+.search-panel input:focus {
+    outline: none;
+    border-color: #22d3ee;
+    box-shadow: 0 0 18px rgba(34,211,238,0.7);
+}
+
+/* زر البحث */
+.search-panel button {
+    padding: 16px 26px;
+    font-size: 18px;
+    font-weight: bold;
+    border-radius: 14px;
+    border: none;
+    cursor: pointer;
+    color: #fff;
+    background: linear-gradient(135deg, #16a34a, #22c55e);
+    box-shadow:
+        0 8px 22px rgba(0,0,0,0.6),
+        0 0 15px rgba(34,197,94,0.6);
+    transition: 0.25s;
+}
+
+.search-panel button:hover {
+    transform: translateY(-2px) scale(1.03);
+    box-shadow:
+        0 12px 30px rgba(0,0,0,0.8),
+        0 0 22px rgba(34,197,94,0.9);
+}
+
+.search-panel button:active {
+    transform: scale(0.95);
+}
+
+/* أزرار الأدوات */
+.tools-actions {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.tools-actions button {
+    flex: 1;
+    padding: 16px;
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 14px;
+    border: none;
+    cursor: pointer;
+    color: #fff;
+    background: linear-gradient(135deg, #1e40af, #2563eb);
+    box-shadow:
+        0 8px 22px rgba(0,0,0,0.6);
+    transition: 0.25s;
+}
+
+.tools-actions button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 28px rgba(0,0,0,0.8);
+}
+
+.tools-actions button:nth-child(2) {
+    background: linear-gradient(135deg, #7c2d12, #f97316);
+}
+
+.tools-actions button:nth-child(3) {
+    background: linear-gradient(135deg, #581c87, #9333ea);
+}
+
+/* موبايل */
+@media (max-width: 768px) {
+    .search-panel {
+        flex-direction: column;
+    }
+
+    .tools-actions {
+        flex-direction: column;
+    }
+}
+
+
+
+/* =========================
+   Mobile Optimization
+========================= */
+@media (max-width: 768px) {
+
+  .container.section {
+    padding: 12px;
+  }
+
+  /* العنوان */
+  .container.section h2 {
+    font-size: 18px;
+    text-align: center;
+  }
+
+  /* خانة البحث */
+  #searchInput {
+    width: 100%;
+    font-size: 14px;
+    padding: 10px 12px;
+    margin-bottom: 8px;
+    box-sizing: border-box;
+  }
+
+  /* مجموعة الأزرار */
+  .container.section button {
+    width: 100%;
+    font-size: 14px;
+    padding: 10px;
+    margin: 6px 0;
+    border-radius: 10px;
+  }
+
+}
+
+
+
+#toolsToggleBtn {
+  width: 100%;
+  padding: 18px;
+font-size: 20px;
+letter-spacing: 1px;
+text-shadow: 0 0 8px rgba(255,255,255,.4);
+  font-weight: bold;
+  border-radius: 14px;
+  border: none;
+  cursor: pointer;
+  color: #fff;
+  background: linear-gradient(135deg, #2563eb, #0ea5e9);
+  box-shadow: 0 0 18px rgba(37,99,235,.7);
+  margin-bottom: 10px;
+  transition: .3s;
+}
+
+#toolsToggleBtn:hover {
+  transform: scale(1.02);
+}
+
+#toolsPanel {
+  overflow: hidden;
+  transition: all .5s ease;
+}
+
+#toolsPanel.closed {
+  max-height: 0;
+  opacity: 0;
+}
+
+#toolsPanel.open {
+  max-height: 800px;
+  opacity: 1;
+}
+
+
+
+</style>
+</head>
+
+<body>
+
+<!-- طبقة القفل -->
+<div id="lockLayer" class="lock-layer">
+  <div class="lock-box">
+    <h2>🔐 ACCESS</h2>
+    <p>أدخل كلمة المرور للمتابعة</p>
+
+    <input type="password" id="passwordInput" placeholder="••••••">
+    <button onclick="checkPassword()">🚀 دخول</button>
+
+    <div id="loginError" class="error-msg">❌ كلمة المرور غير صحيحة</div>
+  </div>
+</div>
+
+
+<header>
+    <h1>الرد على تقرير الجهاز المركزي للمحاسبات</h1>
+    <p>
+        مستندات وتحليلات لجنة الفحص – سيارات – وقود – مخالفات  
+        <br>
+        (عرض تفصيلي مبسّط يدعم اتخاذ القرار)
+    </p>
+</header>
+
+<!-- زر فتح / غلق أدوات التطبيق -->
+<button id="toolsToggleBtn" onclick="toggleTools()">
+  🛠️ أدوات التطبيق
+</button>
+
+<!-- صندوق الأدوات -->
+<div id="toolsPanel" class="closed">
+
+  <div class="container section tools-box gaming-search">
+
+      <h2>🛠️ أدوات التطبيق</h2>
+
+      <div class="search-panel">
+          <input type="text" id="searchInput" placeholder="🔍 ابحث برقم السيارة أو نوعها">
+          <button onclick="searchInDB()">بحث</button>
+      </div>
+
+      <div class="tools-actions">
+         <button onclick="backupDB()">📦 Backup</button>
+         <button onclick="restoreDB()">♻️ Restore</button>
+          <button onclick="printFromDB()">🖨️ طباعة من قاعدة البيانات</button>
+      </div>
+
+  </div>
+
+</div>
+
+
+
+
+ <!-- زر المخالفات -->
+    <div class="section">
+        <h2>
+            📌 المخالفات كما وردت بتقرير الجهاز
+            <button onclick="toggleViolations()">عرض / إخفاء</button>
+        </h2>
+
+        <div id="violationsSection" class="hidden">
+
+          <!-- مخالفة 1 -->
+<div class="violation">
+    <h3>🔴 المخالفة (1): صرف وقود بكميات تجاوزت السعة الفعلية للتانك</h3>
+
+    <p><strong>نص المخالفة:</strong><br>
+    تبين صرف كميات من الوقود لبعض السيارات تجاوزت السعة الفعلية لخزاناتها،
+    بما لا يتفق والطاقة الاستيعابية للتانك طبقًا للمواصفات الفنية المعتمدة.
+    </p>
+
+    <p><strong>السيارات المذكورة:</strong><br>
+    السيارة رقم: (…..)<br>
+    السيارة رقم: (…..)
+    </p>
+
+    <p><strong>الأرقام الواردة:</strong><br>
+    سعة التانك: (… لتر)<br>
+    الكمية المصروفة: (… لتر)<br>
+    مقدار التجاوز: (… لتر)
+    </p>
+
+    <p><strong>فين المشكلة؟</strong><br>
+    استحالة فنية لتخزين الكمية المصروفة داخل التانك.<br>
+    قرينة قوية على خلل رقابي أو استخدام غير مشروع.
+    </p>
+
+    <div class="note">
+        ⚠️ مخالفة فنية جوهرية لا تُفسَّر إداريًا بسهولة
+        وتُعد من أقوى ملاحظات تقرير الجهاز.
+    </div>
+
+    <p><strong>الحل الاحترافي المقترح للجنة:</strong><br>
+    - حصر السيارات محل المخالفة سيارة سيارة.<br>
+    - مطابقة سعات التانكات بالمواصفات الفنية المعتمدة.<br>
+    - استبعاد أي تبرير شفهي غير موثق.<br>
+    - تحميل المسئولية وفق ما يسفر عنه الفحص.
+    </p>
+
+    <p><strong>وسائل مساعدة للجنة:</strong><br>
+    - تقرير فني معتمد بسعات التانكات.<br>
+    - كشف صرف مجمّع لكل سيارة.<br>
+    - مقارنة زمنية توضح التراكم غير المنطقي للصرف.
+    </p>
+</div>
+
+<!-- مخالفة 2 -->
+<div class="violation">
+    <h3>🔴 المخالفة (2): تكرار صرف الوقود في فترات زمنية غير مبررة</h3>
+
+    <p><strong>نص المخالفة:</strong><br>
+    لوحظ تكرار صرف الوقود لذات السيارة خلال فترات زمنية متقاربة
+    دون ما يبرر ذلك من واقع أوامر التشغيل المعتمدة.
+    </p>
+
+    <p><strong>السيارات المذكورة:</strong><br>
+    السيارة رقم: (…..)<br>
+    السيارة رقم: (…..)
+    </p>
+
+    <p><strong>الأرقام الواردة:</strong><br>
+    عدد مرات الصرف: (… مرة خلال … أيام)<br>
+    إجمالي الكمية المصروفة: (… لتر)
+    </p>
+
+    <p><strong>فين المشكلة؟</strong><br>
+    غياب أو ضعف أوامر التشغيل.<br>
+    عدم تناسب التكرار مع طبيعة العمل الفعلية.
+    </p>
+
+    <div class="note">
+        ❗ تثبت وجود نمط متكرر وليس حالة فردية.
+    </div>
+
+    <p><strong>الحل الاحترافي المقترح للجنة:</strong><br>
+    - مراجعة أوامر التشغيل المعتمدة فقط خلال نفس الفترات.<br>
+    - استبعاد أي أوامر لاحقة أو معدلة بعد الصرف.<br>
+    - تقييم واقعية التكرار مقارنة بطبيعة النشاط.
+    </p>
+
+    <p><strong>وسائل مساعدة للجنة:</strong><br>
+    - جدول زمني يوضح تواريخ وساعات الصرف.<br>
+    - ربط الصرف بأوامر التشغيل يومًا بيوم.<br>
+    - بيان متوسط الاستهلاك الطبيعي للمأمورية.
+    </p>
+</div>
+
+<!-- مخالفة 3 -->
+<div class="violation">
+    <h3>🔴 المخالفة (3): عدم تناسب المسافات المقطوعة مع كميات الوقود المصروفة</h3>
+
+    <p><strong>نص المخالفة:</strong><br>
+    بمقارنة المسافات المقطوعة بالسيارات بمعدلات الاستهلاك القياسية،
+    تبين عدم تناسب كميات الوقود المصروفة مع تلك المسافات.
+    </p>
+
+    <p><strong>السيارات المذكورة:</strong><br>
+    السيارة رقم: (…..)
+    </p>
+
+    <p><strong>الأرقام الواردة:</strong><br>
+    المسافة المقطوعة: (… كم)<br>
+    الاستهلاك المفترض: (… لتر)<br>
+    المصروف فعليًا: (… لتر)<br>
+    الفرق: (… لتر)
+    </p>
+
+    <p><strong>فين المشكلة؟</strong><br>
+    إما بيانات حركة غير صحيحة، أو صرف وقود زائد بلا مبرر.
+    </p>
+
+    <div class="note">
+        📌 مخالفة فنية محاسبية مدعّمة بالأرقام.
+    </div>
+
+    <p><strong>الحل الاحترافي المقترح للجنة:</strong><br>
+    - فحص عدادات السيارة وسجلات الحركة.<br>
+    - اعتماد معدل استهلاك قياسي معتمد.<br>
+    - تحميل الفرق غير المبرر ماليًا.
+    </p>
+
+    <p><strong>وسائل مساعدة للجنة:</strong><br>
+    - جدول مقارنة (كم / لتر).<br>
+    - بيان فني معتمد من إدارة المركبات.<br>
+    - استبعاد الأعطال إلا بمحاضر رسمية.
+    </p>
+</div>
+
+<!-- مخالفة 4 -->
+<div class="violation">
+    <h3>🔴 المخالفة (4): صرف وقود لسيارات متوقفة أو تحت الصيانة</h3>
+
+    <p><strong>نص المخالفة:</strong><br>
+    تبين صرف وقود لسيارات متوقفة عن العمل أو خاضعة للصيانة
+    خلال فترات التوقف المثبتة بالسجلات.
+    </p>
+
+    <p><strong>السيارات المذكورة:</strong><br>
+    السيارة رقم: (…..)<br>
+    حالة السيارة: متوقفة / صيانة
+    </p>
+
+    <p><strong>الأرقام الواردة:</strong><br>
+    تواريخ الصرف: (… / … / …)<br>
+    الكمية المصروفة: (… لتر)
+    </p>
+
+    <p><strong>فين المشكلة؟</strong><br>
+    لا يوجد أي مبرر قانوني أو فني للصرف.
+    </p>
+
+    <div class="note">
+        🚨 من أخطر المخالفات وتُضعف أي دفاع إداري.
+    </div>
+
+    <p><strong>الحل الاحترافي المقترح للجنة:</strong><br>
+    - اعتماد محاضر التوقف والصيانة فقط.<br>
+    - رفض أي تبرير غير موثق.<br>
+    - تحميل كامل الكمية المصروفة بدون خصم.
+    </p>
+
+    <p><strong>وسائل مساعدة للجنة:</strong><br>
+    - مطابقة الصرف مع سجلات الورش.<br>
+    - محاضر تسليم واستلام السيارة.
+    </p>
+</div>
+
+<!-- مخالفة 5 -->
+<div class="violation">
+    <h3>🔴 المخالفة (5): تشغيل سيارات أيام الجمع والعطلات دون مأموريات</h3>
+
+    <p><strong>نص المخالفة:</strong><br>
+    تم تشغيل سيارات وصرف وقود لها خلال أيام العطلات الرسمية
+    دون وجود مأموريات أو أوامر تشغيل معتمدة مسبقًا.
+    </p>
+
+    <p><strong>السيارات المذكورة:</strong><br>
+    السيارة رقم: (…..)
+    </p>
+
+    <p><strong>الأرقام الواردة:</strong><br>
+    تواريخ الإجازات: (….)<br>
+    كميات الوقود المصروفة: (… لتر)
+    </p>
+
+    <p><strong>فين المشكلة؟</strong><br>
+    التشغيل قد يكون حقيقيًا لكنه غير موثق رسميًا.
+    </p>
+
+    <div class="note">
+        مخالفة إدارية ثابتة.
+    </div>
+
+    <p><strong>الحل الاحترافي المقترح للجنة:</strong><br>
+    - عدم الاعتداد بأي مأموريات لاحقة.<br>
+    - قصر القبول على أوامر معتمدة مسبقًا.<br>
+    - تحميل المسئول الإداري عن التشغيل.
+    </p>
+
+    <p><strong>وسائل مساعدة للجنة:</strong><br>
+    - تقويم رسمي بالإجازات.<br>
+    - كشف تشغيل يومي.
+    </p>
+</div>
+
+<!-- مخالفة 6 -->
+<div class="violation">
+    <h3>🔴 المخالفة (6): سوء استخدام وإدارة كروت الوقود الذكية</h3>
+
+    <p><strong>نص المخالفة:</strong><br>
+    تبين وجود قصور في إدارة كروت الوقود الذكية
+    وعدم إحكام الرقابة على استخدامها.
+    </p>
+
+    <p><strong>السيارات / الكروت:</strong><br>
+    كارت سيارة رقم: (…..)<br>
+    استخدامه لسيارة أخرى.
+    </p>
+
+    <p><strong>فين المشكلة؟</strong><br>
+    عدم الجرد وعدم الربط بين الكارت والسيارة.
+    </p>
+
+    <div class="note">
+        ⚠️ قد ترقى لشبهة جنائية حال ثبوت التعمد.
+    </div>
+
+    <p><strong>الحل الاحترافي المقترح للجنة:</strong><br>
+    - جرد فعلي لجميع الكروت.<br>
+    - ربط كل كارت بسيارة واحدة فقط.<br>
+    - تحديد المسئول المباشر عن كل كارت.
+    </p>
+
+    <p><strong>وسائل مساعدة للجنة:</strong><br>
+    - محضر جرد رسمي.<br>
+    - كشوف استلام وتسليم.
+    </p>
+</div>
+
+<!-- مخالفة 7 -->
+<div class="violation">
+    <h3>🔴 المخالفة (7): تحميل مالي بقيمة المخالفات</h3>
+
+    <p><strong>نص المخالفة:</strong><br>
+    بلغ إجمالي قيمة كميات الوقود المصروفة دون مبرر
+    مبلغ وقدره (…… جنيه) طبقًا للأسعار السارية.
+    </p>
+
+    <p><strong>المبلغ:</strong><br>
+    إجمالي التحميل: (…… جنيه)
+    </p>
+
+    <p><strong>فين المشكلة؟</strong><br>
+    المبلغ محسوب محاسبيًا وليس رأيًا تقديريًا.
+    </p>
+
+    <div class="note">
+        📌 التحميل واجب وليس اختياري.
+    </div>
+
+    <p><strong>الحل الاحترافي المقترح للجنة:</strong><br>
+    - اعتماد التحميل كما ورد بالتقرير.<br>
+    - توزيعه حسب المسئولية.<br>
+    - إثباته بمحضر اللجنة صراحة.
+    </p>
+
+    <p><strong>وسائل مساعدة للجنة:</strong><br>
+    - كشف حساب تفصيلي.<br>
+    - ربط المبلغ بكل سيارة محل المخالفة.
+    </p>
+</div>
+        </div>
+    </div>
+
+</div>
+
+<button class="toggle-btn" onclick="toggleSection('violation1Data')">
+    📂 بيانات فحص المخالفة الأولى
+</button>
+
+
+<div class="container">
+
+    <div id="violation1Data" class="hidden">
+
+        <!-- البيانات العامة -->
+        <div class="section">
+            <h2>📋 البيانات العامة – المخالفة الأولى</h2>
+
+            <label>الجهة</label>
+            <input type="text" id="entity">
+
+            <label>الفترة محل الفحص (من)</label>
+            <input type="date" id="fromDate">
+
+            <label>الفترة محل الفحص (إلى)</label>
+            <input type="date" id="toDate">
+
+            <button onclick="saveGeneralData()">💾 حفظ البيانات العامة</button>
+        </div>
+
+        <!-- جدول السيارات -->
+        <div class="section">
+            <h2>🚗 بيانات السيارات محل الفحص</h2>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>رقم السيارة</th>
+                        <th>نوع السيارة</th>
+                        <th>سعة التانك (لتر)</th>
+                        <th>إجمالي المصروف (لتر)</th>
+                        <th>مقدار التجاوز</th>
+                        <th>فترة الصرف</th>
+                        <th>ملاحظات اللجنة</th>
+                    </tr>
+                </thead>
+                <tbody id="carsTable"></tbody>
+            </table>
+
+            <button onclick="addCarRow()">➕ إضافة سيارة</button>
+            <button onclick="saveCars()">💾 حفظ بيانات السيارات</button>
+        </div>
+
+    </div>
+
+</div>
+
+
+<button class="toggle-btn" onclick="toggleSection('violation2Data')">
+    📂 بيانات فحص المخالفة الثانية
+</button>
+
+<div class="container">
+
+    <div id="violation2Data" class="hidden">
+
+        <!-- البيانات العامة -->
+        <div class="section">
+            <h2>📋 البيانات العامة – المخالفة الثانية</h2>
+
+            <label>الجهة</label>
+            <input type="text" id="entity_v2">
+
+            <label>الفترة محل الفحص (من)</label>
+            <input type="date" id="fromDate_v2">
+
+            <label>الفترة محل الفحص (إلى)</label>
+            <input type="date" id="toDate_v2">
+
+            <button onclick="saveGeneralDataV2()">💾 حفظ البيانات العامة</button>
+        </div>
+
+        <!-- جدول السيارات -->
+        <div class="section">
+            <h2>🚗 بيانات السيارات – تكرار الصرف</h2>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>رقم السيارة</th>
+                        <th>عدد مرات الصرف</th>
+                        <th>الفترة الزمنية</th>
+                        <th>إجمالي الوقود</th>
+                        <th>أمر التشغيل</th>
+                        <th>ملاحظات اللجنة</th>
+                    </tr>
+                </thead>
+                <tbody id="carsTable_v2"></tbody>
+            </table>
+
+            <button onclick="addCarRowV2()">➕ إضافة سيارة</button>
+            <button onclick="saveCarsV2()">💾 حفظ بيانات المخالفة الثانية</button>
+        </div>
+
+    </div>
+
+</div>
+
+
+   
+<button class="violation-toggle" onclick="toggleSection('violation3Data')">
+    📂 بيانات فحص المخالفة الثالثة
+</button>
+
+
+<div class="container">
+
+    <div id="violation3Data" class="hidden">
+
+        <!-- البيانات العامة -->
+        <div class="section">
+            <h2>📋 البيانات العامة – المخالفة الثالثة</h2>
+
+            <label>الجهة</label>
+            <input type="text" id="entity_v3">
+
+            <label>الفترة محل الفحص (من)</label>
+            <input type="date" id="fromDate_v3">
+
+            <label>الفترة محل الفحص (إلى)</label>
+            <input type="date" id="toDate_v3">
+
+            <button onclick="saveGeneralDataV3()">💾 حفظ البيانات العامة</button>
+        </div>
+
+        <!-- جدول السيارات -->
+        <div class="section">
+            <h2>🚗 بيانات السيارات – عدم تناسب المسافات مع الوقود</h2>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>رقم السيارة</th>
+                        <th>المسافة المقطوعة (كم)</th>
+                        <th>المعدل القياسي (كم/لتر)</th>
+                        <th>الاستهلاك المفترض (لتر)</th>
+                        <th>المصروف فعليًا (لتر)</th>
+                        <th>الفرق</th>
+                        <th>ملاحظات اللجنة</th>
+                    </tr>
+                </thead>
+                <tbody id="carsTable_v3"></tbody>
+            </table>
+
+            <button onclick="addCarRowV3()">➕ إضافة سيارة</button>
+            <button onclick="saveCarsV3()">💾 حفظ بيانات المخالفة الثالثة</button>
+        </div>
+
+    </div>
+
+</div>
+
+
+<button class="violation-toggle" onclick="toggleSection('violation4Data')">
+    📂 بيانات فحص المخالفة الرابعة
+</button>
+
+
+<div class="container">
+
+    <div id="violation4Data" class="hidden">
+
+        <!-- البيانات العامة -->
+        <div class="section">
+            <h2>📋 البيانات العامة – المخالفة الرابعة</h2>
+
+            <label>الجهة</label>
+            <input type="text" id="entity_v4">
+
+            <label>الفترة محل الفحص (من)</label>
+            <input type="date" id="fromDate_v4">
+
+            <label>الفترة محل الفحص (إلى)</label>
+            <input type="date" id="toDate_v4">
+
+            <button onclick="saveGeneralDataV4()">💾 حفظ البيانات العامة</button>
+        </div>
+
+        <!-- جدول السيارات -->
+        <div class="section">
+            <h2>🚗 سيارات تم الصرف لها محل الملاحظة</h2>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>رقم السيارة</th>
+                        <th>جهة التخصيص</th>
+                        <th>سبب الصرف</th>
+                        <th>هل توجد مأمورية؟</th>
+                        <th>رقم وتاريخ المأمورية</th>
+                        <th>موقف اللجنة</th>
+                        <th>ملاحظات</th>
+                    </tr>
+                </thead>
+                <tbody id="carsTable_v4"></tbody>
+            </table>
+
+            <button onclick="addCarRowV4()">➕ إضافة سيارة</button>
+            <button onclick="saveCarsV4()">💾 حفظ بيانات المخالفة الرابعة</button>
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<button class="violation-toggle" onclick="toggleSection('violation5Data')">
+    📅 بيانات فحص المخالفة الخامسة
+</button>
+
+<div class="container">
+
+    <div id="violation5Data" class="hidden">
+
+        <!-- البيانات العامة -->
+        <div class="section">
+            <h2>📋 البيانات العامة – المخالفة الخامسة</h2>
+
+            <label>الجهة</label>
+            <input type="text" id="entity_v5">
+
+            <label>الفترة محل الفحص (من)</label>
+            <input type="date" id="fromDate_v5">
+
+            <label>الفترة محل الفحص (إلى)</label>
+            <input type="date" id="toDate_v5">
+
+            <button onclick="saveGeneralDataV5()">💾 حفظ البيانات العامة</button>
+        </div>
+
+        <!-- جدول التشغيل أيام العطلات -->
+        <div class="section">
+            <h2>🚗 تشغيل سيارات خلال العطلات</h2>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>رقم السيارة</th>
+                        <th>تاريخ العطلة</th>
+                        <th>نوع العطلة</th>
+                        <th>سبب التشغيل</th>
+                        <th>قرار / تكليف رسمي</th>
+                        <th>جهة إصدار القرار</th>
+                        <th>رأي اللجنة</th>
+                        <th>ملاحظات</th>
+                    </tr>
+                </thead>
+                <tbody id="carsTable_v5"></tbody>
+            </table>
+
+            <button onclick="addCarRowV5()">➕ إضافة بيان</button>
+            <button onclick="saveCarsV5()">💾 حفظ بيانات المخالفة الخامسة</button>
+        </div>
+
+    </div>
+
+</div>
+
+
+
+
+<button class="violation-toggle" onclick="toggleSection('violation6Data')">
+    💳 بيانات فحص المخالفة السادسة
+</button>
+
+<div class="container">
+
+    <div id="violation6Data" class="hidden">
+
+        <!-- البيانات العامة -->
+        <div class="section">
+            <h2>📋 البيانات العامة – المخالفة السادسة</h2>
+
+            <label>الجهة</label>
+            <input type="text" id="entity_v6">
+
+            <label>الفترة محل الفحص (من)</label>
+            <input type="date" id="fromDate_v6">
+
+            <label>الفترة محل الفحص (إلى)</label>
+            <input type="date" id="toDate_v6">
+
+            <button onclick="saveGeneralDataV6()">💾 حفظ البيانات العامة</button>
+        </div>
+
+        <!-- جدول كروت الوقود -->
+        <div class="section">
+            <h2>💳 بيانات كروت الوقود الذكية</h2>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>رقم الكارت</th>
+                        <th>رقم السيارة</th>
+                        <th>اسم المستلم</th>
+                        <th>الوظيفة</th>
+                        <th>تاريخ الاستلام</th>
+                        <th>حد الصرف المقرر</th>
+                        <th>إجمالي الصرف</th>
+                        <th>جهة المتابعة</th>
+                        <th>ملاحظات اللجنة</th>
+                    </tr>
+                </thead>
+                <tbody id="cardsTable_v6"></tbody>
+            </table>
+
+            <button onclick="addCardRowV6()">➕ إضافة كارت</button>
+            <button onclick="saveCardsV6()">💾 حفظ بيانات المخالفة السادسة</button>
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<button class="violation-toggle" onclick="toggleSection('violation7Data')">
+    💰 بيانات فحص المخالفة السابعة
+</button>
+
+
+<div class="container">
+
+    <div id="violation7Data" class="hidden">
+
+        <!-- البيانات العامة -->
+        <div class="section">
+            <h2>📋 البيانات العامة – المخالفة السابعة</h2>
+
+            <label>الجهة</label>
+            <input type="text" id="entity_v7">
+
+            <label>الفترة محل الفحص (من)</label>
+            <input type="date" id="fromDate_v7">
+
+            <label>الفترة محل الفحص (إلى)</label>
+            <input type="date" id="toDate_v7">
+
+            <button onclick="saveGeneralDataV7()">💾 حفظ البيانات العامة</button>
+        </div>
+
+        <!-- جدول التحميل المالي -->
+        <div class="section">
+            <h2>💰 تحليل التحميل المالي للوقود</h2>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>رقم السيارة</th>
+                        <th>إجمالي الوقود المصروف (لتر)</th>
+                        <th>الوقود المبرر (لتر)</th>
+                        <th>الوقود غير المبرر (لتر)</th>
+                        <th>سعر اللتر</th>
+                        <th>قيمة غير المبرر</th>
+                        <th>سبب الفرق</th>
+                        <th>رأي اللجنة</th>
+                    </tr>
+                </thead>
+                <tbody id="financialTable_v7"></tbody>
+            </table>
+
+            <button onclick="addFinancialRowV7()">➕ إضافة بيان</button>
+            <button onclick="saveFinancialV7()">💾 حفظ بيانات المخالفة السابعة</button>
+        </div>
+
+    </div>
+
+</div>
+
+
+<script>
+let db;
+
+const request = indexedDB.open("CentralAuditReply", 1);
+
+request.onupgradeneeded = function (e) {
+    db = e.target.result;
+
+    if (!db.objectStoreNames.contains("general"))
+        db.createObjectStore("general", { keyPath: "id" });
+
+    if (!db.objectStoreNames.contains("cars"))
+        db.createObjectStore("cars", { autoIncrement: true });
+
+    if (!db.objectStoreNames.contains("cards"))
+        db.createObjectStore("cards", { autoIncrement: true });
+
+    if (!db.objectStoreNames.contains("financial"))
+        db.createObjectStore("financial", { autoIncrement: true });
+};
+
+request.onsuccess = function (e) {
+    db = e.target.result;
+};
+
+function saveGeneralData() {
+    const tx = db.transaction("general", "readwrite");
+    const store = tx.objectStore("general");
+    store.put({
+        id: 1,
+        entity: entity.value,
+        from: fromDate.value,
+        to: toDate.value
+    });
+    alert("تم حفظ البيانات العامة");
+}
+
+function addCarRow() {
+    const row = `
+        <tr>
+            <td><input></td>
+            <td><input></td>
+            <td><input></td>
+            <td><input></td>
+            <td><input></td>
+            <td><input></td>
+            <td><input></td>
+        </tr>`;
+    carsTable.insertAdjacentHTML("beforeend", row);
+}
+
+function saveCars() {
+    const tx = db.transaction("cars", "readwrite");
+    const store = tx.objectStore("cars");
+
+    document.querySelectorAll("#carsTable tr").forEach(tr => {
+        const cells = tr.querySelectorAll("input");
+        store.add({
+            carNumber: cells[0].value,
+            type: cells[1].value,
+            tank: cells[2].value,
+            fuel: cells[3].value,
+            excess: cells[4].value,
+            period: cells[5].value,
+            notes: cells[6].value
+        });
+    });
+
+    alert("تم حفظ بيانات السيارات");
+}
+
+function toggleViolations() {
+    violationsSection.classList.toggle("hidden");
+}
+
+
+function toggleSection(id) {
+    document.getElementById(id).classList.toggle("hidden");
+}
+
+
+
+function saveGeneralDataV2() {
+    const tx = db.transaction("general", "readwrite");
+    const store = tx.objectStore("general");
+    store.put({
+        id: 2,
+        entity: entity_v2.value,
+        from: fromDate_v2.value,
+        to: toDate_v2.value
+    });
+    alert("تم حفظ البيانات العامة للمخالفة الثانية");
+}
+
+
+function addCarRowV2() {
+    const row = `
+        <tr>
+            <td><input></td>
+            <td><input></td>
+            <td><input></td>
+            <td><input></td>
+            <td><input></td>
+            <td><input></td>
+        </tr>`;
+    document.getElementById("carsTable_v2")
+        .insertAdjacentHTML("beforeend", row);
+}
+
+
+function saveCarsV2() {
+    const tx = db.transaction("cars", "readwrite");
+    const store = tx.objectStore("cars");
+
+    document.querySelectorAll("#carsTable_v2 tr").forEach(tr => {
+        const cells = tr.querySelectorAll("input");
+        store.add({
+            violation: 2,
+            carNumber: cells[0].value,
+            repeats: cells[1].value,
+            period: cells[2].value,
+            fuel: cells[3].value,
+            order: cells[4].value,
+            notes: cells[5].value
+        });
+    });
+
+    alert("تم حفظ بيانات المخالفة الثانية");
+}
+
+
+
+/* ===== المخالفة الثالثة ===== */
+
+function saveGeneralDataV3() {
+    const tx = db.transaction("general", "readwrite");
+    const store = tx.objectStore("general");
+
+    store.put({
+        id: "violation3",
+        entity: entity_v3.value,
+        from: fromDate_v3.value,
+        to: toDate_v3.value
+    });
+
+    alert("✅ تم حفظ البيانات العامة للمخالفة الثالثة");
+}
+
+function addCarRowV3() {
+    const row = `
+        <tr>
+            <td><input></td>
+            <td><input></td>
+            <td><input></td>
+            <td><input></td>
+            <td><input></td>
+            <td><input></td>
+            <td><input></td>
+        </tr>`;
+    carsTable_v3.insertAdjacentHTML("beforeend", row);
+}
+
+function saveCarsV3() {
+    const tx = db.transaction("cars", "readwrite");
+    const store = tx.objectStore("cars");
+
+    document.querySelectorAll("#carsTable_v3 tr").forEach(tr => {
+        const c = tr.querySelectorAll("input");
+        store.add({
+            violation: 3,
+            carNumber: c[0].value,
+            distance: c[1].value,
+            rate: c[2].value,
+            expected: c[3].value,
+            actual: c[4].value,
+            diff: c[5].value,
+            notes: c[6].value
+        });
+    });
+
+    alert("💾 تم حفظ بيانات المخالفة الثالثة");
+}
+
+/* ===== المخالفة الرابعة ===== */
+
+function saveGeneralDataV4() {
+    const tx = db.transaction("general", "readwrite");
+    const store = tx.objectStore("general");
+
+    store.put({
+        id: "violation4",
+        entity: entity_v4.value,
+        from: fromDate_v4.value,
+        to: toDate_v4.value
+    });
+
+    alert("✅ تم حفظ البيانات العامة للمخالفة الرابعة");
+}
+
+function addCarRowV4() {
+    const row = `
+        <tr>
+            <td><input></td>
+            <td><input></td>
+            <td><input></td>
+            <td>
+                <select>
+                    <option value="">-- اختر --</option>
+                    <option>نعم</option>
+                    <option>لا</option>
+                </select>
+            </td>
+            <td><input></td>
+            <td><input></td>
+            <td><input></td>
+        </tr>`;
+    carsTable_v4.insertAdjacentHTML("beforeend", row);
+}
+
+function saveCarsV4() {
+    const tx = db.transaction("cars", "readwrite");
+    const store = tx.objectStore("cars");
+
+    document.querySelectorAll("#carsTable_v4 tr").forEach(tr => {
+        const inputs = tr.querySelectorAll("input, select");
+
+        store.add({
+            violation: 4,
+            carNumber: inputs[0].value,
+            department: inputs[1].value,
+            reason: inputs[2].value,
+            mission: inputs[3].value,
+            missionRef: inputs[4].value,
+            committeeOpinion: inputs[5].value,
+            notes: inputs[6].value
+        });
+    });
+
+    alert("💾 تم حفظ بيانات المخالفة الرابعة");
+}
+
+
+/* ===== المخالفة الخامسة ===== */
+
+function saveGeneralDataV5() {
+    const tx = db.transaction("general", "readwrite");
+    const store = tx.objectStore("general");
+
+    store.put({
+        id: "violation5",
+        entity: entity_v5.value,
+        from: fromDate_v5.value,
+        to: toDate_v5.value
+    });
+
+    alert("✅ تم حفظ البيانات العامة للمخالفة الخامسة");
+}
+
+function addCarRowV5() {
+    const row = `
+        <tr>
+            <td><input></td>
+            <td><input type="date"></td>
+            <td>
+                <select>
+                    <option value="">-- اختر --</option>
+                    <option>جمعة</option>
+                    <option>سبت</option>
+                    <option>عيد رسمي</option>
+                </select>
+            </td>
+            <td><input></td>
+            <td><input></td>
+            <td><input></td>
+            <td><input></td>
+            <td><input></td>
+        </tr>`;
+    carsTable_v5.insertAdjacentHTML("beforeend", row);
+}
+
+function saveCarsV5() {
+    const tx = db.transaction("cars", "readwrite");
+    const store = tx.objectStore("cars");
+
+    document.querySelectorAll("#carsTable_v5 tr").forEach(tr => {
+        const i = tr.querySelectorAll("input, select");
+
+        store.add({
+            violation: 5,
+            carNumber: i[0].value,
+            holidayDate: i[1].value,
+            holidayType: i[2].value,
+            operationReason: i[3].value,
+            officialOrder: i[4].value,
+            issuingAuthority: i[5].value,
+            committeeOpinion: i[6].value,
+            notes: i[7].value
+        });
+    });
+
+    alert("💾 تم حفظ بيانات المخالفة الخامسة");
+}
+
+
+/* ===== المخالفة السادسة ===== */
+
+function saveGeneralDataV6() {
+    const tx = db.transaction("general", "readwrite");
+    const store = tx.objectStore("general");
+
+    store.put({
+        id: "violation6",
+        entity: entity_v6.value,
+        from: fromDate_v6.value,
+        to: toDate_v6.value
+    });
+
+    alert("✅ تم حفظ البيانات العامة للمخالفة السادسة");
+}
+
+function addCardRowV6() {
+    const row = `
+        <tr>
+            <td><input></td>
+            <td><input></td>
+            <td><input></td>
+            <td><input></td>
+            <td><input type="date"></td>
+            <td><input></td>
+            <td><input></td>
+            <td><input></td>
+            <td><input></td>
+        </tr>`;
+    cardsTable_v6.insertAdjacentHTML("beforeend", row);
+}
+
+function saveCardsV6() {
+    const tx = db.transaction("cards", "readwrite");
+    const store = tx.objectStore("cards");
+
+    document.querySelectorAll("#cardsTable_v6 tr").forEach(tr => {
+        const i = tr.querySelectorAll("input");
+
+        store.add({
+            violation: 6,
+            cardNumber: i[0].value,
+            carNumber: i[1].value,
+            receiver: i[2].value,
+            jobTitle: i[3].value,
+            receiveDate: i[4].value,
+            allowedLimit: i[5].value,
+            actualSpent: i[6].value,
+            supervisingEntity: i[7].value,
+            committeeNotes: i[8].value
+        });
+    });
+
+    alert("💾 تم حفظ بيانات المخالفة السادسة");
+}
+
+
+
+/* ===== المخالفة السابعة ===== */
+
+function saveGeneralDataV7() {
+    const tx = db.transaction("general", "readwrite");
+    const store = tx.objectStore("general");
+
+    store.put({
+        id: "violation7",
+        entity: entity_v7.value,
+        from: fromDate_v7.value,
+        to: toDate_v7.value
+    });
+
+    alert("✅ تم حفظ البيانات العامة للمخالفة السابعة");
+}
+
+function addFinancialRowV7() {
+    const row = `
+        <tr>
+            <td><input></td>
+            <td><input></td>
+            <td><input></td>
+            <td><input></td>
+            <td><input></td>
+            <td><input readonly></td>
+            <td><input></td>
+            <td><input></td>
+        </tr>`;
+    financialTable_v7.insertAdjacentHTML("beforeend", row);
+}
+
+function saveFinancialV7() {
+    const tx = db.transaction("financial", "readwrite");
+    const store = tx.objectStore("financial");
+
+    document.querySelectorAll("#financialTable_v7 tr").forEach(tr => {
+        const i = tr.querySelectorAll("input");
+
+        const unJustifiedQty = Number(i[3].value || 0);
+        const price = Number(i[4].value || 0);
+        const value = unJustifiedQty * price;
+
+        i[5].value = value.toFixed(2);
+
+        store.add({
+            violation: 7,
+            carNumber: i[0].value,
+            totalFuel: i[1].value,
+            justifiedFuel: i[2].value,
+            unJustifiedFuel: i[3].value,
+            literPrice: i[4].value,
+            unJustifiedValue: value,
+            reason: i[6].value,
+            committeeOpinion: i[7].value
+        });
+    });
+
+    alert("💾 تم حفظ وتحليل بيانات المخالفة السابعة");
+}
+
+
+function searchInDB() {
+    const keyword = document.getElementById("searchInput").value.trim();
+    if (!keyword) {
+        alert("اكتب كلمة للبحث");
+        return;
+    }
+
+    const tx = db.transaction("cars", "readonly");
+    const store = tx.objectStore("cars");
+    const request = store.getAll();
+
+    request.onsuccess = () => {
+        const results = request.result.filter(item =>
+            Object.values(item).some(val =>
+                String(val).includes(keyword)
+            )
+        );
+
+        if (results.length === 0) {
+            alert("لا توجد نتائج");
+            return;
+        }
+
+        let text = "نتائج البحث:\n\n";
+        results.forEach((r, i) => {
+            text += `${i + 1}- سيارة: ${r.carNumber || "غير محدد"} | الوقود: ${r.fuel || "-"}\n`;
+        });
+
+        alert(text);
+    };
+}
+
+async function backupDB() {
+
+    if (!db) {
+        alert("❌ قاعدة البيانات غير جاهزة");
+        return;
+    }
+
+    const stores = ["general", "cars", "cards", "financial"];
+    const backupData = await readAllStores(db, stores);
+    const json = JSON.stringify(backupData, null, 2);
+    const blob = new Blob([json], { type: "application/json" });
+
+    /* 🟢 Android Chrome */
+    if (window.showSaveFilePicker) {
+        const handle = await showSaveFilePicker({
+            suggestedName: "inspection_backup.json",
+            types: [{
+                description: "JSON",
+                accept: { "application/json": [".json"] }
+            }]
+        });
+
+        const writable = await handle.createWritable();
+        await writable.write(blob);
+        await writable.close();
+        return;
+    }
+
+    /* 🟡 iOS + Mobile */
+    if (navigator.canShare) {
+        const file = new File([blob], "inspection_backup.json", {
+            type: "application/json"
+        });
+
+        await navigator.share({
+            title: "Backup",
+            files: [file]
+        });
+        return;
+    }
+
+    /* 🔵 Desktop fallback */
+    const a = document.createElement("a");
+    const url = URL.createObjectURL(blob);
+    a.href = url;
+    a.download = "inspection_backup.json";
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+}
+function restoreDB() {
+
+    const input = document.createElement("input");
+    input.type = "file";
+    input.accept = "application/json";
+
+    input.onchange = e => {
+        const file = e.target.files[0];
+        if (!file) return;
+
+        const reader = new FileReader();
+
+        reader.onload = async () => {
+            const data = JSON.parse(reader.result);
+
+            for (const storeName in data) {
+                const tx = db.transaction(storeName, "readwrite");
+                const store = tx.objectStore(storeName);
+
+                // مسح القديم
+                await new Promise(res => {
+                    store.clear().onsuccess = res;
+                });
+
+                // إدخال الجديد
+                data[storeName].forEach(item => {
+                    store.put(item); // put = آمن
+                });
+            }
+
+            alert("✅ تم الاسترجاع بنجاح");
+        };
+
+        reader.readAsText(file);
+    };
+
+    input.click();
+}
+
+
+function printFromDB() {
+    const tx = db.transaction("cars", "readonly");
+    const store = tx.objectStore("cars");
+    const req = store.getAll();
+
+    req.onsuccess = () => {
+        const data = req.result;
+
+        let html = `
+        <h2>تقرير بيانات السيارات</h2>
+        <table border="1" cellspacing="0" cellpadding="6">
+          <tr>
+            <th>رقم السيارة</th>
+            <th>النوع</th>
+            <th>الوقود</th>
+            <th>ملاحظات</th>
+          </tr>`;
+
+        data.forEach(d => {
+            html += `
+            <tr>
+              <td>${d.carNumber || ""}</td>
+              <td>${d.type || ""}</td>
+              <td>${d.fuel || ""}</td>
+              <td>${d.notes || ""}</td>
+            </tr>`;
+        });
+
+        html += "</table>";
+
+        const win = window.open("", "", "width=900,height=700");
+        win.document.write(html);
+        win.document.close();
+        win.print();
+    };
+}
+
+
+function toggleTools() {
+  const panel = document.getElementById("toolsPanel");
+  const btn = document.getElementById("toolsToggleBtn");
+
+  if (panel.classList.contains("closed")) {
+    panel.classList.remove("closed");
+    panel.classList.add("open");
+    btn.innerHTML = "❌ إغلاق أدوات التطبيق";
+  } else {
+    panel.classList.remove("open");
+    panel.classList.add("closed");
+    btn.innerHTML = "🛠️ أدوات التطبيق";
+  }
+}
+
+
+async function readAllStores(db, stores) {
+    const result = {};
+
+    for (const storeName of stores) {
+        result[storeName] = [];
+
+        const tx = db.transaction(storeName, "readonly");
+        const store = tx.objectStore(storeName);
+
+        await new Promise(resolve => {
+            store.openCursor().onsuccess = e => {
+                const cursor = e.target.result;
+                if (cursor) {
+                    result[storeName].push(cursor.value);
+                    cursor.continue();
+                } else {
+                    resolve();
+                }
+            };
+        });
+    }
+
+    return result;
+}
+
+
+
+</script>
+
+
+<script>
+const APP_PASSWORD = "1550";
+
+/* تأكد إن القفل ظاهر دايمًا أول ما الصفحة تفتح */
+window.addEventListener("load", () => {
+  sessionStorage.removeItem("appUnlocked"); // 👈 إجبار ظهور القفل
+  document.getElementById("lockLayer").style.display = "flex";
+});
+
+function checkPassword() {
+  const input = document.getElementById("passwordInput").value;
+  const error = document.getElementById("loginError");
+
+  if (input === APP_PASSWORD) {
+    sessionStorage.setItem("appUnlocked", "true");
+    document.getElementById("lockLayer").style.display = "none";
+  } else {
+    error.style.display = "block";
+  }
+}
+</script>
+
+
+<script>
+  // Fullscreen on click
+  document.addEventListener("click", () => {
+    const elem = document.documentElement;
+    if (!document.fullscreenElement) {
+      elem.requestFullscreen?.() || elem.webkitRequestFullscreen?.() || elem.msRequestFullscreen?.();
+    }
+  });
+</script>
+
+</body>
+</html>

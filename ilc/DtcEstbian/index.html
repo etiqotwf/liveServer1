@@ -1,0 +1,917 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<title>استبيان احتياجات التدريب — مركز تدريب</title>
+<style>
+
+
+
+/* على الموبايل، اجعل العمود الجانبي عائم وخفي افتراضيًا */
+@media (max-width: 768px) {
+
+  /* زر الإحصاء العائم - نسخة أسفل وذهبي */
+  #toggleSide {
+    position: fixed;
+    bottom: 12px;
+    right: 12px;
+    width: 55px;
+    height: 55px;
+    border-radius: 50%;
+    background: linear-gradient(145deg, #ffd700, #e6c200);
+    border: 2px solid #fff4aa;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+    cursor: pointer;
+    z-index: 1100;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.22);
+    transition: 0.25s;
+  }
+
+  #toggleSide:hover {
+    transform: scale(1.08);
+    background: linear-gradient(145deg, #ffe76a, #e6c200);
+  }
+
+  /* الكارت الجانبي نفسه - بدون تغيير */
+  .side {
+    position: fixed;
+    top: 65px;
+    right: 10px;
+    width: 290px;
+    max-height: 80%;
+    background: #fff;
+    border-radius: 14px;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.22);
+    padding: 10px;
+    overflow-y: auto;
+    z-index: 1000;
+    transform: translateX(320px);
+    transition: transform 0.35s cubic-bezier(.25,.8,.25,1);
+  }
+
+  .side.show {
+    transform: translateX(0);
+  }
+}
+
+
+
+
+  :root{
+    --primary:#007bff;
+    --accent:#00aaff;
+    --card-bg:#ffffff;
+    --muted:#666;
+    --glass: rgba(255,255,255,0.85);
+  }
+  *{box-sizing:border-box;font-family: "Segoe UI", Tahoma, system-ui, Arial;}
+  body{
+    margin:0;
+    background: linear-gradient(180deg,#f3f8ff 0%, #eef6ff 60%);
+    color:#0b2436;
+    padding:20px;
+    min-height:100vh;
+    display:flex;
+    align-items:flex-start;
+    justify-content:center;
+  }
+  .container {
+  display: flex;          /* وضع المحتوى جنب بعض */
+  gap: 20px;
+  max-width: 1200px;
+  margin: auto;
+}
+
+/* جانب الإحصاءات + الصيغ المفضلة */
+/* العمود الجانبي */
+.side {
+    width: 300px;
+    height: 100vh;
+    overflow-y: auto;   /* Scroll للعمود */
+    padding: 10px;
+}
+
+/* كل كارت داخل الجانب */
+.stat-card,
+.tools-card {
+    background: #fff;
+    padding: 14px;
+    border-radius: 10px;
+    box-shadow: 0 6px 18px rgba(6,30,60,0.04);
+    margin-bottom: 14px;
+
+    max-height: 300px;   /* ارتفاع الكارت */
+    overflow-y: auto;    /* Scroll داخلي لكل كارت */
+}
+
+.level-card {
+    background: #fff;
+    padding: 14px;
+    border-radius: 10px;
+    box-shadow: 0 6px 18px rgba(6,30,60,0.04);
+    margin-bottom: 14px;
+
+    max-height: 250px;   /* ارتفاع الكارت */
+    overflow-y: auto;    /* Scroll داخلي */
+}
+
+
+
+/* استبيان يأخذ باقي العرض */
+form#surveyForm {
+  flex: 1;
+  background: linear-gradient(180deg, rgba(255,255,255,0.9), rgba(250,250,255,0.9));
+  padding:16px;
+  border-radius:10px;
+  box-shadow: 0 6px 18px rgba(3,50,100,0.04);
+  overflow-y: auto;
+  max-height: 100vh;
+}
+
+  @media (max-width:980px){.container{grid-template-columns:1fr}}
+  header{
+    grid-column: 1 / -1;
+    display:flex;
+    gap:16px;
+    align-items:center;
+    margin-bottom:10px;
+  }
+  header img{
+    width:84px;
+    height:84px;
+    object-fit:cover;
+    border-radius:10px;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+  }
+  header h1{margin:0;font-size:20px;color:var(--primary);}
+  header p{margin:0;color:var(--muted);font-size:14px}
+
+  form{
+    background: linear-gradient(180deg, rgba(255,255,255,0.9), rgba(250,250,255,0.9));
+    padding:16px;
+    border-radius:10px;
+    box-shadow: 0 6px 18px rgba(3,50,100,0.04);
+    display:flex;
+    flex-direction:column;
+    gap:12px;
+  }
+  label{font-weight:700;font-size:14px;margin-bottom:6px}
+  .row{display:flex;gap:10px;flex-wrap:wrap}
+  input[type="text"], select, textarea{
+    width:100%;
+    padding:10px 12px;
+    border-radius:8px;
+    border:1px solid #e0e6ef;
+    outline:none;
+    font-size:15px;
+    background:#fff;
+  }
+  textarea{min-height:90px;resize:vertical}
+  .small{font-size:13px;color:var(--muted)}
+  .checkbox-grid{display:grid;grid-template-columns: repeat(2, 1fr);gap:8px}
+
+  .chip{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    padding:8px 10px;
+    border-radius:10px;
+    border:1px solid rgba(0,0,0,0.06);
+    background:#fafcff;
+    cursor:pointer;
+    user-select:none;
+    transition:0.15s;
+  }
+  .chip input{margin:0}
+  .chip:hover{transform:translateY(-3px)}
+
+  .actions{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-start}
+  button{
+    padding:10px 14px;
+    border-radius:10px;
+    border:none;
+    cursor:pointer;
+    font-weight:700;
+    box-shadow: 0 6px 16px rgba(3,50,100,0.06);
+    transition:0.2s;
+  }
+.btn-primary{
+  background: linear-gradient(90deg,#ff7f50,#ff4500); /* لون برتقالي متدرج */
+  color: #fff;
+  transition: 0.3s;
+  opacity: 1;
+  pointer-events: auto; /* لتكون نشطة */
+}
+
+/* حالة غير نشطة */
+.btn-primary.disabled {
+  opacity: 0.5;
+  pointer-events: none;
+}
+  .btn-ghost{background:transparent;border:1px solid #d6e6ff;color:var(--primary)}
+  .btn-danger{background:#ff6b6b;color:#fff}
+
+  .tab {overflow: hidden; border-bottom: 2px solid #ccc; margin-bottom: 10px;}
+  .tab button {
+    background-color: #f1f1f1;
+    float: right;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    padding: 10px 20px;
+    transition: 0.3s;
+    font-size: 16px;
+  }
+  .tab button:hover {background-color: #ddd;}
+  .tab button.active {background-color: var(--primary); color: white;}
+  .tabcontent {display: none; padding: 10px 0; border-top: none;}
+  .tabcontent .chip{background:#eee;border-radius:25px;padding:10px 15px;margin:5px;}
+  .tabcontent .chip input{margin-left:5px;}
+
+
+
+  .stat{display:flex;gap:12px;align-items:center;margin-bottom:12px}
+  .stat .big{font-size:24px;font-weight:800;color:var(--primary)}
+  .stat .mut{color:var(--muted);font-size:13px}
+  .chart-wrap{background:#f7fbff;border-radius:8px;padding:10px}
+  .bar{height:10px;border-radius:6px;background:#d6ecff;margin:8px 0;overflow:hidden}
+  .bar > i{display:block;height:100%;background:linear-gradient(90deg,var(--primary),var(--accent));width:0%}
+  .table-mini{width:100%;border-collapse:collapse;font-size:14px;margin-top:8px}
+  .table-mini td{padding:6px 4px;border-bottom:1px dashed #eee;color:#123}
+  .tools{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+
+
+/* ====== تحسين التوافق مع الموبايل ====== */
+
+/* تصغير الحاويات الكبيرة على الشاشات الصغيرة */
+@media (max-width: 768px) {
+
+  body {
+    padding: 0;
+    margin: 0;
+    font-size: 15px;
+  }
+
+  .container {
+    width: 100% !important;
+    padding: 10px !important;
+  }
+
+  /* الكروت */
+  .card, .tools-card, .stat-card {
+    padding: 12px !important;
+    margin-bottom: 12px;
+  }
+
+  /* الجدول */
+  table {
+    width: 100% !important;
+    font-size: 14px !important;
+  }
+  th, td {
+    padding: 6px !important;
+  }
+
+  /* الحقول */
+  input, select, textarea {
+    width: 100% !important;
+    font-size: 15px !important;
+  }
+
+  /* الأزرار */
+  button {
+    width: 100%;
+    margin-bottom: 10px;
+  }
+
+  .tools button {
+    width: 100% !important;
+    margin-bottom: 8px !important;
+  }
+
+  /* التبويبات */
+  .tab button {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 5px;
+    font-size: 16px;
+  }
+
+  
+
+}
+
+/* شاشات صغيرة جدًا */
+@media (max-width: 480px) {
+  body {
+    font-size: 14px;
+  }
+  th, td {
+    font-size: 13px;
+  }
+  button {
+    font-size: 14px;
+  }
+}
+
+
+
+
+
+
+</style>
+</head>
+<body>
+
+<div class="container" role="main" aria-labelledby="pageTitle">
+
+  <!-- البطاقة الجانبية على اليسار -->
+ <!-- البطاقة الجانبية على اليسار -->
+<aside class="side" aria-live="polite">
+
+  <!-- كارت الإحصاءات -->
+  <div class="stat-card">
+    <div class="stat">
+      <div class="big" id="totalCount">0</div>
+      <div>
+        <div class="mut">إجمالى الاستجابات</div>
+        <div class="small">الأحدث يظهر أولاً</div>
+      </div>
+    </div>
+
+    <div style="margin-top:10px;">
+      <strong>توزيع الموضوعات المطلوبة</strong>
+      <div class="chart-wrap" id="topicsChart"></div>
+    </div>
+  </div>
+
+    <canvas id="myChart" style="width:100%; max-height:300px;"></canvas>
+
+  
+
+
+  <!-- كارت الصيغ المفضلة + أزرار -->
+  <div class="tools-card">
+    <div style="margin-bottom:10px;">
+      <table class="table-mini" id="formatBreakdown"></table>
+    </div>
+    <div class="tools">
+      <button id="exportCSV" class="btn-ghost"> تصدير إلى الإكسل</button>
+      <button id="downloadJSON" class="btn-ghost">تحميل JSON</button>
+      <button id="copySummary" class="btn-ghost">نسخ ملخص للحافظة</button>
+    </div>
+  </div>
+
+</aside>
+
+  <!-- النموذج على اليمين -->
+  <form id="surveyForm" aria-label="نموذج استبيان" 
+        action="https://script.google.com/macros/s/AKfycbxQ9OSlGSdnDFXcrzQXanJkqEP4cXWVj5i-law9Co25RlH9Iww0kpf4OL4UPR2YFojJ/exec" method="POST" target="hidden_iframe">
+    
+    <input type="hidden" name="topics" id="topicsField">
+    <input type="hidden" name="suggestions" id="suggestionsField">
+    <input type="hidden" name="format" value="حضوري">
+    
+    <header>
+      <img src="logo.jpg" alt="لوجو مركز التدريب">
+      <div>
+        <h1 id="pageTitle">استبيان احتياجات التدريب — مركز تدريب الصرف</h1>
+        <p class="small">ساعدنا على تصميم برامج تدريبية تلائم احتياجاتك. الإجابة لا تستغرق أكثر من دقيقة.</p>
+      </div>
+    </header>
+
+
+
+    <div>
+      <label for="name">الاسم (اختياري)</label>
+      <input id="name" name="name" type="text" placeholder="اكتب اسمك أو اتركه فارغاً" />
+    </div>
+
+    <div>
+      <label for="dept">الإدارة / الجهة</label>
+      <input id="dept" name="dept" type="text" placeholder="مثال: إدارة الصرف/ مركز تدريب..." required />
+    </div>
+
+    <div>
+      <label>المستوى الحالي في مهارات الحاسوب</label>
+      <div class="row">
+        <select id="skillLevel" name="skill" aria-label="مستوى المهارة">
+          <option value="مبتدئ">مبتدئ</option>
+          <option value="متوسط">متوسط</option>
+          <option value="متقدم">متقدم</option>
+        </select>
+      </div>
+    </div>
+
+<button id="toggleSide" type="button">📊</button>
+
+
+
+ <!-- التبويبات -->
+<div>
+  <label>الموضوعات التدريبية المطلوبة (اختر ما يناسبك)</label>
+
+  <div class="tab">
+  <button type="button" class="tablinks" onclick="openTab(event, 'civil')">🏗️ الهندسة المدنية</button>
+  <button type="button" class="tablinks" onclick="openTab(event, 'mechanical')">⚙️ الهندسة الميكانيكية</button>
+  <button type="button" class="tablinks" onclick="openTab(event, 'computer')">🖥️ الكمبيوتر</button>
+  <button type="button" class="tablinks" onclick="openTab(event, 'administrative')">🏢 الإدارية</button>
+  <button type="button" class="tablinks" onclick="openTab(event, 'humanDevelopment')">🌱 التنمية البشرية</button>
+  <button type="button" class="tablinks" onclick="openTab(event, 'future')">💡 دورات مقترحة من جانب المركز</button>
+  <button type="button" class="tablinks" onclick="openTab(event, 'suggestions')">📝 الدورات المقترحة من جانب المتدربين</button>
+</div>
+
+
+
+  <!-- 🏗️ الهندسة المدنية -->
+  <div id="civil" class="tabcontent">
+   <label class="chip"><input type="checkbox" value="تنفيذ شبكت الصرف للمشرف الفنى"> تنفيذ شبكت الصرف للمشرف الفنى</label>
+<label class="chip"><input type="checkbox" value="المساحة وإستخدام محطة الرصد الشاملة (مهندسين)"> المساحة وإستخدام محطة الرصد الشاملة (مهندسين)</label>
+<label class="chip"><input type="checkbox" value="صيانة شبكات الصرف للمهندسين"> صيانة شبكات الصرف للمهندسين</label>
+<label class="chip"><input type="checkbox" value="تشغيل مجموعة الليزر-ميزان الليزر للمشرف الفنى"> تشغيل مجموعة الليزر-ميزان الليزر للمشرف الفنى</label>
+<label class="chip"><input type="checkbox" value="تنمية القدرات الإدارية للمهندسين"> تنمية القدرات الإدارية للمهندسين</label>
+<label class="chip"><input type="checkbox" value="تنفيذ شبكات الصرف للمهندسين"> تنفيذ شبكات الصرف للمهندسين</label>
+<label class="chip"><input type="checkbox" value="المساحة وإستخدام محطة الرصد الشاملة (مساح-مشرف فنى)"> المساحة وإستخدام محطة الرصد الشاملة (مساح-مشرف فنى)</label>
+<label class="chip"><input type="checkbox" value="إرشاد الصرف للمهندسين"> إرشاد الصرف للمهندسين</label>
+<label class="chip"><input type="checkbox" value="مهارات إعداد التقارير"> مهارات إعداد التقارير</label>
+<label class="chip"><input type="checkbox" value="تشغيل مجموعة الليزر-ميزان الليزر للمهندسين"> تشغيل مجموعة الليزر-ميزان الليزر للمهندسين</label>
+<label class="chip"><input type="checkbox" value="تنفيذ منشأت الرى والصرف للمهندسين"> تنفيذ منشأت الرى والصرف للمهندسين</label>
+<label class="chip"><input type="checkbox" value="إرشاد الصرف للدبلومات"> إرشاد الصرف للدبلومات</label>
+<label class="chip"><input type="checkbox" value="إشاد الصرف للمهندسين"> إشاد الصرف للمهندسين</label>
+<label class="chip"><input type="checkbox" value="إدارة الأزمات"> إدارة الأزمات</label>
+  </div>
+
+
+  <!-- ⚙️ الهندسة الميكانيكية -->
+  <div id="mechanical" class="tabcontent">
+   <label class="chip"><input type="checkbox" value="تدريب تحويلى للسائقين لقيادة الحفارات"> تدريب تحويلى للسائقين لقيادة الحفارات</label>
+<label class="chip"><input type="checkbox" value="أساسيات المعدات"> أساسيات المعدات</label>
+<label class="chip"><input type="checkbox" value="معدات صيانة شبكات الصرف المغطى (ماكينة الغسيل والمضخات)"> معدات صيانة شبكات الصرف المغطى (ماكينة الغسيل والمضخات)</label>
+<label class="chip"><input type="checkbox" value="أساسيات النظام الهيدروليكى"> أساسيات النظام الهيدروليكى</label>
+<label class="chip"><input type="checkbox" value="تنمية المهارات فى تشغيل المعدات والسيارات الحكومية"> تنمية المهارات فى تشغيل المعدات والسيارات الحكومية</label>
+<label class="chip"><input type="checkbox" value="أساسيات وعمرات محرك الديزل"> أساسيات وعمرات محرك الديزل</label>
+  </div>
+
+
+  <!-- 🖥️ الكمبيوتر -->
+  <div id="computer" class="tabcontent">
+<label class="chip"><input type="checkbox" value="صيانة الحاسب الآلي (هاردوير - سوفتوير)"> صيانة الحاسب الآلي (هاردوير - سوفتوير)</label>
+<label class="chip"><input type="checkbox" value="ADOBE ILLUSTRAITOR"> ADOBE ILLUSTRAITOR</label>
+<label class="chip"><input type="checkbox" value="Arc GIS"> Arc GIS</label>
+<label class="chip"><input type="checkbox" value="Windows"> Windows</label>
+<label class="chip"><input type="checkbox" value="Google docs"> Google docs</label>
+<label class="chip"><input type="checkbox" value="Word"> Word</label>
+<label class="chip"><input type="checkbox" value="Power Point"> Power Point</label>
+<label class="chip"><input type="checkbox" value="Excel"> Excel</label>
+<label class="chip"><input type="checkbox" value="AutoCAD-2D"> AutoCAD-2D</label>
+<label class="chip"><input type="checkbox" value="Sap"> Sap</label>
+<label class="chip"><input type="checkbox" value="فوتوشوب"> فوتوشوب</label>
+<label class="chip"><input type="checkbox" value="Access"> Access</label>
+<label class="chip"><input type="checkbox" value="Primavera"> Primavera</label>
+<label class="chip"><input type="checkbox" value="شبكات الحاسب الآلي"> شبكات الحاسب الآلي</label>
+<label class="chip"><input type="checkbox" value="Revit for Civil ENG"> Revit for Civil ENG</label>
+  </div>
+
+
+  <!-- 🏢 الإداري -->
+  <div id="administrative" class="tabcontent">
+   <label class="chip"><input type="checkbox" value="أخصائى شئون عاملين"> أخصائى شئون عاملين</label>
+<label class="chip"><input type="checkbox" value="أمناء مخازن"> أمناء مخازن</label>
+<label class="chip"><input type="checkbox" value="المعاشات والقوانين المنظمة لها"> المعاشات والقوانين المنظمة لها</label>
+<label class="chip"><input type="checkbox" value="مندوبى الحجز الإدارى"> مندوبى الحجز الإدارى</label>
+<label class="chip"><input type="checkbox" value="إجراءات تراخيص الرى والصرف"> إجراءات تراخيص الرى والصرف</label>
+<label class="chip"><input type="checkbox" value="عقود ومقاولات الأعمال والتوريدات (قانون 182)"> عقود ومقاولات الأعمال والتوريدات (قانون 182)</label>
+<label class="chip"><input type="checkbox" value="فروق الأسعار"> فروق الأسعار</label>
+<label class="chip"><input type="checkbox" value="أخصائى شئون مالية"> أخصائى شئون مالية</label>
+  </div>
+
+
+  <!-- 🌱 التنمية البشرية -->
+  <div id="humanDevelopment" class="tabcontent">
+    <label class="chip"><input type="checkbox" value="مهارات التواصل والاتصال"> مهارات التواصل والاتصال</label>
+    <label class="chip"><input type="checkbox" value="حل المشكلات واتخاذ القرار"> حل المشكلات واتخاذ القرار</label>
+    <label class="chip"><input type="checkbox" value="العمل الجماعي والقيادة"> العمل الجماعي والقيادة</label>
+    <label class="chip"><input type="checkbox" value="إدارة الضغوط"> إدارة الضغوط</label>
+    <label class="chip"><input type="checkbox" value="التفكير الإبداعي"> التفكير الإبداعي</label>
+    <label class="chip"><input type="checkbox" value="إدارة الوقت الشخصي"> إدارة الوقت الشخصي</label>
+    <label class="chip"><input type="checkbox" value="التوازن بين العمل والحياة"> التوازن بين العمل والحياة</label>
+    <label class="chip"><input type="checkbox" value="فن الإقناع والتأثير"> فن الإقناع والتأثير</label>
+    <label class="chip"><input type="checkbox" value="مهارات العرض والإلقاء"> مهارات العرض والإلقاء</label>
+  </div>
+
+
+  <!-- 💡 دورات جديدة -->
+  <div id="future" class="tabcontent">
+    <label class="chip"><input type="checkbox" value="برمجة تطبيقات الويب"> برمجة تطبيقات الويب</label>
+    <label class="chip"><input type="checkbox" value="JavaScript متقدم"> JavaScript متقدم</label>
+    <label class="chip"><input type="checkbox" value="الذكاء الاصطناعي في الأمن السيبراني"> الذكاء الاصطناعي في الأمن السيبراني</label>
+    <label class="chip"><input type="checkbox" value="أرشفة الملفات بالذكاء الاصطناعي"> أرشفة الملفات بالذكاء الاصطناعي</label>
+    <label class="chip"><input type="checkbox" value="تحليل البيانات باستخدام الذكاء الاصطناعي"> تحليل البيانات باستخدام الذكاء الاصطناعي</label>
+    <label class="chip"><input type="checkbox" value="مقدمة في تعلم الآلة"> مقدمة في تعلم الآلة</label>
+  </div>
+
+
+  <!-- 📝 الدورات المقترحة -->
+  <div id="suggestions" class="tabcontent">
+    <label for="suggestedCourses">اكتب أي دورات تدريبية ترغب بها:</label>
+    <textarea id="suggestedCourses" placeholder="مثال: دورة متقدمة في تحليل البيانات..." rows="6"></textarea>
+  </div>
+
+</div>
+
+    <div class="actions">
+<button type="button" class="btn-primary" id="submitBtn">إرسال + حفظ</button>
+      <button class="btn-ghost" id="previewBtn" type="button">معاينة الإحصاء الآن</button>
+    </div>
+
+  </form>
+
+</div>
+
+<iframe name="hidden_iframe" style="display:none;"></iframe>
+
+
+<script>
+  // عند الضغط على أي مكان في الصفحة، أدخل وضع ملء الشاشة
+  document.addEventListener("click", () => {
+    const elem = document.documentElement; // أو document.getElementById("myForm")
+    if (document.fullscreenElement) return; // لا تفعل شيء إذا كنا بالفعل في ملء الشاشة
+
+    if (elem.requestFullscreen) {
+      elem.requestFullscreen();
+    } else if (elem.webkitRequestFullscreen) { /* Safari */
+      elem.webkitRequestFullscreen();
+    } else if (elem.msRequestFullscreen) { /* IE11 */
+      elem.msRequestFullscreen();
+    }
+  });
+</script>
+
+<script>
+// التبويبات
+function openTab(evt, tabName){
+  const tabcontent=document.getElementsByClassName("tabcontent");
+  const tablinks=document.getElementsByClassName("tablinks");
+  for(let i=0;i<tabcontent.length;i++) tabcontent[i].style.display="none";
+  for(let i=0;i<tablinks.length;i++) tablinks[i].className=tablinks[i].className.replace(" active","");
+  document.getElementById(tabName).style.display="block";
+  evt.currentTarget.className+=" active";
+}
+
+// جمع البيانات من الفورم
+function collectForm(){
+  const name=document.getElementById('name').value.trim();
+  const dept=document.getElementById('dept').value.trim();
+  const skill=document.getElementById('skillLevel').value;
+  const checked=Array.from(document.querySelectorAll('.tabcontent input[type="checkbox"]:checked')).map(i=>i.value);
+  const suggestions=document.getElementById('suggestedCourses')?document.getElementById('suggestedCourses').value.split('\n').map(s=>s.trim()).filter(s=>s!==''): [];
+  const topics=[...checked,...suggestions];
+  return {id:Date.now(),name,dept,skill,topics,format:"حضوري",ts:new Date().toISOString()};
+}
+
+function validate(entry){if(!entry.dept){alert('من فضلك اكتب اسم الإدارة أو الجهة.'); return false;} return true;}
+
+// Fetch البيانات من Google Sheet
+const SHEET_URL = 'https://script.google.com/macros/s/AKfycbxQ9OSlGSdnDFXcrzQXanJkqEP4cXWVj5i-law9Co25RlH9Iww0kpf4OL4UPR2YFojJ/exec';
+async function fetchData(){
+  try{
+    const res = await fetch(SHEET_URL);
+    const data = await res.json();
+    renderStats(data.reverse()); // الأحدث أولاً
+  }catch(e){console.error("فشل في جلب البيانات من Google Sheet:", e);}
+}
+
+// عرض الإحصاءات
+function renderStats(data){
+  if(!data) data=[];
+  document.getElementById('totalCount').textContent=data.length;
+
+  const topicsMap={},formats={},levels={};
+  data.forEach(r=>{
+    (r["📚 المواضيع"]||"").split(',').forEach(t=>topicsMap[t.trim()] = (topicsMap[t.trim()]||0)+1);
+    formats[r["📦 شكل المشاركة"]]=(formats[r["📦 شكل المشاركة"]]||0)+1;
+    levels[r["💼 المهارة"]]=(levels[r["💼 المهارة"]]||0)+1;
+  });
+
+  // الموضوعات
+  const topicsChart=document.getElementById('topicsChart'); topicsChart.innerHTML='';
+  const totalTopics=Object.values(topicsMap).reduce((a,b)=>a+b,0);
+  Object.entries(topicsMap).forEach(([topic,count])=>{
+    const percent=totalTopics?Math.round((count/totalTopics)*100):0;
+    const bar=document.createElement('div'); bar.className='bar'; bar.innerHTML=`<i style="width:${percent}%"></i>`;
+    const label=document.createElement('div'); label.textContent=`${topic} — ${count} (${percent}%)`;
+    topicsChart.appendChild(label); topicsChart.appendChild(bar);
+  });
+
+  // الصيغ
+  
+  // المستويات
+  const levelBreakdown=document.getElementById('levelBreakdown'); levelBreakdown.innerHTML='';
+  Object.entries(levels).forEach(([lvl,count])=>levelBreakdown.innerHTML+=`<tr><td>${lvl}</td><td>${count}</td></tr>`);
+}
+
+// أزرار التحميل والتصدير
+
+// كلمة السر المطلوبة
+const EXPORT_PASSWORD = "1234";  // ← غيرها لأي كلمة مرور
+
+
+document.getElementById('exportCSV').addEventListener('click', async () => {
+
+  const pass = prompt("🔐 من فضلك أدخل كلمة المرور للتحميل");
+  if (pass !== EXPORT_PASSWORD) {
+    alert("❌ كلمة المرور غير صحيحة");
+    return;
+  }
+
+  const res = await fetch(SHEET_URL);
+  const data = await res.json();
+
+  if (!data.length) {
+    alert('لا توجد بيانات للتصدير');
+    return;
+  }
+
+  const csv = ['\uFEFF🧑‍🎓 الاسم,🏢 الإدارة,📊 المستوى,📚 الموضوعات,📝 الصيغة,📅 التاريخ'];
+
+  data.forEach(r => csv.push(
+    `"${r["🧑‍🎓 الاسم"]}","${r["🏢 الإدارة"]}","${r["💼 المهارة"]}","${r["📚 المواضيع"]}","${r["📦 شكل المشاركة"]}","${r["📅 التاريخ"]}"`
+  ));
+
+  const blob = new Blob([csv.join('\n')], { type: 'text/csv;charset=utf-8;' });
+  const url = URL.createObjectURL(blob);
+
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'training_responses.csv';
+  a.click();
+
+  URL.revokeObjectURL(url);
+});
+
+document.getElementById('downloadJSON').addEventListener('click', async () => {
+
+  const pass = prompt("🔐 من فضلك أدخل كلمة المرور للتحميل");
+  if (pass !== EXPORT_PASSWORD) {
+    alert("❌ كلمة المرور غير صحيحة");
+    return;
+  }
+
+  const res = await fetch(SHEET_URL);
+  const data = await res.json();
+
+  if (!data.length) {
+    alert('لا توجد بيانات للتحميل');
+    return;
+  }
+
+  const blob = new Blob([JSON.stringify(data, null, 2)], {
+    type: 'application/json'
+  });
+
+  const url = URL.createObjectURL(blob);
+
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'training_responses.json';
+  a.click();
+
+  URL.revokeObjectURL(url);
+});
+
+document.getElementById('copySummary').addEventListener('click',async ()=>{
+  const res = await fetch(SHEET_URL);
+  const data = await res.json();
+  const lines=['ملخص احتياجات التدريب — مركز تدريب غرب الدلتا','إجمالي الاستجابات: '+data.length];
+  if(data.length){
+    const topics={}; const formats={};
+    data.forEach(r=>{(r["📚 المواضيع"]||"").split(',').forEach(t=>topics[t]=(topics[t]||0)+1); formats[r["📦 شكل المشاركة"]] = (formats[r["📦 شكل المشاركة"]]||0)+1;});
+    lines.push(''); lines.push('أكثر الموضوعات طلباً:');
+    Object.entries(topics).sort((a,b)=>b[1]-a[1]).slice(0,6).forEach(([k,v])=>lines.push(`- ${k}: ${v}`));
+    lines.push(''); lines.push('تفاصيل صيغ التدريب:');
+    Object.entries(formats).forEach(([k,v])=>lines.push(`- ${k}: ${v}`));
+  }
+  navigator.clipboard.writeText(lines.join('\n')); alert('تم نسخ الملخص للحافظة');
+});
+
+// عند الإرسال، تحديث الحقول المخفية للفورم
+document.getElementById('submitBtn').addEventListener('click', function(e){
+  e.preventDefault(); // يمنع إعادة تحميل الصفحة
+  const submitBtn = document.querySelector('.btn-primary');
+  submitBtn.classList.add('disabled'); // تعطيل الزر قبل الإرسال
+  submitBtn.textContent = "جاري الإرسال..."; // تغيير النص مؤقتًا
+
+  const entry = collectForm();
+  if(!validate(entry)) {
+    submitBtn.classList.remove('disabled');
+    submitBtn.textContent = "إرسال + حفظ";
+    return;
+  }
+
+  const checked = Array.from(document.querySelectorAll('.tabcontent input[type="checkbox"]:checked')).map(i => i.value);
+  const suggestions = document.getElementById('suggestedCourses') 
+                      ? document.getElementById('suggestedCourses').value.split('\n').map(s => s.trim()).filter(s => s !== '') 
+                      : [];
+  document.getElementById('topicsField').value = [...checked, ...suggestions].join(', ');
+  document.getElementById('suggestionsField').value = suggestions.join(',');
+
+  fetch("https://script.google.com/macros/s/AKfycbxQ9OSlGSdnDFXcrzQXanJkqEP4cXWVj5i-law9Co25RlH9Iww0kpf4OL4UPR2YFojJ/exec", {
+    method: 'POST',
+    body: new FormData(document.getElementById('surveyForm'))
+  })
+  .then(res => res.json())
+  .then(data => {
+    if(data.status === "success") {
+      document.getElementById('surveyForm').reset();
+      fetchData(); // تحديث الإحصاءات
+
+      // إغلاق أي تبويب مفتوح بعد الإرسال
+      const tabcontent = document.getElementsByClassName("tabcontent");
+      for (let i = 0; i < tabcontent.length; i++) {
+        tabcontent[i].style.display = "none";
+      }
+      const tablinks = document.getElementsByClassName("tablinks");
+      for (let i = 0; i < tablinks.length; i++) {
+        tablinks[i].classList.remove("active");
+      }
+
+    } else {
+      alert(data.message || "❌ حدث خطأ أثناء الحفظ");
+    }
+  })
+  .catch(err => alert("❌ حدث خطأ في الاتصال: " + err))
+  .finally(() => {
+    submitBtn.classList.remove('disabled'); // إعادة تفعيل الزر
+    submitBtn.textContent = "إرسال + حفظ";
+
+    
+    // إعادة الصفحة لأعلى بعد الإرسال
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+
+  });
+});
+
+
+// تحميل البيانات عند فتح الصفحة
+fetchData();
+
+
+function drawChart(totalCount, levelCounts) {
+
+  const ctx = document.getElementById('myChart').getContext('2d');
+
+  new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: ['مبتدئ', 'متوسط', 'متقدم'],
+      datasets: [{
+        label: 'عدد المتدربين',
+        data: [
+          levelCounts.beginner,
+          levelCounts.intermediate,
+          levelCounts.advanced
+        ],
+        borderWidth: 2
+      }]
+    },
+    options: {
+      responsive: true,
+      scales: {
+        y: { beginAtZero: true }
+      }
+    }
+  });
+}
+
+
+</script>
+
+
+<script>
+document.addEventListener("DOMContentLoaded", async () => {
+  const ctx = document.getElementById("myChart").getContext("2d");
+
+  try {
+    // جلب البيانات من جوجل شيت
+    const res = await fetch(SHEET_URL);
+    const rows = await res.json();
+
+    if (!rows.length) {
+      console.warn("لا توجد بيانات لعرض الرسم البياني");
+      return;
+    }
+
+    // حساب عدد كل إدارة
+    const counts = {};
+    rows.forEach(r => {
+      const dept = r["🏢 الإدارة"] || "غير محدد";
+      if (!counts[dept]) counts[dept] = 0;
+      counts[dept]++;
+    });
+
+    const labels = Object.keys(counts);
+    const values = Object.values(counts);
+
+    // إنشاء تدرج لوني للخط والخلفية
+    const gradient = ctx.createLinearGradient(0, 0, 0, 400);
+    gradient.addColorStop(0, "rgba(0, 123, 255, 0.6)");
+    gradient.addColorStop(1, "rgba(0, 123, 255, 0.1)");
+
+    new Chart(ctx, {
+      type: "line",
+      data: {
+        labels: labels,
+        datasets: [{
+          label: "عدد الطلبات لكل إدارة",
+          data: values,
+          borderColor: "#007bff",      // لون الخط
+          backgroundColor: gradient,   // لون خلفية الخط بالتدرج
+          fill: true,                  // لتلوين المنطقة تحت الخط
+          tension: 0.4,                // لجعل الخط منحني وسلس
+          pointBackgroundColor: "#fff",// لون نقاط البيانات
+          pointBorderColor: "#007bff", // حدود النقاط
+          pointRadius: 6,              // حجم النقاط
+          pointHoverRadius: 8          // حجم النقاط عند المرور عليها
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: {
+            display: true,
+            labels: {
+              color: "#333",
+              font: { size: 14, weight: "bold" }
+            }
+          },
+          tooltip: {
+            enabled: true,
+            backgroundColor: "#007bff",
+            titleColor: "#fff",
+            bodyColor: "#fff",
+            mode: "index",
+            intersect: false
+          }
+        },
+        scales: {
+          y: {
+            beginAtZero: true,
+            grid: {
+              color: "rgba(0,0,0,0.05)"
+            }
+          },
+          x: {
+  ticks: {
+    display: false        // إخفاء أسماء الإدارات
+  },
+  grid: {
+    color: "rgba(0,0,0,0.05)"
+  }
+}
+
+        }
+      }
+    });
+
+  } catch (e) {
+    console.error("خطأ فى قراءة البيانات من الشيت:", e);
+  }
+});
+
+
+</script>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+
+  const side = document.querySelector(".side");
+  const toggleBtn = document.getElementById("toggleSide");
+
+  /* إظهار السيد فور تحميل الصفحة */
+  side.classList.add("show");
+
+  /* بعد 10 ثواني – إخفاء السيد بالكامل */
+  setTimeout(() => {
+      side.classList.remove("show");
+  }, 10000);
+
+  /* زر فتح وغلق السيد يدويًا */
+  toggleBtn.addEventListener("click", () => {
+      side.classList.toggle("show");
+  });
+
+});
+
+</script>
+
+
+
+
+</body>
+</html>

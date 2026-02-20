@@ -1,0 +1,1015 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reading Comprehension Quiz</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            background: #1e1e2e;
+            color: white;
+        }
+        .container {
+            width: 95%;
+            max-width: 1200px;
+            background: #282a36;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.5);
+            text-align: left;
+        }
+        .question {
+            font-weight: bold;
+            font-size: 30px;
+            margin-bottom: 20px;
+        }
+        .options label {
+            display: block;
+            padding: 10px;
+        }
+        .btn {
+            background: #ff5555;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            cursor: pointer;
+            border-radius: 5px;
+            margin-top: 20px;
+            font-size: 18px;
+            display: block;
+        }
+        .btn:hover {
+            background: #ff79c6;
+        }
+
+        .result-screen {
+    display: none;
+    background: #44475a;
+    padding: 30px;
+    border-radius: 10px;
+    text-align: center;
+    width: 100%;
+  }
+
+  #resultScore {
+    font-size: 36px;
+    font-weight: bold;
+    color: #ffffff;
+    margin-top: 20px;
+  }
+
+  .result-screen p {
+    font-size: 20px;
+    font-weight: bold;
+    color: #f8f8f2;
+  }
+
+  #timer {
+    font-size: 28px;         /* حجم أكبر */
+    color: yellow;           /* اللون أصفر */
+    font-weight: bold;       /* خط عريض */
+    padding: 10px;
+    border-radius: 10px;
+    width: fit-content;
+    margin: 10px auto;
+  }
+
+      
+      .author {
+  font-size: 24px;        /* تكبير الخط */
+  color: #ffd700;         /* لون ذهبي مميز */
+  text-align: center;
+  font-weight: bold;      /* جعله عريض */
+  margin-bottom: 15px;
+  position: relative;     /* إزالة الوضع المطلق حتى يظهر في مكانه الطبيعي */
+  top: auto;
+}
+
+
+
+
+label {
+  font-size: 22px; /* حجم نص الاختيار */
+  padding: 10px;
+  display: block;
+}
+
+input[type="radio"] {
+  transform: scale(1.5); /* تكبير حجم الدائرة */
+  margin-right: 10px;
+}
+
+
+  #passage {
+    font-size: 16px;     /* حجم الخط */
+    font-weight: bold;   /* خط عريض */
+  }
+
+
+#startScreen p {
+  font-size: 22px;
+  font-weight: bold;
+}
+#startScreen input {
+  font-size: 20px;
+  font-weight: bold;
+  padding: 8px;
+}
+
+  
+
+#startScreen h1 {
+  font-size: 40px; /* حجم الخط */
+  font-weight: bold; /* عريض */
+  color: #ffd700; /* لون مميز مثل الذهبي (اختياري) */
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+
+
+
+    </style>
+</head>
+<body>
+    <div class="container" id="startScreen">
+        <h1>📘 𝒯𝒽𝑒 𝐵𝓇𝒾𝓉𝒾𝓈𝒽 𝐼𝓃𝓉𝑒𝓇𝓃𝒶𝓉𝒾𝑜𝓃𝒶𝓁 𝐿𝑒𝒶𝓇𝓃𝒾𝓃𝑔 𝒞𝑒𝓃𝓉𝑒𝓇 (𝐼𝐿𝐶)
+
+</h1>
+        <h2></h2>
+<p>Course Name: <input type="text" id="courseName" value="Excel Test" readonly style="background-color: #f0f0f0; border: none;"></p>
+        <p>Enter Your Name: <input type="text" id="traineeName"></p>
+        <p>Enter Your Phone Number: <input type="text" id="traineePhone"></p>
+        <p>Enter Password: <input type="password" id="password"></p>
+        <button class="btn" onclick="startQuiz()">Start Quiz</button>
+    </div>
+
+    <div class="container" id="quizContainer" style="display: none;">
+        <h2 id="quizTitle">Placement Test</h2>
+        <p class="author">📘 𝒯𝒽𝑒 𝐵𝓇𝒾𝓉𝒾𝓈𝒽 𝐼𝓃𝓉𝑒𝓇𝓃𝒶𝓉𝒾𝑜𝓃𝒶𝓁 𝐿𝑒𝒶𝓇𝓃𝒾𝓃𝑔 𝒞𝑒𝓃𝓉𝑒𝓇 (𝐼𝐿𝐶)</p>
+        <p>Date: <span id="date"></span></p>
+        <p id="timer">Time Remaining: 60:00</p>
+        <div id="passage">
+  <h3>Read the following passage carefully and answer the following questions:</h3>
+  <p style="font-size: 22px;">
+    
+                        </div>
+        <div id="quiz"></div>
+    </div>
+    
+    <div class="result-screen" id="resultScreen" style="display: none;">
+        <h2>Test Result</h2>
+        <p class="author">Created by: Ahmed Amer</p>
+        <p><strong>Course Name:</strong> <span id="resultCourse"></span></p>
+        <p><strong>Name:</strong> <span id="resultName"></span></p>
+        <p><strong>Phone Number:</strong> <span id="resultPhone"></span></p>
+        <p><strong>Test Date:</strong> <span id="resultDate"></span></p>
+        <p><strong>Start Time:</strong> <span id="resultStartTime"></span></p>
+        <p><strong>Time Taken:</strong> <span id="resultTime"></span></p>
+        <p><strong>Score:</strong> <span id="resultScore"></span></p>
+    </div>
+
+
+ 
+
+ 
+
+  </div>
+<div style="
+  position: fixed;
+  top: 40px;
+  right: 40px;
+  font-size: 60px;
+  font-weight: bold;
+  color: #ffd700;
+">
+  ✏️ 
+
+  
+</div>
+
+
+<script>
+    // عند الضغط على أي مكان في الصفحة، أدخل وضع ملء الشاشة
+    document.addEventListener("click", () => {
+      const elem = document.documentElement; // أو document.getElementById("myForm")
+      if (document.fullscreenElement) return; // لا تفعل شيء إذا كنا بالفعل في ملء الشاشة
+
+      if (elem.requestFullscreen) {
+        elem.requestFullscreen();
+      } else if (elem.webkitRequestFullscreen) { /* Safari */
+        elem.webkitRequestFullscreen();
+      } else if (elem.msRequestFullscreen) { /* IE11 */
+        elem.msRequestFullscreen();
+      }
+    });
+  </script>
+
+    
+    <script>
+        document.getElementById("date").innerText = new Date().toLocaleDateString("en-US");
+    
+    const trueFalseQuestions = [
+   {
+  passage: `Passage 1:<br>
+<table border="1" cellpadding="5" cellspacing="0">
+  <tr><th>Score</th></tr>
+  <tr><td>65</td></tr>
+  <tr><td>80</td></tr>
+  <tr><td>90</td></tr>
+</table><br>
+Formula: <code>=IF(B2>70, "Pass", "Fail")</code><br>
+Checks if the score in cell B2 is above 70.`,
+  q: "What will this formula return?",
+  a: "a",
+  options: ["Fail", "Pass", "Error", "70"]
+},
+{
+  passage: `Passage 2:<br>
+<table border="1" cellpadding="5" cellspacing="0">
+  <tr><th>Age</th><th>Score</th></tr>
+  <tr><td>20</td><td>88</td></tr>
+  <tr><td>17</td><td>92</td></tr>
+  <tr><td>21</td><td>85</td></tr>
+</table><br>
+Formula: <code>=IF(AND(A2>18, B2>85), "Accepted", "Rejected")</code>`,
+  q: "What will the formula return for the first row?",
+  a: "a",
+  options: ["Accepted", "Rejected", "Error", "Pending"]
+},
+{
+  passage: `Passage 3:<br>
+<table border="1" cellpadding="5" cellspacing="0">
+  <tr><th>Product</th><th>Price</th></tr>
+  <tr><td>TV</td><td>300</td></tr>
+  <tr><td>Fridge</td><td>500</td></tr>
+  <tr><td>Oven</td><td>200</td></tr>
+</table><br>
+Formula: <code>=VLOOKUP("Fridge", A2:B4, 2, FALSE)</code>`,
+  q: "What will this formula return?",
+  a: "b",
+  options: ["300", "500", "200", "FALSE"]
+},
+{
+  passage: `Passage 4:<br>
+<table border="1" cellpadding="5" cellspacing="0">
+  <tr><th>City</th><th>Population</th></tr>
+  <tr><td>Cairo</td><td>20M</td></tr>
+  <tr><td>Giza</td><td>9M</td></tr>
+  <tr><td>Alex</td><td>5M</td></tr>
+</table><br>
+Formula: <code>=MATCH("Giza", A2:A4, 0)</code>`,
+  q: "What will the result of the formula be?",
+  a: "b",
+  options: ["1", "2", "3", "Giza"]
+},
+{
+  passage: `Passage 5:<br>
+<table border="1" cellpadding="5" cellspacing="0">
+  <tr><th>Name</th><th>Score</th></tr>
+  <tr><td>Ali</td><td>75</td></tr>
+  <tr><td>Sara</td><td>85</td></tr>
+  <tr><td>John</td><td>95</td></tr>
+</table><br>
+Formula: <code>=INDEX(B2:B4, 3)</code>`,
+  q: "What score does the formula return?",
+  a: "d",
+  options: ["75", "85", "Error", "95"]
+},
+{
+  passage: `Passage 6:<br>
+<table border="1" cellpadding="5" cellspacing="0">
+  <tr><th>Value</th></tr>
+  <tr><td>10</td></tr>
+  <tr><td>20</td></tr>
+  <tr><td>30</td></tr>
+</table><br>
+Formula: <code>=MEDIAN(A2:A4)</code>`,
+  q: "What is the median value?",
+  a: "b",
+  options: ["10", "20", "30", "25"]
+},
+{
+  passage: `Passage 7:<br>
+<table border="1" cellpadding="5" cellspacing="0">
+  <tr><th>Score</th></tr>
+  <tr><td>60</td></tr>
+  <tr><td>70</td></tr>
+  <tr><td>80</td></tr>
+</table><br>
+Formula: <code>=MODE(A2:A4)</code>`,
+  q: "What is the mode of the scores?",
+  a: "d",
+  options: ["60", "70", "Error", "No mode"]
+},
+{
+  passage: `Passage 8:<br>
+<table border="1" cellpadding="5" cellspacing="0">
+  <tr><th>Department</th><th>Expense</th></tr>
+  <tr><td>HR</td><td>1000</td></tr>
+  <tr><td>IT</td><td>2000</td></tr>
+  <tr><td>Finance</td><td>1500</td></tr>
+</table><br>
+Formula: <code>=LARGE(B2:B4, 2)</code>`,
+  q: "What is the second highest expense?",
+  a: "c",
+  options: ["1000", "2000", "1500", "2500"]
+},
+{
+  passage: `Passage 9:<br>
+<table border="1" cellpadding="5" cellspacing="0">
+  <tr><th>Day</th><th>Sales</th></tr>
+  <tr><td>Monday</td><td>300</td></tr>
+  <tr><td>Tuesday</td><td>500</td></tr>
+  <tr><td>Wednesday</td><td>400</td></tr>
+</table><br>
+Formula: <code>=SMALL(B2:B4, 1)</code>`,
+  q: "What is the smallest sales value?",
+  a: "a",
+  options: ["300", "400", "500", "0"]
+},
+{
+  passage: `Passage 10:<br>
+<table border="1" cellpadding="5" cellspacing="0">
+  <tr><th>Name</th><th>Status</th></tr>
+  <tr><td>Ali</td><td>Present</td></tr>
+  <tr><td>Mona</td><td>Absent</td></tr>
+  <tr><td>Khaled</td><td>Present</td></tr>
+</table><br>
+Formula: <code>=COUNTIF(B2:B4, "Present")</code>`,
+  q: "How many are present?",
+  a: "c",
+  options: ["1", "0", "2", "3"]
+},
+{
+  passage: `Passage 11:<br>
+<table border="1" cellpadding="5" cellspacing="0">
+  <tr><th>Product</th><th>Sold</th></tr>
+  <tr><td>Phone</td><td>50</td></tr>
+  <tr><td>Laptop</td><td>30</td></tr>
+  <tr><td>Tablet</td><td>20</td></tr>
+</table><br>
+Formula: <code>=RANK(B4, B2:B4)</code>`,
+  q: "What is the rank of 'Tablet' sales?",
+  a: "a",
+  options: ["3", "2", "1", "20"]
+},
+{
+  passage: `Passage 12:<br>
+<table border="1" cellpadding="5" cellspacing="0">
+  <tr><th>Quarter</th><th>Profit</th></tr>
+  <tr><td>Q1</td><td>5000</td></tr>
+  <tr><td>Q2</td><td>7000</td></tr>
+  <tr><td>Q3</td><td>6500</td></tr>
+</table><br>
+Formula: <code>=MAX(B2:B4)</code>`,
+  q: "What is the highest profit?",
+  a: "b",
+  options: ["5000", "7000", "6500", "8000"]
+},
+{
+  passage: `Passage 13:<br>
+<table border="1" cellpadding="5" cellspacing="0">
+  <tr><th>Employee</th><th>Overtime</th></tr>
+  <tr><td>Ali</td><td>5</td></tr>
+  <tr><td>Nora</td><td>0</td></tr>
+  <tr><td>Omar</td><td>3</td></tr>
+</table><br>
+Formula: <code>=SUMIF(B2:B4, ">0")</code>`,
+  q: "What is the total positive overtime?",
+  a: "d",
+  options: ["3", "5", "0", "8"]
+},
+{
+  passage: `Passage 14:<br>
+<table border="1" cellpadding="5" cellspacing="0">
+  <tr><th>Student</th><th>Attendance</th></tr>
+  <tr><td>Ahmed</td><td>Yes</td></tr>
+  <tr><td>Lina</td><td>No</td></tr>
+  <tr><td>Samy</td><td>Yes</td></tr>
+</table><br>
+Formula: <code>=IF(COUNTIF(B2:B4,"Yes")=2,"Good","Check")</code>`,
+  q: "What will the formula return?",
+  a: "a",
+  options: ["Good", "Check", "Yes", "2"]
+},
+{
+  passage: `Passage 15:<br>
+<table border="1" cellpadding="5" cellspacing="0">
+  <tr><th>Item</th><th>Cost</th></tr>
+  <tr><td>Chair</td><td>150</td></tr>
+  <tr><td>Desk</td><td>300</td></tr>
+  <tr><td>Sofa</td><td>700</td></tr>
+</table><br>
+Formula: <code>=AVERAGE(B2:B4)</code>`,
+  q: "What is the average cost?",
+  a: "c",
+  options: ["300", "400", "383.33", "700"]
+},
+{
+  passage: `Passage 16:<br>
+<table border="1" cellpadding="5" cellspacing="0">
+  <tr><th>Name</th><th>Grade</th></tr>
+  <tr><td>Ali</td><td>70</td></tr>
+  <tr><td>Mona</td><td>80</td></tr>
+  <tr><td>Youssef</td><td>90</td></tr>
+</table><br>
+Formula: <code>=COUNT(B2:B4)</code>`,
+  q: "What will this formula return?",
+  a: "d",
+  options: ["0", "2", "1", "3"]
+},
+{
+  passage: `Passage 17:<br>
+<table border="1" cellpadding="5" cellspacing="0">
+  <tr><th>Course</th><th>Duration</th></tr>
+  <tr><td>Math</td><td>30</td></tr>
+  <tr><td>English</td><td>25</td></tr>
+  <tr><td>Science</td><td>35</td></tr>
+</table><br>
+Formula: <code>=AVERAGEIF(B2:B4, ">25")</code>`,
+  q: "What is the average of durations greater than 25?",
+  a: "b",
+  options: ["30", "32.5", "25", "35"]
+},
+{
+  passage: `Passage 18:<br>
+<table border="1" cellpadding="5" cellspacing="0">
+  <tr><th>Mark</th></tr>
+  <tr><td>85</td></tr>
+  <tr><td>60</td></tr>
+  <tr><td>90</td></tr>
+</table><br>
+Formula: <code>=IF(MAX(A2:A4)>80,"Excellent","Average")</code>`,
+  q: "What will the result be?",
+  a: "a",
+  options: ["Excellent", "Average", "Error", "MAX"]
+},
+{
+  passage: `Passage 19:<br>
+<table border="1" cellpadding="5" cellspacing="0">
+  <tr><th>Invoice</th><th>Paid</th></tr>
+  <tr><td>1001</td><td>Yes</td></tr>
+  <tr><td>1002</td><td>No</td></tr>
+  <tr><td>1003</td><td>No</td></tr>
+</table><br>
+Formula: <code>=COUNTIF(B2:B4,"No")</code>`,
+  q: "How many invoices are unpaid?",
+  a: "c",
+  options: ["1", "1", "2", "0"]
+},
+{
+  passage: `Passage 20:<br>
+<table border="1" cellpadding="5" cellspacing="0">
+  <tr><th>Employee</th><th>Bonus</th></tr>
+  <tr><td>A</td><td>100</td></tr>
+  <tr><td>B</td><td>200</td></tr>
+  <tr><td>C</td><td>300</td></tr>
+</table><br>
+Formula: <code>=SUM(B2:B4)</code>`,
+  q: "What is the total bonus?",
+  a: "d",
+  options: ["100", "300", "200", "600"]
+},
+
+{
+  passage: `Passage 21:<br>
+<table border="1" cellpadding="5" cellspacing="0">
+  <tr><th>Name</th><th>Score</th><th>Attendance</th></tr>
+  <tr><td>Ali</td><td>85</td><td>90%</td></tr>
+</table><br>
+Formula: <code>=IF(AND(B2>80, C2="90%"), "Pass", "Fail")</code><br>
+Checks if both score and attendance meet the requirement.`,
+  q: "What does the formula return?",
+  a: "a",
+  options: ["Pass", "Fail", "Error", "None"]
+},
+{
+  passage: `Passage 22:<br>
+<table border="1" cellpadding="5" cellspacing="0">
+  <tr><th>Age</th><th>Experience</th></tr>
+  <tr><td>25</td><td>2</td></tr>
+</table><br>
+Formula: <code>=IF(OR(A2>30, B2>=2), "Eligible", "Not Eligible")</code>`,
+  q: "What is the output of the formula?",
+  a: "a",
+  options: ["Eligible", "Not Eligible", "Error", "OR"]
+},
+{
+  passage: `Passage 23:<br>
+<table border="1" cellpadding="5" cellspacing="0">
+  <tr><th>Number</th></tr>
+  <tr><td>7</td></tr>
+</table><br>
+Formula: <code>=IF(ISODD(A2), "Odd", "Even")</code>`,
+  q: "What will the result be?",
+  a: "a",
+  options: ["Odd", "Even", "Error", "7"]
+},
+{
+  passage: `Passage 24:<br>
+<table border="1" cellpadding="5" cellspacing="0">
+  <tr><th>Value</th></tr>
+  <tr><td>12</td></tr>
+</table><br>
+Formula: <code>=IF(ISEVEN(A2), "Even", "Odd")</code>`,
+  q: "What is the output of the formula?",
+  a: "a",
+  options: ["Even", "Odd", "False", "Error"]
+},
+{
+  passage: `Passage 25:<br>
+Formula: <code>=IFERROR(100/0, "Error in formula")</code><br>
+This formula attempts to divide by zero and returns a custom message.`,
+  q: "What will be the result?",
+  a: "b",
+  options: ["0", "Error", "Error in formula", "#DIV/0!"]
+},
+{
+  passage: `Passage 26:<br>
+<table border="1" cellpadding="5" cellspacing="0">
+  <tr><th>Employee</th><th>Position</th></tr>
+  <tr><td>A</td><td>Manager</td></tr>
+</table><br>
+Formula: <code>=IFNA(VLOOKUP("B", A2:B2, 2, FALSE), "Not Found")</code>`,
+  q: "What will the formula return?",
+  a: "d",
+  options: ["Manager", "#N/A", "Error", "Not Found"]
+},
+{
+  passage: `Passage 27:<br>
+Formula: <code>=CHOOSE(3, "Red", "Green", "Blue", "Yellow")</code><br>
+Selects the 3rd item from the list.`,
+  q: "What will be the result?",
+  a: "c",
+  options: ["Red", "Green", "Blue", "Yellow"]
+},
+{
+  passage: `Passage 28:<br>
+<table border="1" cellpadding="5" cellspacing="0">
+  <tr><th>Date</th></tr>
+  <tr><td>01/01/2024</td></tr>
+</table><br>
+Formula: <code>=TEXT(A2, "dddd")</code><br>
+Returns the full day of the week from a date.`,
+  q: "What will the result be if the date is Monday?",
+  a: "b",
+  options: ["01", "Monday", "2024", "Jan"]
+},
+{
+  passage: `Passage 29:<br>
+<table border="1" cellpadding="5" cellspacing="0">
+  <tr><th>First</th><th>Last</th></tr>
+  <tr><td>Ahmed</td><td>Salem</td></tr>
+</table><br>
+Formula: <code>=CONCATENATE(A2, " ", B2)</code><br>
+Combines first and last names.`,
+  q: "What is the result?",
+  a: "c",
+  options: ["AhmedSalem", "Ahmed-Salem", "Ahmed Salem", "Error"]
+},
+{
+  passage: `Passage 30:<br>
+<table border="1" cellpadding="5" cellspacing="0">
+  <tr><th>Code</th></tr>
+  <tr><td>AB123</td></tr>
+</table><br>
+Formula: <code>=LEFT(A2, 2)</code><br>
+Extracts the first 2 characters from the code.`,
+  q: "What will the formula return?",
+  a: "a",
+  options: ["AB", "123", "A", "Error"]
+},
+
+
+
+];
+
+    
+const questions = [
+    {
+    q: "31. What does the formula <code>=IF(OR(A1>100, B1<50), \"Check\", \"OK\")</code> return if A1 = 120 and B1 = 60?",
+    a: "a",
+    options: [
+      "Check",
+      "OK",
+      "TRUE",
+      "FALSE"
+    ]
+  },
+  {
+    q: "32. Which formula correctly combines IF, AND, and ISBLANK to return 'Missing' if A1 or B1 is blank?",
+    a: "b",
+    options: [
+      "=IF(ISBLANK(A1 AND B1),\"Missing\",\"Complete\")",
+      "=IF(OR(ISBLANK(A1),ISBLANK(B1)),\"Missing\",\"Complete\")",
+      "=IF(AND(ISBLANK(A1),ISBLANK(B1)),\"Complete\",\"Missing\")",
+      "=IF(ISBLANK(A1:B1),\"Missing\",\"Complete\")"
+    ]
+  },
+  {
+    q: "33. What does the function <code>=MOD(11,2)</code> return?",
+    a: "c",
+    options: [
+      "2",
+      "0",
+      "1",
+      "5.5"
+    ]
+  },
+  {
+    q: "34. What does <code>=IF(XOR(A1>10, B1>10), \"Only one is true\", \"Both true or both false\")</code> return if A1=12 and B1=5?",
+    a: "a",
+    options: [
+      "Only one is true",
+      "Both true or both false",
+      "Error",
+      "TRUE"
+    ]
+  },
+  {
+    q: "35. What result does <code>=MID(\"Excel Formula\", 7, 7)</code> return?",
+    a: "b",
+    options: [
+      "Formula",
+      "Formula",
+      "Excel F",
+      "ormula"
+    ]
+  },
+  {
+    q: "36. Which function combination can extract the **last name** from a full name in cell A1 (e.g., 'John Doe')?",
+    a: "c",
+    options: [
+      "=LEFT(A1, FIND(\" \", A1)-1)",
+      "=MID(A1, 1, LEN(A1))",
+      "=RIGHT(A1, LEN(A1) - FIND(\" \", A1))",
+      "=FIND(\" \", A1)"
+    ]
+  },
+  {
+    q: "37. What is returned by <code>=IF(EVEN(3)=3,\"Odd\",\"Even\")</code>?",
+    a: "b",
+    options: [
+      "Odd",
+      "Even",
+      "TRUE",
+      "3"
+    ]
+  },
+  {
+    q: "38. What is the result of <code>=AND(TRUE, NOT(FALSE))</code>?",
+    a: "c",
+    options: [
+      "FALSE",
+      "ERROR",
+      "TRUE",
+      "0"
+    ]
+  },
+  {
+    q: "39. What does the formula <code>=IFERROR(1/0, \"Division Error\")</code> return?",
+    a: "d",
+    options: [
+      "#VALUE!",
+      "#DIV/0!",
+      "0",
+      "Division Error"
+    ]
+  },
+  {
+    q: "40. Which formula returns TRUE only if both A1 and B1 are numbers and A1 is greater than B1?",
+    a: "a",
+    options: [
+      "=AND(ISNUMBER(A1), ISNUMBER(B1), A1>B1)",
+      "=IF(A1>B1, TRUE, FALSE)",
+      "=ISNUMBER(A1>B1)",
+      "=A1>B1"
+    ]
+  },
+];
+
+
+
+    
+        let currentTFQuestion = 0;
+        let tfCorrectAnswers = 0;
+        let currentQuestion = 0;
+        let correctAnswers = 0;
+        let timeLeft = 3600;
+        let timerInterval;
+        let startTime;
+    
+        function startQuiz() {
+    let name = document.getElementById("traineeName").value.trim();
+    let phone = document.getElementById("traineePhone").value.trim();
+    let password = document.getElementById("password").value;
+    let course = document.getElementById("courseName").value.trim(); // 🆕 قراءة اسم الكورس
+    let quizTitle = document.getElementById("quizTitle"); // 🆕 العنوان اللي هيتغير
+
+    if (!name) {
+        alert("❗ برجاء إدخال الاسم.");
+        return;
+    }
+
+    if (!phone) {
+        alert("❗ برجاء إدخال رقم التليفون.");
+        return;
+    }
+
+    if (password !== "1550") {
+        alert("❌ كلمة المرور غير صحيحة! الرجاء المحاولة مرة أخرى.");
+        return;
+    }
+
+    // 🆕 تغيير العنوان بناءً على اسم الكورس
+    quizTitle.textContent = course || "Placement Test";
+
+    document.getElementById("startScreen").style.display = "none";
+    document.getElementById("quizContainer").style.display = "block";
+    startTime = new Date();
+    startTimer();
+    loadTFQuestion();
+
+    // تشغيل وضع ملء الشاشة
+    let elem = document.documentElement;
+    if (elem.requestFullscreen) {
+        elem.requestFullscreen();
+    } else if (elem.mozRequestFullScreen) {
+        elem.mozRequestFullScreen();
+    } else if (elem.webkitRequestFullscreen) {
+        elem.webkitRequestFullscreen();
+    } else if (elem.msRequestFullscreen) {
+        elem.msRequestFullscreen();
+    }
+}
+
+
+
+    
+        function startTimer() {
+            timerInterval = setInterval(() => {
+                let minutes = Math.floor(timeLeft / 60);
+                let seconds = timeLeft % 60;
+                document.getElementById("timer").innerText = `Time Remaining: ${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+                if (timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    showResult();
+                }
+                timeLeft--;
+            }, 1000);
+        }
+    
+      function loadTFQuestion() {
+    let quizDiv = document.getElementById("quiz");
+    let passageDiv = document.getElementById("passage");
+
+    if (currentTFQuestion < trueFalseQuestions.length) {
+        let q = trueFalseQuestions[currentTFQuestion];
+
+        // عرض المقطع
+        passageDiv.innerHTML = `
+            <h3>Read the following passage carefully and answer the question:</h3>
+            <p style="font-size: 22px;">${q.passage}</p>
+        `;
+
+        // عرض السؤال والاختيارات
+        let questionHTML = `<p class='question'><strong>${currentTFQuestion + 1}- ${q.q}</strong></p>`;
+
+        q.options.forEach((option, index) => {
+    const letter = String.fromCharCode(97 + index); // "a", "b", ...
+    questionHTML += `
+        <label>
+            <input type='radio' name='answer' value='${letter}'>
+            ${option}
+        </label><br>
+    `;
+});
+
+        questionHTML += `<button class='btn' onclick='nextTFQuestion()'>Next</button>`;
+        quizDiv.innerHTML = questionHTML;
+    } else {
+        // الانتهاء من عرض كل الأسئلة
+        document.getElementById("passage").style.display = "none";
+        quizDiv.innerHTML = "<p>You've finished all reading questions.</p>";
+        loadQuestion(); // لو فيه مرحلة تانية
+    }
+}
+
+    
+  let score = 0;
+
+function nextTFQuestion() {
+  const selectedAnswer = document.querySelector("input[name='answer']:checked");
+  if (!selectedAnswer) {
+    alert("Please select an answer");
+    return;
+  }
+
+  const q = trueFalseQuestions[currentTFQuestion];
+  const selectedValue = selectedAnswer.value;
+
+  const isAnswerKeyALetter = q.a.length === 1 && ["a", "b", "c", "d"].includes(q.a.toLowerCase());
+
+  if (isAnswerKeyALetter) {
+    if (selectedValue === q.a.toLowerCase()) {
+      score++;
+    }
+  } else {
+    const selectedOptionIndex = selectedValue.charCodeAt(0) - 97;
+    const selectedOptionText = q.options[selectedOptionIndex];
+
+    if (selectedOptionText.trim().toLowerCase() === q.a.trim().toLowerCase()) {
+      score++;
+    }
+  }
+
+  currentTFQuestion++;
+  loadTFQuestion();
+}
+
+
+
+        function loadQuestion() {
+            let quizDiv = document.getElementById("quiz");
+            let q = questions[currentQuestion];
+            quizDiv.innerHTML = `<p class='question'>${q.q}</p>` +
+                q.options.map((option, index) => `<label><input type='radio' name='answer' value='${String.fromCharCode(97 + index)}'> ${option}</label>`).join('') +
+                `<button class='btn' onclick='nextQuestion()'>${currentQuestion === questions.length - 1 ? "Finish" : "Next"}</button>`;
+        }
+    
+        function nextQuestion() {
+            let selectedAnswer = document.querySelector("input[name='answer']:checked");
+            if (!selectedAnswer) return;
+            if (selectedAnswer.value === questions[currentQuestion].a) {
+                correctAnswers++;
+            }
+            if (currentQuestion < questions.length - 1) {
+                currentQuestion++;
+                loadQuestion();
+            } else {
+                showResult();
+            }
+        }
+    
+let serverUrl = ""; // سيتم تحديثه تلقائيًا عند تحميل الصفحة
+
+// دالة لجلب رابط السيرفر المخزن في GitHub
+function fetchServerUrl() {
+fetch("https://raw.githubusercontent.com/etiqotwf/liveServer1/main/serverUrl.json")
+        .then(response => response.json())
+        .then(data => {
+            if (data.serverUrl) {
+                serverUrl = data.serverUrl;
+                console.log("✅ رابط السيرفر المحدث من GitHub:", serverUrl);
+            } else {
+                console.error("❌ لم يتم العثور على رابط السيرفر في المستودع.");
+                retryFetchServerUrl();
+            }
+        })
+        .catch(error => {
+            console.error("❌ خطأ في جلب رابط السيرفر من GitHub:", error);
+            retryFetchServerUrl();
+        });
+}
+
+// دالة لإعادة المحاولة عند الفشل
+function retryFetchServerUrl() {
+    if (retryCount < MAX_RETRIES) {
+        retryCount++;
+        console.log(`🔄 إعادة المحاولة (${retryCount}/${MAX_RETRIES}) بعد 3 ثوانٍ...`);
+        setTimeout(fetchServerUrl, 3000);
+    } else {
+        console.error("⛔ تم الوصول إلى الحد الأقصى من المحاولات، تعذر جلب رابط السيرفر.");
+    }
+}
+
+// تحميل رابط السيرفر عند فتح الصفحة
+fetchServerUrl();
+
+function showResult() {
+    clearInterval(timerInterval);
+
+    let endTime = new Date();
+    let timeTaken = Math.floor((endTime - startTime) / 1000);
+    let minutesTaken = Math.floor(timeTaken / 60);
+    let secondsTaken = timeTaken % 60;
+
+    let name = document.getElementById("traineeName").value || "Unknown";
+    let phone = document.getElementById("traineePhone").value || "Unknown";
+    let date = new Date().toLocaleDateString("en-US");
+    let course = document.getElementById("courseName").value || "Unknown";
+
+    let totalQuestions = trueFalseQuestions.length + questions.length;
+    let totalCorrectAnswers = tfCorrectAnswers + correctAnswers;
+
+    let resultData = {
+        name: name,
+        phone: phone,
+        date: date,
+        course: course,
+        startTime: startTime.toLocaleString("en-GB", {
+            timeZone: "Africa/Cairo",
+            year: "numeric",
+            month: "long",
+            day: "numeric",
+            hour: "numeric",
+            minute: "numeric",
+            second: "numeric",
+            hour12: true
+        }),
+        timeTaken: `${minutesTaken} min ${secondsTaken} sec`,
+        score: `${totalCorrectAnswers} / ${totalQuestions}`
+    };
+
+    // إرسال البيانات إلى السيرفر إذا تم تحميل الرابط
+    if (!serverUrl) {
+        console.log("⏳ انتظار تحميل رابط السيرفر...");
+        fetchServerUrl().then(() => {
+            if (serverUrl) {
+                sendDataToServer(resultData);
+            } else {
+                console.error("❌ لم يتم تحميل رابط السيرفر بعد.");
+                alert("⚠️ تعذر إرسال البيانات! تأكد من اتصال الإنترنت وأعد المحاولة.");
+            }
+        });
+    } else {
+        sendDataToServer(resultData);
+    }
+
+    // إرسال البيانات إلى Google Sheets
+    sendDataToGoogleSheet(resultData);
+
+    // تحديث واجهة المستخدم
+    document.getElementById("resultCourse").innerText = course;
+    document.getElementById("resultName").innerText = name;
+    document.getElementById("resultPhone").innerText = phone;
+    document.getElementById("resultDate").innerText = date;
+    document.getElementById("resultStartTime").innerText = startTime.toLocaleTimeString();
+    document.getElementById("resultTime").innerText = `${minutesTaken} min ${secondsTaken} sec`;
+    document.getElementById("resultScore").innerText = `${totalCorrectAnswers} / ${totalQuestions}`;
+
+    document.getElementById("quizContainer").style.display = "none";
+    document.getElementById("resultScreen").style.display = "block";
+}
+
+// إرسال البيانات إلى السيرفر الأساسي
+function sendDataToServer(resultData) {
+    fetch(`${serverUrl}/submit`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(resultData)
+    })
+    .then(response => response.json())
+    .then(data => console.log("✅ تم الإرسال إلى السيرفر بنجاح:", data))
+    .catch(error => console.error("❌ خطأ أثناء الإرسال إلى السيرفر:", error));
+}
+
+
+
+
+
+function sendDataToGoogleSheet(resultData) {
+    const formData = new URLSearchParams();
+    formData.append("course", resultData.course);
+    formData.append("name", resultData.name);
+    formData.append("phone", resultData.phone);
+    formData.append("date", resultData.date);
+    formData.append("startTime", resultData.startTime);
+    formData.append("timeTaken", resultData.timeTaken);
+    formData.append("score", resultData.score);
+    formData.append("course", resultData.course);
+
+
+    fetch("https://script.google.com/macros/s/AKfycbybhyNx3uPAoAjGlvHe_jumSp_NKeOIIwoAPHWOqzUukmlmtoTlE5wF8Y_w17l5m9FS/exec", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+        },
+        body: formData.toString(),
+    })
+    .then(response => response.text())
+    .then(responseText => {
+        console.log("✅ تم الإرسال إلى Google Sheet:", responseText);
+    })
+    .catch(error => {
+        console.error("❌ خطأ في الإرسال إلى Google Sheet:", error);
+    });
+}
+
+
+
+
+    </script>
+    </body>
+</html>

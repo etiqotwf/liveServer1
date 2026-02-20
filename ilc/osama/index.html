@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<title>Daftar 55 A.H | System</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;800&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --bg1:#0f2027;
+  --bg2:#203a43;
+  --bg3:#2c5364;
+  --neon:#00f2ff;
+  --danger:#ff3b3b;
+  --glass:rgba(255,255,255,.08);
+  --open:#ffb347;
+  --closed:#3cff8f;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family:'Cairo',sans-serif;
+  background:linear-gradient(135deg,var(--bg1),var(--bg2),var(--bg3));
+  min-height:100vh;
+  color:#fff;
+}
+header{
+  text-align:center;
+  padding:25px;
+  font-size:28px;
+  font-weight:800;
+  text-shadow:0 0 15px var(--neon);
+}
+.container{max-width:1100px;margin:auto;padding:20px}
+.card{
+  background:var(--glass);
+  backdrop-filter:blur(15px);
+  border-radius:16px;
+  padding:25px;
+  box-shadow:0 0 40px rgba(0,0,0,.4);
+}
+.menu{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+  gap:20px;
+}
+.menu button,.btn{
+  height:140px;
+  font-size:22px;
+  font-weight:700;
+  border:none;
+  border-radius:18px;
+  color:#fff;
+  background:#111;
+  cursor:pointer;
+}
+.menu button:hover,.btn:hover{
+  box-shadow:0 0 25px var(--neon);
+  color:var(--neon);
+}
+.section{display:none}
+input,select{
+  width:100%;
+  padding:18px;
+  margin:8px 0 18px;
+  background:#111;
+  border:1px solid #333;
+  border-radius:12px;
+  color:#fff;
+  font-size:20px;
+}
+table{
+  width:100%;
+  border-collapse:collapse;
+}
+th,td{
+  padding:12px;
+  border-bottom:1px solid #333;
+  text-align:center;
+}
+th{color:var(--neon);font-size:18px}
+td{font-size:19px}
+.open{color:var(--open);font-weight:700}
+.closed{color:var(--closed);font-weight:700}
+.danger{background:#400}
+
+
+/* SPLASH SCREEN */
+#splash{
+  position:fixed;
+  inset:0;
+  background:linear-gradient(135deg,#0f2027,#203a43,#2c5364);
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  z-index:99999;
+}
+
+.splash-box{
+  text-align:center;
+  padding:50px 70px;
+  background:rgba(255,255,255,.08);
+  backdrop-filter:blur(20px);
+  border-radius:25px;
+  box-shadow:0 0 50px rgba(0,0,0,.6);
+  animation:pop .8s ease;
+}
+
+.splash-box h1{
+  font-size:48px;
+  margin:0;
+  color:var(--neon);
+  text-shadow:0 0 20px var(--neon);
+}
+
+.splash-box p{
+  font-size:20px;
+  margin:12px 0 30px;
+  opacity:.9;
+}
+
+/* Loader */
+.loader{
+  width:240px;
+  height:6px;
+  background:#111;
+  border-radius:10px;
+  overflow:hidden;
+}
+
+.loader span{
+  display:block;
+  height:100%;
+  width:0;
+  background:linear-gradient(90deg,var(--neon),#3cff8f);
+  animation:load 2.5s linear forwards;
+}
+
+/* Animations */
+@keyframes load{
+  to{width:100%}
+}
+
+@keyframes pop{
+  from{transform:scale(.7);opacity:0}
+  to{transform:scale(1);opacity:1}
+}
+
+
+
+</style>
+</head>
+
+<body>
+
+    <!-- SPLASH SCREEN -->
+<div id="splash">
+  <div class="splash-box">
+    <h1>Daftar 55</h1>
+    <p>دفتر وارد الوحدة</p>
+
+    <div class="loader">
+      <span></span>
+    </div>
+  </div>
+</div>
+
+
+<header>📘 دفتر وارد الوحدة – Daftar 55</header>
+
+<div class="container">
+
+<!-- MENU -->
+<div id="menu" class="menu card">
+  <button onclick="openEntry()">📝 ENTRY</button>
+  <button onclick="openInquiry()">🔍 INQUIRY</button>
+  <button onclick="exitApp()">❌ EXIT</button>
+</div>
+
+<!-- ENTRY -->
+<div id="entry" class="section card">
+  <h2>📝 تسجيل مستند</h2>
+
+  <select id="bookType">
+    <option value="">-- اختر الدفتر --</option>
+    <option value="هيئة">هيئة</option>
+    <option value="مدارس">مدارس</option>
+    <option value="مواليد">مواليد</option>
+    <option value="صندوق">صندوق</option>
+  </select>
+
+  <input id="entryNo" placeholder="رقم الدخول">
+  <input id="docName" placeholder="اسم المستند">
+  <input id="amount" type="number" placeholder="قيمة المستند">
+  <input id="date" type="date">
+
+  <button class="btn" onclick="save()">💾 Save</button>
+  <button class="btn" onclick="clearForm()">🔄 New</button>
+
+  <div style="text-align:center">
+    <button class="btn" onclick="back()">⬅ Menu</button>
+  </div>
+</div>
+
+<!-- INQUIRY -->
+<div id="inq" class="section card">
+  <h2>🔍 البحث العام</h2>
+
+  <input id="search" placeholder="بحث (تاريخ / رقم / اسم / أمر دفع)" onkeyup="load()">
+
+  <select id="filterBook" onchange="load()">
+    <option value="">📂 كل الدفاتر</option>
+    <option value="هيئة">هيئة</option>
+    <option value="مدارس">مدارس</option>
+    <option value="مواليد">مواليد</option>
+    <option value="صندوق">صندوق</option>
+  </select>
+
+  <table>
+    <thead>
+      <tr>
+        <th>الدفتر</th>
+        <th>رقم الدخول</th>
+        <th>المستند</th>
+        <th>القيمة</th>
+        <th>التاريخ</th>
+        <th>أمر الدفع</th>
+        <th>الحالة</th>
+        <th>❌</th>
+      </tr>
+    </thead>
+    <tbody id="rows"></tbody>
+  </table>
+
+  <div style="text-align:center">
+    <button class="btn" onclick="back()">⬅ Menu</button>
+  </div>
+</div>
+
+</div>
+
+
+<script>
+    // عند الضغط على أي مكان في الصفحة، أدخل وضع ملء الشاشة
+    document.addEventListener("click", () => {
+      const elem = document.documentElement; // أو document.getElementById("myForm")
+      if (document.fullscreenElement) return; // لا تفعل شيء إذا كنا بالفعل في ملء الشاشة
+
+      if (elem.requestFullscreen) {
+        elem.requestFullscreen();
+      } else if (elem.webkitRequestFullscreen) { /* Safari */
+        elem.webkitRequestFullscreen();
+      } else if (elem.msRequestFullscreen) { /* IE11 */
+        elem.msRequestFullscreen();
+      }
+    });
+  </script>
+
+
+
+<script>
+let db;
+indexedDB.open("DaftarDB",2).onupgradeneeded=e=>{
+  e.target.result.createObjectStore("Tbl_Daftar55",{keyPath:"id",autoIncrement:true});
+};
+indexedDB.open("DaftarDB",2).onsuccess=e=>db=e.target.result;
+
+/* UI */
+const show = id => {
+  document.querySelectorAll('.menu,.section')
+    .forEach(d => d.style.display = 'none');
+
+  const el = document.getElementById(id);
+
+  // لو الشاشة هي المنيو رجعها Grid
+  if(id === 'menu'){
+    el.style.display = 'grid';
+  }else{
+    el.style.display = 'block';
+  }
+};
+
+const openEntry=()=>show('entry');
+const openInquiry=()=>{show('inq');load();}
+const back=()=>show('menu');
+
+/* CRUD */
+function save(){
+  if(!bookType.value || !entryNo.value){
+    alert("❗ اختر الدفتر واكتب رقم الدخول");
+    return;
+  }
+
+  db.transaction("Tbl_Daftar55","readwrite")
+    .objectStore("Tbl_Daftar55")
+    .add({
+      bookType:bookType.value,
+      entryNo:entryNo.value,
+      docName:docName.value,
+      amount:amount.value,
+      date:date.value,
+      paymentOrder:"",
+      status:"مفتوح"
+    });
+
+  clearForm();
+}
+
+function clearForm(){
+  bookType.value="";
+  entryNo.value="";
+  docName.value="";
+  amount.value="";
+  date.value="";
+}
+
+function load(){
+  rows.innerHTML="";
+  const q=search.value.toLowerCase();
+  const book=filterBook.value;
+
+  const store=db.transaction("Tbl_Daftar55").objectStore("Tbl_Daftar55");
+  store.openCursor().onsuccess=e=>{
+    const c=e.target.result;
+    if(!c)return;
+    const r=c.value;
+
+    const matchBook=!book || r.bookType===book;
+    const matchSearch=
+      r.entryNo.includes(q) ||
+      r.docName.toLowerCase().includes(q) ||
+      r.date.includes(q) ||
+      (r.paymentOrder||"").includes(q);
+
+    if(matchBook && matchSearch){
+      rows.innerHTML+=`
+      <tr>
+        <td>${r.bookType}</td>
+        <td>${r.entryNo}</td>
+        <td contenteditable onblur="edit(${c.key},'docName',this.innerText)">${r.docName}</td>
+        <td contenteditable onblur="edit(${c.key},'amount',this.innerText)">${r.amount}</td>
+        <td contenteditable onblur="edit(${c.key},'date',this.innerText)">${r.date}</td>
+        <td>
+          ${
+            r.paymentOrder
+            ? `<span contenteditable onblur="edit(${c.key},'paymentOrder',this.innerText)">${r.paymentOrder}</span>`
+            : `<input placeholder="أمر الدفع" onblur="pay(${c.key},this.value)">`
+          }
+        </td>
+        <td class="${r.status=='مفتوح'?'open':'closed'}">${r.status}</td>
+        <td><button class="btn danger" onclick="del(${c.key})">حذف</button></td>
+      </tr>`;
+    }
+    c.continue();
+  }
+}
+
+function pay(id,val){
+  if(!val)return;
+  const store=db.transaction("Tbl_Daftar55","readwrite").objectStore("Tbl_Daftar55");
+  store.get(id).onsuccess=e=>{
+    const r=e.target.result;
+    r.paymentOrder=val;
+    r.status="مغلق";
+    store.put(r);
+    load();
+  }
+}
+
+function edit(id,field,value){
+  const store=db.transaction("Tbl_Daftar55","readwrite").objectStore("Tbl_Daftar55");
+  store.get(id).onsuccess=e=>{
+    const r=e.target.result;
+    r[field]=value.trim();
+    store.put(r);
+  }
+}
+
+function del(id){
+  if(confirm("تأكيد الحذف؟")){
+    db.transaction("Tbl_Daftar55","readwrite")
+      .objectStore("Tbl_Daftar55")
+      .delete(id);
+    load();
+  }
+}
+
+/* ===== Exit ===== */
+function exitApp() {
+  window.close();
+}
+
+// Splash Logic
+window.onload = ()=>{
+  show('menu'); // حضّر المنيو
+  setTimeout(()=>{
+    document.getElementById('splash').style.display='none';
+  },2500);
+};
+
+
+
+</script>
+
+</body>
+</html>

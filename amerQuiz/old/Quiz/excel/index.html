@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reading Comprehension Quiz</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            background: #1e1e2e;
+            color: white;
+        }
+        .container {
+            width: 95%;
+            max-width: 1200px;
+            background: #282a36;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.5);
+            text-align: left;
+        }
+        .question {
+            font-weight: bold;
+            font-size: 30px;
+            margin-bottom: 20px;
+        }
+        .options label {
+            display: block;
+            padding: 10px;
+        }
+        .btn {
+            background: #ff5555;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            cursor: pointer;
+            border-radius: 5px;
+            margin-top: 20px;
+            font-size: 18px;
+            display: block;
+        }
+        .btn:hover {
+            background: #ff79c6;
+        }
+
+        .result-screen {
+    display: none;
+    background: #44475a;
+    padding: 30px;
+    border-radius: 10px;
+    text-align: center;
+    width: 100%;
+  }
+
+  #resultScore {
+    font-size: 36px;
+    font-weight: bold;
+    color: #ffffff;
+    margin-top: 20px;
+  }
+
+  .result-screen p {
+    font-size: 20px;
+    font-weight: bold;
+    color: #f8f8f2;
+  }
+
+        #timer {
+            font-size: 22px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+      
+        .author {
+    font-size: 12px;
+    color: #bbb;
+    text-align: center;
+    position: absolute;
+    top: 10px;
+    width: 100%;
+    font-weight: bold;
+}
+
+
+
+label {
+  font-size: 22px; /* حجم نص الاختيار */
+  padding: 10px;
+  display: block;
+}
+
+input[type="radio"] {
+  transform: scale(1.5); /* تكبير حجم الدائرة */
+  margin-right: 10px;
+}
+
+
+  #passage {
+    font-size: 16px;     /* حجم الخط */
+    font-weight: bold;   /* خط عريض */
+  }
+
+
+
+  
+
+    </style>
+</head>
+<body>
+    <div class="container" id="startScreen">
+        <h1>📘 Tanta Drainage Training Center
+
+</h1>
+        <h2>Computer  Test</h2>
+        <p>Enter Course Name: <input type="text" id="courseName"></p>
+        <p>Enter Your Name: <input type="text" id="traineeName"></p>
+        <p>Enter Your Phone Number: <input type="text" id="traineePhone"></p>
+        <p>Enter Password: <input type="password" id="password"></p>
+        <button class="btn" onclick="startQuiz()">Start Quiz</button>
+    </div>
+
+    <div class="container" id="quizContainer" style="display: none;">
+        <h2 id="quizTitle">Reading Comprehension Quiz</h2>
+        <p class="author">Created by: Ahmed Amer</p>
+        <p>Date: <span id="date"></span></p>
+        <p id="timer">Time Remaining: 30:00</p>
+        <div id="passage">
+            <h3>Read the following passage carefully and answer the following questions:</h3>
+  <p>
+    <strong>The Role of Microsoft Excel in Data Management</strong><br><br>
+    Microsoft Excel is one of the most powerful spreadsheet applications widely used in business, education, and personal finance. It allows users to organize data into rows and columns, apply formulas for calculations, and create charts to visualize information. Excel's functions such as SUM, AVERAGE, and IF make data analysis easier and more efficient. With tools like PivotTables and conditional formatting, users can summarize large datasets and highlight important trends. Excel also supports automation through Macros and integration with other Microsoft Office tools, making it essential in many professional environments.
+  </p>
+                        </div>
+        <div id="quiz"></div>
+    </div>
+    
+    <div class="result-screen" id="resultScreen" style="display: none;">
+        <h2>Test Result</h2>
+        <p class="author">Created by: Ahmed Amer</p>
+        <p><strong>Course Name:</strong> <span id="resultCourse"></span></p>
+        <p><strong>Name:</strong> <span id="resultName"></span></p>
+        <p><strong>Phone Number:</strong> <span id="resultPhone"></span></p>
+        <p><strong>Test Date:</strong> <span id="resultDate"></span></p>
+        <p><strong>Start Time:</strong> <span id="resultStartTime"></span></p>
+        <p><strong>Time Taken:</strong> <span id="resultTime"></span></p>
+        <p><strong>Score:</strong> <span id="resultScore"></span></p>
+    </div>
+
+
+ 
+
+ 
+
+  </div>
+<div style="
+  position: fixed;
+  top: 40px;
+  right: 40px;
+  font-size: 50px;
+  font-weight: bold;
+  color: #ffd700;
+">
+  ✏️ 
+</div>
+
+
+<script>
+    // عند الضغط على أي مكان في الصفحة، أدخل وضع ملء الشاشة
+    document.addEventListener("click", () => {
+      const elem = document.documentElement; // أو document.getElementById("myForm")
+      if (document.fullscreenElement) return; // لا تفعل شيء إذا كنا بالفعل في ملء الشاشة
+
+      if (elem.requestFullscreen) {
+        elem.requestFullscreen();
+      } else if (elem.webkitRequestFullscreen) { /* Safari */
+        elem.webkitRequestFullscreen();
+      } else if (elem.msRequestFullscreen) { /* IE11 */
+        elem.msRequestFullscreen();
+      }
+    });
+  </script>
+
+    
+    <script>
+        document.getElementById("date").innerText = new Date().toLocaleDateString("en-US");
+    
+   const trueFalseQuestions = [
+  { q: "Microsoft Excel is used to create and manage spreadsheets.", a: "true" },
+  { q: "The SUM function is used to subtract values in Excel.", a: "false" },
+  { q: "You can insert charts into an Excel worksheet.", a: "true" },
+  { q: "Excel only works with numbers and cannot handle text.", a: "false" },
+  { q: "PivotTables are used to summarize large data sets in Excel.", a: "true" },
+  { q: "In Excel, the formula always starts with an equals sign (=).", a: "true" },
+  { q: "Conditional formatting changes cell appearance based on its value.", a: "true" },
+  { q: "Excel does not support macros or automation.", a: "false" },
+  { q: "You can use the IF function for logical tests in Excel.", a: "true" },
+  { q: "Excel is not compatible with other Microsoft Office programs.", a: "false" },
+  { q: "The AVERAGE function calculates the mean of a range of numbers.", a: "true" },
+  { q: "You can freeze rows and columns in Excel for easier viewing.", a: "true" },
+  { q: "Excel does not allow printing of spreadsheets.", a: "false" },
+  { q: "Filtering helps you display only specific data in a worksheet.", a: "true" },
+  { q: "The VLOOKUP function is used to find values in a table.", a: "true" },
+  { q: "You can insert images into Excel sheets.", a: "true" },
+  { q: "Formulas can be copied to other cells using the fill handle.", a: "true" },
+  { q: "Excel cannot be used to create graphs.", a: "false" },
+  { q: "Merging cells in Excel combines multiple cells into one.", a: "true" },
+  { q: "You must be connected to the internet to use Excel.", a: "false" }
+];
+
+    
+const questions = [
+  {
+    q: "Which of the following functions is used to calculate the sum of a range in Excel?",
+    a: "a",
+    options: ["SUM", "AVERAGE", "IF", "COUNT"]
+  },
+  {
+    q: "What is the default file extension for an Excel file?",
+    a: "b",
+    options: [".docx", ".xlsx", ".pptx", ".xlsm"]
+  },
+  {
+    q: "Which tab in Excel is used to insert charts?",
+    a: "c",
+    options: ["File", "Review", "Insert", "View"]
+  },
+  {
+    q: "Which feature allows you to view only specific data based on conditions?",
+    a: "d",
+    options: ["Formatting", "Sorting", "Merging", "Filtering"]
+  },
+  {
+    q: "What symbol is used to start a formula in Excel?",
+    a: "a",
+    options: ["=", "+", "#", "@"] 
+  },
+  {
+    q: "Which function returns the average of selected values?",
+    a: "b",
+    options: ["MAX", "AVERAGE", "SUM", "IF"]
+  },
+  {
+    q: "What does the VLOOKUP function do?",
+    a: "d",
+    options: ["Validates data", "Formats text", "Sorts columns", "Searches vertically in a table"]
+  },
+  {
+    q: "Which of the following is a valid cell reference?",
+    a: "a",
+    options: ["A1", "1A", "AA", "Row3"]
+  },
+  {
+    q: "What is the purpose of the fill handle?",
+    a: "b",
+    options: ["To copy text", "To copy formulas/data", "To resize cells", "To delete content"]
+  },
+  {
+    q: "Which chart type is best for showing data trends over time?",
+    a: "c",
+    options: ["Pie chart", "Bar chart", "Line chart", "Column chart"]
+  },
+  {
+    q: "Which tool is used to group and summarize large amounts of data?",
+    a: "d",
+    options: ["Data Validation", "AutoCorrect", "Macro", "PivotTable"]
+  },
+  {
+    q: "Which keyboard shortcut saves an Excel file?",
+    a: "a",
+    options: ["Ctrl + S", "Ctrl + O", "Ctrl + P", "Ctrl + N"]
+  },
+  {
+    q: "Which Excel function counts the number of cells with numbers?",
+    a: "c",
+    options: ["COUNTA", "SUM", "COUNT", "AVERAGE"]
+  },
+  {
+    q: "What does conditional formatting do?",
+    a: "d",
+    options: ["Saves settings", "Creates new sheets", "Inserts charts", "Changes cell appearance based on values"]
+  },
+  {
+    q: "Which tab contains the Freeze Panes option?",
+    a: "b",
+    options: ["Insert", "View", "Data", "Home"]
+  },
+  {
+    q: "Which function returns the highest number in a range?",
+    a: "a",
+    options: ["MAX", "SUM", "MIN", "RANK"]
+  },
+  {
+    q: "Which option is used to combine multiple cells into one?",
+    a: "c",
+    options: ["Split Cells", "Wrap Text", "Merge Cells", "Insert Table"]
+  },
+  {
+    q: "What does the IF function do?",
+    a: "d",
+    options: ["Sums values", "Finds text", "Sorts data", "Performs logical tests"]
+  },
+  {
+    q: "Which function rounds a number to the nearest integer?",
+    a: "a",
+    options: ["ROUND", "SUM", "INT", "NOW"]
+  },
+  {
+    q: "Which of the following is not a valid chart type in Excel?",
+    a: "c",
+    options: ["Pie", "Bar", "Sketch", "Line"]
+  },
+  {
+    q: "To print a spreadsheet, you should go to which tab?",
+    a: "b",
+    options: ["Insert", "File", "Formulas", "Data"]
+  },
+  {
+    q: "What does a red triangle in the corner of a cell mean?",
+    a: "d",
+    options: ["Formula error", "Cell locked", "Data invalid", "Comment exists"]
+  },
+  {
+    q: "Which formula would add A1 and B1?",
+    a: "a",
+    options: ["=A1+B1", "=SUM(A1:B1)", "=A1&B1", "=A1*B1"]
+  },
+  {
+    q: "How do you create a new worksheet?",
+    a: "c",
+    options: ["Right-click > Rename", "File > Save As", "Click '+' at the bottom", "Insert > Table"]
+  },
+  {
+    q: "Which of the following is used to restrict what users can type into a cell?",
+    a: "d",
+    options: ["Wrap Text", "Merge Cells", "Freeze Panes", "Data Validation"]
+  },
+  {
+    q: "How many rows are there in a standard Excel worksheet?",
+    a: "a",
+    options: ["1,048,576", "65,536", "1,000,000", "500,000"]
+  },
+  {
+    q: "Which function gives the current date in Excel?",
+    a: "b",
+    options: ["TIME()", "TODAY()", "DATE()", "NOW()"]
+  },
+  {
+    q: "Which tab is used to apply cell styles and fonts?",
+    a: "a",
+    options: ["Home", "Data", "Insert", "View"]
+  },
+  {
+    q: "Which of these allows repeating a calculation on different rows automatically?",
+    a: "c",
+    options: ["Macro", "Validation", "Drag Fill Handle", "Chart"]
+  },
+  {
+    q: "Excel is mainly used for:",
+    a: "d",
+    options: ["Presentations", "Typing documents", "Editing PDFs", "Calculations and data analysis"]
+  }
+];
+
+
+
+
+    
+        let currentTFQuestion = 0;
+        let tfCorrectAnswers = 0;
+        let currentQuestion = 0;
+        let correctAnswers = 0;
+        let timeLeft = 1800;
+        let timerInterval;
+        let startTime;
+    
+        function startQuiz() {
+    let name = document.getElementById("traineeName").value.trim();
+    let phone = document.getElementById("traineePhone").value.trim();
+    let password = document.getElementById("password").value;
+
+    if (!name) {
+        alert("❗ برجاء إدخال الاسم.");
+        return;
+    }
+
+    if (!phone) {
+        alert("❗ برجاء إدخال رقم التليفون.");
+        return;
+    }
+
+    if (password !== "1234") {
+        alert("❌ كلمة المرور غير صحيحة! الرجاء المحاولة مرة أخرى.");
+        return;
+    }
+
+    document.getElementById("startScreen").style.display = "none";
+    document.getElementById("quizContainer").style.display = "block";
+    startTime = new Date();
+    startTimer();
+    loadTFQuestion();
+
+    // تشغيل وضع ملء الشاشة
+    let elem = document.documentElement;
+    if (elem.requestFullscreen) {
+        elem.requestFullscreen();
+    } else if (elem.mozRequestFullScreen) {
+        elem.mozRequestFullScreen();
+    } else if (elem.webkitRequestFullscreen) {
+        elem.webkitRequestFullscreen();
+    } else if (elem.msRequestFullscreen) {
+        elem.msRequestFullscreen();
+    }
+}
+
+
+    
+        function startTimer() {
+            timerInterval = setInterval(() => {
+                let minutes = Math.floor(timeLeft / 60);
+                let seconds = timeLeft % 60;
+                document.getElementById("timer").innerText = `Time Remaining: ${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+                if (timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    showResult();
+                }
+                timeLeft--;
+            }, 1000);
+        }
+    
+        function loadTFQuestion() {
+            let quizDiv = document.getElementById("quiz");
+            if (currentTFQuestion < trueFalseQuestions.length) {
+                let q = trueFalseQuestions[currentTFQuestion];
+                quizDiv.innerHTML = `<p class='question'>${q.q}</p>` +
+                    `<label><input type='radio' name='answer' value='true'> True</label>` +
+                    `<label><input type='radio' name='answer' value='false'> False</label>` +
+                    `<button class='btn' onclick='nextTFQuestion()'>Next</button>`;
+            } else {
+                document.getElementById("passage").style.display = "none";
+                document.getElementById("quizTitle").innerText = "Choose the correct answer from a, b, c or d: (44 marks)";
+                loadQuestion();
+            }
+        }
+    
+        function nextTFQuestion() {
+            let selectedAnswer = document.querySelector("input[name='answer']:checked");
+            if (!selectedAnswer) return;
+            if (selectedAnswer.value === trueFalseQuestions[currentTFQuestion].a) {
+                tfCorrectAnswers++;
+            }
+            currentTFQuestion++;
+            loadTFQuestion();
+        }
+    
+        function loadQuestion() {
+            let quizDiv = document.getElementById("quiz");
+            let q = questions[currentQuestion];
+            quizDiv.innerHTML = `<p class='question'>${q.q}</p>` +
+                q.options.map((option, index) => `<label><input type='radio' name='answer' value='${String.fromCharCode(97 + index)}'> ${option}</label>`).join('') +
+                `<button class='btn' onclick='nextQuestion()'>${currentQuestion === questions.length - 1 ? "Finish" : "Next"}</button>`;
+        }
+    
+        function nextQuestion() {
+            let selectedAnswer = document.querySelector("input[name='answer']:checked");
+            if (!selectedAnswer) return;
+            if (selectedAnswer.value === questions[currentQuestion].a) {
+                correctAnswers++;
+            }
+            if (currentQuestion < questions.length - 1) {
+                currentQuestion++;
+                loadQuestion();
+            } else {
+                showResult();
+            }
+        }
+    
+let serverUrl = ""; // سيتم تحديثه تلقائيًا عند تحميل الصفحة
+
+// دالة لجلب رابط السيرفر المخزن في GitHub
+function fetchServerUrl() {
+fetch("https://raw.githubusercontent.com/etiqotwf/liveServer1/main/serverUrl.json")
+        .then(response => response.json())
+        .then(data => {
+            if (data.serverUrl) {
+                serverUrl = data.serverUrl;
+                console.log("✅ رابط السيرفر المحدث من GitHub:", serverUrl);
+            } else {
+                console.error("❌ لم يتم العثور على رابط السيرفر في المستودع.");
+                retryFetchServerUrl();
+            }
+        })
+        .catch(error => {
+            console.error("❌ خطأ في جلب رابط السيرفر من GitHub:", error);
+            retryFetchServerUrl();
+        });
+}
+
+// دالة لإعادة المحاولة عند الفشل
+function retryFetchServerUrl() {
+    if (retryCount < MAX_RETRIES) {
+        retryCount++;
+        console.log(`🔄 إعادة المحاولة (${retryCount}/${MAX_RETRIES}) بعد 3 ثوانٍ...`);
+        setTimeout(fetchServerUrl, 3000);
+    } else {
+        console.error("⛔ تم الوصول إلى الحد الأقصى من المحاولات، تعذر جلب رابط السيرفر.");
+    }
+}
+
+// تحميل رابط السيرفر عند فتح الصفحة
+fetchServerUrl();
+
+function showResult() {
+    clearInterval(timerInterval);
+
+    let endTime = new Date();
+    let timeTaken = Math.floor((endTime - startTime) / 1000);
+    let minutesTaken = Math.floor(timeTaken / 60);
+    let secondsTaken = timeTaken % 60;
+
+    let name = document.getElementById("traineeName").value || "Unknown";
+    let phone = document.getElementById("traineePhone").value || "Unknown";
+    let date = new Date().toLocaleDateString("en-US");
+    let course = document.getElementById("courseName").value || "Unknown";
+
+    let totalQuestions = trueFalseQuestions.length + questions.length;
+    let totalCorrectAnswers = tfCorrectAnswers + correctAnswers;
+
+    let resultData = {
+        name: name,
+        phone: phone,
+        date: date,
+        course: course,
+        startTime: startTime.toLocaleString("en-GB", {
+            timeZone: "Africa/Cairo",
+            year: "numeric",
+            month: "long",
+            day: "numeric",
+            hour: "numeric",
+            minute: "numeric",
+            second: "numeric",
+            hour12: true
+        }),
+        timeTaken: `${minutesTaken} min ${secondsTaken} sec`,
+        score: `${totalCorrectAnswers} / ${totalQuestions}`
+    };
+
+    // إرسال البيانات إلى السيرفر إذا تم تحميل الرابط
+    if (!serverUrl) {
+        console.log("⏳ انتظار تحميل رابط السيرفر...");
+        fetchServerUrl().then(() => {
+            if (serverUrl) {
+                sendDataToServer(resultData);
+            } else {
+                console.error("❌ لم يتم تحميل رابط السيرفر بعد.");
+                alert("⚠️ تعذر إرسال البيانات! تأكد من اتصال الإنترنت وأعد المحاولة.");
+            }
+        });
+    } else {
+        sendDataToServer(resultData);
+    }
+
+    // إرسال البيانات إلى Google Sheets
+    sendDataToGoogleSheet(resultData);
+
+    // تحديث واجهة المستخدم
+    document.getElementById("resultCourse").innerText = course;
+    document.getElementById("resultName").innerText = name;
+    document.getElementById("resultPhone").innerText = phone;
+    document.getElementById("resultDate").innerText = date;
+    document.getElementById("resultStartTime").innerText = startTime.toLocaleTimeString();
+    document.getElementById("resultTime").innerText = `${minutesTaken} min ${secondsTaken} sec`;
+    document.getElementById("resultScore").innerText = `${totalCorrectAnswers} / ${totalQuestions}`;
+
+    document.getElementById("quizContainer").style.display = "none";
+    document.getElementById("resultScreen").style.display = "block";
+}
+
+// إرسال البيانات إلى السيرفر الأساسي
+function sendDataToServer(resultData) {
+    fetch(`${serverUrl}/submit`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(resultData)
+    })
+    .then(response => response.json())
+    .then(data => console.log("✅ تم الإرسال إلى السيرفر بنجاح:", data))
+    .catch(error => console.error("❌ خطأ أثناء الإرسال إلى السيرفر:", error));
+}
+
+
+
+
+
+function sendDataToGoogleSheet(resultData) {
+    const formData = new URLSearchParams();
+    formData.append("course", resultData.course);
+    formData.append("name", resultData.name);
+    formData.append("phone", resultData.phone);
+    formData.append("date", resultData.date);
+    formData.append("startTime", resultData.startTime);
+    formData.append("timeTaken", resultData.timeTaken);
+    formData.append("score", resultData.score);
+    formData.append("course", resultData.course);
+
+
+    fetch("https://script.google.com/macros/s/AKfycbzdOkIPZ_VROXU7QmlrNSxbtVSvBoA1yT3im1xFCxlULAYg7j0zbNDx9rXBAXtVZkOuOg/exec", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+        },
+        body: formData.toString(),
+    })
+    .then(response => response.text())
+    .then(responseText => {
+        console.log("✅ تم الإرسال إلى Google Sheet:", responseText);
+    })
+    .catch(error => {
+        console.error("❌ خطأ في الإرسال إلى Google Sheet:", error);
+    });
+}
+
+
+
+
+    </script>
+    </body>
+</html>

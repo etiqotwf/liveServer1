@@ -1,0 +1,1270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reading Comprehension Quiz</title>
+    <style>
+   body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    margin: 0;
+    background: #1e1e2e;
+    color: white;
+}
+
+.container {
+    margin-top: 5px; /* مسافة صغيرة جدًا */
+    width: 95%;
+    max-width: 1200px;
+    background: #282a36;
+    padding: 10px 30px 30px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.5);
+    text-align: left;
+}
+
+h1, h2, p {
+    margin-top: 0;
+}
+
+
+        .question {
+            font-weight: bold;
+            font-size: 30px;
+            margin-bottom: 20px;
+        }
+        .options label {
+            display: block;
+            padding: 10px;
+        }
+        .btn {
+            background: #ff5555;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            cursor: pointer;
+            border-radius: 5px;
+            margin-top: 200px;
+            font-size: 18px;
+            display: block;
+        }
+        .btn:hover {
+            background: #ff79c6;
+        }
+
+        .result-screen {
+    display: none;
+    background: #44475a;
+    padding: 30px;
+    border-radius: 10px;
+    text-align: center;
+    width: 100%;
+  }
+
+  #resultScore {
+    font-size: 36px;
+    font-weight: bold;
+    color: #ffffff;
+    margin-top: 20px;
+  }
+
+  .result-screen p {
+    font-size: 20px;
+    font-weight: bold;
+    color: #f8f8f2;
+  }
+
+  #timer {
+    font-size: 28px;         /* حجم أكبر */
+    color: rgb(255, 255, 255);           /* اللون أصفر */
+    font-weight: bold;       /* خط عريض */
+    padding: 20px;
+    border-radius: 10px;
+    width: fit-content;
+    margin: 20px auto;
+  }
+
+      
+      .author {
+  font-size: 24px;        /* تكبير الخط */
+  color: #ffd700;         /* لون ذهبي مميز */
+  text-align: center;
+  font-weight: bold;      /* جعله عريض */
+  margin-bottom: 15px;
+  position: relative;     /* إزالة الوضع المطلق حتى يظهر في مكانه الطبيعي */
+  top: auto;
+}
+
+
+
+
+label {
+  font-size: 22px; /* حجم نص الاختيار */
+  padding: 10px;
+  display: block;
+}
+
+input[type="radio"] {
+  transform: scale(1.5); /* تكبير حجم الدائرة */
+  margin-right: 10px;
+}
+
+
+  #passage {
+    font-size: 16px;     /* حجم الخط */
+    font-weight: bold;   /* خط عريض */
+  }
+
+
+#startScreen p {
+  font-size: 22px;
+  font-weight: bold;
+}
+#startScreen input {
+  font-size: 20px;
+  font-weight: bold;
+  padding: 8px;
+}
+
+  
+
+#startScreen h1 {
+  font-size: 40px; /* حجم الخط */
+  font-weight: bold; /* عريض */
+  color: #ffd700; /* لون مميز مثل الذهبي (اختياري) */
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+
+
+
+    </style>
+</head>
+<body>
+
+
+
+
+    <div class="container" id="startScreen">
+        <h1>📘 𝒯𝒽𝑒 𝐵𝓇𝒾𝓉𝒾𝓈𝒽 𝐼𝓃𝓉𝑒𝓇𝓃𝒶𝓉𝒾𝑜𝓃𝒶𝓁 𝐿𝑒𝒶𝓇𝓃𝒾𝓃𝑔 𝒞𝑒𝓃𝓉𝑒𝓇 (𝐼𝐿𝐶)
+
+</h1>
+        <h2></h2>
+<p>Course Name: <input type="text" id="courseName" value="WEB DESIGN TEST" readonly style="background-color: #f0f0f0; border: none;"></p>
+        <p>Enter Your Name: <input type="text" id="traineeName"></p>
+        <p>Enter Your Phone Number: <input type="text" id="traineePhone"></p>
+        <p>Enter Password: <input type="password" id="password"></p>
+        <button class="btn" onclick="startQuiz()">Start Quiz</button>
+    </div>
+
+    <div class="container" id="quizContainer" style="display: none;">
+        <h2 id="quizTitle">Placement Test</h2>
+        <p class="author">📘 𝒯𝒽𝑒 𝐵𝓇𝒾𝓉𝒾𝓈𝒽 𝐼𝓃𝓉𝑒𝓇𝓃𝒶𝓉𝒾𝑜𝓃𝒶𝓁 𝐿𝑒𝒶𝓇𝓃𝒾𝓃𝑔 𝒞𝑒𝓃𝓉𝑒𝓇 (𝐼𝐿𝐶)</p>
+        <p>Date: <span id="date"></span></p>
+        <p id="timer"> ----- </p>
+        <div id="passage">
+  <h3>Read the following passage carefully and answer the following questions:</h3>
+  <p style="font-size: 22px;">
+    
+                        </div>
+        <div id="quiz"></div>
+    </div>
+    
+    <div class="result-screen" id="resultScreen" style="display: none;">
+        <h2>Test Result</h2>
+        <p class="author">Created by: Ahmed Amer</p>
+        <p><strong>Course Name:</strong> <span id="resultCourse"></span></p>
+        <p><strong>Name:</strong> <span id="resultName"></span></p>
+        <p><strong>Phone Number:</strong> <span id="resultPhone"></span></p>
+        <p><strong>Test Date:</strong> <span id="resultDate"></span></p>
+        <p><strong>Start Time:</strong> <span id="resultStartTime"></span></p>
+        <p><strong>Time Taken:</strong> <span id="resultTime"></span></p>
+        <p><strong>Score:</strong> <span id="resultScore"></span></p>
+    </div>
+
+
+ 
+
+ 
+
+  </div>
+<div style="
+  position: fixed;
+  top: 40px;
+  right: 40px;
+  font-size: 60px;
+  font-weight: bold;
+  color: #ffd700;
+">
+  ✏️ 
+
+  
+</div>
+
+
+<script>
+    // عند الضغط على أي مكان في الصفحة، أدخل وضع ملء الشاشة
+    document.addEventListener("click", () => {
+      const elem = document.documentElement; // أو document.getElementById("myForm")
+      if (document.fullscreenElement) return; // لا تفعل شيء إذا كنا بالفعل في ملء الشاشة
+
+      if (elem.requestFullscreen) {
+        elem.requestFullscreen();
+      } else if (elem.webkitRequestFullscreen) { /* Safari */
+        elem.webkitRequestFullscreen();
+      } else if (elem.msRequestFullscreen) { /* IE11 */
+        elem.msRequestFullscreen();
+      }
+    });
+  </script>
+
+    
+    <script>
+        document.getElementById("date").innerText = new Date().toLocaleDateString("en-US");
+    
+    const trueFalseQuestions = [
+
+
+    {
+  passage: `<div style="margin-top: 120px;">
+  <!-- ===================== NEW: Structure Deep-Dive ===================== -->
+  <div style="font-family: Segoe UI, Arial, sans-serif; background: linear-gradient(135deg,#f7fbff,#f2f8ff); color:#1b2a4a; padding: 28px; border: 3px solid #90c2ff; border-radius: 20px; font-size: 22px; font-weight: 700; box-shadow: 0 8px 20px rgba(0,0,0,0.08); line-height: 1.85;">
+
+    <div style="display:flex; align-items:center; gap:10px; margin-bottom:12px;">
+      <span style="font-size:34px;">🧱</span>
+      <strong style="font-size: 30px; color:#0a58ca;">HTML Page Structure — Step-by-Step Explained</strong>
+    </div>
+
+    <p style="margin:8px 0 18px 0; font-weight:700; color:#0b3d91;">
+      Below is a quick, visual breakdown of each essential part of a modern HTML page. Colors highlight tags; keep an eye on where each block goes 👇
+    </p>
+
+    <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(260px,1fr)); gap:14px;">
+
+      <!-- Card 1 -->
+      <div style="background:#ffffff; border:2px solid #b9dcff; border-radius:16px; padding:16px; box-shadow:0 6px 14px rgba(13,110,253,0.07);">
+        <div style="font-size:22px;">📌 <span style="color:#0b5ed7;">&lt;!DOCTYPE html&gt;</span></div>
+        <div style="font-size:18px; margin-top:8px;">
+          Declares HTML5 so the browser uses the latest standard and rendering mode.
+        </div>
+        <div style="margin-top:10px; font-size:16px; background:#eef6ff; padding:8px 10px; border-radius:10px;">
+          Position: very top of the file, before <code style="font-weight:800;">&lt;html&gt;</code>.
+        </div>
+      </div>
+
+      <!-- Card 2 -->
+      <div style="background:#ffffff; border:2px solid #b9dcff; border-radius:16px; padding:16px; box-shadow:0 6px 14px rgba(13,110,253,0.07);">
+        <div style="font-size:22px;">🌍 <span style="color:#0b5ed7;">&lt;html</span> <span style="color:#b26b00;">lang</span>=<span style="color:#147a00;">"en"</span><span style="color:#0b5ed7;">&gt;</span></div>
+        <div style="font-size:18px; margin-top:8px;">
+          Wraps the whole page. <strong>lang="en"</strong> helps accessibility & SEO.
+        </div>
+        <div style="margin-top:10px; font-size:16px; background:#eef6ff; padding:8px 10px; border-radius:10px;">
+          Position: root element that contains <code style="font-weight:800;">&lt;head&gt;</code> and <code style="font-weight:800;">&lt;body&gt;</code>.
+        </div>
+      </div>
+
+      <!-- Card 3 -->
+      <div style="background:#ffffff; border:2px solid #b9dcff; border-radius:16px; padding:16px; box-shadow:0 6px 14px rgba(13,110,253,0.07);">
+        <div style="font-size:22px;">🧠 <span style="color:#0b5ed7;">&lt;head&gt;</span></div>
+        <div style="font-size:18px; margin-top:8px;">
+          Holds metadata and settings (title, charset, responsive viewport, links to CSS/JS).
+        </div>
+        <div style="margin-top:10px; font-size:16px; background:#eef6ff; padding:8px 10px; border-radius:10px;">
+          Content here does not render directly on the page.
+        </div>
+      </div>
+
+      <!-- Card 4 -->
+      <div style="background:#ffffff; border:2px solid #b9dcff; border-radius:16px; padding:16px; box-shadow:0 6px 14px rgba(13,110,253,0.07);">
+        <div style="font-size:22px;">🔤 <span style="color:#0b5ed7;">&lt;meta</span> <span style="color:#b26b00;">charset</span>=<span style="color:#147a00;">"UTF-8"</span><span style="color:#0b5ed7;">&gt;</span></div>
+        <div style="font-size:18px; margin-top:8px;">
+          Ensures correct text encoding (supports all common characters & emojis).
+        </div>
+        <div style="margin-top:10px; font-size:16px; background:#eef6ff; padding:8px 10px; border-radius:10px;">
+          Put it early in <code style="font-weight:800;">&lt;head&gt;</code>.
+        </div>
+      </div>
+
+      <!-- Card 5 -->
+      <div style="background:#ffffff; border:2px solid #b9dcff; border-radius:16px; padding:16px; box-shadow:0 6px 14px rgba(13,110,253,0.07);">
+        <div style="font-size:22px;">📱 <span style="color:#0b5ed7;">&lt;meta</span> <span style="color:#b26b00;">name</span>=<span style="color:#147a00;">"viewport"</span> <span style="color:#b26b00;">content</span>=<span style="color:#147a00;">"width=device-width, initial-scale=1.0"</span><span style="color:#0b5ed7;">&gt;</span></div>
+        <div style="font-size:18px; margin-top:8px;">
+          Makes the page responsive on phones & tablets (proper scaling).
+        </div>
+      </div>
+
+      <!-- Card 6 -->
+      <div style="background:#ffffff; border:2px solid #b9dcff; border-radius:16px; padding:16px; box-shadow:0 6px 14px rgba(13,110,253,0.07);">
+        <div style="font-size:22px;">🏷️ <span style="color:#0b5ed7;">&lt;title&gt;</span>My First Page<span style="color:#0b5ed7;">&lt;/title&gt;</span></div>
+        <div style="font-size:18px; margin-top:8px;">
+          Sets the tab/window title you see in the browser and affects bookmarks/SEO.
+        </div>
+      </div>
+
+      <!-- Card 7 -->
+      <div style="background:#ffffff; border:2px solid #b9dcff; border-radius:16px; padding:16px; box-shadow:0 6px 14px rgba(13,110,253,0.07);">
+        <div style="font-size:22px;">🧩 <span style="color:#0b5ed7;">&lt;body&gt;</span></div>
+        <div style="font-size:18px; margin-top:8px;">
+          Everything visible on the page (headings, paragraphs, images, buttons, etc.).
+        </div>
+      </div>
+
+      <!-- Card 8 -->
+      <div style="background:#ffffff; border:2px solid #b9dcff; border-radius:16px; padding:16px; box-shadow:0 6px 14px rgba(13,110,253,0.07);">
+        <div style="font-size:22px;">📝 <span style="color:#0b5ed7;">&lt;h1&gt;</span>Hello World!<span style="color:#0b5ed7;">&lt;/h1&gt;</span></div>
+        <div style="font-size:18px; margin-top:8px;">
+          The main page heading. There should typically be only one <strong>H1</strong> per page.
+        </div>
+      </div>
+
+      <!-- Card 9 -->
+      <div style="background:#ffffff; border:2px solid #b9dcff; border-radius:16px; padding:16px; box-shadow:0 6px 14px rgba(13,110,253,0.07);">
+        <div style="font-size:22px;">📄 <span style="color:#0b5ed7;">&lt;p&gt;</span>This is my first HTML page.<span style="color:#0b5ed7;">&lt;/p&gt;</span></div>
+        <div style="font-size:18px; margin-top:8px;">
+          A paragraph of text — use for regular content and descriptions.
+        </div>
+      </div>
+
+    </div>
+
+    <div style="margin-top:16px; font-size:18px; background:#fff7e6; border:2px dashed #ffc28b; padding:12px 14px; border-radius:14px;">
+      💡 <strong style="color:#b34d00;">Pro Tip:</strong> Later you can add <code style="font-weight:800;">&lt;link rel="stylesheet"&gt;</code> for CSS or <code style="font-weight:800;">&lt;script&gt;</code> for JS right inside <code style="font-weight:800;">&lt;head&gt;</code> (or before <code style="font-weight:800;">&lt;/body&gt;</code>).
+    </div>
+  </div>
+  <!-- ===================== /NEW ===================== -->
+
+  <div style="font-family: Segoe UI, Arial, sans-serif; background-color: #f9fbff; color: #222; padding: 30px; border: 2px solid #99ccff; border-radius: 15px; font-size: 22px; font-weight: bold; box-shadow: 0 4px 12px rgba(0,0,0,0.1); line-height: 1.9;">
+    <strong style="font-size: 28px; color: #0056b3;">🌐 Getting Started: Learn <span style="color:#0078d7;">HTML</span> and Build Your First Web Page</strong><br><br>
+
+    <u style="color:#0056b3;">Why HTML matters:</u><br>
+    HTML is the backbone of every website. It tells the browser what to show: headings, paragraphs, images, and links. Once you learn the basics, you can continuously add and test new code in real-time.<br><br>
+
+    <strong style="font-size: 24px; color:#004080;">🧭 Steps to Create and Run Your First HTML Page:</strong><br>
+    <ol style="padding-left: 25px; margin-top: 15px;">
+      <li>➡️ <strong>Open</strong> Visual Studio Code (VS Code).</li>
+      <li>➡️ <strong>Create a new file</strong> and save it as <em>index.html</em>.</li>
+      <li>➡️ <strong>Write this basic structure</strong> in your file:<br>
+        <pre style="background-color:#eef5ff; padding: 15px; border-radius: 8px; margin-top: 8px; font-size: 20px; font-weight:bold; overflow-x:auto;">
+<span style="color:#0000cc;">&lt;!DOCTYPE html&gt;</span>
+<span style="color:#0000cc;">&lt;html</span> <span style="color:#aa5500;">lang</span>=<span style="color:#008000;">"en"</span><span style="color:#0000cc;">&gt;</span>
+  <span style="color:#0000cc;">&lt;head&gt;</span>
+    <span style="color:#0000cc;">&lt;meta</span> <span style="color:#aa5500;">charset</span>=<span style="color:#008000;">"UTF-8"</span><span style="color:#0000cc;">&gt;</span>
+    <span style="color:#0000cc;">&lt;meta</span> <span style="color:#aa5500;">name</span>=<span style="color:#008000;">"viewport"</span> <span style="color:#aa5500;">content</span>=<span style="color:#008000;">"width=device-width, initial-scale=1.0"</span><span style="color:#0000cc;">&gt;</span>
+    <span style="color:#0000cc;">&lt;title&gt;</span>My First Page<span style="color:#0000cc;">&lt;/title&gt;</span>
+  <span style="color:#0000cc;">&lt;/head&gt;</span>
+  <span style="color:#0000cc;">&lt;body&gt;</span>
+    <span style="color:#0000cc;">&lt;h1&gt;</span>Hello World! 👋<span style="color:#0000cc;">&lt;/h1&gt;</span>
+    <span style="color:#0000cc;">&lt;p&gt;</span>This is my first HTML page.<span style="color:#0000cc;">&lt;/p&gt;</span>
+  <span style="color:#0000cc;">&lt;/body&gt;</span>
+<span style="color:#0000cc;">&lt;/html&gt;</span>
+        </pre>
+      </li>
+      <li>➡️ <strong>Save</strong> the file (<em>Ctrl + S</em>).</li>
+      <li>➡️ <strong>Right-click</strong> on the file in VS Code and select <em>"Open with Live Server"</em>.</li>
+      <li>➡️ Your browser will open and display: <strong>Hello World!</strong></li>
+    </ol>
+
+    <strong style="font-size: 24px; color:#004080;">⚡ Continuous Practice (Live Editing):</strong><br>
+    <ul style="margin-top: 12px;">
+      <li>👉 Try adding this inside <code>&lt;body&gt;</code>:<br>
+        <pre style="background-color:#eef5ff; padding: 15px; border-radius: 8px; margin-top: 6px; font-size: 20px; font-weight:bold; overflow-x:auto;">
+<span style="color:#0000cc;">&lt;h2&gt;</span>My New Heading<span style="color:#0000cc;">&lt;/h2&gt;</span>
+<span style="color:#0000cc;">&lt;p&gt;</span>I just added this text and Live Server showed it instantly!<span style="color:#0000cc;">&lt;/p&gt;</span>
+        </pre>
+      </li>
+      <li>👉 Save the file — check your browser: the new heading and paragraph appear immediately.</li>
+      <li>👉 Keep typing anything (images, lists, links). Every time you <strong>Save</strong>, Live Server refreshes and shows your changes instantly.</li>
+    </ul>
+
+    <strong style="font-size: 24px; color:#004080;">📝 Exercise Section (Hands-On Practice):</strong><br>
+    <ol style="padding-left: 25px; margin-top: 12px;">
+      <li>✍️ Add a <strong>Heading</strong>:<br>
+        <pre style="background-color:#eef5ff; padding: 12px; border-radius: 8px; font-size: 20px; font-weight:bold; overflow-x:auto;">
+<span style="color:#0000cc;">&lt;h2&gt;</span>This is my heading<span style="color:#0000cc;">&lt;/h2&gt;</span>
+        </pre>
+      </li>
+      <li>✍️ Add a <strong>Paragraph</strong>:<br>
+        <pre style="background-color:#eef5ff; padding: 12px; border-radius: 8px; font-size: 20px; font-weight:bold; overflow-x:auto;">
+<span style="color:#0000cc;">&lt;p&gt;</span>This is my custom paragraph written by me.<span style="color:#0000cc;">&lt;/p&gt;</span>
+        </pre>
+      </li>
+      <li>✍️ Add an <strong>Image</strong>:<br>
+        <pre style="background-color:#eef5ff; padding: 12px; border-radius: 8px; font-size: 20px; font-weight:bold; overflow-x:auto;">
+<span style="color:#0000cc;">&lt;img</span> <span style="color:#aa5500;">src</span>=<span style="color:#008000;">"https://via.placeholder.com/200"</span> <span style="color:#aa5500;">alt</span>=<span style="color:#008000;">"My Image"</span><span style="color:#0000cc;">&gt;</span>
+        </pre>
+      </li>
+      <li>✍️ Add a <strong>List</strong>:<br>
+        <pre style="background-color:#eef5ff; padding: 12px; border-radius: 8px; font-size: 20px; font-weight:bold; overflow-x:auto;">
+<span style="color:#0000cc;">&lt;ul&gt;</span>
+  <span style="color:#0000cc;">&lt;li&gt;</span>First Item<span style="color:#0000cc;">&lt;/li&gt;</span>
+  <span style="color:#0000cc;">&lt;li&gt;</span>Second Item<span style="color:#0000cc;">&lt;/li&gt;</span>
+<span style="color:#0000cc;">&lt;/ul&gt;</span>
+        </pre>
+      </li>
+      <li>✍️ Add a <strong>Button</strong>:<br>
+        <pre style="background-color:#eef5ff; padding: 12px; border-radius: 8px; font-size: 20px; font-weight:bold; overflow-x:auto;">
+<span style="color:#0000cc;">&lt;button&gt;</span>Click Me!<span style="color:#0000cc;">&lt;/button&gt;</span>
+        </pre>
+      </li>
+      <li>➡️ Save each step and check your browser — Live Server will instantly show your new changes!</li>
+    </ol>
+
+    <p style="margin-top:15px;">💡 <strong>Tip:</strong> The process is continuous — write something, save, and watch Live Server display it immediately.</p>
+  </div>
+</div><br>
+
+<!-- =============== CSS ADD-ON (Paste before the question) =============== -->
+<div style="font-family: Segoe UI, Arial, sans-serif; background: #f7fbff; color:#1b2a4a; padding: 24px; border: 2px solid #90c2ff; border-radius: 16px; font-size: 20px; line-height: 1.9; box-shadow: 0 6px 16px rgba(0,0,0,0.06); margin: 18px 0;">
+  <div style="display:flex; align-items:center; gap:10px; margin-bottom:10px;">
+    <span style="font-size:30px;">🎨</span>
+    <strong style="font-size:26px; color:#0a58ca;">CSS Quick Add-On: Why & How to Style Your HTML</strong>
+  </div>
+
+  <p style="margin: 6px 0 12px 0;">
+    <b>What CSS does:</b> controls <u>colors</u>, <u>fonts</u>, <u>sizes</u>, <u>spacing</u>, and <u>layout</u> of your HTML elements.
+    Add or edit the rules below, save, and Live Server will show changes instantly ⚡.
+  </p>
+
+  <div style="background:#ffffff; border:2px solid #b9dcff; border-radius:14px; padding:14px; margin-top:10px;">
+    <div style="font-size:18px; margin-bottom:8px;"><b>Paste these CSS rules in your stylesheet (or inside a &lt;style&gt; in &lt;head&gt;):</b></div>
+    <pre style="background:#eef6ff; padding:14px; border-radius:10px; font-size:18px; font-weight:700; overflow:auto; margin:0;">
+/* ===== Base & Typography ===== */
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  padding: 24px;
+  font-family: "Segoe UI", Arial, sans-serif;
+  line-height: 1.85;
+  background: linear-gradient(135deg, #f7fbff, #f2f8ff);
+  color: #1b2a4a;
+}
+
+/* ===== Headings & Text ===== */
+h1 { color: #0a58ca; letter-spacing: .4px; margin-bottom: 8px; }
+h2 { color: #0b3d91; margin: 16px 0 8px; }
+p  { font-size: 18px; }
+
+/* ===== Lists ===== */
+ul { padding-left: 24px; }
+li { margin: 6px 0; }
+
+/* ===== Images ===== */
+img {
+  max-width: 100%;
+  border-radius: 14px;
+  border: 2px solid #b9dcff;
+  box-shadow: 0 6px 14px rgba(13,110,253,.07);
+}
+
+/* ===== Buttons ===== */
+button {
+  padding: 10px 16px;
+  border-radius: 10px;
+  border: 2px solid #0b5ed7;
+  background: #0b5ed7;
+  color: #fff;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform .08s ease, box-shadow .2s ease;
+}
+button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 14px rgba(13,110,253,.2);
+}
+
+/* ===== Utility Classes (attach to any element) ===== */
+.highlight {
+  background: #fff7e6;
+  border: 2px dashed #ffc28b;
+  padding: 10px 12px;
+  border-radius: 12px;
+}
+.muted { color: #6c757d; }
+.card {
+  background:#fff;
+  border:2px solid #b9dcff;
+  border-radius:16px;
+  padding:16px;
+  box-shadow:0 6px 14px rgba(13,110,253,.07);
+}
+
+/* ===== Layout Helpers ===== */
+.grid { display:grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap:14px; }
+.center { display:flex; align-items:center; gap:10px; }
+
+/* ===== Example ID (use for one unique element) ===== */
+#main-title { text-transform: uppercase; font-size: clamp(28px, 4vw, 40px); }
+    </pre>
+  </div>
+
+  <div style="margin-top:12px; background:#fff; border:1px solid #e8f1ff; border-radius:12px; padding:12px;">
+    <b>How to see the difference (no extra HTML needed here):</b>
+    <ol style="margin:10px 0 0 18px;">
+      <li>Save the CSS block above. Your <b>H1</b> will turn blue, paragraphs get nicer spacing, and the page background becomes a soft gradient.</li>
+      <li>Hover the <b>button</b> (if you have one): it slightly lifts with a shadow → proves your hover styles work.</li>
+      <li>Add the class name <code>.highlight</code> or <code>.card</code> to any element in your HTML to give it a highlighted note or a card look.</li>
+      <li>Give your main heading an id (e.g., <code>id="main-title"</code>) to apply the <code>#main-title</code> rule (uppercase + responsive size).</li>
+    </ol>
+  </div>
+
+  <div style="margin-top:12px; background:#fffef5; border:1px dashed #ffe0a6; border-radius:12px; padding:12px;">
+    <b>Mini tasks:</b>
+    <ul style="margin:8px 0 0 18px;">
+      <li>Change <code>h1</code> color to <code>#0b5ed7</code> or any color you like, save, and watch Live Server refresh.</li>
+      <li>Increase <code>button</code> border-radius to <code>16px</code> and test the hover effect.</li>
+      <li>Apply <code>.highlight</code> to a paragraph to make it stand out as a tip.</li>
+    </ul>
+  </div>
+</div>
+<!-- ===================== /CSS ADD-ON ===================== -->
+
+
+<!-- ===== CSS EXPLANATION (Paste directly AFTER the CSS ADD-ON block) ===== -->
+<div style="font-family: Segoe UI, Arial, sans-serif; background: #f7fbff; color:#1b2a4a; padding: 22px; border: 2px solid #90c2ff; border-radius: 16px; font-size: 18px; line-height: 1.85; box-shadow: 0 6px 16px rgba(0,0,0,0.06); margin: 18px 0;">
+  <div style="display:flex; align-items:center; gap:10px; margin-bottom:12px;">
+    <span style="font-size:30px;">🎯</span>
+    <strong style="font-size:24px; color:#0a58ca;">Step-by-step Explanation of the CSS Above</strong>
+  </div>
+
+  <p style="margin:6px 0 14px 0; color:#0b3d91;">
+    Here is a simple and structured explanation of each CSS rule above — the goal is to help trainees understand what every line does and how to make confident changes.
+  </p>
+
+  <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(260px,1fr)); gap:14px;">
+
+    <!-- Card: Base & Typography -->
+    <div style="background:#fff; border:2px solid #b9dcff; border-radius:14px; padding:14px; box-shadow:0 6px 14px rgba(13,110,253,0.07);">
+      <div style="font-size:18px;">🔧 <span style="color:#0b5ed7;">Base & Typography</span></div>
+      <div style="margin-top:8px; font-size:15px; color:#1b2a4a;">
+        <strong>* { box-sizing: border-box; }</strong> — makes width/height include padding and border (easier sizing).<br>
+        <strong>body { ... }</strong> — sets basic margin/padding, default font, line-height, background, and main text color.
+      </div>
+      <div style="margin-top:10px; font-size:14px; background:#eef6ff; padding:8px 10px; border-radius:8px;">
+        Practical effect: A clean readable page with comfortable spacing and soft background.
+      </div>
+    </div>
+
+    <!-- Card: Headings & Text -->
+    <div style="background:#fff; border:2px solid #b9dcff; border-radius:14px; padding:14px; box-shadow:0 6px 14px rgba(13,110,253,0.07);">
+      <div style="font-size:18px;">✍️ <span style="color:#0b5ed7;">Headings & Text</span></div>
+      <div style="margin-top:8px; font-size:15px; color:#1b2a4a;">
+        <strong>h1, h2</strong> — stronger colors and spacing for headings. <br>
+        <strong>p { font-size: 18px; }</strong> — readable paragraph size across devices.
+      </div>
+      <div style="margin-top:10px; font-size:14px; background:#eef6ff; padding:8px 10px; border-radius:8px;">
+        Tip: Use only one H1 per page for SEO and accessibility.
+      </div>
+    </div>
+
+    <!-- Card: Lists -->
+    <div style="background:#fff; border:2px solid #b9dcff; border-radius:14px; padding:14px; box-shadow:0 6px 14px rgba(13,110,253,0.07);">
+      <div style="font-size:18px;">📋 <span style="color:#0b5ed7;">Lists</span></div>
+      <div style="margin-top:8px; font-size:15px; color:#1b2a4a;">
+        <strong>ul { padding-left: 24px; }</strong> — adds left spacing for list items. <br>
+        <strong>li { margin: 6px 0; }</strong> — vertical spacing between list elements for readability.
+      </div>
+    </div>
+
+    <!-- Card: Images -->
+    <div style="background:#fff; border:2px solid #b9dcff; border-radius:14px; padding:14px; box-shadow:0 6px 14px rgba(13,110,253,0.07);">
+      <div style="font-size:18px;">🖼️ <span style="color:#0b5ed7;">Images</span></div>
+      <div style="margin-top:8px; font-size:15px; color:#1b2a4a;">
+        <strong>max-width:100%;</strong> — makes images responsive (won’t overflow).<br>
+        <strong>border-radius, border, box-shadow</strong> — give images a smooth, neat look.
+      </div>
+    </div>
+
+    <!-- Card: Buttons -->
+    <div style="background:#fff; border:2px solid #b9dcff; border-radius:14px; padding:14px; box-shadow:0 6px 14px rgba(13,110,253,0.07);">
+      <div style="font-size:18px;">🔘 <span style="color:#0b5ed7;">Buttons</span></div>
+      <div style="margin-top:8px; font-size:15px; color:#1b2a4a;">
+        Key properties: <strong>padding</strong> (inner spacing), <strong>border-radius</strong> (rounded corners), <strong>background</strong> & <strong>color</strong> (contrast), and <strong>transition</strong> for smooth hover effects.  
+        On <em>:hover</em>, the button moves slightly up (-1px) and shadow increases → nice lifted effect.
+      </div>
+    </div>
+
+    <!-- Card: Utility Classes -->
+    <div style="background:#fff; border:2px solid #b9dcff; border-radius:14px; padding:14px; box-shadow:0 6px 14px rgba(13,110,253,0.07);">
+      <div style="font-size:18px;">🧩 <span style="color:#0b5ed7;">Utility Classes</span></div>
+      <div style="margin-top:8px; font-size:15px; color:#1b2a4a;">
+        <strong>.highlight</strong> — special box for notes. <br>
+        <strong>.muted</strong> — gray text for secondary info. <br>
+        <strong>.card</strong> — white box with border & shadow, used to group content.
+      </div>
+    </div>
+
+    <!-- Card: Layout Helpers -->
+    <div style="background:#fff; border:2px solid #b9dcff; border-radius:14px; padding:14px; box-shadow:0 6px 14px rgba(13,110,253,0.07);">
+      <div style="font-size:18px;">📐 <span style="color:#0b5ed7;">Layout Helpers</span></div>
+      <div style="margin-top:8px; font-size:15px; color:#1b2a4a;">
+        <strong>.grid</strong> uses CSS Grid with <code>repeat(auto-fit, minmax(260px, 1fr))</code> → responsive columns that adapt to screen size.<br>
+        <strong>.center</strong> uses Flexbox for horizontal alignment & spacing.
+      </div>
+    </div>
+
+    <!-- Card: Example ID -->
+    <div style="background:#fff; border:2px solid #b9dcff; border-radius:14px; padding:14px; box-shadow:0 6px 14px rgba(13,110,253,0.07);">
+      <div style="font-size:18px;">🏷️ <span style="color:#0b5ed7;">#main-title</span></div>
+      <div style="margin-top:8px; font-size:15px; color:#1b2a4a;">
+        <strong>text-transform: uppercase;</strong> turns the title into all-caps. <br>
+        <strong>font-size: clamp(28px, 4vw, 40px);</strong> — responsive font size: minimum 28px, scales with viewport, max 40px.
+      </div>
+    </div>
+
+  </div> <!-- end grid -->
+
+  <div style="margin-top:14px; background:#fff; border:1px solid #e8f1ff; border-radius:12px; padding:12px;">
+    <b style="color:#0a58ca;">Pro Tips for Improvement:</b>
+    <ul style="margin:8px 0 0 18px;">
+      <li><strong>Accessibility:</strong> Add <code>:focus-visible</code> to buttons/links for keyboard navigation.</li>
+      <li><strong>Reduced motion:</strong> Respect <code>prefers-reduced-motion</code> for users sensitive to animation.</li>
+      <li><strong>Units:</strong> Prefer <code>rem</code> for scalable sizes instead of <code>px</code> in key places.</li>
+      <li><strong>Browser support:</strong> <code>clamp()</code> works in modern browsers; provide fallbacks for older ones if needed.</li>
+    </ul>
+  </div>
+
+  <div style="margin-top:12px; background:#fffef5; border:1px dashed #ffe0a6; border-radius:12px; padding:12px;">
+    <b style="color:#b34d00;">Quick Example: Applying the Classes in HTML</b>
+    <pre style="background:#eef6ff; padding:12px; border-radius:8px; font-weight:700; overflow:auto; margin-top:8px; font-size:15px;">
+&lt;h1 id="main-title"&gt;Welcome to My Page&lt;/h1&gt;
+
+&lt;div class="card"&gt;
+  &lt;h2&gt;Card Title&lt;/h2&gt;
+  &lt;p class="muted"&gt;A short muted description.&lt;/p&gt;
+  &lt;button&gt;Click me&lt;/button&gt;
+&lt;/div&gt;
+
+&lt;p class="highlight"&gt;Tip: Use .highlight for important notes.&lt;/p&gt;
+    </pre>
+  </div>
+
+  <div style="margin-top:12px; background:#fff; border:1px solid #e8f1ff; border-radius:12px; padding:12px;">
+    <b>Quick Tasks for Practice:</b>
+    <ol style="margin:8px 0 0 18px;">
+      <li>Change the <code>h1</code> color to <code>#0b5ed7</code> and save — watch the update.</li>
+      <li>Add <code>border-radius:16px</code> to <code>button</code> and test the hover effect.</li>
+      <li>Apply <code>.highlight</code> to a paragraph to test the note-box style.</li>
+    </ol>
+  </div>
+</div>
+<!-- ===================== /CSS EXPLANATION ===================== -->
+
+
+
+
+<!-- ===================== JAVASCRIPT EXPLANATION ===================== -->
+<div style="font-family: Segoe UI, Arial, sans-serif; background: #fff9f9; color:#1b2a4a; padding: 20px; border: 2px solid #ffb3b3; border-radius: 16px; font-size: 18px; line-height: 1.85; margin: 20px 0;">
+  
+  <h2 style="color:#d63333;">⚡ JavaScript Interaction</h2>
+  <p style="color:#8b0000;">This explains how JavaScript adds <b>behavior</b> to the page, not just style.</p>
+
+  <!-- Grid of cards -->
+  <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(240px,1fr)); gap:14px;">
+
+    <!-- Function -->
+    <div style="background:#fff; border:2px solid #ffcccc; border-radius:12px; padding:12px;">
+      <b>🛠 Function</b><br>
+      <code>function toggleFullScreen()</code><br>
+      A reusable function that checks:<br>
+      - If not fullscreen → enter fullscreen.<br>
+      - If already fullscreen → exit fullscreen.<br>
+      <hr>
+      <small>Effect: one function to control screen state.</small>
+    </div>
+
+    <!-- Event Listener -->
+    <div style="background:#fff; border:2px solid #ffcccc; border-radius:12px; padding:12px;">
+      <b>🖱 Event Listener</b><br>
+      <code>element.addEventListener("click", ...)</code><br>
+      Listens for clicks on the page or a button.<br>
+      When clicked → calls the <code>toggleFullScreen()</code> function.<br>
+      <hr>
+      <small>Effect: makes the page interactive.</small>
+    </div>
+
+    <!-- API -->
+    <div style="background:#fff; border:2px solid #ffcccc; border-radius:12px; padding:12px;">
+      <b>🌐 Fullscreen API</b><br>
+      <code>requestFullscreen()</code> enters fullscreen.<br>
+      <code>exitFullscreen()</code> exits fullscreen.<br>
+      <hr>
+      <small>Effect: control over browser display.</small>
+    </div>
+  </div>
+
+  <!-- Example -->
+  <div style="margin-top:15px; background:#fffef5; border:1px dashed #ffb84d; border-radius:12px; padding:12px;">
+    <b>Quick Example:</b><br>
+    <pre style="background:#ffeeee; padding:10px; border-radius:8px; overflow:auto;">
+&lt;script&gt;
+  function toggleFullScreen() {
+    if (!document.fullscreenElement) {
+      document.documentElement.requestFullscreen();
+    } else {
+      document.exitFullscreen();
+    }
+  }
+
+  document.body.addEventListener("click", toggleFullScreen);
+&lt;/script&gt;
+    </pre>
+    <small>👉 Click anywhere on the page → toggles fullscreen mode.</small>
+  </div>
+
+</div>
+<!-- ===================== /JAVASCRIPT EXPLANATION ===================== -->
+
+
+
+
+<b style="font-size: 19px; color:#cc0000;">Note:</b> <span style="color:#000;">Always save your file as <code>.html</code>, not <code>.txt</code>. Use <em>UTF-8</em> encoding to avoid issues with special characters.</span>`,
+
+  q: "Which sequence correctly creates and displays a simple HTML page styled with CSS using VS Code and Live Server?",
+  a: "b",
+  options: [
+    "Write only CSS code, save it as .exe, and run it",
+    "Create index.html with HTML structure, create style.css with CSS, link them, save both files, and open index.html with Live Server",
+    "Disable JavaScript in the browser so HTML+CSS runs",
+    "Delete the browser and restart the computer"
+  ]
+},
+
+
+
+
+
+];
+
+    
+const questions = [
+  
+// 🔹 HTML Questions
+{
+  q: "2. Which HTML tag is used to insert a line break?",
+  a: "c",
+  options: [
+    "&lt;hr&gt;",
+    "&lt;p&gt;",
+    "&lt;br&gt;",
+    "&lt;break&gt;"
+  ]
+},
+{
+  q: "3. In HTML, which attribute is used to open a link in a new tab?",
+  a: "b",
+  options: [
+    "src='_blank'",
+    "target='_blank'",
+    "newTab='true'",
+    "open='tab'"
+  ]
+},
+{
+  q: "4. Which HTML tag is used to create a dropdown list?",
+  a: "a",
+  options: [
+    "&lt;select&gt;",
+    "&lt;list&gt;",
+    "&lt;dropdown&gt;",
+    "&lt;input type='list'&gt;"
+  ]
+},
+{
+  q: "5. Which HTML tag is used to display a table row?",
+  a: "d",
+  options: [
+    "&lt;td&gt;",
+    "&lt;table&gt;",
+    "&lt;th&gt;",
+    "&lt;tr&gt;"
+  ]
+},
+{
+  q: "6. In HTML, which element is used to display an unordered list?",
+  a: "c",
+  options: [
+    "&lt;ol&gt;",
+    "&lt;dl&gt;",
+    "&lt;ul&gt;",
+    "&lt;li&gt;"
+  ]
+},
+{
+  q: "7. Which attribute in HTML is used to provide a tooltip when hovering?",
+  a: "a",
+  options: [
+    "title",
+    "alt",
+    "tooltip",
+    "hover"
+  ]
+},
+
+// 🔹 CSS Questions
+{
+  q: "8. Which CSS property is used to change the text color?",
+  a: "b",
+  options: [
+    "font-color",
+    "color",
+    "text-style",
+    "font-style"
+  ]
+},
+{
+  q: "9. In CSS, which property sets the space outside an element’s border?",
+  a: "a",
+  options: [
+    "margin",
+    "padding",
+    "border-spacing",
+    "gap"
+  ]
+},
+{
+  q: "10. Which CSS property is used to make text italic?",
+  a: "c",
+  options: [
+    "font-italic",
+    "text-slant",
+    "font-style: italic",
+    "text-italic"
+  ]
+},
+{
+  q: "11. In CSS, which property sets the width of an element?",
+  a: "d",
+  options: [
+    "length",
+    "size",
+    "max-width",
+    "width"
+  ]
+},
+{
+  q: "12. Which CSS property is used to add shadow to text?",
+  a: "a",
+  options: [
+    "text-shadow",
+    "font-shadow",
+    "shadow-text",
+    "letter-shadow"
+  ]
+},
+{
+  q: "13. Which CSS property is used to make a background image repeat?",
+  a: "c",
+  options: [
+    "background-repeat: off",
+    "repeat-image",
+    "background-repeat",
+    "bg-repeat"
+  ]
+},
+
+// 🔹 JavaScript Questions
+{
+  q: "14. In JavaScript, which function is used to parse a string into an integer?",
+  a: "a",
+  options: [
+    "parseInt()",
+    "int()",
+    "stringToInt()",
+    "Number.parse()"
+  ]
+},
+{
+  q: "15. Which JavaScript method displays data in an alert box?",
+  a: "b",
+  options: [
+    "prompt()",
+    "alert()",
+    "console.log()",
+    "msgBox()"
+  ]
+},
+{
+  q: "16. In JavaScript, which symbol is used for comments in a single line?",
+  a: "c",
+  options: [
+    "<!-- -->",
+    "#",
+    "//",
+    "/* */"
+  ]
+},
+{
+  q: "17. Which built-in method is used to join all elements of an array into a string?",
+  a: "d",
+  options: [
+    "concat()",
+    "merge()",
+    "combine()",
+    "join()"
+  ]
+},
+{
+  q: "18. Which keyword is used to define a constant variable in JavaScript?",
+  a: "b",
+  options: [
+    "let",
+    "const",
+    "constant",
+    "var"
+  ]
+},
+{
+  q: "19. In JavaScript, which method removes the last element of an array?",
+  a: "a",
+  options: [
+    "pop()",
+    "remove()",
+    "delete()",
+    "shift()"
+  ]
+},
+{
+  q: "20. Which operator is used to assign a value to a variable in JavaScript?",
+  a: "c",
+  options: [
+    "==",
+    "===",
+    "=",
+    ":="
+  ]
+},
+{
+  q: "21. Which function in JavaScript is used to ask for user input?",
+  a: "d",
+  options: [
+    "alert()",
+    "msg()",
+    "console.log()",
+    "prompt()"
+  ]
+},
+
+
+
+];
+
+
+
+    
+        let currentTFQuestion = 0;
+        let tfCorrectAnswers = 0;
+        let currentQuestion = 0;
+        let correctAnswers = 0;
+        let timeLeft = 3600;
+        let timerInterval;
+        let startTime;
+    
+        function startQuiz() {
+    let name = document.getElementById("traineeName").value.trim();
+    let phone = document.getElementById("traineePhone").value.trim();
+    let password = document.getElementById("password").value;
+    let course = document.getElementById("courseName").value.trim(); // 🆕 قراءة اسم الكورس
+    let quizTitle = document.getElementById("quizTitle"); // 🆕 العنوان اللي هيتغير
+
+    if (!name) {
+        alert("❗ برجاء إدخال الاسم.");
+        return;
+    }
+
+    if (!phone) {
+        alert("❗ برجاء إدخال رقم التليفون.");
+        return;
+    }
+
+    if (password !== "1550") {
+        alert("❌ كلمة المرور غير صحيحة! الرجاء المحاولة مرة أخرى.");
+        return;
+    }
+
+    // 🆕 تغيير العنوان بناءً على اسم الكورس
+    quizTitle.textContent = course || "Placement Test";
+
+    document.getElementById("startScreen").style.display = "none";
+    document.getElementById("quizContainer").style.display = "block";
+    startTime = new Date();
+    startTimer();
+    loadTFQuestion();
+
+    // تشغيل وضع ملء الشاشة
+    let elem = document.documentElement;
+    if (elem.requestFullscreen) {
+        elem.requestFullscreen();
+    } else if (elem.mozRequestFullScreen) {
+        elem.mozRequestFullScreen();
+    } else if (elem.webkitRequestFullscreen) {
+        elem.webkitRequestFullscreen();
+    } else if (elem.msRequestFullscreen) {
+        elem.msRequestFullscreen();
+    }
+}
+
+
+
+    
+        function startTimer() {
+            timerInterval = setInterval(() => {
+                let minutes = Math.floor(timeLeft / 60);
+                let seconds = timeLeft % 60;
+                document.getElementById("timer").innerText = `Time Remaining: ${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+                if (timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    showResult();
+                }
+                timeLeft--;
+            }, 1000);
+        }
+    
+      function loadTFQuestion() {
+    let quizDiv = document.getElementById("quiz");
+    let passageDiv = document.getElementById("passage");
+
+    if (currentTFQuestion < trueFalseQuestions.length) {
+        let q = trueFalseQuestions[currentTFQuestion];
+
+        // عرض المقطع
+        passageDiv.innerHTML = `
+            <h3></h3>
+            <p style="font-size: 22px;">${q.passage}</p>
+        `;
+
+        // عرض السؤال والاختيارات
+        let questionHTML = `<p class='question'><strong>${currentTFQuestion + 1}- ${q.q}</strong></p>`;
+
+        q.options.forEach((option, index) => {
+    const letter = String.fromCharCode(97 + index); // "a", "b", ...
+    questionHTML += `
+        <label>
+            <input type='radio' name='answer' value='${letter}'>
+            ${option}
+        </label><br>
+    `;
+});
+
+        questionHTML += `<button class='btn' onclick='nextTFQuestion()'>Next</button>`;
+        quizDiv.innerHTML = questionHTML;
+    } else {
+        // الانتهاء من عرض كل الأسئلة
+        document.getElementById("passage").style.display = "none";
+        quizDiv.innerHTML = "<p>You've finished all reading questions.</p>";
+        loadQuestion(); // لو فيه مرحلة تانية
+    }
+}
+
+    
+  function nextTFQuestion() {
+  const selectedAnswer = document.querySelector("input[name='answer']:checked");
+  if (!selectedAnswer) {
+    alert("Please select an answer");
+    return;
+  }
+
+  const q = trueFalseQuestions[currentTFQuestion];
+  const selectedValue = selectedAnswer.value;
+
+  const isAnswerKeyALetter = q.a.length === 1 && ["a", "b", "c", "d"].includes(q.a.toLowerCase());
+
+  if (isAnswerKeyALetter) {
+    if (selectedValue === q.a.toLowerCase()) {
+      tfCorrectAnswers++; // ✅ صحح هنا بدل score
+    }
+  } else {
+    const selectedOptionIndex = selectedValue.charCodeAt(0) - 97;
+    const selectedOptionText = q.options[selectedOptionIndex];
+
+    if (selectedOptionText.trim().toLowerCase() === q.a.trim().toLowerCase()) {
+      tfCorrectAnswers++; // ✅ صحح هنا بدل score
+    }
+  }
+
+  currentTFQuestion++;
+  loadTFQuestion();
+}
+
+
+
+        function loadQuestion() {
+            let quizDiv = document.getElementById("quiz");
+            let q = questions[currentQuestion];
+            quizDiv.innerHTML = `<p class='question'>${q.q}</p>` +
+                q.options.map((option, index) => `<label><input type='radio' name='answer' value='${String.fromCharCode(97 + index)}'> ${option}</label>`).join('') +
+                `<button class='btn' onclick='nextQuestion()'>${currentQuestion === questions.length - 1 ? "Finish" : "Next"}</button>`;
+        }
+    
+        function nextQuestion() {
+            let selectedAnswer = document.querySelector("input[name='answer']:checked");
+            if (!selectedAnswer) return;
+            if (selectedAnswer.value === questions[currentQuestion].a) {
+                correctAnswers++;
+            }
+            if (currentQuestion < questions.length - 1) {
+                currentQuestion++;
+                loadQuestion();
+            } else {
+                showResult();
+            }
+        }
+    
+let serverUrl = ""; // سيتم تحديثه تلقائيًا عند تحميل الصفحة
+
+// دالة لجلب رابط السيرفر المخزن في GitHub
+function fetchServerUrl() {
+fetch("https://raw.githubusercontent.com/etiqotwf/liveServer1/main/serverUrl.json")
+        .then(response => response.json())
+        .then(data => {
+            if (data.serverUrl) {
+                serverUrl = data.serverUrl;
+                console.log("✅ رابط السيرفر المحدث من GitHub:", serverUrl);
+            } else {
+                console.error("❌ لم يتم العثور على رابط السيرفر في المستودع.");
+                retryFetchServerUrl();
+            }
+        })
+        .catch(error => {
+            console.error("❌ خطأ في جلب رابط السيرفر من GitHub:", error);
+            retryFetchServerUrl();
+        });
+}
+
+// دالة لإعادة المحاولة عند الفشل
+function retryFetchServerUrl() {
+    if (retryCount < MAX_RETRIES) {
+        retryCount++;
+        console.log(`🔄 إعادة المحاولة (${retryCount}/${MAX_RETRIES}) بعد 3 ثوانٍ...`);
+        setTimeout(fetchServerUrl, 3000);
+    } else {
+        console.error("⛔ تم الوصول إلى الحد الأقصى من المحاولات، تعذر جلب رابط السيرفر.");
+    }
+}
+
+// تحميل رابط السيرفر عند فتح الصفحة
+fetchServerUrl();
+
+function showResult() {
+    clearInterval(timerInterval);
+
+    let endTime = new Date();
+    let timeTaken = Math.floor((endTime - startTime) / 1000);
+    let minutesTaken = Math.floor(timeTaken / 60);
+    let secondsTaken = timeTaken % 60;
+
+    let name = document.getElementById("traineeName").value || "Unknown";
+    let phone = document.getElementById("traineePhone").value || "Unknown";
+    let date = new Date().toLocaleDateString("en-US");
+    let course = document.getElementById("courseName").value || "Unknown";
+
+    let totalQuestions = trueFalseQuestions.length + questions.length;
+    let totalCorrectAnswers = tfCorrectAnswers + correctAnswers;
+
+    let resultData = {
+        name: name,
+        phone: phone,
+        date: date,
+        course: course,
+        startTime: startTime.toLocaleString("en-GB", {
+            timeZone: "Africa/Cairo",
+            year: "numeric",
+            month: "long",
+            day: "numeric",
+            hour: "numeric",
+            minute: "numeric",
+            second: "numeric",
+            hour12: true
+        }),
+        timeTaken: `${minutesTaken} min ${secondsTaken} sec`,
+        score: `${totalCorrectAnswers} / ${totalQuestions}`
+    };
+
+    // إرسال البيانات إلى السيرفر إذا تم تحميل الرابط
+    if (!serverUrl) {
+        console.log("⏳ انتظار تحميل رابط السيرفر...");
+        fetchServerUrl().then(() => {
+            if (serverUrl) {
+                sendDataToServer(resultData);
+            } else {
+                console.error("❌ لم يتم تحميل رابط السيرفر بعد.");
+                alert("⚠️ تعذر إرسال البيانات! تأكد من اتصال الإنترنت وأعد المحاولة.");
+            }
+        });
+    } else {
+        sendDataToServer(resultData);
+    }
+
+    // إرسال البيانات إلى Google Sheets
+    sendDataToGoogleSheet(resultData);
+
+    // تحديث واجهة المستخدم
+    document.getElementById("resultCourse").innerText = course;
+    document.getElementById("resultName").innerText = name;
+    document.getElementById("resultPhone").innerText = phone;
+    document.getElementById("resultDate").innerText = date;
+    document.getElementById("resultStartTime").innerText = startTime.toLocaleTimeString();
+    document.getElementById("resultTime").innerText = `${minutesTaken} min ${secondsTaken} sec`;
+    document.getElementById("resultScore").innerText = `${totalCorrectAnswers} / ${totalQuestions}`;
+
+    document.getElementById("quizContainer").style.display = "none";
+    document.getElementById("resultScreen").style.display = "block";
+}
+
+// إرسال البيانات إلى السيرفر الأساسي
+function sendDataToServer(resultData) {
+    fetch(`${serverUrl}/submit`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(resultData)
+    })
+    .then(response => response.json())
+    .then(data => console.log("✅ تم الإرسال إلى السيرفر بنجاح:", data))
+    .catch(error => console.error("❌ خطأ أثناء الإرسال إلى السيرفر:", error));
+}
+
+
+
+
+
+function sendDataToGoogleSheet(resultData) {
+    const formData = new URLSearchParams();
+    formData.append("course", resultData.course);
+    formData.append("name", resultData.name);
+    formData.append("phone", resultData.phone);
+    formData.append("date", resultData.date);
+    formData.append("startTime", resultData.startTime);
+    formData.append("timeTaken", resultData.timeTaken);
+    formData.append("score", resultData.score);
+    formData.append("course", resultData.course);
+
+
+    fetch("https://script.google.com/macros/s/AKfycbxEYf2XYk1MT_yp_R9cMrw7xaWifGrN8D17woiDRoMxE05T4xZFQxVihdhP22TcPBypkQ/exec", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+        },
+        body: formData.toString(),
+    })
+    .then(response => response.text())
+    .then(responseText => {
+        console.log("✅ تم الإرسال إلى Google Sheet:", responseText);
+    })
+    .catch(error => {
+        console.error("❌ خطأ في الإرسال إلى Google Sheet:", error);
+    });
+}
+
+
+
+
+    </script>
+    </body>
+</html>

@@ -1,0 +1,788 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reading Comprehension Quiz</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            background: #1e1e2e;
+            color: white;
+        }
+        .container {
+            width: 95%;
+            max-width: 1200px;
+            background: #282a36;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.5);
+            text-align: left;
+        }
+        .question {
+            font-weight: bold;
+            font-size: 30px;
+            margin-bottom: 20px;
+        }
+        .options label {
+            display: block;
+            padding: 10px;
+        }
+        .btn {
+            background: #ff5555;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            cursor: pointer;
+            border-radius: 5px;
+            margin-top: 20px;
+            font-size: 18px;
+            display: block;
+        }
+        .btn:hover {
+            background: #ff79c6;
+        }
+
+        .result-screen {
+    display: none;
+    background: #44475a;
+    padding: 30px;
+    border-radius: 10px;
+    text-align: center;
+    width: 100%;
+  }
+
+  #resultScore {
+    font-size: 36px;
+    font-weight: bold;
+    color: #ffffff;
+    margin-top: 20px;
+  }
+
+  .result-screen p {
+    font-size: 20px;
+    font-weight: bold;
+    color: #f8f8f2;
+  }
+
+        #timer {
+            font-size: 22px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+      
+        .author {
+    font-size: 12px;
+    color: #bbb;
+    text-align: center;
+    position: absolute;
+    top: 10px;
+    width: 100%;
+    font-weight: bold;
+}
+
+
+
+label {
+  font-size: 22px; /* حجم نص الاختيار */
+  padding: 10px;
+  display: block;
+}
+
+input[type="radio"] {
+  transform: scale(1.5); /* تكبير حجم الدائرة */
+  margin-right: 10px;
+}
+
+
+  #passage {
+    font-size: 16px;     /* حجم الخط */
+    font-weight: bold;   /* خط عريض */
+  }
+
+
+
+  
+
+    </style>
+</head>
+<body>
+    <div class="container" id="startScreen">
+        <h1>📘 Tanta Drainage Training Center
+
+</h1>
+        <h2>Computer  Test</h2>
+        <p>Enter Course Name: <input type="text" id="courseName"></p>
+        <p>Enter Your Name: <input type="text" id="traineeName"></p>
+        <p>Enter Your Phone Number: <input type="text" id="traineePhone"></p>
+        <p>Enter Password: <input type="password" id="password"></p>
+        <button class="btn" onclick="startQuiz()">Start Quiz</button>
+    </div>
+
+    <div class="container" id="quizContainer" style="display: none;">
+        <h2 id="quizTitle">Reading Comprehension Quiz</h2>
+        <p class="author">Created by: Ahmed Amer</p>
+        <p>Date: <span id="date"></span></p>
+        <p id="timer">Time Remaining: 30:00</p>
+        <div id="passage">
+                        <h3>Read the following passage carefully and answer the questions:</h3>
+  <p>
+    <strong>The Importance of Microsoft PowerPoint</strong><br>
+    Microsoft PowerPoint is a presentation software developed by Microsoft. 
+    It allows users to create dynamic slideshows using text, images, charts, animations, and videos. 
+    PowerPoint is widely used in education, business, and public speaking. 
+    With features like transitions, slide designs, and templates, it helps presenters deliver their messages clearly and professionally. 
+    The program also supports collaboration and real-time editing through OneDrive. 
+    Whether you're preparing a school report or a business pitch, PowerPoint makes communication more engaging and effective.
+  </p>
+                        </div>
+        <div id="quiz"></div>
+    </div>
+    
+    <div class="result-screen" id="resultScreen" style="display: none;">
+        <h2>Test Result</h2>
+        <p class="author">Created by: Ahmed Amer</p>
+        <p><strong>Course Name:</strong> <span id="resultCourse"></span></p>
+        <p><strong>Name:</strong> <span id="resultName"></span></p>
+        <p><strong>Phone Number:</strong> <span id="resultPhone"></span></p>
+        <p><strong>Test Date:</strong> <span id="resultDate"></span></p>
+        <p><strong>Start Time:</strong> <span id="resultStartTime"></span></p>
+        <p><strong>Time Taken:</strong> <span id="resultTime"></span></p>
+        <p><strong>Score:</strong> <span id="resultScore"></span></p>
+    </div>
+
+
+ 
+
+ 
+
+  </div>
+<div style="
+  position: fixed;
+  top: 40px;
+  right: 40px;
+  font-size: 50px;
+  font-weight: bold;
+  color: #ffd700;
+">
+  ✏️ 
+</div>
+
+
+<script>
+    // عند الضغط على أي مكان في الصفحة، أدخل وضع ملء الشاشة
+    document.addEventListener("click", () => {
+      const elem = document.documentElement; // أو document.getElementById("myForm")
+      if (document.fullscreenElement) return; // لا تفعل شيء إذا كنا بالفعل في ملء الشاشة
+
+      if (elem.requestFullscreen) {
+        elem.requestFullscreen();
+      } else if (elem.webkitRequestFullscreen) { /* Safari */
+        elem.webkitRequestFullscreen();
+      } else if (elem.msRequestFullscreen) { /* IE11 */
+        elem.msRequestFullscreen();
+      }
+    });
+  </script>
+
+    
+    <script>
+        document.getElementById("date").innerText = new Date().toLocaleDateString("en-US");
+    
+   const trueFalseQuestions = [
+  { q: "PowerPoint is a program used to create spreadsheets.", a: "false" },
+  { q: "Slides in PowerPoint can contain text, images, and videos.", a: "true" },
+  { q: "You cannot apply transitions between slides in PowerPoint.", a: "false" },
+  { q: "PowerPoint is commonly used in schools and companies.", a: "true" },
+  { q: "Each slide in PowerPoint is called a sheet.", a: "false" },
+  { q: "Animations in PowerPoint can be applied to text and objects.", a: "true" },
+  { q: "You cannot insert charts in PowerPoint.", a: "false" },
+  { q: "PowerPoint allows adding background music to presentations.", a: "true" },
+  { q: "The default file extension of PowerPoint is .pptx.", a: "true" },
+  { q: "PowerPoint can only be used offline.", a: "false" },
+  { q: "Slide Master is used to control the layout of all slides.", a: "true" },
+  { q: "PowerPoint does not support printing handouts.", a: "false" },
+  { q: "You can present slides using the Slide Show tab.", a: "true" },
+  { q: "Transitions and Animations are the same feature in PowerPoint.", a: "false" },
+  { q: "You can add comments to slides in PowerPoint.", a: "true" },
+  { q: "SmartArt cannot be used in PowerPoint slides.", a: "false" },
+  { q: "Design Ideas is a tool that suggests layouts in PowerPoint.", a: "true" },
+  { q: "PowerPoint does not support hyperlinks.", a: "false" },
+  { q: "Zoom feature allows creating interactive navigation between slides.", a: "true" },
+  { q: "You can insert videos from YouTube into PowerPoint.", a: "true" }
+];
+
+    
+const questions = [
+  {
+    q: "What is the main purpose of Microsoft PowerPoint?",
+    a: "b",
+    options: [
+      "Editing audio files",
+      "Creating presentations",
+      "Calculating data",
+      "Browsing the internet"
+    ]
+  },
+  {
+    q: "Which file extension is used by default in PowerPoint 2016 and later?",
+    a: "c",
+    options: [
+      ".docx",
+      ".xls",
+      ".pptx",
+      ".pdf"
+    ]
+  },
+  {
+    q: "Which tab would you use to insert a new slide?",
+    a: "a",
+    options: [
+      "Home",
+      "Insert",
+      "Design",
+      "Slide Show"
+    ]
+  },
+  {
+    q: "What is the function of Slide Master?",
+    a: "d",
+    options: [
+      "To insert charts",
+      "To run the slideshow",
+      "To print slides",
+      "To control overall slide layout"
+    ]
+  },
+  {
+    q: "Which feature adds movement to text or objects?",
+    a: "c",
+    options: [
+      "Slide Show",
+      "Transitions",
+      "Animations",
+      "Design"
+    ]
+  },
+  {
+    q: "Which tab allows you to apply slide transitions?",
+    a: "b",
+    options: [
+      "Insert",
+      "Transitions",
+      "Animations",
+      "View"
+    ]
+  },
+  {
+    q: "What is the shortcut to start a slideshow from the beginning?",
+    a: "a",
+    options: [
+      "F5",
+      "Ctrl + N",
+      "Alt + Enter",
+      "Shift + P"
+    ]
+  },
+  {
+    q: "What does the 'Rehearse Timings' feature do?",
+    a: "c",
+    options: [
+      "Edits slide content",
+      "Checks spelling",
+      "Records the time for each slide",
+      "Zooms in on slides"
+    ]
+  },
+  {
+    q: "Which object can be inserted into a PowerPoint slide?",
+    a: "d",
+    options: [
+      "Video",
+      "Chart",
+      "Table",
+      "All of the above"
+    ]
+  },
+  {
+    q: "To make your slide content appear one by one, which feature is used?",
+    a: "c",
+    options: [
+      "Slide Show",
+      "Design",
+      "Animation",
+      "Zoom"
+    ]
+  },
+  {
+    q: "Which view is best for reordering slides?",
+    a: "b",
+    options: [
+      "Normal View",
+      "Slide Sorter View",
+      "Reading View",
+      "Outline View"
+    ]
+  },
+  {
+    q: "Which button is used to create a new presentation?",
+    a: "a",
+    options: [
+      "File > New",
+      "Insert > New",
+      "Home > Slide",
+      "View > Create"
+    ]
+  },
+  {
+    q: "What does the Design Ideas feature do?",
+    a: "c",
+    options: [
+      "Adds animations",
+      "Checks grammar",
+      "Suggests layout for slides",
+      "Adds charts"
+    ]
+  },
+  {
+    q: "Which tab allows you to insert audio?",
+    a: "b",
+    options: [
+      "Home",
+      "Insert",
+      "Design",
+      "View"
+    ]
+  },
+  {
+    q: "You want to link a slide to a web page. What feature do you use?",
+    a: "d",
+    options: [
+      "Zoom",
+      "Design",
+      "Review",
+      "Hyperlink"
+    ]
+  },
+  {
+    q: "To change the layout of a slide, you go to:",
+    a: "a",
+    options: [
+      "Home > Layout",
+      "Design > Layout",
+      "Insert > Layout",
+      "Slide Show > Layout"
+    ]
+  },
+  {
+    q: "What does Slide Show tab allow you to do?",
+    a: "b",
+    options: [
+      "Insert images",
+      "Start the presentation",
+      "Change font",
+      "Adjust margins"
+    ]
+  },
+  {
+    q: "Where can you set the slide size (e.g., widescreen or standard)?",
+    a: "c",
+    options: [
+      "Home",
+      "Slide Show",
+      "Design",
+      "View"
+    ]
+  },
+  {
+    q: "What is SmartArt used for?",
+    a: "d",
+    options: [
+      "Spell check",
+      "Video editing",
+      "Background formatting",
+      "Visual diagrams and charts"
+    ]
+  },
+  {
+    q: "Which of these is a view mode in PowerPoint?",
+    a: "a",
+    options: [
+      "Reading View",
+      "Document View",
+      "Spreadsheet View",
+      "Browser View"
+    ]
+  },
+  {
+    q: "Which feature allows non-linear navigation between slides?",
+    a: "c",
+    options: [
+      "Transitions",
+      "Master View",
+      "Zoom",
+      "Animation"
+    ]
+  },
+  {
+    q: "You can protect a presentation with a password from which menu?",
+    a: "b",
+    options: [
+      "Insert",
+      "File",
+      "Review",
+      "View"
+    ]
+  },
+  {
+    q: "To duplicate a slide, you can:",
+    a: "a",
+    options: [
+      "Right-click > Duplicate Slide",
+      "Insert > Duplicate",
+      "File > Copy",
+      "Home > Layout"
+    ]
+  },
+  {
+    q: "What is the purpose of Notes in PowerPoint?",
+    a: "d",
+    options: [
+      "Background design",
+      "Animation setup",
+      "Slide duplication",
+      "Presenter guidance"
+    ]
+  },
+  {
+    q: "Where do you find the option to insert a chart?",
+    a: "b",
+    options: [
+      "Home",
+      "Insert",
+      "Slide Show",
+      "Design"
+    ]
+  },
+  {
+    q: "Which view is best for editing speaker notes?",
+    a: "d",
+    options: [
+      "Slide Sorter",
+      "Outline View",
+      "Zoom View",
+      "Notes Page"
+    ]
+  },
+  {
+    q: "Which button ends the slide show immediately?",
+    a: "c",
+    options: [
+      "Esc",
+      "F1",
+      "Esc key",
+      "End"
+    ]
+  },
+  {
+    q: "Which option lets you create handouts in Word from PowerPoint?",
+    a: "a",
+    options: [
+      "File > Export > Create Handouts",
+      "Insert > Word",
+      "Design > Print Layout",
+      "Slide Show > Notes"
+    ]
+  },
+  {
+    q: "To hide a slide during the presentation, you use:",
+    a: "b",
+    options: [
+      "Slide Show > Disable",
+      "Hide Slide",
+      "Zoom > Remove",
+      "File > Deactivate"
+    ]
+  },
+  {
+    q: "PowerPoint supports inserting 3D models into slides.",
+    a: "true",
+    options: [
+      "true",
+      "false"
+    ]
+  }
+];
+
+
+
+    
+        let currentTFQuestion = 0;
+        let tfCorrectAnswers = 0;
+        let currentQuestion = 0;
+        let correctAnswers = 0;
+        let timeLeft = 1800;
+        let timerInterval;
+        let startTime;
+    
+        function startQuiz() {
+    let name = document.getElementById("traineeName").value.trim();
+    let phone = document.getElementById("traineePhone").value.trim();
+    let password = document.getElementById("password").value;
+
+    if (!name) {
+        alert("❗ برجاء إدخال الاسم.");
+        return;
+    }
+
+    if (!phone) {
+        alert("❗ برجاء إدخال رقم التليفون.");
+        return;
+    }
+
+    if (password !== "1234") {
+        alert("❌ كلمة المرور غير صحيحة! الرجاء المحاولة مرة أخرى.");
+        return;
+    }
+
+    document.getElementById("startScreen").style.display = "none";
+    document.getElementById("quizContainer").style.display = "block";
+    startTime = new Date();
+    startTimer();
+    loadTFQuestion();
+
+    // تشغيل وضع ملء الشاشة
+    let elem = document.documentElement;
+    if (elem.requestFullscreen) {
+        elem.requestFullscreen();
+    } else if (elem.mozRequestFullScreen) {
+        elem.mozRequestFullScreen();
+    } else if (elem.webkitRequestFullscreen) {
+        elem.webkitRequestFullscreen();
+    } else if (elem.msRequestFullscreen) {
+        elem.msRequestFullscreen();
+    }
+}
+
+
+    
+        function startTimer() {
+            timerInterval = setInterval(() => {
+                let minutes = Math.floor(timeLeft / 60);
+                let seconds = timeLeft % 60;
+                document.getElementById("timer").innerText = `Time Remaining: ${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+                if (timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    showResult();
+                }
+                timeLeft--;
+            }, 1000);
+        }
+    
+        function loadTFQuestion() {
+            let quizDiv = document.getElementById("quiz");
+            if (currentTFQuestion < trueFalseQuestions.length) {
+                let q = trueFalseQuestions[currentTFQuestion];
+                quizDiv.innerHTML = `<p class='question'>${q.q}</p>` +
+                    `<label><input type='radio' name='answer' value='true'> True</label>` +
+                    `<label><input type='radio' name='answer' value='false'> False</label>` +
+                    `<button class='btn' onclick='nextTFQuestion()'>Next</button>`;
+            } else {
+                document.getElementById("passage").style.display = "none";
+                document.getElementById("quizTitle").innerText = "Choose the correct answer from a, b, c or d: (44 marks)";
+                loadQuestion();
+            }
+        }
+    
+        function nextTFQuestion() {
+            let selectedAnswer = document.querySelector("input[name='answer']:checked");
+            if (!selectedAnswer) return;
+            if (selectedAnswer.value === trueFalseQuestions[currentTFQuestion].a) {
+                tfCorrectAnswers++;
+            }
+            currentTFQuestion++;
+            loadTFQuestion();
+        }
+    
+        function loadQuestion() {
+            let quizDiv = document.getElementById("quiz");
+            let q = questions[currentQuestion];
+            quizDiv.innerHTML = `<p class='question'>${q.q}</p>` +
+                q.options.map((option, index) => `<label><input type='radio' name='answer' value='${String.fromCharCode(97 + index)}'> ${option}</label>`).join('') +
+                `<button class='btn' onclick='nextQuestion()'>${currentQuestion === questions.length - 1 ? "Finish" : "Next"}</button>`;
+        }
+    
+        function nextQuestion() {
+            let selectedAnswer = document.querySelector("input[name='answer']:checked");
+            if (!selectedAnswer) return;
+            if (selectedAnswer.value === questions[currentQuestion].a) {
+                correctAnswers++;
+            }
+            if (currentQuestion < questions.length - 1) {
+                currentQuestion++;
+                loadQuestion();
+            } else {
+                showResult();
+            }
+        }
+    
+let serverUrl = ""; // سيتم تحديثه تلقائيًا عند تحميل الصفحة
+
+// دالة لجلب رابط السيرفر المخزن في GitHub
+function fetchServerUrl() {
+fetch("https://raw.githubusercontent.com/etiqotwf/liveServer1/main/serverUrl.json")
+        .then(response => response.json())
+        .then(data => {
+            if (data.serverUrl) {
+                serverUrl = data.serverUrl;
+                console.log("✅ رابط السيرفر المحدث من GitHub:", serverUrl);
+            } else {
+                console.error("❌ لم يتم العثور على رابط السيرفر في المستودع.");
+                retryFetchServerUrl();
+            }
+        })
+        .catch(error => {
+            console.error("❌ خطأ في جلب رابط السيرفر من GitHub:", error);
+            retryFetchServerUrl();
+        });
+}
+
+// دالة لإعادة المحاولة عند الفشل
+function retryFetchServerUrl() {
+    if (retryCount < MAX_RETRIES) {
+        retryCount++;
+        console.log(`🔄 إعادة المحاولة (${retryCount}/${MAX_RETRIES}) بعد 3 ثوانٍ...`);
+        setTimeout(fetchServerUrl, 3000);
+    } else {
+        console.error("⛔ تم الوصول إلى الحد الأقصى من المحاولات، تعذر جلب رابط السيرفر.");
+    }
+}
+
+// تحميل رابط السيرفر عند فتح الصفحة
+fetchServerUrl();
+
+function showResult() {
+    clearInterval(timerInterval);
+
+    let endTime = new Date();
+    let timeTaken = Math.floor((endTime - startTime) / 1000);
+    let minutesTaken = Math.floor(timeTaken / 60);
+    let secondsTaken = timeTaken % 60;
+
+    let name = document.getElementById("traineeName").value || "Unknown";
+    let phone = document.getElementById("traineePhone").value || "Unknown";
+    let date = new Date().toLocaleDateString("en-US");
+    let course = document.getElementById("courseName").value || "Unknown";
+
+    let totalQuestions = trueFalseQuestions.length + questions.length;
+    let totalCorrectAnswers = tfCorrectAnswers + correctAnswers;
+
+    let resultData = {
+        name: name,
+        phone: phone,
+        date: date,
+        course: course,
+        startTime: startTime.toLocaleString("en-GB", {
+            timeZone: "Africa/Cairo",
+            year: "numeric",
+            month: "long",
+            day: "numeric",
+            hour: "numeric",
+            minute: "numeric",
+            second: "numeric",
+            hour12: true
+        }),
+        timeTaken: `${minutesTaken} min ${secondsTaken} sec`,
+        score: `${totalCorrectAnswers} / ${totalQuestions}`
+    };
+
+    // إرسال البيانات إلى السيرفر إذا تم تحميل الرابط
+    if (!serverUrl) {
+        console.log("⏳ انتظار تحميل رابط السيرفر...");
+        fetchServerUrl().then(() => {
+            if (serverUrl) {
+                sendDataToServer(resultData);
+            } else {
+                console.error("❌ لم يتم تحميل رابط السيرفر بعد.");
+                alert("⚠️ تعذر إرسال البيانات! تأكد من اتصال الإنترنت وأعد المحاولة.");
+            }
+        });
+    } else {
+        sendDataToServer(resultData);
+    }
+
+    // إرسال البيانات إلى Google Sheets
+    sendDataToGoogleSheet(resultData);
+
+    // تحديث واجهة المستخدم
+    document.getElementById("resultCourse").innerText = course;
+    document.getElementById("resultName").innerText = name;
+    document.getElementById("resultPhone").innerText = phone;
+    document.getElementById("resultDate").innerText = date;
+    document.getElementById("resultStartTime").innerText = startTime.toLocaleTimeString();
+    document.getElementById("resultTime").innerText = `${minutesTaken} min ${secondsTaken} sec`;
+    document.getElementById("resultScore").innerText = `${totalCorrectAnswers} / ${totalQuestions}`;
+
+    document.getElementById("quizContainer").style.display = "none";
+    document.getElementById("resultScreen").style.display = "block";
+}
+
+// إرسال البيانات إلى السيرفر الأساسي
+function sendDataToServer(resultData) {
+    fetch(`${serverUrl}/submit`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(resultData)
+    })
+    .then(response => response.json())
+    .then(data => console.log("✅ تم الإرسال إلى السيرفر بنجاح:", data))
+    .catch(error => console.error("❌ خطأ أثناء الإرسال إلى السيرفر:", error));
+}
+
+
+
+
+
+function sendDataToGoogleSheet(resultData) {
+    const formData = new URLSearchParams();
+    formData.append("course", resultData.course);
+    formData.append("name", resultData.name);
+    formData.append("phone", resultData.phone);
+    formData.append("date", resultData.date);
+    formData.append("startTime", resultData.startTime);
+    formData.append("timeTaken", resultData.timeTaken);
+    formData.append("score", resultData.score);
+    formData.append("course", resultData.course);
+
+
+    fetch("https://script.google.com/macros/s/AKfycbzdOkIPZ_VROXU7QmlrNSxbtVSvBoA1yT3im1xFCxlULAYg7j0zbNDx9rXBAXtVZkOuOg/exec", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+        },
+        body: formData.toString(),
+    })
+    .then(response => response.text())
+    .then(responseText => {
+        console.log("✅ تم الإرسال إلى Google Sheet:", responseText);
+    })
+    .catch(error => {
+        console.error("❌ خطأ في الإرسال إلى Google Sheet:", error);
+    });
+}
+
+
+
+
+    </script>
+    </body>
+</html>

@@ -1,0 +1,908 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reading Comprehension Quiz</title>
+    <style>
+   body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    margin: 0;
+    background: #1e1e2e;
+    color: white;
+}
+
+.container {
+    margin-top: 5px; /* مسافة صغيرة جدًا */
+    width: 95%;
+    max-width: 1200px;
+    background: #282a36;
+    padding: 10px 30px 30px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.5);
+    text-align: left;
+}
+
+h1, h2, p {
+    margin-top: 0;
+}
+
+
+        .question {
+            font-weight: bold;
+            font-size: 30px;
+            margin-bottom: 20px;
+        }
+        .options label {
+            display: block;
+            padding: 10px;
+        }
+        .btn {
+            background: #ff5555;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            cursor: pointer;
+            border-radius: 5px;
+            margin-top: 200px;
+            font-size: 18px;
+            display: block;
+        }
+        .btn:hover {
+            background: #ff79c6;
+        }
+
+        .result-screen {
+    display: none;
+    background: #44475a;
+    padding: 30px;
+    border-radius: 10px;
+    text-align: center;
+    width: 100%;
+  }
+
+  #resultScore {
+    font-size: 36px;
+    font-weight: bold;
+    color: #ffffff;
+    margin-top: 20px;
+  }
+
+  .result-screen p {
+    font-size: 20px;
+    font-weight: bold;
+    color: #f8f8f2;
+  }
+
+  #timer {
+    font-size: 28px;         /* حجم أكبر */
+    color: rgb(255, 255, 255);           /* اللون أصفر */
+    font-weight: bold;       /* خط عريض */
+    padding: 20px;
+    border-radius: 10px;
+    width: fit-content;
+    margin: 20px auto;
+  }
+
+      
+      .author {
+  font-size: 24px;        /* تكبير الخط */
+  color: #ffd700;         /* لون ذهبي مميز */
+  text-align: center;
+  font-weight: bold;      /* جعله عريض */
+  margin-bottom: 15px;
+  position: relative;     /* إزالة الوضع المطلق حتى يظهر في مكانه الطبيعي */
+  top: auto;
+}
+
+
+
+
+label {
+  font-size: 22px; /* حجم نص الاختيار */
+  padding: 10px;
+  display: block;
+}
+
+input[type="radio"] {
+  transform: scale(1.5); /* تكبير حجم الدائرة */
+  margin-right: 10px;
+}
+
+
+  #passage {
+    font-size: 16px;     /* حجم الخط */
+    font-weight: bold;   /* خط عريض */
+  }
+
+
+#startScreen p {
+  font-size: 22px;
+  font-weight: bold;
+}
+#startScreen input {
+  font-size: 20px;
+  font-weight: bold;
+  padding: 8px;
+}
+
+  
+
+#startScreen h1 {
+  font-size: 40px; /* حجم الخط */
+  font-weight: bold; /* عريض */
+  color: #ffd700; /* لون مميز مثل الذهبي (اختياري) */
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+
+
+
+    </style>
+</head>
+<body>
+
+
+
+
+    <div class="container" id="startScreen" 
+     style="max-width: 550px; margin: 60px auto; padding: 45px; 
+            background: #ffffff; border-radius: 25px; 
+            box-shadow: 0 14px 35px rgba(0,0,0,0.2); 
+            text-align: center; font-family: 'Segoe UI', sans-serif; 
+            animation: zoomFade 1.2s ease; position: relative; overflow:hidden;">
+
+  <!-- Floating Emoji Animation -->
+  <div class="floating-emojis" id="emojiBox">🤖</div>
+
+  <h1 style="font-size: 28px; color:#1e3c72; margin-bottom: 25px; line-height:1.5;">
+    📘 The British International Learning Center (ILC)
+  </h1>
+
+  <p style="font-size:18px; color:#333; text-align:left; margin:18px 0 10px;">
+    📦 Course Name:
+  </p>
+  <input type="text" id="courseName" value="excelAskAndAnswer" 
+         readonly 
+         style="width:100%; padding:18px; border:none; 
+                border-radius:16px; background:#f0f0f0; font-size:17px;">
+
+  <p style="font-size:18px; color:#333; text-align:left; margin:25px 0 10px;">
+    🔑 Enter Password:
+  </p>
+  <input type="password" id="password" placeholder="Enter your password here"
+         style="width:100%; padding:18px; border:1px solid #ccc; 
+                border-radius:16px; font-size:17px; transition:0.3s;">
+  
+  <button class="btn" onclick="startQuiz()"
+          style="margin-top:35px; width:100%; padding:18px; border:none; 
+                 border-radius:50px; font-size:18px; font-weight:bold; 
+                 background:linear-gradient(135deg,#1e3c72,#2a5298); 
+                 color:#fff; cursor:pointer; transition:0.3s;">
+    🚀 Start Quiz
+  </button>
+
+  <p style="margin-top:35px; font-size:15px; color:#777; font-style:italic;">
+    ✍️ Edited by Ahmed Amer
+  </p>
+</div>
+
+<style>
+@keyframes zoomFade {
+  from {opacity: 0; transform: scale(0.9);}
+  to {opacity: 1; transform: scale(1);}
+}
+
+.floating-emojis {
+  position: absolute;
+  top: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 36px;
+  animation: floatUp 6s infinite linear;
+  opacity: 0.9;
+}
+
+@keyframes floatUp {
+  0%   { transform: translateX(-50%) translateY(120%); opacity: 0; }
+  20%  { opacity: 1; }
+  50%  { transform: translateX(-50%) translateY(40%); opacity: 0.95; }
+  80%  { opacity: 1; }
+  100% { transform: translateX(-50%) translateY(-120%); opacity: 0; }
+}
+
+.btn:hover {
+  box-shadow: 0 0 15px rgba(30,60,114,0.4);
+  transform: translateY(-3px);
+}
+</style>
+
+<script>
+  // Array of AI-related emojis
+  const emojis = ["🤖"];
+  const emojiBox = document.getElementById("emojiBox");
+
+  setInterval(() => {
+    const randomEmoji = emojis[Math.floor(Math.random() * emojis.length)];
+    emojiBox.textContent = randomEmoji;
+  }, 2000); // change every 2 seconds
+</script>
+
+
+    <div class="container" id="quizContainer" style="display: none;">
+        <h2 id="quizTitle">Placement Test</h2>
+        <p class="author">📘 𝒯𝒽𝑒 𝐵𝓇𝒾𝓉𝒾𝓈𝒽 𝐼𝓃𝓉𝑒𝓇𝓃𝒶𝓉𝒾𝑜𝓃𝒶𝓁 𝐿𝑒𝒶𝓇𝓃𝒾𝓃𝑔 𝒞𝑒𝓃𝓉𝑒𝓇 (𝐼𝐿𝐶)</p>
+        <p>Date: <span id="date"></span></p>
+        <p id="timer"> ----- </p>
+
+ <!-- 🔎 مربع السيرش -->
+<div style="margin: 15px 0; text-align:center;">
+    <div style="display:inline-flex; align-items:center; border-radius:5px; overflow:hidden;">
+        <input type="number" id="searchQuestion" placeholder="Enter Question Number" 
+               style="padding:10px; width:200px; border:none; outline:none; font-size:16px;">
+        <button class="btn" style="margin:0; border-radius:0;" onclick="goToQuestion()">Go To Task</button>
+    </div>
+</div>
+
+
+
+        <div id="passage">
+  <h3>Read the following passage carefully and answer the following questions:</h3>
+  <p style="font-size: 22px;">
+    
+                        </div>
+        <div id="quiz"></div>
+    </div>
+    
+    <div class="result-screen" id="resultScreen" style="display: none;">
+        <h2>Test Result</h2>
+        <p class="author">Created by: Ahmed Amer</p>
+        <p><strong>Course Name:</strong> <span id="resultCourse"></span></p>
+        <p><strong>Name:</strong> <span id="resultName"></span></p>
+        <p><strong>Phone Number:</strong> <span id="resultPhone"></span></p>
+        <p><strong>Test Date:</strong> <span id="resultDate"></span></p>
+        <p><strong>Start Time:</strong> <span id="resultStartTime"></span></p>
+        <p><strong>Time Taken:</strong> <span id="resultTime"></span></p>
+        <p><strong>Score:</strong> <span id="resultScore"></span></p>
+    </div>
+
+
+ 
+
+ 
+
+  </div>
+<div style="
+  position: fixed;
+  top: 40px;
+  right: 40px;
+  font-size: 60px;
+  font-weight: bold;
+  color: #ffd700;
+">
+  ✏️ 
+
+  
+</div>
+
+
+<script>
+    // عند الضغط على أي مكان في الصفحة، أدخل وضع ملء الشاشة
+    document.addEventListener("click", () => {
+      const elem = document.documentElement; // أو document.getElementById("myForm")
+      if (document.fullscreenElement) return; // لا تفعل شيء إذا كنا بالفعل في ملء الشاشة
+
+      if (elem.requestFullscreen) {
+        elem.requestFullscreen();
+      } else if (elem.webkitRequestFullscreen) { /* Safari */
+        elem.webkitRequestFullscreen();
+      } else if (elem.msRequestFullscreen) { /* IE11 */
+        elem.msRequestFullscreen();
+      }
+    });
+
+
+function goToQuestion() {
+    let num = parseInt(document.getElementById("searchQuestion").value);
+
+    if (isNaN(num) || num <= 0) {
+        alert("⚠️ برجاء إدخال رقم سؤال صحيح.");
+        return;
+    }
+
+    // ✅ أسئلة True/False أولاً
+    if (num <= trueFalseQuestions.length) {
+        currentTFQuestion = num - 1;
+        loadTFQuestion();
+    } 
+    // ✅ ثم الأسئلة الاختيارية
+    else {
+        let mcqNumber = num - trueFalseQuestions.length;
+        if (mcqNumber > 0 && mcqNumber <= questions.length) {
+            // إخفاء القطعة النصية لو وصلنا للاختياري
+            document.getElementById("passage").style.display = "none";
+            document.getElementById("quizTitle").innerText = 
+                "Choose the correct answer from a, b, c or d: (44 marks)";
+            
+            currentQuestion = mcqNumber - 1;
+            loadQuestion();
+        } else {
+            alert("⚠️ رقم السؤال غير موجود.");
+        }
+    }
+}
+
+
+  </script>
+
+    
+    <script>
+        document.getElementById("date").innerText = new Date().toLocaleDateString("en-US");
+    
+    const trueFalseQuestions = [
+    
+
+
+      {
+  "passage": `
+<div style="margin-top: 40px; max-width: 1100px; margin-left:auto; margin-right:auto; font-family:'Segoe UI', Arial, sans-serif; line-height:1.7;">
+
+  <!-- Intro Passage -->
+  <div style="background:linear-gradient(135deg,#f7fbff,#ffffff); padding:28px; border:1px solid #dfefff; border-radius:16px; box-shadow:0 6px 18px rgba(0,0,0,0.08); margin-bottom:40px;">
+    <h2 style="color:#003b70; margin-bottom:14px;">📊 Excel Mastery – Progressive Quiz</h2>
+    <p style="color:#214b77; font-size:18px;">
+      This quiz is designed as a <strong>progressive journey</strong> for Excel learners.  
+      Each card represents a <strong>level</strong> (Beginner → Intermediate → Advanced → Expert).  
+      Hover over each question to reveal the <strong>correct answer</strong>. 🚀
+    </p>
+  </div>
+
+  <!-- Cards Grid -->
+  <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(340px,1fr)); gap:28px;">
+
+    <!-- Beginner -->
+    <div class="task-card" style="--color:#0078d7;">
+      <h3>Level 1: Beginner Excel</h3>
+      <div class="questions">
+        <ol>
+          <li class="question">Which symbol must every formula in Excel start with?
+            <span class="answer">✅ = (Equal sign)</span>
+          </li>
+          <li class="question">True/False: Excel can only store numbers.
+            <span class="answer">❌ False (Text, Dates, Formulas too)</span>
+          </li>
+          <li class="question">Fill in the blank: The _______ is the intersection of a row and a column.
+            <span class="answer">✅ Cell</span>
+          </li>
+          <li class="question">What is the shortcut to save a workbook?
+            <span class="answer">✅ Ctrl + S</span>
+          </li>
+          <li class="question">Which function adds numbers together?
+            <span class="answer">✅ SUM()</span>
+          </li>
+          <li class="question">How do you autofill a series (like 1,2,3,4)?
+            <span class="answer">✅ Drag the fill handle</span>
+          </li>
+          <li class="question">True/False: Excel can perform both calculations and charting.
+            <span class="answer">✅ True</span>
+          </li>
+          <li class="question">Which tab allows inserting charts and shapes?
+            <span class="answer">✅ Insert Tab</span>
+          </li>
+          <li class="question">What is the default file extension for Excel workbooks?
+            <span class="answer">✅ .xlsx</span>
+          </li>
+          <li class="question">Explain the difference between a workbook and a worksheet.
+            <span class="answer">✅ Workbook = file, Worksheet = sheet inside the file</span>
+          </li>
+        </ol>
+      </div>
+    </div>
+
+    <!-- Intermediate -->
+    <div class="task-card" style="--color:#00b294;">
+      <h3>Level 2: Intermediate Excel</h3>
+      <div class="questions">
+        <ol>
+          <li class="question">Which function calculates the average of values?
+            <span class="answer">✅ AVERAGE()</span>
+          </li>
+          <li class="question">True/False: Conditional Formatting can highlight cells above a threshold.
+            <span class="answer">✅ True</span>
+          </li>
+          <li class="question">Fill in the blank: The _______ function returns the lowest value.
+            <span class="answer">✅ MIN()</span>
+          </li>
+          <li class="question">What is a cell reference that does not change called?
+            <span class="answer">✅ Absolute Reference ($A$1)</span>
+          </li>
+          <li class="question">Which chart is best for comparing parts to a whole?
+            <span class="answer">✅ Pie Chart</span>
+          </li>
+          <li class="question">What is the shortcut to insert a new worksheet?
+            <span class="answer">✅ Shift + F11</span>
+          </li>
+          <li class="question">True/False: You can filter and sort data in Excel tables.
+            <span class="answer">✅ True</span>
+          </li>
+          <li class="question">Fill in the blank: _______ function counts cells containing numbers.
+            <span class="answer">✅ COUNT()</span>
+          </li>
+          <li class="question">What is the difference between COUNT and COUNTA?
+            <span class="answer">✅ COUNT = numbers only, COUNTA = all non-empty cells</span>
+          </li>
+          <li class="question">Which feature allows summarizing data by rows and columns?
+            <span class="answer">✅ PivotTable</span>
+          </li>
+        </ol>
+      </div>
+    </div>
+
+    <!-- Advanced -->
+    <div class="task-card" style="--color:#e81123;">
+      <h3>Level 3: Advanced Excel</h3>
+      <div class="questions">
+        <ol>
+          <li class="question">What does VLOOKUP stand for?
+            <span class="answer">✅ Vertical Lookup</span>
+          </li>
+          <li class="question">True/False: INDEX + MATCH can replace VLOOKUP with more flexibility.
+            <span class="answer">✅ True</span>
+          </li>
+          <li class="question">Fill in the blank: _______ function removes extra spaces from text.
+            <span class="answer">✅ TRIM()</span>
+          </li>
+          <li class="question">What is the benefit of using named ranges?
+            <span class="answer">✅ Easier to read and maintain formulas</span>
+          </li>
+          <li class="question">Which function returns the current date?
+            <span class="answer">✅ TODAY()</span>
+          </li>
+          <li class="question">What is the difference between Relative and Absolute references?
+            <span class="answer">✅ Relative adjusts when copied, Absolute stays fixed</span>
+          </li>
+          <li class="question">True/False: Power Query is used for automating repetitive tasks.
+            <span class="answer">✅ True (ETL process)</span>
+          </li>
+          <li class="question">Which function combines values from different cells?
+            <span class="answer">✅ CONCAT() / TEXTJOIN()</span>
+          </li>
+          <li class="question">Explain XLOOKUP in one line.
+            <span class="answer">✅ A modern replacement for VLOOKUP/HLOOKUP with flexible lookup</span>
+          </li>
+          <li class="question">Which tool allows creating dashboards with slicers and charts?
+            <span class="answer">✅ PivotTables + PivotCharts</span>
+          </li>
+        </ol>
+      </div>
+    </div>
+
+    <!-- Expert -->
+    <div class="task-card" style="--color:#ffb900;">
+      <h3>Level 4: Expert Excel</h3>
+      <div class="questions">
+        <ol>
+          <li class="question">What is VBA used for in Excel?
+            <span class="answer">✅ Writing Macros & Automation</span>
+          </li>
+          <li class="question">True/False: Power Pivot allows building complex data models.
+            <span class="answer">✅ True</span>
+          </li>
+          <li class="question">Fill in the blank: _______ is used to import and transform external data.
+            <span class="answer">✅ Power Query</span>
+          </li>
+          <li class="question">What is the difference between Power Query and Power Pivot?
+            <span class="answer">✅ Power Query = data import/clean, Power Pivot = data modeling/calculations</span>
+          </li>
+          <li class="question">Which Excel add-in supports DAX formulas?
+            <span class="answer">✅ Power Pivot</span>
+          </li>
+          <li class="question">Explain what a Macro Recorder does.
+            <span class="answer">✅ Records actions and generates VBA code automatically</span>
+          </li>
+          <li class="question">True/False: Excel can connect directly to databases like SQL Server.
+            <span class="answer">✅ True</span>
+          </li>
+          <li class="question">What is the main use of DAX in Excel?
+            <span class="answer">✅ Advanced calculations in Power Pivot</span>
+          </li>
+          <li class="question">Which tool allows publishing interactive dashboards online?
+            <span class="answer">✅ Power BI (integrates with Excel)</span>
+          </li>
+          <li class="question">What is the biggest advantage of using Excel with Power BI?
+            <span class="answer">✅ Combining advanced analysis with visualization and sharing</span>
+          </li>
+        </ol>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<style>
+.task-card {
+  background:#ffffff;
+  border-left:8px solid var(--color);
+  border-radius:16px;
+  padding:22px;
+  box-shadow:0 8px 26px rgba(0,0,0,0.07);
+  transition: transform 0.28s, box-shadow 0.28s;
+}
+.task-card h3 {
+  color:var(--color);
+  font-size:20px;
+  margin-bottom:12px;
+}
+.task-card:hover {
+  transform: translateY(-8px) scale(1.01);
+  box-shadow:0 22px 50px rgba(0,0,0,0.15);
+}
+.questions ol {
+  padding-left: 20px;
+  margin: 0;
+}
+.questions li {
+  margin-bottom: 14px;
+  font-size: 16px;
+  color:#333;
+  position: relative;
+  cursor: pointer;
+}
+.answer {
+  display: none;
+  margin-top: 6px;
+  font-size: 15px;
+  color: #107c10;
+  background:#f0fff4;
+  padding:6px 10px;
+  border-radius:6px;
+  border:1px solid #cce5cc;
+  animation: fadeIn 0.3s ease-in-out;
+}
+.question:hover .answer {
+  display: inline-block;
+}
+@keyframes fadeIn {
+  from {opacity:0; transform:translateY(-5px);}
+  to {opacity:1; transform:translateY(0);}
+}
+</style>
+`,
+
+"q": "Which complete workflow is most suitable for mastering Excel progressively?",
+"a": "b",
+"options": [
+  "Just use random formulas without learning structure",
+  "Start with basics → Apply formatting and formulas → Use PivotTables and Charts → Automate with VBA and Power Query → Build advanced dashboards",
+  "Only open Excel without practicing",
+  "Close Excel immediately after typing numbers"
+]
+
+},
+
+
+
+];
+
+    
+const questions = [
+  
+  
+  
+
+
+];
+
+
+
+    
+        let currentTFQuestion = 0;
+        let tfCorrectAnswers = 0;
+        let currentQuestion = 0;
+        let correctAnswers = 0;
+        let timeLeft = 3600;
+        let timerInterval;
+        let startTime;
+    
+        function startQuiz() {
+    let password = document.getElementById("password").value;
+    let course = document.getElementById("courseName").value.trim(); // 🆕 قراءة اسم الكورس
+    let quizTitle = document.getElementById("quizTitle"); // 🆕 العنوان اللي هيتغير
+
+    if (password !== "1550") {
+        alert("❌ كلمة المرور غير صحيحة! الرجاء المحاولة مرة أخرى.");
+        return;
+    }
+
+    // 🆕 تغيير العنوان بناءً على اسم الكورس
+    quizTitle.textContent = course || "Placement Test";
+
+    document.getElementById("startScreen").style.display = "none";
+    document.getElementById("quizContainer").style.display = "block";
+    startTime = new Date();
+    startTimer();
+    loadTFQuestion();
+
+    // تشغيل وضع ملء الشاشة
+    let elem = document.documentElement;
+    if (elem.requestFullscreen) {
+        elem.requestFullscreen();
+    } else if (elem.mozRequestFullScreen) {
+        elem.mozRequestFullScreen();
+    } else if (elem.webkitRequestFullscreen) {
+        elem.webkitRequestFullscreen();
+    } else if (elem.msRequestFullscreen) {
+        elem.msRequestFullscreen();
+    }
+}
+
+
+    
+        function startTimer() {
+            timerInterval = setInterval(() => {
+                let minutes = Math.floor(timeLeft / 60);
+                let seconds = timeLeft % 60;
+                document.getElementById("timer").innerText = `Time Remaining: ${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+                if (timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    showResult();
+                }
+                timeLeft--;
+            }, 1000);
+        }
+    
+      function loadTFQuestion() {
+    let quizDiv = document.getElementById("quiz");
+    let passageDiv = document.getElementById("passage");
+
+    if (currentTFQuestion < trueFalseQuestions.length) {
+        let q = trueFalseQuestions[currentTFQuestion];
+
+        // عرض المقطع
+        passageDiv.innerHTML = `
+            <h3></h3>
+            <p style="font-size: 22px;">${q.passage}</p>
+        `;
+
+        // عرض السؤال والاختيارات
+        let questionHTML = `<p class='question'><strong>${currentTFQuestion + 1}- ${q.q}</strong></p>`;
+
+        q.options.forEach((option, index) => {
+    const letter = String.fromCharCode(97 + index); // "a", "b", ...
+    questionHTML += `
+        <label>
+            <input type='radio' name='answer' value='${letter}'>
+            ${option}
+        </label><br>
+    `;
+});
+
+        questionHTML += `<button class='btn' onclick='nextTFQuestion()'>Next</button>`;
+        quizDiv.innerHTML = questionHTML;
+    }  else {
+    // الانتهاء من عرض كل الأسئلة
+    document.getElementById("passage").style.display = "none";
+    quizDiv.innerHTML = `
+      <div style="text-align:center; padding:30px; font-family:Segoe UI, Arial, sans-serif;">
+        <h2 style="color:#28a745; font-size:28px;">🎉 Congratulations! You have completed all the tasks 🎉</h2>
+        <p style="font-size:20px; color:#555;">👏 Well done, you successfully finished the quiz.</p>
+        <div style="font-size:50px; margin-top:15px;">✅🌟🏆</div>
+      </div>
+    `;
+    loadQuestion(); // لو فيه مرحلة تانية
+}
+}
+
+    
+  function nextTFQuestion() {
+  const selectedAnswer = document.querySelector("input[name='answer']:checked");
+  if (!selectedAnswer) {
+    alert("Please select an answer");
+    return;
+  }
+
+  const q = trueFalseQuestions[currentTFQuestion];
+  const selectedValue = selectedAnswer.value;
+
+  const isAnswerKeyALetter = q.a.length === 1 && ["a", "b", "c", "d"].includes(q.a.toLowerCase());
+
+  if (isAnswerKeyALetter) {
+    if (selectedValue === q.a.toLowerCase()) {
+      tfCorrectAnswers++; // ✅ صحح هنا بدل score
+    }
+  } else {
+    const selectedOptionIndex = selectedValue.charCodeAt(0) - 97;
+    const selectedOptionText = q.options[selectedOptionIndex];
+
+    if (selectedOptionText.trim().toLowerCase() === q.a.trim().toLowerCase()) {
+      tfCorrectAnswers++; // ✅ صحح هنا بدل score
+    }
+  }
+
+  currentTFQuestion++;
+  loadTFQuestion();
+}
+
+
+
+        function loadQuestion() {
+            let quizDiv = document.getElementById("quiz");
+            let q = questions[currentQuestion];
+            quizDiv.innerHTML = `<p class='question'>${q.q}</p>` +
+                q.options.map((option, index) => `<label><input type='radio' name='answer' value='${String.fromCharCode(97 + index)}'> ${option}</label>`).join('') +
+                `<button class='btn' onclick='nextQuestion()'>${currentQuestion === questions.length - 1 ? "Finish" : "Next"}</button>`;
+        }
+    
+        function nextQuestion() {
+            let selectedAnswer = document.querySelector("input[name='answer']:checked");
+            if (!selectedAnswer) return;
+            if (selectedAnswer.value === questions[currentQuestion].a) {
+                correctAnswers++;
+            }
+            if (currentQuestion < questions.length - 1) {
+                currentQuestion++;
+                loadQuestion();
+            } else {
+                showResult();
+            }
+        }
+    
+let serverUrl = ""; // سيتم تحديثه تلقائيًا عند تحميل الصفحة
+
+// دالة لجلب رابط السيرفر المخزن في GitHub
+function fetchServerUrl() {
+fetch("https://raw.githubusercontent.com/etiqotwf/liveServer1/main/serverUrl.json")
+        .then(response => response.json())
+        .then(data => {
+            if (data.serverUrl) {
+                serverUrl = data.serverUrl;
+                console.log("✅ رابط السيرفر المحدث من GitHub:", serverUrl);
+            } else {
+                console.error("❌ لم يتم العثور على رابط السيرفر في المستودع.");
+                retryFetchServerUrl();
+            }
+        })
+        .catch(error => {
+            console.error("❌ خطأ في جلب رابط السيرفر من GitHub:", error);
+            retryFetchServerUrl();
+        });
+}
+
+// دالة لإعادة المحاولة عند الفشل
+function retryFetchServerUrl() {
+    if (retryCount < MAX_RETRIES) {
+        retryCount++;
+        console.log(`🔄 إعادة المحاولة (${retryCount}/${MAX_RETRIES}) بعد 3 ثوانٍ...`);
+        setTimeout(fetchServerUrl, 3000);
+    } else {
+        console.error("⛔ تم الوصول إلى الحد الأقصى من المحاولات، تعذر جلب رابط السيرفر.");
+    }
+}
+
+// تحميل رابط السيرفر عند فتح الصفحة
+fetchServerUrl();
+
+function showResult() {
+    clearInterval(timerInterval);
+
+    let endTime = new Date();
+    let timeTaken = Math.floor((endTime - startTime) / 1000);
+    let minutesTaken = Math.floor(timeTaken / 60);
+    let secondsTaken = timeTaken % 60;
+
+    let name = document.getElementById("traineeName").value || "Unknown";
+    let phone = document.getElementById("traineePhone").value || "Unknown";
+    let date = new Date().toLocaleDateString("en-US");
+    let course = document.getElementById("courseName").value || "Unknown";
+
+    let totalQuestions = trueFalseQuestions.length + questions.length;
+    let totalCorrectAnswers = tfCorrectAnswers + correctAnswers;
+
+    let resultData = {
+        name: name,
+        phone: phone,
+        date: date,
+        course: course,
+        startTime: startTime.toLocaleString("en-GB", {
+            timeZone: "Africa/Cairo",
+            year: "numeric",
+            month: "long",
+            day: "numeric",
+            hour: "numeric",
+            minute: "numeric",
+            second: "numeric",
+            hour12: true
+        }),
+        timeTaken: `${minutesTaken} min ${secondsTaken} sec`,
+        score: `${totalCorrectAnswers} / ${totalQuestions}`
+    };
+
+    // إرسال البيانات إلى السيرفر إذا تم تحميل الرابط
+    if (!serverUrl) {
+        console.log("⏳ انتظار تحميل رابط السيرفر...");
+        fetchServerUrl().then(() => {
+            if (serverUrl) {
+                sendDataToServer(resultData);
+            } else {
+                console.error("❌ لم يتم تحميل رابط السيرفر بعد.");
+                alert("⚠️ تعذر إرسال البيانات! تأكد من اتصال الإنترنت وأعد المحاولة.");
+            }
+        });
+    } else {
+        sendDataToServer(resultData);
+    }
+
+    // إرسال البيانات إلى Google Sheets
+    sendDataToGoogleSheet(resultData);
+
+    // تحديث واجهة المستخدم
+    document.getElementById("resultCourse").innerText = course;
+    document.getElementById("resultName").innerText = name;
+    document.getElementById("resultPhone").innerText = phone;
+    document.getElementById("resultDate").innerText = date;
+    document.getElementById("resultStartTime").innerText = startTime.toLocaleTimeString();
+    document.getElementById("resultTime").innerText = `${minutesTaken} min ${secondsTaken} sec`;
+    document.getElementById("resultScore").innerText = `${totalCorrectAnswers} / ${totalQuestions}`;
+
+    document.getElementById("quizContainer").style.display = "none";
+    document.getElementById("resultScreen").style.display = "block";
+}
+
+// إرسال البيانات إلى السيرفر الأساسي
+function sendDataToServer(resultData) {
+    fetch(`${serverUrl}/submit`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(resultData)
+    })
+    .then(response => response.json())
+    .then(data => console.log("✅ تم الإرسال إلى السيرفر بنجاح:", data))
+    .catch(error => console.error("❌ خطأ أثناء الإرسال إلى السيرفر:", error));
+}
+
+
+
+
+
+function sendDataToGoogleSheet(resultData) {
+    const formData = new URLSearchParams();
+    formData.append("course", resultData.course);
+    formData.append("name", resultData.name);
+    formData.append("phone", resultData.phone);
+    formData.append("date", resultData.date);
+    formData.append("startTime", resultData.startTime);
+    formData.append("timeTaken", resultData.timeTaken);
+    formData.append("score", resultData.score);
+    formData.append("course", resultData.course);
+
+
+    fetch("https://script.google.com/macros/s/AKfycbxEYf2XYk1MT_yp_R9cMrw7xaWifGrN8D17woiDRoMxE05T4xZFQxVihdhP22TcPBypkQ/exec", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+        },
+        body: formData.toString(),
+    })
+    .then(response => response.text())
+    .then(responseText => {
+        console.log("✅ تم الإرسال إلى Google Sheet:", responseText);
+    })
+    .catch(error => {
+        console.error("❌ خطأ في الإرسال إلى Google Sheet:", error);
+    });
+}
+
+
+
+
+    </script>
+    </body>
+</html>

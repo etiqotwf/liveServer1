@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<title>التقديم على دورة التصميم الجرافيكي والمونتاج</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+body {
+    font-family: "Segoe UI", Tahoma, Arial, sans-serif;
+    background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    max-width: 700px;
+    margin: 40px auto;
+    background: #fff;
+    border-radius: 12px;
+    padding: 30px;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.2);
+}
+
+
+
+h1 {
+    text-align: center;
+    color: #1f3c88;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+.subtitle {
+    text-align: center;
+    color: #555;
+    margin-top: 0;
+    margin-bottom: 15px;
+    font-size: 30px;      /* حجم الخط */
+    line-height: 1.6;     /* تباعد مريح */
+}
+
+
+
+.notice {
+    background: #f8f9fa;
+    border-right: 5px solid #1f3c88;
+    padding: 5px;
+    margin-bottom: 25px;
+    font-size: 15px;
+}
+
+form label {
+    display: block;
+    margin-bottom: 6px;
+    font-weight: 600;
+}
+
+.logo-box {
+    text-align: center;
+}
+
+.logo-box img {
+    max-width: 500px;
+    height: auto;
+}
+
+
+form input {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 18px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 15px;
+}
+
+button {
+    width: 100%;
+    background: #1f3c88;
+    color: #fff;
+    border: none;
+    padding: 14px;
+    font-size: 16px;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #162e6e;
+}
+
+.copy-box {
+    display: none;
+    margin-top: 25px;
+}
+
+.copy-box textarea {
+    width: 100%;
+    padding: 12px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    font-size: 14px;
+    resize: none;
+}
+
+.copy-btn {
+    background: #25D366;
+    margin-top: 12px;
+}
+
+.footer {
+    text-align: center;
+    margin-top: 25px;
+    font-size: 13px;
+    color: #777;
+}
+
+
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<div class="logo-box">
+    <img src="dtc-logo.png" alt="DTC TANTA Logo">
+</div>
+
+
+    <h1>التقديم على الدورة التدريبية</h1>
+
+    <p class="subtitle">
+        دورة التصميم الجرافيكي والمونتاج الاحترافي<br>
+        <strong>Graphic Design & Video Editing in Action</strong>
+    </p>
+
+    <div class="notice">
+        🔔 <strong>تنويه هام:</strong><br>
+        يتم إرسال <strong>صورة موافقة الإدارة</strong> يدويًا داخل واتساب بعد نسخ الرسالة.
+    </div>
+
+    <!-- نموذج التقديم -->
+    <form id="applyForm">
+        <label>الاسم بالكامل</label>
+        <input type="text" id="name" required>
+
+        <label>جهة العمل / الإدارة التابع لها</label>
+        <input type="text" id="work" required>
+
+        <label>رقم الهاتف</label>
+        <input type="tel" id="phone" required>
+
+        <button type="submit">متابعة</button>
+    </form>
+
+    <!-- صندوق نسخ الرسالة -->
+    <div class="copy-box" id="copyBox">
+        <label>انسخ الرسالة التالية وأرسلها داخل جروب واتساب:</label>
+        <textarea id="whatsMessage" rows="7" readonly></textarea>
+
+        <button class="copy-btn" id="copyBtn">نسخ الرسالة والانتقال إلى واتساب</button>
+
+        <p style="font-size:13px;color:#555;margin-top:10px;">
+            بعد الدخول إلى الجروب، يرجى لصق الرسالة
+            وإرفاق صورة موافقة الإدارة لاعتماد الطلب.
+        </p>
+    </div>
+
+    <div class="footer">
+        مركز تدريب الصرف – طنطا
+    </div>
+</div>
+
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+      document.body.addEventListener("click", function () {
+        const elem = document.documentElement;
+        if (
+          !document.fullscreenElement &&
+          !document.webkitFullscreenElement &&
+          !document.msFullscreenElement
+        ) {
+          if (elem.requestFullscreen) {
+            elem.requestFullscreen();
+          } else if (elem.webkitRequestFullscreen) {
+            elem.webkitRequestFullscreen(); // Safari
+          } else if (elem.msRequestFullscreen) {
+            elem.msRequestFullscreen(); // IE11
+          } else {
+            alert("المتصفح لا يدعم fullscreen.");
+          }
+        }
+      }, { once: true });
+    });
+  </script>
+
+<script>
+const form = document.getElementById("applyForm");
+const copyBox = document.getElementById("copyBox");
+const messageArea = document.getElementById("whatsMessage");
+const copyBtn = document.getElementById("copyBtn");
+
+form.addEventListener("submit", function(e) {
+    e.preventDefault();
+
+    const name = document.getElementById("name").value;
+    const work = document.getElementById("work").value;
+    const phone = document.getElementById("phone").value;
+
+    const message =
+`طلب الالتحاق بدورة التصميم الجرافيكي والمونتاج
+
+الاسم: ${name}
+الإدارة / جهة العمل: ${work}
+رقم الهاتف: ${phone}
+
+(سيتم إرفاق صورة موافقة الإدارة)`;
+
+    messageArea.value = message;
+
+    form.style.display = "none";
+    copyBox.style.display = "block";
+});
+
+// زر النسخ + الانتقال لواتساب
+copyBtn.addEventListener("click", function() {
+    messageArea.select();
+    navigator.clipboard.writeText(messageArea.value);
+
+    window.open(
+        "https://chat.whatsapp.com/BgZgcWPxvMQ9UNGlK9c0fL",
+        "_blank"
+    );
+});
+</script>
+
+</body>
+</html>

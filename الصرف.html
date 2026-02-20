@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reading Comprehension Quiz</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            background: #1e1e2e;
+            color: white;
+        }
+        .container {
+            width: 95%;
+            max-width: 1200px;
+            background: #282a36;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.5);
+            text-align: left;
+        }
+        .question {
+            font-weight: bold;
+            font-size: 22px;
+            margin-bottom: 15px;
+        }
+        .options label {
+            display: block;
+            padding: 10px;
+        }
+        .btn {
+            background: #ff5555;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            cursor: pointer;
+            border-radius: 5px;
+            margin-top: 20px;
+            font-size: 18px;
+            display: block;
+        }
+        .btn:hover {
+            background: #ff79c6;
+        }
+        .result-screen {
+            display: none;
+            background: #44475a;
+            padding: 30px;
+            border-radius: 10px;
+            text-align: center;
+            width: 100%;
+        }
+        #timer {
+            font-size: 22px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+      
+        .author {
+    font-size: 12px;
+    color: #bbb;
+    text-align: center;
+    position: absolute;
+    top: 10px;
+    width: 100%;
+    font-weight: bold;
+}
+
+
+
+    </style>
+</head>
+<body>
+    <div class="container" id="startScreen">
+        <h1>📘 Tanta Drainage Training Center
+
+</h1>
+        <h2>Computer  Test</h2>
+        <p>Enter Your Name: <input type="text" id="traineeName"></p>
+        <p>Enter Your Phone Number: <input type="text" id="traineePhone"></p>
+        <p>Enter Password: <input type="password" id="password"></p>
+        <button class="btn" onclick="startQuiz()">Start Quiz</button>
+    </div>
+
+    <div class="container" id="quizContainer" style="display: none;">
+        <h2 id="quizTitle">Reading Comprehension Quiz</h2>
+        <p class="author">Created by: Ahmed Amer</p>
+        <p>Date: <span id="date"></span></p>
+        <p id="timer">Time Remaining: 30:00</p>
+        <div id="passage">
+            <h3></h3>
+            <p>
+                <strong>
+
+                </strong><br>
+                
+                    
+                    </p>
+                        </div>
+        <div id="quiz"></div>
+    </div>
+    
+    <div class="result-screen" id="resultScreen" style="display: none;">
+        <h2>Test Result</h2>
+        <p class="author">Created by: Ahmed Amer</p>
+        <p><strong>Name:</strong> <span id="resultName"></span></p>
+        <p><strong>Phone Number:</strong> <span id="resultPhone"></span></p>
+        <p><strong>Test Date:</strong> <span id="resultDate"></span></p>
+        <p><strong>Start Time:</strong> <span id="resultStartTime"></span></p>
+        <p><strong>Time Taken:</strong> <span id="resultTime"></span></p>
+        <p><strong>Score:</strong> <span id="resultScore"></span></p>
+    </div>
+    
+    <script>
+        document.getElementById("date").innerText = new Date().toLocaleDateString("en-US");
+    
+        const trueFalseQuestions = [
+
+];
+
+    
+const questions = [
+  {
+    q: "ما هو الهدف الأساسي من تقييم الأثر بعد تأهيل الأراضي بشبكات صرف مغطى؟",
+    a: "b",
+    options: [
+      "زيادة نسبة الملوحة في التربة",
+      "تحديد كفاءة نظام الصرف وتحسين إدارة المياه",
+      "تقليل إنتاجية المحاصيل",
+      "زيادة منسوب المياه الجوفية"
+    ]
+  },
+  {
+    q: "أثناء تصميم نظام صرف، لاحظت أن منحنى التصرف مقابل الوقت يُظهر ذروة ثم هبوطًا سريعًا. ما هو التفسير الأكثر ذكاءً؟",
+    a: "b",
+    options: [
+      "هناك فاصل في الخط أدى إلى تسرب",
+      "تربة الموقع ذات نفاذية عالية في الطبقة العليا",
+      "منسوب الماء الجوفي كان منخفضًا منذ البداية",
+      "تم تنفيذ الصرف في موسم جاف"
+    ]
+  },
+  {
+    q: "لماذا لا يمكن الاعتماد فقط على معدل التصرف لتقييم كفاءة المصرف؟",
+    a: "d",
+    options: [
+      "لأنه لا يعكس نوعية المياه المصروفة",
+      "لأنه يتغير بتغير المناخ",
+      "لأنه لا يدل على عمق الصرف الفعلي",
+      "لأنه قد يكون عاليًا ولكن غير منتظم أو متقطع"
+    ]
+  },
+  {
+    q: "أي خيار يعكس استخدامًا ذكيًا لنظام الصرف المغطى في التكيف مع تغير المناخ؟",
+    a: "b",
+    options: [
+      "تصريف المياه الزائدة فقط",
+      "الحفاظ على منسوب ماء أرضي مرن حسب الموسم",
+      "إعادة استخدام مياه الصرف في الري",
+      "استخدام المصارف لنقل المياه إلى أماكن أخرى"
+    ]
+  },
+  {
+    q: "لماذا تُعتبر المصارف المغطاة أكثر فاعلية في الأراضي ذات المحاصيل الحقلية مقارنة بالبساتين؟",
+    a: "d",
+    options: [
+      "لأن عمق الجذور في الحقول أقل",
+      "لأن البساتين تحتاج مياه أكثر",
+      "لأن التربة تحت البساتين تكون طينية دائمًا",
+      "لأن التغير في مستوى الماء الأرضي يؤثر أسرع على المحاصيل الحقلية"
+    ]
+  },
+  {
+    q: "في مزرعة تستخدم الصرف المغطى، وجد أن كمية المياه المستخدمة في الري أعلى بعد تثبيت النظام. ما هو السبب الأذكى لذلك؟",
+    a: "b",
+    options: [
+      "الفقد بالتبخر ازداد",
+      "جذور النباتات أصبحت أعمق فتحتاج ماء أكثر",
+      "التربة فقدت احتفاظها بالماء بسبب التصريف",
+      "المزارع يروي أكثر بسبب سهولة التربة المفلوحة"
+    ]
+  },
+  {
+    q: "إذا أردت التأكد من أن فلتر المصرف يؤدي وظيفته بعد 3 سنوات من التركيب، ما المؤشر الأذكى الذي يمكن مراقبته؟",
+    a: "d",
+    options: [
+      "تصرف المصرف",
+      "نقاء المياه المصروفة",
+      "زمن بدء خروج الماء بعد الري",
+      "التغير في توزيع الأملاح على العمق"
+    ]
+  },
+  {
+    q: "أحد أسباب فشل مشاريع الصرف المغطى على المدى الطويل هو:",
+    a: "b",
+    options: [
+      "زيادة كميات مياه الرى المطبقة",
+      "سوء صيانة الشبكة وعدم تنظيف البيارات",
+      "ارتفاع جودة المواد المستخدمة",
+      "كثافة التربة الجيدة"
+    ]
+  },
+  {
+    q: "في تقييم الأثر البيئي لمشروع صرف مغطي، أي من التالي يصنف كتأثير غير مباشر؟",
+    a: "b",
+    options: [
+      "انخفاض منسوب المياه الجوفية",
+      "تدهور التنوع البيولوجي بسبب جفاف البرك",
+      "زيادة ملوحة التربة",
+      "نقص إنتاجية المحصول مباشرة بعد التنفيذ"
+    ]
+  },
+  {
+    q: "في حالة ملاحظة ركود مياه في مناطق معينة رغم وجود شبكة صرف مغطى جديدة، فإن السبب الأكثر ترجيحًا فى رأيك هو:",
+    a: "b",
+    options: [
+      "زيادة كميات مياه الرى",
+      "انسداد في خطوط الصرف أو عيوب في التصميم",
+      "انخفاض درجات الحرارة",
+      "مشكلة ترجع لسوء العمليات الزراعية"
+    ]
+  },
+
+  {
+    q: "يستخدم نظام الصرف المغطى أساسًا لخفض ___________ في التربة بهدف تحسين التهوية ونمو النبات.",
+    a: "منسوب الماء الأرضي",
+    options: ["مستوى الخصوبة", "منسوب الماء الأرضي", "معدل التبخر", "درجة حرارة التربة"]
+  },
+  {
+    q: "من العوامل الرئيسية المؤثرة في تصميم شبكة الصرف المغطى: ___________ التربة، و___________ الأمطار، و___________ المحصول.",
+    a: "نفاذية التربة، وكمية الأمطار، ونوع المحصول",
+    options: [
+      "ملوحة التربة، ومعدل الرطوبة، ونوع البذور",
+      "نفاذية التربة، وكمية الأمطار، ونوع المحصول",
+      "نوع الأسمدة، ودرجة الحرارة، ومعدل الري",
+      "كثافة النبات، وطبيعة الأرض، ونوع السماد"
+    ]
+  },
+  {
+    q: "الفرق بين الصرف السطحي والصرف المغطى هو، الأول يُستخدم لتصريف __________، أما الثاني فيُستخدم لتصريف __________.",
+    a: "المياه السطحية - المياه التحت سطحية الزائدة",
+    options: [
+      "الرطوبة - التربة",
+      "المياه السطحية - المياه التحت سطحية الزائدة",
+      "الأملاح - العناصر الغذائية",
+      "الهواء - المياه السائلة"
+    ]
+  },
+  {
+    q: "من وظائف الفلتر حول أنبوب المصرف المغطى أنه يمنع __________ التربة إلى داخل الأنبوب ويُحافظ على __________ التدفق.",
+    a: "دخول دقائق - استمرارية",
+    options: [
+      "تسرب الماء - بطء",
+      "دخول دقائق - استمرارية",
+      "تصريف الأملاح - تذبذب",
+      "تراكم الجذور - انخفاض"
+    ]
+  },
+  {
+    q: "يستخدم جهاز ___________ لقياس منسوب الماء الأرضي في حقول الصرف المغطى.",
+    a: "البيزوميتر – البئر السطحى",
+    options: [
+      "الثرمومتر",
+      "الهيدروميتر",
+      "البيزوميتر – البئر السطحى",
+      "المانوميتر"
+    ]
+  },
+  {
+    q: "المسافة بين خطوط الصرف المغطى تتحدد عادةً بناءً على معامل __________ للتربة.",
+    a: "النفاذية",
+    options: ["الملوحة", "الحرارة", "النفاذية", "الكثافة"]
+  },
+  {
+    q: "في الأراضي الطينية، تُفضل المصارف بعمق __________ ومسافة __________، مقارنة بالأراضي الرملية.",
+    a: "1.20 – 1.50 م –  30 م تقريبا",
+    options: [
+      "0.50 م – 10 م تقريبًا",
+      "2 م – 70 م تقريبًا",
+      "1.20 – 1.50 م –  30 م تقريبا",
+      "0.80 م – 20 م تقريبًا"
+    ]
+  },
+  {
+    q: "من علامات انسداد المصرف المغطى: ارتفاع __________، وانخفاض __________، وظهور بقع __________ في الحقل.",
+    a: "منسوب الماء الأرضي - التصرف الخارج - مشبعة أو ملحية",
+    options: [
+      "معدل التبخر - الرطوبة - خضراء",
+      "منسوب الماء الأرضي - التصرف الخارج - مشبعة أو ملحية",
+      "مستوى الحموضة - النيتروجين - قاحلة",
+      "درجة الحرارة - الرطوبة - صفراء"
+    ]
+  },
+  {
+    q: "أحد مؤشرات النجاح في مشروعات الصرف المغطى هو تحسن __________ مع مرور الوقت واستقرار منسوب __________.",
+    a: "انتاجية المحصول – الماء الارضى",
+    options: [
+      "درجة الحرارة – المياه السطحية",
+      "الرطوبة – نسبة الأسمدة",
+      "انتاجية المحصول – الماء الارضى",
+      "معدل التبخر – العمق"
+    ]
+  },
+  {
+    q: "من العوامل المؤثرة على فعالية شبكة الصرف: نوع التربة، تصميم الشبكة، ووجود نظام _______ فعال.",
+    a: "صيانة",
+    options: ["تهوية", "صيانة", "إضاءة", "ري"]
+  },
+  {
+    q: "يؤدي التصريف المفرط إلى تقليل قدرة التربة على الاحتفاظ بـ __________ وزيادة خطر __________ في المناطق الهشة بيئيًا.",
+    a: "المغذيات - التصحر",
+    options: [
+      "الماء - الفيضانات",
+      "المغذيات - التصحر",
+      "الهواء - الانجراف",
+      "الأملاح - الانهيار"
+    ]
+  },
+  {
+    q: "من أهم مؤشرات نجاح نظام الصرف المغطى هو تحسّن _______ وزيادة إنتاجية المحاصيل.",
+    a: "التهوية فى التربة",
+    options: [
+      "مستوى المياه",
+      "درجة الحرارة",
+      "التهوية فى التربة",
+      "ملوحة السطح"
+    ]
+  },
+  {
+    q: "التقييم المتكامل لنظام الصرف يجب أن يشمل عناصر: الأداء الهيدروليكي، التأثير البيئي، و__________ و__________ الاجتماعي.",
+    a: "الجدوى الاقتصادية والقبول",
+    options: [
+      "الجدوى الاقتصادية والقبول",
+      "التكلفة والصيانة",
+      "المردود الإنتاجي والربحية",
+      "الوقت والفعالية"
+    ]
+  },
+  {
+    q: "لربط شبكات الري والصرف بكفاءة، يجب مراعاة توازن الاحتياجات المائية للنبات و__________ خلال دورة النمو.",
+    a: "تصريف المياه الزائدة",
+    options: [
+      "زيادة التسميد",
+      "تصريف المياه الزائدة",
+      "الري بالرش",
+      "التحكم في الحرارة"
+    ]
+  },
+  {
+    q: "في الإدارة المتكاملة لموارد المياه، يُعتبر الصرف المغطى أحد أدوات إدارة __________ في المناطق الزراعية.",
+    a: "الملوحة",
+    options: [
+      "الرياح",
+      "الفيضانات",
+      "الملوحة",
+      "الجفاف"
+    ]
+  }
+
+];
+
+
+
+
+    
+        let currentTFQuestion = 0;
+        let tfCorrectAnswers = 0;
+        let currentQuestion = 0;
+        let correctAnswers = 0;
+        let timeLeft = 1800;
+        let timerInterval;
+        let startTime;
+    
+        function startQuiz() {
+    let name = document.getElementById("traineeName").value.trim();
+    let phone = document.getElementById("traineePhone").value.trim();
+    let password = document.getElementById("password").value;
+
+    if (!name) {
+        alert("❗ برجاء إدخال الاسم.");
+        return;
+    }
+
+    if (!phone) {
+        alert("❗ برجاء إدخال رقم التليفون.");
+        return;
+    }
+
+    if (password !== "1234") {
+        alert("❌ كلمة المرور غير صحيحة! الرجاء المحاولة مرة أخرى.");
+        return;
+    }
+
+    document.getElementById("startScreen").style.display = "none";
+    document.getElementById("quizContainer").style.display = "block";
+    startTime = new Date();
+    startTimer();
+    loadTFQuestion();
+
+    // تشغيل وضع ملء الشاشة
+    let elem = document.documentElement;
+    if (elem.requestFullscreen) {
+        elem.requestFullscreen();
+    } else if (elem.mozRequestFullScreen) {
+        elem.mozRequestFullScreen();
+    } else if (elem.webkitRequestFullscreen) {
+        elem.webkitRequestFullscreen();
+    } else if (elem.msRequestFullscreen) {
+        elem.msRequestFullscreen();
+    }
+}
+
+
+    
+        function startTimer() {
+            timerInterval = setInterval(() => {
+                let minutes = Math.floor(timeLeft / 60);
+                let seconds = timeLeft % 60;
+                document.getElementById("timer").innerText = `Time Remaining: ${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+                if (timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    showResult();
+                }
+                timeLeft--;
+            }, 1000);
+        }
+    
+        function loadTFQuestion() {
+            let quizDiv = document.getElementById("quiz");
+            if (currentTFQuestion < trueFalseQuestions.length) {
+                let q = trueFalseQuestions[currentTFQuestion];
+                quizDiv.innerHTML = `<p class='question'>${q.q}</p>` +
+                    `<label><input type='radio' name='answer' value='true'> True</label>` +
+                    `<label><input type='radio' name='answer' value='false'> False</label>` +
+                    `<button class='btn' onclick='nextTFQuestion()'>Next</button>`;
+            } else {
+                document.getElementById("passage").style.display = "none";
+                document.getElementById("quizTitle").innerText = "Choose the correct answer from a, b, c or d: (44 marks)";
+                loadQuestion();
+            }
+        }
+    
+        function nextTFQuestion() {
+            let selectedAnswer = document.querySelector("input[name='answer']:checked");
+            if (!selectedAnswer) return;
+            if (selectedAnswer.value === trueFalseQuestions[currentTFQuestion].a) {
+                tfCorrectAnswers++;
+            }
+            currentTFQuestion++;
+            loadTFQuestion();
+        }
+    
+        function loadQuestion() {
+            let quizDiv = document.getElementById("quiz");
+            let q = questions[currentQuestion];
+            quizDiv.innerHTML = `<p class='question'>${q.q}</p>` +
+                q.options.map((option, index) => `<label><input type='radio' name='answer' value='${String.fromCharCode(97 + index)}'> ${option}</label>`).join('') +
+                `<button class='btn' onclick='nextQuestion()'>${currentQuestion === questions.length - 1 ? "Finish" : "Next"}</button>`;
+        }
+    
+        function nextQuestion() {
+            let selectedAnswer = document.querySelector("input[name='answer']:checked");
+            if (!selectedAnswer) return;
+            if (selectedAnswer.value === questions[currentQuestion].a) {
+                correctAnswers++;
+            }
+            if (currentQuestion < questions.length - 1) {
+                currentQuestion++;
+                loadQuestion();
+            } else {
+                showResult();
+            }
+        }
+    
+let serverUrl = ""; // سيتم تحديثه تلقائيًا عند تحميل الصفحة
+
+// دالة لجلب رابط السيرفر المخزن في GitHub
+function fetchServerUrl() {
+fetch("https://raw.githubusercontent.com/etiqotwf/liveServer1/main/serverUrl.json")
+        .then(response => response.json())
+        .then(data => {
+            if (data.serverUrl) {
+                serverUrl = data.serverUrl;
+                console.log("✅ رابط السيرفر المحدث من GitHub:", serverUrl);
+            } else {
+                console.error("❌ لم يتم العثور على رابط السيرفر في المستودع.");
+                retryFetchServerUrl();
+            }
+        })
+        .catch(error => {
+            console.error("❌ خطأ في جلب رابط السيرفر من GitHub:", error);
+            retryFetchServerUrl();
+        });
+}
+
+// دالة لإعادة المحاولة عند الفشل
+function retryFetchServerUrl() {
+    if (retryCount < MAX_RETRIES) {
+        retryCount++;
+        console.log(`🔄 إعادة المحاولة (${retryCount}/${MAX_RETRIES}) بعد 3 ثوانٍ...`);
+        setTimeout(fetchServerUrl, 3000);
+    } else {
+        console.error("⛔ تم الوصول إلى الحد الأقصى من المحاولات، تعذر جلب رابط السيرفر.");
+    }
+}
+
+// تحميل رابط السيرفر عند فتح الصفحة
+fetchServerUrl();
+
+function showResult() {
+    clearInterval(timerInterval);
+
+    let endTime = new Date();
+    let timeTaken = Math.floor((endTime - startTime) / 1000);
+    let minutesTaken = Math.floor(timeTaken / 60);
+    let secondsTaken = timeTaken % 60;
+
+    let name = document.getElementById("traineeName").value || "Unknown";
+    let phone = document.getElementById("traineePhone").value || "Unknown";
+    let date = new Date().toLocaleDateString("en-US");
+
+    let totalQuestions = trueFalseQuestions.length + questions.length;
+    let totalCorrectAnswers = tfCorrectAnswers + correctAnswers;
+
+    let resultData = {
+    name: name,
+    phone: phone,
+    date: date,
+    startTime: startTime.toLocaleString("en-GB", {
+        timeZone: "Africa/Cairo",
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+        hour: "numeric",
+        minute: "numeric",
+        second: "numeric",
+        hour12: true
+    }),
+    timeTaken: `${minutesTaken} min ${secondsTaken} sec`,
+    score: `${totalCorrectAnswers} / ${totalQuestions}`
+};
+
+
+    // إرسال البيانات إلى السيرفر إذا تم تحميل الرابط
+    if (!serverUrl) {
+        console.log("⏳ انتظار تحميل رابط السيرفر...");
+        fetchServerUrl().then(() => {
+            if (serverUrl) {
+                sendDataToServer(resultData);
+            } else {
+                console.error("❌ لم يتم تحميل رابط السيرفر بعد.");
+                alert("⚠️ تعذر إرسال البيانات! تأكد من اتصال الإنترنت وأعد المحاولة.");
+            }
+        });
+    } else {
+        sendDataToServer(resultData);
+    }
+
+    // إرسال البيانات إلى Google Sheets
+    sendDataToGoogleSheet(resultData);
+
+    // تحديث واجهة المستخدم
+    document.getElementById("resultName").innerText = name;
+    document.getElementById("resultPhone").innerText = phone;
+    document.getElementById("resultDate").innerText = date;
+    document.getElementById("resultStartTime").innerText = startTime.toLocaleTimeString();
+    document.getElementById("resultTime").innerText = `${minutesTaken} min ${secondsTaken} sec`;
+    document.getElementById("resultScore").innerText = `${totalCorrectAnswers} / ${totalQuestions}`;
+
+    document.getElementById("quizContainer").style.display = "none";
+    document.getElementById("resultScreen").style.display = "block";
+}
+
+// إرسال البيانات إلى السيرفر الأساسي
+function sendDataToServer(resultData) {
+    fetch(`${serverUrl}/submit`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(resultData)
+    })
+    .then(response => response.json())
+    .then(data => console.log("✅ تم الإرسال إلى السيرفر بنجاح:", data))
+    .catch(error => console.error("❌ خطأ أثناء الإرسال إلى السيرفر:", error));
+}
+
+
+
+
+
+function sendDataToGoogleSheet(resultData) {
+    const formData = new URLSearchParams();
+    formData.append("name", resultData.name);
+    formData.append("phone", resultData.phone);
+    formData.append("date", resultData.date);
+    formData.append("startTime", resultData.startTime);
+    formData.append("timeTaken", resultData.timeTaken);
+    formData.append("score", resultData.score);
+
+    fetch("https://script.google.com/macros/s/AKfycbzZQ92N6t_ZJZYpthxtkdPXtCEeZDy7LYjSLxLw3_1er3U7nvrVEmFcTw2ehAwA7APCeg/exec", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+        },
+        body: formData.toString(),
+    })
+    .then(response => response.text())
+    .then(responseText => {
+        console.log("✅ تم الإرسال إلى Google Sheet:", responseText);
+    })
+    .catch(error => {
+        console.error("❌ خطأ في الإرسال إلى Google Sheet:", error);
+    });
+}
+
+
+
+
+    </script>
+    </body>
+</html>

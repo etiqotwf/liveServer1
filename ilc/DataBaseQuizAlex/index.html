@@ -1,0 +1,1473 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>نظام تسجيل المتدربين</title>
+
+<!-- مكتبات خارجية -->
+<script src="xlsx.full.min.js"></script>
+<script src="chart.js"></script>
+
+<style>
+/* ====== عام ====== */
+
+body {
+  font-family: 'Cairo', "Segoe UI", Tahoma, Arial, sans-serif;
+  background: linear-gradient(135deg, #1e1e2f, #2c3e50);
+  color: #fff;
+  margin: 0;
+  padding: 20px;
+  direction: rtl;
+}
+
+.container {
+  width: 95%;
+  max-width: 1200px;
+  margin: auto;
+  background: #1f2937;
+  padding: 30px;
+  border-radius: 20px;
+  box-shadow: 0 12px 40px rgba(0,0,0,0.5);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.container:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 16px 60px rgba(0,0,0,0.6);
+}
+
+/* ====== العناوين ====== */
+h2 {
+  text-align: center;
+  font-size: 40px;
+  font-weight: 900;
+  color: #ff7f50; /* لون برتقالي */
+  margin: 15px 0 25px 0;
+  letter-spacing: 1px;
+  text-shadow: 2px 2px 8px rgba(0,0,0,0.5);
+}
+
+@media (max-width: 768px) {
+  h2 {
+    font-size: 32px;
+  }
+}
+
+/* ====== الفورم والمدخلات ====== */
+input, select, button {
+  font-family: inherit;
+  font-size: 20px;
+  padding: 12px 16px;
+  border-radius: 12px;
+  border: none;
+  outline: none;
+  transition: all 0.3s ease;
+}
+
+input:focus, select:focus {
+  box-shadow: 0 0 12px #ff7f50;
+  border: 1px solid #ff7f50;
+}
+
+/* ====== أزرار ====== */
+button {
+  cursor: pointer;
+  font-weight: 900;
+  border-radius: 12px;
+  padding: 14px 28px;
+  transition: all 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 18px;
+  text-transform: uppercase;
+}
+
+button:hover {
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+}
+
+/* ألوان الأزرار */
+.btn-primary {
+  background: linear-gradient(45deg, #ff7f50, #ff6347);
+  color: #fff;
+}
+
+.btn-primary:hover {
+  background: linear-gradient(45deg, #ff6347, #ff4500);
+}
+
+.btn-danger {
+  background: linear-gradient(45deg, #ff4d4d, #ff1a1a);
+  color: #fff;
+}
+
+.btn-danger:hover {
+  background: linear-gradient(45deg, #ff1a1a, #cc0000);
+}
+
+#traineesTable {
+  display: none;
+  margin-top: 35px;
+  overflow-x: auto;
+  border-radius: 16px;
+  box-shadow: 0 12px 36px rgba(0,0,0,0.5);
+  background: #ffffff; /* هنا غيرنا الخلفية للابيض */
+  padding: 25px;
+  color: #1c1c1c; /* نص داكن للوضوح */
+}
+
+#traineesTable h3 {
+  text-align: center;
+  font-size: 32px;
+  font-weight: 800;
+  margin-bottom: 20px;
+  color: #ff7f50; /* برتقالي للعناوين */
+  text-shadow: none; /* إزالة الظل إذا ظهر على الأبيض */
+}
+
+#traineesTable th {
+  background: #1e3a8a; /* كحلي غامق */
+  color: #ffffff;       /* نص أبيض واضح */
+  font-weight: 800;
+  text-shadow: 1px 1px 3px rgba(0,0,0,0.3); /* تأثير بروز خفيف للنص */
+  box-shadow: inset 0 -3px 6px rgba(255,255,255,0.2); /* تأثير بروز داخلي */
+  border-bottom: 2px solid #0f1f5e; /* خط فاصل يبرز العنوان */
+}
+
+
+
+#traineesTable td {
+  background: #ffffff; /* كل الصفوف بالابيض */
+  color: #1c1c1c; /* نص داكن للوضوح */
+  font-weight: 600;
+    font-weight: bold;   /* كل النصوص بولد */
+      font-size: 19px;     /* تكبير الخط */
+
+
+}
+
+
+
+/* ====== البحث ====== */
+.search-bar {
+  display: flex;
+  justify-content: center;
+  margin: 25px 0;
+  gap: 0;
+}
+
+#searchInput {
+  flex: 1;
+  max-width: 400px;
+  border-radius: 12px 0 0 12px;
+  font-size: 20px;
+  padding: 12px;
+}
+
+#searchBtn {
+  border-radius: 0 12px 12px 0;
+  background: #ff7f50;
+  color: #fff;
+  font-weight: 900;
+  font-size: 18px;
+}
+
+/* ====== أزرار التحكم ====== */
+.buttons-row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+/* responsive */
+@media (max-width: 768px) {
+  .buttons-row {
+    flex-direction: column;
+  }
+
+  #searchInput {
+    width: 70%;
+  }
+
+  #searchBtn {
+    width: 30%;
+  }
+}
+
+/* ====== Fullscreen effect ====== */
+html, body {
+  height: 100%;
+}
+</style>
+
+</head>
+<body>
+
+<div class="container">
+  <h2>🌍 Drainage Training Center - Alexandria 🌍
+</h2>
+  <h2>🔹 Trainees Database Management Quiz Form </h2>
+
+  <!-- Search -->
+  <div class="search-bar">
+    <input type="text" id="searchInput" placeholder="ابحث بالاسم، الدورة، التاريخ، ...">
+    <button id="searchBtn" onclick="searchTrainees()" class="btn btn-primary">🔍 بحث</button>
+  </div>
+
+  <!-- Buttons -->
+  <div class="buttons-row">
+    <button class="btn btn-primary" onclick="backupIndexedDB()">🔄 Backup</button>
+    <button class="btn btn-primary" onclick="document.getElementById('restoreFile').click()">♻️ Restore</button>
+    <input type="file" id="restoreFile" style="display:none;" onchange="restoreIndexedDB(event)" accept=".json" />
+    <button class="btn btn-primary" onclick="refreshData()">🔄 Refresh</button>
+    <button class="btn btn-primary" onclick="toggleAllTrainees()">🖨️ Print</button>
+  </div>
+
+  <!-- Table -->
+  <div id="traineesTable">
+    <h3>🧑‍🎓📊 Search Trainees Table</h3>
+    <table id="allTrainees">
+      <thead>
+        <tr>
+          <th>🕒 تاريخ ووقت التسجيل</th>
+          <th>📝 اسم الاختبار</th>
+          <th>👤 الاسم</th>
+          <th>📞 الهاتف</th>
+          <th>⏰ وقت البدء</th>
+          <th>⏳ المدة المستغرقة</th>
+          <th>🎯 النتيجة</th>
+          <th>🔑 كود المتدرب</th>
+          <th>🗑️ إجراء</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </div>
+</div>
+
+
+
+
+
+<script>
+  // Fullscreen on click
+  document.addEventListener("click", () => {
+    const elem = document.documentElement;
+    if (!document.fullscreenElement) {
+      elem.requestFullscreen?.() || elem.webkitRequestFullscreen?.() || elem.msRequestFullscreen?.();
+    }
+  });
+</script>
+
+</body>
+</html>
+
+
+
+  <script>
+  let db;
+
+function syncWithGoogleSheets() {
+  const txCheck = db.transaction("trainees", "readonly");
+  const storeCheck = txCheck.objectStore("trainees");
+
+  const countRequest = storeCheck.count();
+
+  countRequest.onsuccess = function () {
+    const count = countRequest.result;
+    const lastIndex = (count === 0) ? 0 : (parseInt(localStorage.getItem("lastSyncedIndex")) || 0);
+
+    fetch(`https://script.google.com/macros/s/AKfycbyE5pF9LROkISrJcHTBxKZTnArhbO-ghgM2s1gzKJ_-dmrxIGIKxkj1B_zaz6I0wbbL/exec`)
+      .then(response => response.json())
+      .then(data => {
+        if (!Array.isArray(data)) {
+          console.error("البيانات غير صالحة");
+          return;
+        }
+
+        const newData = data.slice(lastIndex);
+        if (newData.length === 0) {
+          console.log("لا توجد بيانات جديدة.");
+          return;
+        }
+
+        const tx = db.transaction("trainees", "readwrite");
+        const store = tx.objectStore("trainees");
+
+        newData.forEach(row => {
+  const newRecord = {
+    datetime: row[0] || "",      // 📅 التاريخ
+    course: row[1] || "",        // 📘 اسم الدورة
+    name: row[2] || "",          // 🧑‍🎓 الاسم
+    phone: row[3] || "",         // 📞 الهاتف
+    startTime: row[4] || "",     // ⏰ وقت البدء
+    timeTaken: row[5] || "",     // ⏳ المدة
+    score: row[6] || "",         // 🎯 النتيجة
+    traineeCode: row[7] || ""    // 🔑 كود المتدرب
+  };
+
+
+          store.add(newRecord);
+        });
+
+        tx.oncomplete = () => {
+          console.log("✅ تمت مزامنة البيانات");
+          localStorage.setItem("lastSyncedIndex", lastIndex + newData.length);
+          loadLatestData?.();
+        };
+      })
+      .catch(err => {
+        console.error("❌ فشل في جلب البيانات من Google Sheets", err);
+      });
+  };
+}
+
+
+function openDB() {
+  const request = indexedDB.open("TraineeQuizDBIlc", 1);
+
+  request.onupgradeneeded = function (e) {
+    db = e.target.result;
+    if (!db.objectStoreNames.contains("trainees")) {
+      db.createObjectStore("trainees", { keyPath: "id", autoIncrement: true });
+    }
+  };
+
+ request.onsuccess = function (e) {
+  db = e.target.result;
+
+  // أول مرة: مزامنة من Google Sheets إلى IndexedDB
+  syncWithGoogleSheets();
+
+  // باقي الوظائف تعمل من IndexedDB بعد المزامنة
+  // مفيش داعي ننادي دوال التحميل مباشرة لأنها هتتنادى داخل tx.oncomplete بعد ما يتم التحميل
+};
+
+
+
+
+  request.onerror = function () {
+    alert("فشل في فتح قاعدة البيانات");
+  };
+}
+
+function loadDepartmentsFromEmailField() {
+  const tx = db.transaction("trainees", "readonly");
+  const store = tx.objectStore("trainees");
+  const request = store.getAll();
+
+  request.onsuccess = function () {
+    const allRecords = request.result;
+    const departments = new Set();
+
+    allRecords.forEach(record => {
+      if (record.email && record.email.trim() !== "") {
+        departments.add(record.email.trim());
+      }
+    });
+
+    const datalist = document.getElementById("departments");
+    datalist.innerHTML = "";
+
+    departments.forEach(dep => {
+      const option = document.createElement("option");
+      option.value = dep;
+      datalist.appendChild(option);
+    });
+  };
+}
+
+function loadQualificationsFromDB() {
+  const tx = db.transaction("trainees", "readonly");
+  const store = tx.objectStore("trainees");
+  const request = store.getAll();
+
+  request.onsuccess = function () {
+    const allRecords = request.result;
+    const qualifications = new Set();
+
+    allRecords.forEach(record => {
+      if (record.qualification && record.qualification.trim() !== "") {
+        qualifications.add(record.qualification.trim());
+      }
+    });
+
+    const datalist = document.getElementById("qualifications");
+    datalist.innerHTML = "";
+
+    qualifications.forEach(q => {
+      const option = document.createElement("option");
+      option.value = q;
+      datalist.appendChild(option);
+    });
+  };
+}
+
+function loadJobsFromDB() {
+  const tx = db.transaction("trainees", "readonly");
+  const store = tx.objectStore("trainees");
+  const request = store.getAll();
+
+  request.onsuccess = function () {
+    const allRecords = request.result;
+    const jobs = new Set();
+
+    allRecords.forEach(record => {
+      if (record.job && record.job.trim() !== "") {
+        jobs.add(record.job.trim());
+      }
+    });
+
+    const datalist = document.getElementById("jobs");
+    datalist.innerHTML = "";
+
+    jobs.forEach(job => {
+      const option = document.createElement("option");
+      option.value = job;
+      datalist.appendChild(option);
+    });
+  };
+}
+
+
+
+function loadCoursesFromDB() {
+  const tx = db.transaction("trainees", "readonly");
+  const store = tx.objectStore("trainees");
+  const request = store.getAll();
+
+  request.onsuccess = function () {
+    const allRecords = request.result;
+    const courses = new Set();
+
+    allRecords.forEach(record => {
+      if (record.course && record.course.trim() !== "") {
+        courses.add(record.course.trim());
+      }
+    });
+
+    const datalist = document.getElementById("courses");
+    datalist.innerHTML = "";
+
+    courses.forEach(course => {
+      const option = document.createElement("option");
+      option.value = course;
+      datalist.appendChild(option);
+    });
+  };
+}
+
+
+function loadNamesFromDB() {
+  const tx = db.transaction("trainees", "readonly");
+  const store = tx.objectStore("trainees");
+  const request = store.getAll();
+
+  request.onsuccess = function () {
+    const allRecords = request.result;
+    const names = new Set();
+
+    allRecords.forEach(record => {
+      if (record.name && record.name.trim() !== "") {
+        names.add(record.name.trim());
+      }
+    });
+
+    const datalist = document.getElementById("names");
+    datalist.innerHTML = "";
+
+    names.forEach(name => {
+      const option = document.createElement("option");
+      option.value = name;
+      datalist.appendChild(option);
+    });
+  };
+}
+
+
+function loadPhonesFromDB() {
+  const tx = db.transaction("trainees", "readonly");
+  const store = tx.objectStore("trainees");
+  const request = store.getAll();
+
+  request.onsuccess = function () {
+    const allRecords = request.result;
+    const phones = new Set();
+
+    allRecords.forEach(record => {
+      if (record.phone && record.phone.trim() !== "") {
+        phones.add(record.phone.trim());
+      }
+    });
+
+    const datalist = document.getElementById("phones");
+    datalist.innerHTML = "";
+
+    phones.forEach(phone => {
+      const option = document.createElement("option");
+      option.value = phone;
+      datalist.appendChild(option);
+    });
+  };
+}
+
+
+
+
+  function submitForm() {
+    const now = new Date();
+    const datetime = now.toLocaleString('ar-EG', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit'
+    });
+
+    const data = {
+      name: document.getElementById("name").value,
+      phone: document.getElementById("phone").value,
+      email: document.getElementById("email").value,
+      qualification: document.getElementById("qualification").value,
+      job: document.getElementById("job").value,
+      course: document.getElementById("course").value,
+      duration: document.getElementById("duration").value,
+      type: document.getElementById("type").value,
+      datetime: datetime
+    };
+
+    document.getElementById("actionButtons").style.display = "flex";
+
+
+    const tx = db.transaction("trainees", "readwrite");
+    const store = tx.objectStore("trainees");
+    const req = store.add(data);
+
+    req.onsuccess = () => showData(data);
+    req.onerror = () => alert("خطأ أثناء الحفظ");
+  }
+
+ function showData(data) {
+  document.getElementById("resName").innerText = data.name || "";
+  document.getElementById("resPhone").innerText = data.phone || "";
+  document.getElementById("resDepartment").innerText = data.department || "";
+  document.getElementById("resQualification").innerText = data.qualification || "";
+  document.getElementById("resJob").innerText = data.job || "";
+  document.getElementById("resCourse").innerText = data.course || "";
+  document.getElementById("resDuration").innerText = (data.courseStart || "") + " إلى " + (data.courseEnd || "");
+  document.getElementById("resType").innerText = data.residency || "";
+  document.getElementById("resDatetime").innerText = data.datetime || "";
+
+  // الحقول الإضافية الخاصة بالتقييمات
+  document.getElementById("resTrainerRating").innerText = data.trainerRating || "";
+  document.getElementById("resContentRating").innerText = data.contentRating || "";
+  document.getElementById("resOrganizationRating").innerText = data.organizationRating || "";
+  document.getElementById("resResidencyRating").innerText = data.residencyRating || "";
+  document.getElementById("resComments").innerText = data.comments || "";
+
+  // إظهار شاشة النتيجة وإخفاء نموذج التسجيل
+  document.getElementById("registrationForm").style.display = "none";
+  document.getElementById("resultScreen").style.display = "block";
+}
+
+
+
+
+  function loadLatestData() {
+    const tx = db.transaction("trainees", "readonly");
+    const store = tx.objectStore("trainees");
+    const req = store.openCursor(null, 'prev');
+
+    req.onsuccess = e => {
+      const cursor = e.target.result;
+      if (cursor) {
+        const d = cursor.value;
+        document.getElementById("name").value = d.name;
+        document.getElementById("phone").value = d.phone;
+        document.getElementById("email").value = d.email;
+        document.getElementById("qualification").value = d.qualification;
+        document.getElementById("job").value = d.job;
+        document.getElementById("course").value = d.course;
+        document.getElementById("duration").value = d.duration;
+        document.getElementById("type").value = d.type;
+      }
+    }
+  }
+
+  function exportToExcel() {
+  const tx = db.transaction("trainees", "readonly");
+  const store = tx.objectStore("trainees");
+
+  const headers = [
+  "📅 التاريخ",
+  "📘 اسم الدورة",
+  "🧑‍🎓 الاسم",
+  "📞 الهاتف",
+  "⏰ وقت البدء",
+  "⏳ المدة",
+  "🎯 النتيجة"
+];
+
+  const rows = [headers];
+  const allData = [];
+
+  store.openCursor().onsuccess = function (e) {
+    const cursor = e.target.result;
+    if (cursor) {
+      const d = cursor.value;
+
+      // تحليل النتيجة "39 / 50"
+      let score = 0;
+      let total = 100;
+      let percent = "";
+      let grade = "";
+
+      if (typeof d.score === "string" && d.score.includes("/")) {
+        const parts = d.score.split("/").map(x => parseFloat(x.trim()));
+        if (parts.length === 2 && !isNaN(parts[0]) && !isNaN(parts[1])) {
+          score = parts[0];
+          total = parts[1];
+
+          const p = (score / total) * 100;
+          percent = p.toFixed(1) + "%";
+
+          if (p < 50) grade = "راسب";
+          else if (p < 65) grade = "مقبول";
+          else if (p < 75) grade = "جيد";
+          else if (p < 85) grade = "جيد جدًا";
+          else grade = "امتياز";
+        }
+      }
+
+      allData.push([
+        d.datetime || "",
+        d.name || "",
+        d.phone || "",
+        d.startTime || "",
+        d.timeTaken || "",
+        d.score || "",
+        percent || "",
+        grade || ""
+      ]);
+
+      cursor.continue();
+    } else {
+      const data = [...rows, ...allData];
+      const ws = XLSX.utils.aoa_to_sheet(data);
+
+      // تنسيقات
+      const headerStyle = {
+        font: { bold: true, sz: 14, color: { rgb: "FFFFFF" } },
+        fill: { fgColor: { rgb: "4F81BD" } },
+        alignment: { horizontal: "center", vertical: "center" },
+        border: {
+          top: { style: "thin", color: { auto: 1 } },
+          bottom: { style: "thin", color: { auto: 1 } },
+          left: { style: "thin", color: { auto: 1 } },
+          right: { style: "thin", color: { auto: 1 } }
+        }
+      };
+
+      const dataStyle = {
+        font: { sz: 12 },
+        alignment: { vertical: "center", wrapText: true },
+        border: {
+          top: { style: "thin", color: { auto: 1 } },
+          bottom: { style: "thin", color: { auto: 1 } },
+          left: { style: "thin", color: { auto: 1 } },
+          right: { style: "thin", color: { auto: 1 } }
+        }
+      };
+
+      const range = XLSX.utils.decode_range(ws["!ref"]);
+      for (let R = range.s.r; R <= range.e.r; ++R) {
+        for (let C = range.s.c; C <= range.e.c; ++C) {
+          const cell_address = { c: C, r: R };
+          const cell_ref = XLSX.utils.encode_cell(cell_address);
+          if (!ws[cell_ref]) continue;
+          ws[cell_ref].s = (R === 0) ? headerStyle : dataStyle;
+        }
+      }
+
+      // عرض الأعمدة تلقائيًا
+      const colWidths = data[0].map((col, i) => {
+        let maxLen = col.length;
+        allData.forEach(row => {
+          if (row[i] && row[i].length > maxLen) {
+            maxLen = row[i].length;
+          }
+        });
+        return { wch: Math.min(Math.max(maxLen + 4, 12), 40) };
+      });
+      ws['!cols'] = colWidths;
+
+      const wb = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(wb, ws, "نتائج ICDL");
+      XLSX.writeFile(wb, "ICDL_Results.xlsx");
+    }
+  };
+
+  store.openCursor().onerror = function (e) {
+    alert("حدث خطأ أثناء تحميل البيانات للتصدير.");
+  };
+}
+
+
+  function refreshData() {
+  const dbName = "TraineeQuizDBIlc";
+
+  try {
+    // لو القاعدة مفتوحة في المتغير db نقفلها
+    if (typeof db !== "undefined" && db) {
+      db.close();
+    }
+  } catch (e) {
+    console.warn("لا يمكن إغلاق القاعدة الآن، ننتقل للحذف مباشرة.");
+  }
+
+  // تنفيذ الحذف
+  const deleteRequest = indexedDB.deleteDatabase(dbName);
+
+  deleteRequest.onsuccess = function () {
+    location.reload();
+  };
+
+  deleteRequest.onerror = function () {
+    alert("❌ خطأ أثناء حذف قاعدة البيانات.");
+  };
+
+  deleteRequest.onblocked = function () {
+    alert("⚠️ ما زالت قاعدة البيانات مفتوحة… أعد تحميل الصفحة وحاول مرة أخرى.");
+  };
+}
+
+
+  function toggleAllTrainees() {
+  const traineesTable = document.getElementById("traineesTable");
+
+  // إنشاء عنصر مؤقت لنسخ المحتوى
+  const tempDiv = document.createElement('div');
+  tempDiv.innerHTML = traineesTable.innerHTML;
+
+  // حذف كل عناوين h3 داخل النسخة المؤقتة
+  const h3s = tempDiv.querySelectorAll('h3');
+  h3s.forEach(h3 => h3.remove());
+
+  const tableHtml = tempDiv.innerHTML;
+
+  // هنا نجيب محتوى البوكسات الإحصائية
+  const statsBoxes = document.getElementById("statsBoxes");
+  const statsHtml = statsBoxes ? statsBoxes.innerHTML : '';
+
+  const printWindow = window.open('', '', 'width=900,height=600');
+
+  const currentDate = new Date().toLocaleDateString('ar-EG', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric'
+  });
+
+  printWindow.document.write(`
+    <html>
+      <head>
+        <title>طباعة جدول المتدربين</title>
+        <style>
+          body {
+            font-family: 'Arial', sans-serif;
+            direction: rtl;
+            padding: 20px;
+            background-color: #fff;
+            color: #000;
+          }
+          header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 10px;
+          }
+          .logo-container {
+            text-align: center;
+          }
+          .logo {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            object-fit: cover;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            display: block;
+            margin: 0 auto;
+          }
+          .logo-caption {
+            font-size: 12px;
+            font-weight: bold;
+            margin-top: 5px;
+            text-align: center;
+          }
+          .header-info {
+            flex-grow: 1;
+            margin-right: 20px;
+            text-align: center;
+          }
+          .center-title {
+            font-size: 20px;
+            font-weight: bold;
+            margin: 10px 0 5px 0;
+            border-bottom: 2px solid #000;
+            display: inline-block;
+            padding-bottom: 5px;
+          }
+          .date {
+            font-size: 14px;
+            color: #333;
+            text-align: left;
+            margin-top: 10px;
+          }
+          /* تنسيق البوكسات الإحصائية */
+          #statsBoxes {
+            margin-top: 15px;
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+          }
+          .stat-box {
+            border: 2px solid #4F81BD;
+            border-radius: 8px;
+            padding: 10px 15px;
+            font-weight: bold;
+            font-size: 16px;
+            background-color: #e7f0ff;
+            color: #2a4d8f;
+            min-width: 150px;
+            text-align: center;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+          }
+          table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+          }
+          th, td {
+            border: 1px solid #333;
+            padding: 8px;
+            text-align: center;
+            font-size: 14px;
+            font-weight: bold;
+          }
+          th {
+            background-color: #f2f2f2;
+          }
+          button {
+            display: none;
+          }
+          .signature {
+            text-align: left;
+            margin-top: 50px;
+            font-family: 'Brush Script MT', cursive;
+            font-size: 24px;
+            color: #444;
+            padding-left: 40px;
+          }
+        </style>
+      </head>
+      <body>
+        <header>
+          <div class="logo-container">
+            <img src="ilc.jpg" alt="الشعار" class="logo">
+            <div class="logo-caption"> ILCTANTA </div>
+          </div>
+          <div class="header-info">
+            <div class="center-title">جدول نتائج البحث للمتدربين</div>
+          </div>
+          <div class="date">تاريخ الطباعة: ${currentDate}</div>
+        </header>
+
+        <div id="statsBoxes">${statsHtml}</div>
+
+        <div id="traineesTable">${tableHtml}</div>
+
+      </body>
+    </html>
+  `);
+
+  printWindow.document.close();
+  printWindow.focus();
+
+  setTimeout(() => {
+    printWindow.print();
+    printWindow.close();
+  }, 300);
+}
+
+
+
+
+function deleteRecord(id) {
+  if (confirm("هل أنت متأكد أنك تريد حذف هذا السجل؟")) {
+    const tx = db.transaction("trainees", "readwrite");
+    const store = tx.objectStore("trainees");
+    store.delete(id).onsuccess = () => {
+      alert("تم حذف السجل.");
+      searchTrainees() ;
+
+
+    };
+  }
+}
+
+
+function addNewTrainee() {
+  document.getElementById("registrationForm").style.display = "block";
+  document.getElementById("resultScreen").style.display = "none";
+  document.getElementById("traineesTable").style.display = "none";
+  document.getElementById("actionButtons").style.display = "none";
+
+  // تعبئة حقول النموذج بآخر البيانات المدخلة
+  document.getElementById("name").value = document.getElementById("resName").textContent;
+  document.getElementById("phone").value = document.getElementById("resPhone").textContent;
+  document.getElementById("email").value = document.getElementById("resEmail").textContent;
+  document.getElementById("qualification").value = document.getElementById("resQualification").textContent;
+  document.getElementById("job").value = document.getElementById("resJob").textContent;
+  document.getElementById("course").value = document.getElementById("resCourse").textContent;
+  document.getElementById("duration").value = document.getElementById("resDuration").textContent;
+  document.getElementById("type").value = document.getElementById("resType").textContent;
+}
+
+
+
+// ✅ الكود بعد التعديل النهائي لمعالجة التاريخ بالإنجليزية وتمييز المقيم/ة وإضافة فلترة الفترة الزمنية بالنص داخل خانة البحث
+let showResults = false;
+
+function extractDateRangeFromText(text) {
+  const monthNames = {
+    "يناير": 0, "فبراير": 1, "مارس": 2, "أبريل": 3, "ابريل": 3,
+    "مايو": 4, "يونيو": 5, "يوليو": 6, "أغسطس": 7, "اغسطس": 7,
+    "سبتمبر": 8, "أكتوبر": 9, "اكتوبر": 9,
+    "نوفمبر": 10, "ديسمبر": 11
+  };
+
+  // تطبيع النص
+  text = text.replace(/الى|إلى/g, "الى")
+             .replace(/اكتوبر/g, "أكتوبر")
+             .replace(/ابريل/g, "أبريل")
+             .replace(/ +/g, " ").trim()
+             .replace(/([^\s])الى/, "$1 الى")
+             .replace(/شهرين/g, "2 شهر");
+
+  // نمط: من يونيو 2025 لمدة 2 شهر
+  const altMatch = text.match(/من\s+(\w+)\s+(\d{4})\s+لمدة\s+(\d+)/);
+  if (altMatch) {
+    const monthName = altMatch[1];
+    const year = parseInt(altMatch[2]);
+    const duration = parseInt(altMatch[3]);
+    const fromMonth = monthNames[monthName];
+    if (!isNaN(fromMonth)) {
+      return {
+        from: new Date(year, fromMonth, 1),
+        to: new Date(year, fromMonth + duration, 0)
+      };
+    }
+  }
+
+  // نمط: من يونيو الى أغسطس 2025
+  const match = text.match(/من\s+(\w+)\s+الى\s+(\w+)\s+(\d{4})/);
+  if (match) {
+    const fromMonth = monthNames[match[1]];
+    const toMonth = monthNames[match[2]];
+    const year = parseInt(match[3]);
+    if (!isNaN(fromMonth) && !isNaN(toMonth)) {
+      return {
+        from: new Date(year, fromMonth, 1),
+        to: new Date(year, toMonth + 1, 0)
+      };
+    }
+  }
+
+  return null;
+}
+
+
+
+
+const gradeTranslation = {
+  "راسب": "Fail",
+  "مقبول": "Pass",
+  "جيد": "Good",
+  "جيد جدًا": "Very Good",
+  "امتياز": "Excellent"
+};
+
+
+
+function searchTrainees() {
+  const query = document.getElementById('searchInput').value.trim().toLowerCase();
+  const tbody = document.querySelector("#allTrainees tbody");
+  const tableContainer = document.getElementById("traineesTable");
+
+  if (!showResults) {
+    tbody.innerHTML = "";
+    showResults = true;
+  } else {
+    tbody.innerHTML = "";
+    tableContainer.style.display = 'none';
+    const oldStats = document.getElementById("statsInfo");
+    if (oldStats) oldStats.remove();
+    showResults = false;
+    return;
+  }
+
+  const tx = db.transaction("trainees", "readonly");
+  const store = tx.objectStore("trainees");
+  const allRecords = [];
+
+  store.openCursor().onsuccess = function (e) {
+    const cursor = e.target.result;
+    if (cursor) {
+      allRecords.push({ key: cursor.key, value: cursor.value });
+      cursor.continue();
+    } else {
+      allRecords.sort((a, b) => new Date(b.value.datetime) - new Date(a.value.datetime));
+
+      let count = 0;
+      const stats = {
+        byDate: {},
+        byGrade: {
+          "راسب": 0,
+          "مقبول": 0,
+          "جيد": 0,
+          "جيد جدًا": 0,
+          "امتياز": 0
+        },
+        byTest: {}
+      };
+
+      allRecords.forEach(({ key, value: d }) => {
+        const combined = Object.values(d).join(" ").toLowerCase();
+        if (!query || combined.includes(query)) {
+          count++;
+
+const testName = d.course || "اسم الدورة غير معروف";
+
+          const dateKey = d.datetime
+            ? new Date(d.datetime).toLocaleDateString("ar-EG")
+            : "غير معروف";
+          stats.byDate[dateKey] = (stats.byDate[dateKey] || 0) + 1;
+
+         let score = 0;
+let total = 100;
+
+// استخراج الدرجات من نص مثل "39 / 50"
+if (typeof d.score === "string" && d.score.includes("/")) {
+  const parts = d.score.split("/").map(x => parseFloat(x.trim()));
+  if (parts.length === 2 && !isNaN(parts[0]) && !isNaN(parts[1])) {
+    score = parts[0];
+    total = parts[1];
+  }
+}
+
+let percent = null;
+let grade = "";
+
+if (!isNaN(score) && !isNaN(total) && total !== 0) {
+  percent = (score / total) * 100;
+
+  if (percent < 50) grade = "راسب";
+  else if (percent < 65) grade = "مقبول";
+  else if (percent < 75) grade = "جيد";
+  else if (percent < 85) grade = "جيد جدًا";
+  else grade = "امتياز";
+
+  stats.byGrade[grade] = (stats.byGrade[grade] || 0) + 1;
+
+  if (!stats.byTest[testName]) stats.byTest[testName] = [];
+  stats.byTest[testName].push({
+    name: d.name,
+    phone: d.phone || "غير معروف",
+    percent: percent.toFixed(1),
+    grade: grade
+  });
+}
+
+
+
+
+          const row = document.createElement("tr");
+const fields = ["datetime", "course", "name", "phone", "startTime", "timeTaken", "score", "traineeCode"];
+     fields.forEach(field => {
+  const cell = document.createElement("td");
+
+  if (field === "datetime") {
+    cell.textContent = d[field]
+      ? new Date(d[field]).toLocaleDateString("en-GB", {
+          year: "numeric", month: "long", day: "numeric"
+        })
+      : "";
+  } else if (field === "course") {
+    cell.innerHTML = `<strong style="font-size: 18px;">${d.course || "اسم الدورة غير معروف"}</strong>`;
+  } else if (field === "score") {
+    let scoreText = d.score || "";
+    if (typeof scoreText === "string" && scoreText.includes("/")) {
+cell.innerHTML = `<strong style="font-size: 18px; color: #FF0000;">🎯 ${scoreText}</strong>`;
+    } else {
+      cell.textContent = scoreText;
+    }
+  } else if (field === "rating") {
+    cell.textContent = d.rating || ""; // التقدير كما هو في الريزيلت
+  } else if (field === "traineeCode") {
+    cell.textContent = d.traineeCode || ""; // كود المتدرب
+  } else {
+    cell.textContent = d[field] || "";
+  }
+
+  cell.contentEditable = "true";
+  cell.dataset.key = key;
+  cell.dataset.field = field;
+
+  cell.addEventListener("blur", function () {
+    const key = Number(this.dataset.key);
+    const field = this.dataset.field;
+    const newValue = this.textContent.trim();
+    const txUpdate = db.transaction("trainees", "readwrite");
+    const storeUpdate = txUpdate.objectStore("trainees");
+    const getRequest = storeUpdate.get(key);
+
+    getRequest.onsuccess = function () {
+      const data = getRequest.result;
+      if (data && field in data) {
+        data[field] = newValue;
+        const updateRequest = storeUpdate.put(data);
+        updateRequest.onsuccess = () => console.log(`✅ تم التحديث للمفتاح ${key}`);
+        updateRequest.onerror = (event) => console.error("❌ تحديث فشل:", event.target.error);
+      }
+    };
+  });
+
+  row.appendChild(cell);
+});
+
+
+          const deleteCell = document.createElement("td");
+          const deleteBtn = document.createElement("button");
+          deleteBtn.textContent = "🗑 حذف";
+          deleteBtn.onclick = () => deleteRecord(key);
+          deleteCell.appendChild(deleteBtn);
+          row.appendChild(deleteCell);
+
+          tbody.appendChild(row);
+        }
+      });
+
+      if (count === 0) {
+        tbody.innerHTML = `<tr><td colspan="9" style="text-align:center;">لا توجد نتائج مطابقة</td></tr>`;
+        tableContainer.style.display = 'none';
+        return;
+      }
+
+      tableContainer.style.display = 'block';
+
+      const statsDiv = document.createElement("div");
+      statsDiv.id = "statsInfo";
+      statsDiv.style.display = "flex";
+      statsDiv.style.flexWrap = "nowrap";
+      statsDiv.style.justifyContent = "space-between";
+      statsDiv.style.width = "100%";
+      statsDiv.style.gap = "16px";
+      statsDiv.style.margin = "16px 0";
+      statsDiv.style.direction = "rtl";
+
+      const createCard = (title, icon, dataObj, bgColor, canvasId) => {
+        const card = document.createElement("div");
+        card.style.backgroundColor = bgColor;
+        card.style.border = "2px solid #003366";
+        card.style.borderRadius = "10px";
+        card.style.padding = "14px";
+        card.style.color = "#003366";
+        card.style.width = "33%";
+        card.style.maxHeight = "400px";
+        card.style.overflowY = "auto";
+        card.style.boxShadow = "0 4px 10px rgba(0,0,0,0.2)";
+        card.style.display = "flex";
+        card.style.flexDirection = "column";
+        card.style.justifyContent = "flex-start";
+
+        const header = document.createElement("div");
+        header.textContent = `${icon} ${title}`;
+        header.style.marginBottom = "10px";
+        header.style.fontSize = "20px";
+        header.style.backgroundColor = "#003366";
+        header.style.color = "#fff";
+        header.style.fontWeight = "bold";
+        header.style.padding = "6px";
+        header.style.borderRadius = "6px";
+
+        const body = document.createElement("div");
+        const totalCount = Object.values(dataObj).reduce((a, b) => a + b, 0);
+       body.innerHTML = Object.entries(dataObj)
+  .map(([k, v]) => {
+    const percent = totalCount > 0 ? ((v / totalCount) * 100).toFixed(1) : 0;
+    const translated = gradeTranslation[k] || k;
+    return `${translated}: ${v} (${percent}%)`;
+  }).join("<br>") || "No data available";
+
+        body.style.fontWeight = "bold";
+        body.style.fontSize = "18px";
+
+        const canvas = document.createElement("canvas");
+        canvas.id = canvasId;
+        canvas.style.marginTop = "10px";
+        canvas.style.maxHeight = "180px";
+        canvas.style.alignSelf = "center";
+
+        card.appendChild(header);
+        card.appendChild(body);
+        card.appendChild(canvas);
+        return card;
+      };
+
+      const createTestSummaryCard = (testData) => {
+        const card = document.createElement("div");
+        card.style.backgroundColor = "#f0f0f0";
+        card.style.border = "2px solid #003366";
+        card.style.borderRadius = "10px";
+        card.style.padding = "14px";
+        card.style.color = "#003366";
+        card.style.width = "33%";
+        card.style.maxHeight = "400px";
+        card.style.overflowY = "auto";
+        card.style.boxShadow = "0 4px 10px rgba(0,0,0,0.2)";
+        card.style.fontSize = "16px";
+        card.style.fontWeight = "bold";
+        card.style.direction = "rtl";
+
+        const header = document.createElement("div");
+        header.textContent = "📋 تفاصيل حسب كل اختبار";
+        header.style.backgroundColor = "#003366";
+        header.style.color = "#fff";
+        header.style.padding = "6px";
+        header.style.marginBottom = "10px";
+        header.style.fontSize = "20px";
+        header.style.borderRadius = "6px";
+
+        const body = document.createElement("div");
+        body.innerHTML = Object.entries(testData).map(([test, users]) => {
+const userLines = users.map(u => {
+  const gradeEn = gradeTranslation[u.grade] || u.grade;
+  return `👤 ${u.name} 📞 ${u.phone} - ${u.percent}% (${gradeEn})`;
+}).join("<br>");
+
+          return `<strong>🧪 ${test} (${users.length} مشارك):</strong><br>${userLines}`;
+        }).join("<br><br>") || "لا توجد بيانات";
+
+        card.appendChild(header);
+        card.appendChild(body);
+        return card;
+      };
+
+      
+      tableContainer.parentNode.insertBefore(statsDiv, tableContainer);
+
+      const drawPieChart = (canvasId, chartData) => {
+        const ctx = document.getElementById(canvasId).getContext("2d");
+        new Chart(ctx, {
+          type: "pie",
+          data: {
+            labels: chartData.labels,
+            datasets: [{
+              data: chartData.data,
+              backgroundColor: chartData.colors,
+              borderColor: "#fff",
+              borderWidth: 1,
+            }]
+          },
+          options: {
+            responsive: true,
+            plugins: {
+              legend: { position: "bottom" },
+              tooltip: { enabled: true }
+            }
+          }
+        });
+      };
+
+      const prepareChartData = (obj) => {
+        const labels = Object.keys(obj);
+        const data = Object.values(obj);
+        const colors = labels.map(() => `hsl(${Math.random() * 360}, 70%, 60%)`);
+        return { labels, data, colors };
+      };
+
+      drawPieChart("chart_byDate", prepareChartData(stats.byDate));
+      drawPieChart("chart_byGrade", prepareChartData(stats.byGrade));
+
+      const offset = statsDiv.getBoundingClientRect().top + window.scrollY - 12;
+      window.scrollTo({ top: offset, behavior: 'smooth' });
+    }
+  };
+}
+
+
+
+// دالة مساعدة لتحويل التاريخ العربي (إذا عندك دالة خاصة ممكن تستخدمها)
+function parseArabicDate(dateStr) {
+  // فرضاً التاريخ بالشكل: يوم/شهر/سنة
+  // تحتاج تحويله لتاريخ JS عادي
+  // مثال: "10/06/2025"
+  if (!dateStr) return 0;
+  const parts = dateStr.split("/");
+  if (parts.length !== 3) return 0;
+  const [day, month, year] = parts.map(Number);
+  return new Date(year, month - 1, day).getTime();
+}
+
+
+function printResult() {
+  const printContents = document.getElementById("resultScreen").innerHTML;
+  const originalContents = document.body.innerHTML;
+
+  document.body.innerHTML = printContents;
+  window.print();
+  document.body.innerHTML = originalContents;
+  location.reload(); // يعيد تحميل الصفحة بعد الطباعة
+}
+
+
+
+
+function toggleForm() {
+    var form = document.getElementById("registrationForm");
+    if (form.style.display === "none" || form.style.display === "") {
+      form.style.display = "block";
+    } else {
+      form.style.display = "none";
+    }
+  }
+
+
+  function backupIndexedDB() {
+  const tx = db.transaction("trainees", "readonly");
+  const store = tx.objectStore("trainees");
+  const allData = [];
+
+  store.openCursor().onsuccess = function (e) {
+    const cursor = e.target.result;
+    if (cursor) {
+      allData.push(cursor.value);
+      cursor.continue();
+    } else {
+      const json = JSON.stringify(allData, null, 2);
+      const blob = new Blob([json], { type: "application/json" });
+      const url = URL.createObjectURL(blob);
+
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "trainees_backup.json";
+      a.click();
+      URL.revokeObjectURL(url);
+    }
+  };
+}
+
+function restoreIndexedDB(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+
+  const reader = new FileReader();
+  reader.onload = function (e) {
+    try {
+      const data = JSON.parse(e.target.result);
+      const tx = db.transaction("trainees", "readwrite");
+      const store = tx.objectStore("trainees");
+
+      data.forEach(item => {
+        store.put(item);
+      });
+
+      tx.oncomplete = () => {
+        alert("Database restored successfully.");
+        location.reload();
+      };
+    } catch (err) {
+      alert("Error restoring data. Make sure it's a valid JSON backup.");
+      console.error(err);
+    }
+  };
+  reader.readAsText(file);
+}
+
+
+
+function parseArabicDate(arabicDate) {
+  if (!arabicDate) return new Date(0); // تاريخ قديم جدًا لو مش موجود
+
+  try {
+    // حول الأرقام العربية إلى إنجليزية
+    const westernDigits = arabicDate.replace(/[٠-٩]/g, d => "٠١٢٣٤٥٦٧٨٩".indexOf(d));
+
+    // استخرج التاريخ والوقت
+    const dateTimeParts = westernDigits.split(" في ");
+    if (dateTimeParts.length !== 2) return new Date(0);
+
+    const [dayMonthYear, timePart] = dateTimeParts;
+
+    // ترجم الشهر
+    const months = {
+      "يناير": "01",
+      "فبراير": "02",
+      "مارس": "03",
+      "أبريل": "04",
+      "مايو": "05",
+      "يونيو": "06",
+      "يوليو": "07",
+      "أغسطس": "08",
+      "سبتمبر": "09",
+      "أكتوبر": "10",
+      "نوفمبر": "11",
+      "ديسمبر": "12"
+    };
+
+    const dayMonthYearMatch = dayMonthYear.match(/(\d{1,2}) (\S+) (\d{4})/);
+    if (!dayMonthYearMatch) return new Date(0);
+
+    const day = dayMonthYearMatch[1].padStart(2, '0');
+    const month = months[dayMonthYearMatch[2]] || "01";
+    const year = dayMonthYearMatch[3];
+
+    // الوقت ٠١:٤٩:٥٢ ص أو م
+    let time = timePart.trim();
+    let isPM = time.includes("م");
+    let timeDigits = time.replace(/[^\d:]/g, "");
+    let [hh, mm, ss] = timeDigits.split(":").map(v => parseInt(v));
+    if (isPM && hh < 12) hh += 12;
+    if (!isPM && hh === 12) hh = 0;
+
+    const isoString = `${year}-${month}-${day}T${String(hh).padStart(2, '0')}:${String(mm).padStart(2, '0')}:${String(ss).padStart(2, '0')}`;
+
+    return new Date(isoString);
+  } catch (e) {
+    return new Date(0);
+  }
+}
+
+
+function printStatsAndCharts() {
+  // تأكد من أن قسم الإحصاءات ظاهر قبل الطباعة
+  document.getElementById('traineesTable').style.display = 'block';
+  
+  // طباعة فقط القسم المطلوب
+  setTimeout(() => {
+    window.print();
+  }, 300);
+}
+
+
+
+
+  window.onload = openDB;
+</script>
+</body>
+</html>

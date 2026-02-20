@@ -1,0 +1,1136 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+
+
+<style>
+.material-container {
+  text-align: center;
+  margin: 30px auto;
+}
+
+.material-box {
+  display: inline-block;
+  width: 220px;
+  padding: 18px 24px;
+  text-align: center;
+  font-size: 20px;
+  font-weight: bold;
+  color: #fff;
+  background: linear-gradient(45deg, #1976d2, #42a5f5);
+  border-radius: 14px;
+  text-decoration: none;
+  box-shadow: 0 6px 14px rgba(0,0,0,0.25);
+  transition: all 0.3s ease-in-out;
+  letter-spacing: 1px;
+}
+
+.material-box:hover {
+  background: linear-gradient(45deg, #1565c0, #1e88e5);
+  transform: scale(1.08);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.35);
+}
+
+.password-text {
+  margin-top: 12px;
+  font-size: 18px;
+  font-weight: bold;
+  color: #444;
+  opacity: 0;
+  transform: translateY(-10px);
+  transition: all 0.3s ease-in-out;
+}
+
+.material-container:hover .password-text {
+  opacity: 1;
+  transform: translateY(0);
+}
+</style>
+
+
+
+
+<style>
+/* 🌟 شريط الأخبار */
+.news-ticker {
+  width: 100%;
+  background: linear-gradient(90deg, #1976d2, #da4a26);
+  color: #fff;
+  font-size: 15pt;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  white-space: nowrap;
+  padding: 10px 0;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.25);
+  margin-bottom: 15px;
+  margin-top: 20px;    /* ✅ مسافة من أعلى الصفحة */
+  border-radius: 6px;
+}
+
+/* عنوان الشريط (ثابت) */
+.ticker-title {
+  background: rgba(0,0,0,0.25);
+  padding: 6px 14px;
+  margin-left: 10px;
+  flex-shrink: 0;
+  border-radius: 4px;
+  animation: toggleTitle 50s linear infinite; /* متزامنة مع مدة الحركة */
+}
+
+/* النص المتحرك */
+.ticker-content {
+  display: inline-block;
+  white-space: nowrap;
+  animation: ticker 50s linear infinite; /* زودت المدة عشان يمشي براحه */
+  padding-left: 100%;
+  direction: rtl;
+}
+
+.ticker-content span {
+  padding-right: 100%; /* مسافة كافية بين التكرارات */
+  display: inline-block;
+}
+
+/* الحركة */
+@keyframes ticker {
+  0%   { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+/* إخفاء وظهور العنوان */
+@keyframes toggleTitle {
+  0%   { opacity: 0; }   /* يختفي في بداية مرور النص */
+  20%  { opacity: 0; }   /* يفضل مختفي أثناء ما النص بيتحرك */
+  40%  { opacity: 1; }   /* يبدأ يظهر بعد مرور النص */
+  100% { opacity: 1; }   /* يفضل ظاهر لغاية بداية الدورة الجاية */
+}
+</style>
+
+
+
+<title>ICDL - 12 Groups Schedule (10 Weeks)</title>
+<style>
+* {
+  direction: ltr !important;
+  unicode-bidi: plaintext !important;
+}
+
+body {
+  font-family: "Arial", "Segoe UI", Tahoma, sans-serif;
+  text-align: left;
+  margin: 16px;
+  color:#222;
+  font-size: 14pt;
+}
+
+h1 { text-align:center; font-size:22pt; margin-bottom:6px; }
+.meta { text-align:center; margin-bottom:12px; color:#444; }
+table{ width:100%; border-collapse:collapse; margin-bottom:18px; page-break-inside:avoid; }
+th, td { border:1px solid #555; padding:8px 6px; text-align:center; vertical-align:middle; }
+th{ background:#2e7d32; color:#fff; font-weight:700; font-size:13pt; }
+.legend { display:flex; flex-wrap:wrap; gap:10px; align-items:center; margin-bottom:12px; }
+.colorbox{ width:18px; height:14px; display:inline-block; margin-right:8px; border:1px solid #666; vertical-align:middle; }
+.small { font-size:11pt; color:#333; }
+.summary { margin-top:18px; border-top:2px solid #ddd; padding-top:12px; font-size:13pt; }
+#printBtn { position: fixed; left: 16px; bottom: 16px; background:#1976d2; color:#fff; border:none; padding:10px 14px; border-radius:6px; cursor:pointer; box-shadow:0 2px 6px rgba(0,0,0,0.2); }
+@media print{
+  #printBtn { display:none; }
+  body { margin:6mm; }
+  th, td { page-break-inside:avoid; }
+}
+
+.main-title {
+  text-align: center;
+  font-size: 34pt;
+  font-weight: bold;
+  margin-bottom: 25px;
+  background: linear-gradient(90deg, #1976d2, #da4a26);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  line-height: 1.3;
+}
+
+h2 {
+  text-align: center;
+  font-size: 22pt;
+  margin-bottom: 20px;
+  color: #2c3e50;
+}
+
+.instructions {
+  margin: 15px auto;
+  max-width: 800px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  overflow: hidden;
+  font-size: 14pt;
+}
+
+.toggle-btn {
+  width: 100%;
+  background: #1976d2;
+  color: white;
+  padding: 12px 16px;
+  text-align: right;
+  border: none;
+  outline: none;
+  font-size: 16pt;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.toggle-btn:hover { background: #1565c0; }
+
+.content {
+  display: none;
+  padding: 12px 16px;
+  background: #f9f9f9;
+  line-height: 1.6;
+  direction: rtl;
+}
+
+/* 🌟 المودال */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 999;
+  left: 0; top: 0;
+  width: 100%; height: 100%;
+  background: rgba(0,0,0,0.5);
+}
+
+
+.game-btn {
+  background: linear-gradient(45deg, #ff416c, #ff4b2b); /* ألوان متدرجة */
+  color: #fff;
+  font-size: 16pt;
+  font-weight: bold;
+  padding: 12px 24px;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  box-shadow: 0 0 15px rgba(255, 65, 108, 0.7);
+  transition: all 0.3s ease-in-out;
+  display: block;
+  margin: 12px auto; /* يخلي الزر في النص */
+}
+
+/* عند المرور بالماوس */
+.game-btn:hover {
+  background: linear-gradient(45deg, #ff4b2b, #ff416c);
+  transform: scale(1.1);
+  box-shadow: 0 0 25px rgba(255, 75, 43, 0.9);
+}
+
+/* عند الضغط */
+.game-btn:active {
+  transform: scale(0.95);
+  box-shadow: 0 0 10px rgba(255, 65, 108, 0.6);
+}
+
+.modal-content {
+  background: #fff;
+  margin: 10% auto;
+  padding: 20px;
+  border-radius: 10px;
+  width: 90%; max-width: 400px;
+  text-align: center;
+  font-size: 14pt;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+}
+
+.modal h3 { margin-bottom: 15px; color: #1976d2; }
+
+.modal input {
+  width: 90%; padding: 10px; margin: 10px 0;
+  border: 1px solid #ccc; border-radius: 6px;
+  font-size: 14pt;
+}
+
+.modal button {
+  padding: 10px 16px; margin: 8px;
+  border: none; border-radius: 6px;
+  font-size: 14pt; cursor: pointer;
+}
+
+#saveBtn { background: #2e7d32; color: #fff; }
+#cancelBtn { background: #d32f2f; color: #fff; }
+
+#membersList {
+  margin-top: 40px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  justify-content: flex-start;
+}
+
+.group-table {
+  border-collapse: collapse;
+  width: 250px;
+  min-width: 200px;
+  font-size: 12pt;
+  box-shadow: 0 3px 8px rgba(0,0,0,0.2);
+  border-radius: 8px;
+  overflow: hidden;
+  flex: 0 0 auto; /* تبقى ثابتة العرض وتلتصق بجانب بعض */
+}
+
+.group-table th {
+  color: #fff;
+  padding: 8px;
+  font-size: 13pt;
+  text-align: center;
+}
+
+.group-table td {
+  border: 1px solid #ccc;
+  padding: 6px;
+  text-align: center;
+}
+
+
+.trainee-questions {
+  margin: 15px auto;
+  max-width: 800px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  overflow: hidden;
+  font-size: 14pt;
+}
+
+.toggle-questions-btn {
+  width: 100%;
+  background: #f4511e;
+  color: white;
+  padding: 12px 16px;
+  text-align: right;
+  border: none;
+  outline: none;
+  font-size: 16pt;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.toggle-questions-btn:hover { background: #d84315; }
+
+.questions-content {
+  max-height: 145px;   /* الطول الأقصى */
+  overflow-y: auto;    /* سكرول لو زاد المحتوى */
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  background: hwb(157 45% 8%);
+  padding: 16px;
+  direction: rtl;
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+/* كل سؤال */
+.questions-content li {
+  list-style: none; 
+  background: #ffffff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 14px 16px;
+  margin-bottom: 12px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  transition: transform 0.2s, box-shadow 0.2s;
+
+  font-size: 18px;   /* 👈 تكبير الخط */
+  font-weight: 500;  /* خط أوضح */
+  color: #333;       /* لون مناسب للقراءة */
+  line-height: 1.7;  /* مسافة بين السطور */
+}
+
+/* تأثير عند المرور */
+.questions-content li:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+  border-color: #ffa726;
+}
+
+
+/* ✅ التحكم في المدخلات والزر */
+.questions-controls {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.questions-controls input {
+  width: 100%;
+  padding: 10px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 14pt;
+  box-sizing: border-box;
+}
+
+.questions-controls button {
+  align-self: center;
+}
+
+
+.toggle-questions-btn {
+  position: relative; /* مهم علشان الـ badge يتموضع داخله */
+  width: 100%;
+  background: #f4511e;
+  color: white;
+  padding: 12px 16px;
+  text-align: right;
+  border: none;
+  outline: none;
+  font-size: 20pt;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+/* الحاوية: الظرف + الدائرة */
+.notification {
+  display: inline-flex;
+  align-items: left;
+  gap: 6px;
+  margin-right: 10px;
+}
+
+/* أيقونة الظرف */
+.notification .icon {
+  font-size: 20pt;
+}
+
+/* الدائرة */
+#questions-badge {
+  display: none; /* يبدأ مخفي */
+  background: #ffeb3b;  /* أصفر فاتح */
+  color: #000;          /* النص بالأسود */
+  font-weight: bold;
+  font-size: 20px;
+  border-radius: 50%;
+  padding: 4px 8px;
+  box-shadow: 0 0 6px rgba(0,0,0,0.3);
+}
+
+
+/* الحاوية الأساسية */
+.main-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 25px;
+  padding: 20px;
+}
+
+/*** العنوان ***/
+.title {
+  text-align: center;
+  font-size: 24px;
+  font-weight: 800;
+  color: #00aaff;
+  margin: 10px 0;
+  text-shadow: 0 0 10px rgba(0,170,255,0.3);
+}
+
+/*** أزرار G8 + G9 ***/
+.groups-buttons {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.group-btn {
+  padding: 18px 28px;
+  font-size: 22px;
+  font-weight: bold;
+  border: none;
+  border-radius: 14px;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+  transition: 0.3s ease;
+}
+
+.g8 { background: #FFE082; }
+.g9 { background: #D7CCC8; }
+
+.g8:hover { transform: scale(1.08); background: #FFD54F; }
+.g9:hover { transform: scale(1.08); background: #BCAAA4; }
+
+/*** الماتيريال + الفاينال + واتساب ***/
+.material-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.material-box {
+  display: inline-block;
+  padding: 14px 28px;
+  background: #00aaff;
+  color: #fff;
+  font-size: 20px;
+  border-radius: 12px;
+  text-align: center;
+  font-weight: bold;
+  text-decoration: none;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.25);
+  transition: 0.3s;
+}
+
+.password-text {
+  margin-top: 6px;
+  font-size: 14px;
+  color: #ff0000;
+  text-align: center;
+}
+
+/*** ريسبونسيف — للموبايل ***/
+@media (max-width: 600px) {
+
+  .group-btn {
+    width: 100%;
+    max-width: 280px;
+  }
+
+  .material-box {
+    width: 100%;
+    max-width: 300px;
+  }
+
+  .groups-buttons {
+    flex-direction: column;
+    align-items: center;
+  }
+}
+
+
+
+/* صف الماتيريال + الفاينال */
+.row-material-final {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+/* للموبايل — يحولهم عمود تحت بعض */
+@media (max-width: 600px) {
+  .row-material-final {
+    flex-direction: column;
+    align-items: center;
+  }
+}
+
+
+</style>
+</head>
+<body>
+  
+
+<!-- ✅ شريط الأخبار -->
+<div class="news-ticker">
+  <div class="ticker-title">📢 آخر التحديثات:</div>
+  <div class="ticker-content">
+    <span>🔔  ⚡ برجاء الالتزام بالمواعيد المحددة .. ✅ لا يمكن التسجل فى مجموعه واحده مرتين ولا فى مجموعتين مختلفتين بنفس الاسم .. 🎓 التسجيل في الجروبات متاح الآن .. 🌟</span>
+  </div>
+</div>
+
+
+
+
+<h1 class="main-title">
+  International Learning Center (ILC 🎓)
+</h1>
+
+
+
+<h2>📅 ICDL Schedule — 9 Groups (8 Weeks)</h2>
+<div class="meta">Training Days: Sunday → Thursday · Time: 3:00 – 6:00 PM · 3 sessions per day</div>
+
+<div class="instructions">
+  <button class="toggle-btn">📘  التعليمات الخاصة بالكورس اضغط على الزر لرؤية التعليمات</button>
+  <div class="content">
+    <ul>
+      <li>🟢 قم باختيار الجروب المناسب ثم اضغط عليه، سيظهر مربع التسجيل. اكتب اسمك واضغط على "✔️ حفظ"،ثم اوك  سيتم إدراج اسمك في المجموعة.</li>
+      <li>✅ عدد السيشن الواجب حضوره لكل طالب 12 سيشن</li>
+      <li>⏳ عدد اكتمال المجموعه 12 فرد وسوف يتم بدء الكورس باكتمال العدد </li>
+      <li>⚠️ لابد عدم تجاوز مدة الكورس الكلية لاستيفاء عدد السيشن المقرر</li>
+      <li>📑 سوف يتم عمل اختبارات نهاية الكورس وذلك بعد استيفاء مدة الكورس المقررة</li>
+    </ul>
+  </div>
+</div>
+
+
+<!--
+<div class="trainee-questions">
+  <button class="toggle-questions-btn">
+    ❓ أسئلة المتدربين اضغط هنا لرؤية الأسئلة
+    <span class="notification">
+      <span class="icon">✉️</span>
+      <span id="questions-badge">0</span>
+    </span>
+  </button>
+</div>
+-->
+
+
+  <div id="questionsSection" style="display:none; margin-top:10px;">
+    <div class="questions-content">
+      <ul id="questionsList">
+        <li><em>لا توجد أسئلة بعد</em></li>
+      </ul>
+    </div>
+
+    <div class="questions-controls">
+      <input type="text" id="newQuestionName" placeholder="✍️ اكتب اسمك هنا">
+      <input type="text" id="newQuestion" placeholder="✍️ اكتب سؤالك هنا">
+      <button id="askBtn" class="game-btn">🚀 أرسل السؤال</button>
+    </div>
+  </div>
+</div>
+
+
+
+<!-- ✅ بوكس Material + Final Exam مع إظهار الباسورد -->
+<!-- صف مكوّن من زر الماتيريال + زر الفاينال -->
+<div class="row-material-final">
+
+  <!-- الماتيريال -->
+  <div class="material-container">
+    <a href="https://etiqotwf.github.io/liveServer1/amerQuiz/icdlMaterial" 
+       target="_blank" class="material-box">
+      📦 Material
+    </a>
+    <div class="password-text">🔑 Password: 1550</div>
+  </div>
+
+  <!-- الفاينال -->
+  <div class="material-container">
+    <a href="https://etiqotwf.github.io/liveServer1/amerQuiz/icdlFinalTest" 
+       target="_blank" class="material-box">
+      📝 Final Exam
+    </a>
+    <div class="password-text">🔑 Password:</div>
+  </div>
+
+</div>
+
+
+  <h2 class="title">
+    👉 لحجز المجموعات الجديدة اضغط 👉
+  </h2>
+
+  <!-- أزرار G8 + G9 + G10 + G11 -->
+<div class="groups-buttons">
+
+  <button id="btnG9" class="group-btn g9">🌟 G9</button>
+  <button id="btnG10" class="group-btn g10">🔥 G10</button>
+  <button id="btnG11" class="group-btn g11">💎 G11</button>
+
+</div>
+
+
+  <!-- الواتساب -->
+  <div class="material-container">
+    <a href="https://chat.whatsapp.com/K3p33XFDR6PI1TBwxGtqaN" 
+       target="_blank" class="material-box btn-metal-gaming">
+      🚀 ادخل الآن جروب الواتس اب
+    </a>
+    <div class="password-text">💬 تواصل مع المتدربين</div>
+  </div>
+
+ 
+
+</div>
+
+
+<!-- ✅ المودال -->
+<div id="nameModal" class="modal">
+  <div class="modal-content">
+    <h3 id="modalTitle">التسجيل فى الجروب</h3>
+    <input type="text" id="studentName" placeholder="✍️ اكتب اسمك هنا">
+    <div>
+      <button id="saveBtn">✔️ حفظ</button>
+      <button id="cancelBtn">❌ إلغاء</button>
+    </div>
+  </div>
+</div>
+
+<div id="legend" class="legend small"></div>
+
+<table id="scheduleTable" aria-label="Schedule table">
+  <thead>
+    <tr>
+      <th>Week / Day</th>
+      <th>3:00 – 4:00</th>
+      <th>4:00 – 5:00</th>
+      <th>5:00 – 6:00</th>
+    </tr>
+  </thead>
+  <tbody id="tbody"></tbody>
+</table>
+
+<div id="summary" class="summary"></div>
+<div id="membersList" style="margin-top:40px;"></div>
+
+<button id="printBtn" onclick="window.print()">🖨️ Save as PDF / Print</button>
+
+
+
+<script>
+    // عند الضغط على أي مكان في الصفحة، أدخل وضع ملء الشاشة
+    document.addEventListener("click", () => {
+      const elem = document.documentElement; // أو document.getElementById("myForm")
+      if (document.fullscreenElement) return; // لا تفعل شيء إذا كنا بالفعل في ملء الشاشة
+
+      if (elem.requestFullscreen) {
+        elem.requestFullscreen();
+      } else if (elem.webkitRequestFullscreen) { /* Safari */
+        elem.webkitRequestFullscreen();
+      } else if (elem.msRequestFullscreen) { /* IE11 */
+        elem.msRequestFullscreen();
+      }
+    });
+  </script>
+
+<script>
+const scriptURL = "https://script.google.com/macros/s/AKfycbzbUWAlJ4oI-OF0xrGQmO2NkYgdS41msbD71O51piI6CzCGFufpW5VoWW3CexD7Esg_/exec";
+
+(function(){
+ // كان عندك 15 مجموعة وتاريخ 31 أغسطس
+const groups = Array.from({length: 11}, (_, i) => 'G' + (i + 1)); // G1–G11
+const tableGroups = groups.slice(0, 8); // G1–G8 فقط للجدول
+
+const colors = [
+  '#FFCDD2', '#BBDEFB', '#C8E6C9', '#FFF9C4',
+  '#FFCCBC', '#D1C4E9', '#B2EBF2', '#FFE082',
+  '#D7CCC8', '#F5F5F5', '#90A4AE'
+];
+
+const startDate = new Date(Date.UTC(2025, 10, 16, 0, 0)); // Sunday 16 Nov 2025
+const dayNames = ['Sunday','Monday','Tuesday','Wednesday','Thursday'];
+
+function getEgyptDate(date){
+  return new Date(date.getTime() + 2 * 60 * 60 * 1000);
+}
+
+function getEgyptDay(date){
+  return getEgyptDate(date).getDay(); // 0=Sunday … 4=Thursday
+}
+
+const maxSessions = 12;
+let groupCounts = {};
+groups.forEach(g => groupCounts[g] = 0);
+
+// جدول ثابت كما هو
+let fixedSchedule = [
+  ['G1','G2','G3'], ['G4','G5','G6'], ['G7','G1','G2'], ['G3','G4','G5'], ['G6','G7','G1'],
+  ['G1','G2','G3'], ['G4','G5','G6'], ['G7','G1','G2'], ['G3','G4','G5'], ['G6','G7','G1'],
+  ['G1','G2','G3'], ['G4','G5','G6'], ['G7','G1','G2'], ['G3','G4','G5'], ['G6','G7','G1'],
+  ['G1','G2','G3'], ['G2','G8','G4'], ['G2','G3','G5'], ['G6','G1','G3'], ['G3','G8','G7'],
+  ['G3','G6','G8'], ['G5','G5','G7'], ['G8','G3','G5'], ['G8','G5','G5'], ['G4','G6','G7'],
+  ['G1','G2','G4'], ['G3','G5','G6'], ['G1','G2','G3'], ['G4','G5','G7'], ['G1','G2','G6'],
+  ['G3','G4','G7'], ['G5','G6','G1'], ['G2','G3','G4'], ['G5','G7','G1'], ['G6','G2','G3'],
+  ['G4','G5','G6'], ['G1','G3','G7'], ['G2','G4','G5'], ['G1','G2','G3'], ['G6','G7','G4']
+];
+
+// تعديل الجدول + تأجيل G8 + ملء الفارغ لضمان 12 مرة لكل مجموعة
+let adjustedSchedule = fixedSchedule.map((row, rowIndex) => {
+  let usedToday = new Set();
+
+  return row.map(g => {
+    if (!tableGroups.includes(g)) g = '-';
+
+    const rowDate = new Date(startDate);
+    rowDate.setUTCDate(startDate.getUTCDate() + rowIndex);
+    while(getEgyptDay(rowDate) === 5 || getEgyptDay(rowDate) === 6){
+      rowDate.setUTCDate(rowDate.getUTCDate() + 1);
+    }
+
+    const g8Start = new Date(Date.UTC(2025, 11, 2, 0, 0));
+    if(g === 'G8' && rowDate < g8Start){
+      g = '-';
+    }
+
+    if(g !== '-' && groupCounts[g] < maxSessions && !usedToday.has(g)){
+      groupCounts[g]++;
+      usedToday.add(g);
+      return g;
+    } else {
+      // تعبئة الخانات الفارغة بالمجموعات التي لم تصل 12 مرة بعد
+      const available = tableGroups.find(x => groupCounts[x] < maxSessions && !usedToday.has(x));
+      if(available){
+        groupCounts[available]++;
+        usedToday.add(available);
+        return available;
+      }
+      return '-';
+    }
+  });
+});
+
+// ملء DOM
+let week = 1;
+let currentDate = new Date(startDate);
+
+for(let i = 0; i < adjustedSchedule.length; i++){
+  while(getEgyptDay(currentDate) === 5 || getEgyptDay(currentDate) === 6){
+    currentDate.setUTCDate(currentDate.getUTCDate() + 1);
+  }
+
+  const tr = document.createElement('tr');
+  const dayIndex = getEgyptDay(currentDate);
+  const egyptDate = getEgyptDate(currentDate);
+
+  const tdDay = document.createElement('td');
+  tdDay.textContent =
+    `Week ${week} — ${dayNames[dayIndex]} (${egyptDate.toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'})})`;
+  tr.appendChild(tdDay);
+
+  for(let g of adjustedSchedule[i]){
+    const td = document.createElement('td');
+    td.textContent = g;
+    td.style.background = g !== "-" ? colors[groups.indexOf(g)] : "#eee";
+    td.style.textAlign = "center";
+    td.style.cursor = g !== "-" ? "pointer" : "default";
+
+    if(g !== "-") td.addEventListener("click", ()=>openModal(g));
+
+    tr.appendChild(td);
+  }
+
+  tbody.appendChild(tr);
+  currentDate.setUTCDate(currentDate.getUTCDate() + 1);
+
+  if(dayIndex === 4) week++;
+}
+
+// الكروت (G1–G11)
+groups.forEach(g=>{
+  const btn = document.getElementById('btn'+g);
+  if(btn) btn.addEventListener('click', ()=>openModal(g));
+});
+
+  // ✅ modal handling
+  const modal=document.getElementById("nameModal");
+  const modalTitle=document.getElementById("modalTitle");
+  const studentNameInput=document.getElementById("studentName");
+  let currentGroup=null;
+
+  function openModal(group){
+    currentGroup=group;
+    modalTitle.textContent="التسجيل فى " + group;
+    studentNameInput.value="";
+    modal.style.display="block";
+  }
+document.getElementById("saveBtn").addEventListener("click", async ()=> {
+  const name = studentNameInput.value.trim();
+  if(!name || !currentGroup) return;
+
+  // تعطيل الزر مباشرة بعد الضغط
+  const saveBtn = document.getElementById("saveBtn");
+  saveBtn.disabled = true;
+  saveBtn.style.opacity = 0.6; // لتوضيح أنه تم التعطيل
+
+  try {
+    // التحقق من امتلاء المجموعة
+    const resCheck = await fetch(scriptURL + "?action=get");
+    const data = await resCheck.json();
+
+    const grouped = {};
+    data.forEach(row=>{
+      if(!grouped[row.group]) grouped[row.group]=[];
+      grouped[row.group].push(row.name);
+    });
+
+    if(grouped[currentGroup] && grouped[currentGroup].length >= 12){
+      alert(`⚠️ هذه المجموعة ${currentGroup} مكتملة، لا يمكن إضافة متدرب جديد`);
+      modal.style.display="none";
+      saveBtn.disabled = false;
+      saveBtn.style.opacity = 1;
+      return;
+    }
+
+    // تجهيز البيانات للإرسال
+    const formData = new URLSearchParams();
+    formData.append("name", name);
+    formData.append("group", currentGroup);
+    formData.append("date", new Date().toLocaleString());
+
+    // إرسال الطلب
+    const res = await fetch(scriptURL, { method: "POST", body: formData });
+    const result = await res.json(); // قراءة رد السيرفر
+
+    if(result.status === "ok"){
+    alert("✅ " + result.message);
+
+    // 🌟 whatsapp link
+    setTimeout(() => {
+        const whatsappLink = "https://chat.whatsapp.com/K3p33XFDR6PI1TBwxGtqaN";
+        window.open(whatsappLink, "_blank");
+    }, 0);
+
+    await loadMembers();
+} else {
+    alert("❌ خطأ: " + result.message);
+}
+
+
+  } catch(err){
+    console.error("Error saving member", err);
+    alert("⚠️ حدث خطأ في الاتصال بالسيرفر");
+  }
+
+  modal.style.display="none";
+
+  // إعادة تفعيل الزر عند فتح المودال مرة أخرى
+  saveBtn.disabled = false;
+  saveBtn.style.opacity = 1;
+});
+
+document.getElementById("cancelBtn").addEventListener("click",()=>{
+  modal.style.display="none";
+});
+
+window.onclick=function(e){
+  if(e.target===modal){ modal.style.display="none"; }
+};
+
+  // ✅ جلب الأعضاء وعرض الكروت
+  async function loadMembers(){
+    try{
+      const res = await fetch(scriptURL + "?action=get");
+      const data = await res.json();
+
+      const grouped = {};
+      data.forEach(row=>{
+        if(!grouped[row.group]) grouped[row.group]=[];
+        grouped[row.group].push(row.name);
+      });
+
+      const container=document.getElementById("membersList");
+      container.innerHTML="";
+      container.style.display="flex";
+      container.style.flexWrap="wrap";
+      container.style.gap="12px";
+
+      const nameColors = [
+  '#e53935','#8e24aa','#3949ab','#00897b','#f4511e',
+  '#6d4c41','#004d40','#43a047','#1e88e5','#d81b60',
+  '#ff9800', // ✅ عنصر جديد 1
+  '#9c27b0'  // ✅ عنصر جديد 2
+];
+
+const emojis = [
+  '🎓','🖊️','📚','📝','💡','🏆','🌟','🔥','🥇','🎯',
+  '🎉', // ✅ عنصر جديد 1
+  '✅'  // ✅ عنصر جديد 2
+];
+
+      groups.forEach((g,i)=>{
+        const div=document.createElement("div");
+        div.style.flex="1 1 220px";
+        div.style.maxWidth="250px";
+        div.style.background=colors[i];
+        div.style.borderRadius="12px";
+        div.style.overflow="hidden";
+        div.style.boxShadow="0 4px 12px rgba(0,0,0,0.25)";
+        div.dataset.group = g;
+        div.style.transition = "transform 0.3s";
+        div.onmouseover = ()=> div.style.transform="scale(1.03)";
+        div.onmouseleave = ()=> div.style.transform="scale(1)";
+
+        const title = document.createElement("div");
+        title.textContent = `🧑‍🤝‍🧑 مجموعة ${g}`;
+        title.style.fontWeight = "bold";
+        title.style.fontSize = "16pt";
+        title.style.textAlign = "center";
+        title.style.padding = "10px 0";
+        title.style.background = "rgba(255,255,255,0.2)";
+        div.appendChild(title);
+
+        const table = document.createElement("table");
+        table.style.width="100%";
+        table.style.borderCollapse="collapse";
+        const tbodyInner = document.createElement("tbody");
+
+        if(grouped[g]){
+          grouped[g].forEach((n,index)=>{
+            const tr = document.createElement("tr");
+            const td = document.createElement("td");
+            td.textContent = `${emojis[index % emojis.length]} ${n}`;
+            td.style.color = nameColors[index % nameColors.length];
+            td.style.fontSize = "14pt";
+            td.style.fontWeight = "600";
+            td.style.padding = "6px";
+            td.style.textAlign = "center";
+            tr.appendChild(td);
+            tbodyInner.appendChild(tr);
+          });
+        } else {
+          const tr = document.createElement("tr");
+          const td = document.createElement("td");
+          td.innerHTML = "<em>لا يوجد أسماء بعد</em>";
+          td.style.fontSize = "13pt";
+          td.style.fontStyle = "italic";
+          td.style.color = "#333";
+          td.style.padding = "6px";
+          td.style.textAlign = "center";
+          tr.appendChild(td);
+          tbodyInner.appendChild(tr);
+        }
+
+        table.appendChild(tbodyInner);
+        div.appendChild(table);
+        container.appendChild(div);
+      });
+
+    } catch(err){
+      console.error("Error loading members", err);
+    }
+  }
+
+  loadMembers();
+
+})();
+
+// 🌟 toggle التعليمات
+const toggleBtn = document.querySelector(".toggle-btn");
+const instructionsContent = document.querySelector(".content");
+
+toggleBtn.addEventListener("click", () => {
+  if(instructionsContent.style.display === "block"){
+    instructionsContent.style.display = "none";
+  } else {
+    instructionsContent.style.display = "block";
+  }
+});
+
+
+
+
+
+// إضافة سؤال جديد للائحة
+// عناصر DOM
+const toggleQuestionsBtn = document.querySelector(".toggle-questions-btn");
+const questionsSection = document.getElementById("questionsSection");
+const askBtn = document.getElementById("askBtn");
+const newQuestionInput = document.getElementById("newQuestion");
+const newQuestionNameInput = document.getElementById("newQuestionName");
+const questionsList = document.getElementById("questionsList");
+
+let lastSeenCount = 0;     // آخر عدد أسئلة شافه المستخدم
+let questionsOpened = false; // هل المستخدم فتح الأسئلة
+
+// ✅ تحميل الأسئلة
+async function loadQuestions() {
+  try {
+    const res = await fetch(scriptURL + "?action=question");
+    const data = await res.json();
+
+    questionsList.innerHTML = "";
+
+    if (data.length === 0) {
+      const li = document.createElement("li");
+      li.innerHTML = "<em>لا توجد أسئلة بعد</em>";
+      questionsList.appendChild(li);
+    } else {
+      data.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+      // ✅ مقارنة عدد الأسئلة الحالي باللي شافه المستخدم آخر مرة
+      const badge = document.getElementById("questions-badge");
+      if (data.length > lastSeenCount && !questionsOpened) {
+        badge.style.display = "inline-block";
+        badge.textContent = data.length - lastSeenCount; // عدد الأسئلة الجديدة
+      } else {
+        badge.style.display = "none";
+      }
+
+      data.forEach(q => {
+        const li = document.createElement("li");
+        const dateStr = new Date(q.date).toLocaleString();
+        const isAdmin = q.name.toLowerCase().includes("مستر");
+
+        if (isAdmin) {
+          li.innerHTML = `
+            <span style="color:#d32f2f; font-weight:bold;">🛡️ [${q.name}]</span>
+            <span style="color:#d32f2f; font-weight:bold;"> ${q.question}</span>
+            <span style="color:#555; font-size:10pt; margin-left:8px; font-weight:bold;">(${dateStr})</span>
+          `;
+        } else {
+          li.innerHTML = `
+            <span style="color:#1e88e5; font-weight:bold;">🎓 [${q.name}]</span>
+            <span style="color:#2e7d32; font-weight:bold;"> ${q.question}</span>
+            <span style="color:#555; font-size:10pt; margin-left:8px; font-weight:bold;">(${dateStr})</span>
+          `;
+        }
+
+        questionsList.appendChild(li);
+      });
+    }
+
+  } catch (err) {
+    console.error("Error loading questions", err);
+  }
+}
+
+// ✅ عند الضغط على زر "أسئلة المتدربين"
+toggleQuestionsBtn.addEventListener("click", () => {
+  const isHidden = questionsSection.style.display === "none";
+
+  if (isHidden) {
+    questionsSection.style.display = "block";
+    questionsOpened = true;
+    lastSeenCount = questionsList.querySelectorAll("li").length;
+    document.getElementById("questions-badge").style.display = "none";
+  } else {
+    questionsSection.style.display = "none";
+  }
+});
+
+// تحميل الأسئلة عند فتح الصفحة
+loadQuestions();
+// تحديث دوري كل 15 ثانية
+setInterval(loadQuestions, 15000);
+
+
+askBtn.addEventListener("click", async () => {
+    const question = newQuestionInput.value.trim();
+    const name = newQuestionNameInput.value.trim();
+    if(!question || !name) return alert("⚠️ اكتب اسمك وسؤالك!");
+
+    try {
+        const formData = new URLSearchParams();
+        formData.append("question", question);
+        formData.append("name", name); // الاسم
+        formData.append("date", new Date().toLocaleString());
+        formData.append("action", "question");
+
+        await fetch(scriptURL, { method: "POST", body: formData });
+
+        await loadQuestions();
+        newQuestionInput.value = "";
+        newQuestionNameInput.value = "";
+
+    } catch(err){
+        console.error("Error sending question", err);
+        alert("⚠️ حدث خطأ أثناء إرسال السؤال!");
+    }
+});
+
+// تحميل الأسئلة عند فتح الصفحة
+// ✅ تحميل الأسئلة بترتيب الأحدث أولاً
+
+
+</script>
+
+</body>
+</html>

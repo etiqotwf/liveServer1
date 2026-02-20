@@ -1,0 +1,213 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>ILC — Admin: Daily Password</title>
+  <style>
+    :root{--bg:#0f1724;--card:#0b1220;--accent:#7c3aed;--muted:#94a3b8;--glass: rgba(255,255,255,0.04)}
+    *{box-sizing:border-box}
+    body{margin:0;min-height:100vh;display:flex;align-items:center;justify-content:center;font-family:Inter, system-ui, Arial;color:#e6eef8;background:linear-gradient(180deg,#071427 0%, #071433 60%)}
+    .wrap{width:980px;max-width:95%;padding:28px;border-radius:18px;background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));box-shadow:0 10px 40px rgba(2,6,23,0.6);border:1px solid rgba(255,255,255,0.03);display:grid;grid-template-columns:1fr 360px;gap:24px}
+    .left{padding:26px}
+    .brand{display:flex;gap:14px;align-items:center}
+    .logo{width:64px;height:64px;border-radius:12px;background:linear-gradient(135deg,var(--accent), #00d4ff);display:flex;align-items:center;justify-content:center;font-weight:700;color:#fff;font-size:20px;box-shadow:0 8px 24px rgba(124,58,237,0.16)}
+    h1{margin:14px 0 6px;font-size:22px}
+    p.lead{color:var(--muted);margin:0 0 18px}
+    .card{background:var(--card);padding:18px;border-radius:12px;border:1px solid rgba(255,255,255,0.02);box-shadow:inset 0 1px 0 rgba(255,255,255,0.01)}
+    .big-pass{font-size:44px;font-weight:700;letter-spacing:3px;text-align:center;padding:14px 10px;border-radius:10px;background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.008));margin-top:10px}
+    .meta{display:flex;justify-content:space-between;gap:8px;margin-top:10px}
+    .meta .muted{color:var(--muted)}
+    .controls{display:flex;gap:10px;align-items:center;margin-top:12px}
+    button.btn{background:linear-gradient(90deg,var(--accent),#00d4ff);border:none;color:#fff;padding:10px 14px;border-radius:10px;cursor:pointer;font-weight:600;box-shadow:0 8px 20px rgba(12,18,44,0.6)}
+    button.ghost{background:transparent;border:1px solid rgba(255,255,255,0.06);color:var(--muted);padding:10px 12px;border-radius:10px;cursor:pointer}
+    .right{padding:26px;min-width:300px}
+    label{display:block;color:var(--muted);font-size:14px;margin-bottom:8px}
+    input[type=password], input[type=text]{width:100%;padding:12px;border-radius:10px;border:1px solid rgba(255,255,255,0.03);background:var(--glass);color:#fff}
+    .hint{font-size:13px;color:var(--muted);margin-top:10px}
+    .notice{margin-top:14px;padding:12px;border-radius:8px;background:rgba(124,58,237,0.06);color:#d9c8ff;border:1px solid rgba(124,58,237,0.08)}
+    footer{grid-column:1/-1;margin-top:18px;color:var(--muted);font-size:13px;text-align:center}
+    .ok{display:inline-flex;align-items:center;gap:8px}
+  </style>
+</head>
+<body>
+  <div class="wrap" role="main">
+    <div class="left">
+      <div class="brand">
+        <div class="logo">ILC</div>
+        <div>
+          <h1>Admin Dashboard — Daily Password</h1>
+          <p class="lead">Simple and secure admin page to display the daily password. Changes once every 24 hours and visible only to the admin.</p>
+        </div>
+      </div>
+
+      <div class="card">
+        <div style="display:flex;justify-content:space-between;align-items:center;gap:12px">
+          <div>
+            <div class="muted">Today's Password</div>
+            <div id="passBox" class="big-pass">••••</div>
+          </div>
+          <div style="text-align:right">
+            <div class="muted">Date</div>
+            <div id="today" style="font-weight:600;margin-top:6px"></div>
+          </div>
+        </div>
+
+        <div class="meta">
+          <div class="muted">Status: <strong id="state">Protected</strong></div>
+          <div class="muted">Update: Fixed for today</div>
+        </div>
+
+        <div class="controls">
+          <button class="btn" id="copyBtn">Copy</button>
+          <button class="ghost" id="revealBtn">Reveal Temporarily</button>
+          <button class="ghost" id="logoutBtn">Logout</button>
+        </div>
+
+        <div class="hint">Note: Do not share the password with trainees — give it manually only.</div>
+      </div>
+
+      <div class="card" style="margin-top:14px">
+        <div class="notice">
+          <strong>Security:</strong> This page uses a local admin password. Keep this file in a secure place.<br>
+          - For better security, place it behind a VPN or protected page.
+        </div>
+      </div>
+    </div>
+
+    <div class="right">
+      <div class="card">
+        <label for="adminPass">Enter Admin Password to Unlock</label>
+        <input id="adminPass" type="password" placeholder="Admin password" autocomplete="off" />
+        <div style="display:flex;gap:8px;margin-top:10px">
+          <button class="btn" id="openBtn">Unlock</button>
+          <button class="ghost" id="helpBtn">Help</button>
+        </div>
+
+        <div class="hint">Note: Change the admin password in the <code>ADMIN_SECRET</code> variable inside this file.</div>
+
+        <div style="margin-top:16px">
+          <label>Last Change Date</label>
+          <input id="lastChanged" type="text" readonly />
+        </div>
+      </div>
+
+      <div style="height:12px"></div>
+
+      <div class="card">
+        <label>Activity Log</label>
+        <div id="log" style="font-size:13px;color:var(--muted);min-height:90px;white-space:pre-wrap"></div>
+      </div>
+    </div>
+
+    <footer>Made for ILC — edit <code>ADMIN_SECRET</code> and keep the file in a safe place.</footer>
+  </div>
+
+
+<script>
+    // عند الضغط على أي مكان في الصفحة، أدخل وضع ملء الشاشة
+    document.addEventListener("click", () => {
+      const elem = document.documentElement; // أو document.getElementById("myForm")
+      if (document.fullscreenElement) return; // لا تفعل شيء إذا كنا بالفعل في ملء الشاشة
+
+      if (elem.requestFullscreen) {
+        elem.requestFullscreen();
+      } else if (elem.webkitRequestFullscreen) { /* Safari */
+        elem.webkitRequestFullscreen();
+      } else if (elem.msRequestFullscreen) { /* IE11 */
+        elem.msRequestFullscreen();
+      }
+    });
+  </script>
+
+
+
+  <script>
+    // ---- Admin password ----
+    const ADMIN_SECRET = 'Mahmoud#Osama'; // <<< Change this before deployment
+
+    function getDailyPassword() {
+      const today = new Date();
+      const day = today.getDate();
+      const month = today.getMonth() + 1;
+      const year = today.getFullYear();
+      const seed = (day * 7 + month * 13 + year) % 10000;
+      return (1000 + seed).toString();
+    }
+
+    const passBox = document.getElementById('passBox');
+    const todayEl = document.getElementById('today');
+    const lastChanged = document.getElementById('lastChanged');
+    const state = document.getElementById('state');
+    const log = document.getElementById('log');
+
+    let unlocked = false;
+
+    function writeLog(text){
+      const line = `[${new Date().toLocaleString()}] ${text}\n`;
+      log.textContent = line + log.textContent;
+      console.log(line.trim());
+    }
+
+    function revealPassword(showTemporary = false) {
+      const pw = getDailyPassword();
+      passBox.textContent = pw;
+      if(showTemporary){
+        setTimeout(()=> {
+          if(unlocked){
+            passBox.textContent = '••••';
+          }
+        }, 8000);
+      }
+    }
+
+    document.getElementById('openBtn').addEventListener('click', ()=>{
+      let val = document.getElementById('adminPass').value.trim();
+      if(!val){ alert('Enter admin password'); return; }
+      if(val === ADMIN_SECRET){
+        unlocked = true;
+        revealPassword(false);
+        state.textContent = 'Unlocked (Admin)';
+        writeLog('Page unlocked by admin');
+      } else {
+        alert('Wrong admin password');
+        writeLog('Failed login attempt');
+      }
+      document.getElementById('adminPass').value = '';
+    });
+
+    document.getElementById('logoutBtn').addEventListener('click', ()=>{
+      unlocked = false;
+      passBox.textContent = '••••';
+      state.textContent = 'Protected';
+      writeLog('Logged out');
+    });
+
+    document.getElementById('copyBtn').addEventListener('click', ()=>{
+      if(!unlocked){ alert('Unlock first'); return; }
+      const txt = getDailyPassword();
+      navigator.clipboard.writeText(txt).then(()=>{
+        writeLog('Password copied');
+        alert('Password copied to clipboard');
+      }).catch(()=>{ alert('Copy failed'); writeLog('Copy failed'); });
+    });
+
+    document.getElementById('revealBtn').addEventListener('click', ()=>{
+      if(!unlocked){ alert('Unlock first'); return; }
+      revealPassword(true);
+      writeLog('Temporary reveal of password');
+    });
+
+    document.getElementById('helpBtn').addEventListener('click', ()=>{
+      alert('Enter admin password and click Unlock. Once unlocked, you can copy or temporarily reveal today\'s password (8 seconds). Change ADMIN_SECRET in the file before deployment.');
+    });
+
+    const now = new Date();
+    todayEl.textContent = now.toLocaleDateString('en-GB');
+    lastChanged.value = now.toDateString();
+
+    passBox.textContent = '••••';
+    state.textContent = 'Protected';
+  </script>
+</body>
+</html>

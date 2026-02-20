@@ -1,0 +1,559 @@
+🧑 Name       : amer
+📞 Phone     : Unknown
+📅 Date      : 2/21/2025
+⏰ Start Time: 7:14:50 PM
+⏳ Time Taken: 1 min 5 sec
+🏆 Score     : 4/50 (8.00%)
+---------------------------🧑 Name       : Unknown
+📞 Phone     : Unknown
+📅 Date      : 2/24/2025
+⏰ Start Time: 11:00:33 PM
+⏳ Time Taken: 0 min 39 sec
+🏆 Score     : 4/15 (26.67%)
+-----------------------------------
+🧑 Name       : حامد عبد الهادي محمد 
+📞 Phone     : 1
+📅 Date      : 2/26/2025
+⏰ Start Time: 10:24:55 AM
+⏳ Time Taken: 8 min 10 sec
+🏆 Score     : 15/15 (100.00%)
+-----------------------------------
+🧑 Name       : manar mohammed
+📞 Phone     : 1
+📅 Date      : 2/26/2025
+⏰ Start Time: 10:25:15 AM
+⏳ Time Taken: 7 min 51 sec
+🏆 Score     : 15/15 (100.00%)
+-----------------------------------
+🧑 Name       : Fayza Ahmad El Saqa
+📞 Phone     : Quiz 1
+📅 Date      : 2/26/2025
+⏰ Start Time: 10:25:12 ص
+⏳ Time Taken: 8 min 0 sec
+🏆 Score     : 15/15 (100.00%)
+-----------------------------------
+🧑 Name       : Unknown
+📞 Phone     : Unknown
+📅 Date      : 2/27/2025
+⏰ Start Time: 12:02:09 AM
+⏳ Time Taken: 0 min 48 sec
+🏆 Score     : 5/15 (33.33%)
+-----------------------------------
+🧑 Name       : test
+📞 Phone     : 01224703903
+📅 Date      : 3/3/2025
+⏰ Start Time: 12:55:07 PM
+⏳ Time Taken: 1 min 24 sec
+🏆 Score     : 12/15 (80.00%)
+-----------------------------------
+🧑 Name       : test1
+📞 Phone     : 01224703903
+📅 Date      : 3/3/2025
+⏰ Start Time: 1:06:06 PM
+⏳ Time Taken: 1 min 14 sec
+🏆 Score     : 15/15 (100.00%)
+-----------------------------------
+🧑 Name       : test2
+📞 Phone     : 01224703903
+📅 Date      : 3/3/2025
+⏰ Start Time: 1:11:13 PM
+⏳ Time Taken: 1 min 14 sec
+🏆 Score     : 12/50 (24.00%)
+-----------------------------------
+🧑 Name       : Unknown
+📞 Phone     : Unknown
+📅 Date      : 3/6/2025
+⏰ Start Time: 2:10:11 AM
+⏳ Time Taken: 0 min 25 sec
+🏆 Score     : 13/50 (26.00%)
+-----------------------------------
+🧑 Name       : Unknown
+📞 Phone     : Unknown
+📅 Date      : 3/12/2025
+⏰ Start Time: 1:05:55 PM
+⏳ Time Taken: 0 min 27 sec
+🏆 Score     : 13/50 (26.00%)
+-----------------------------------
+🧑 Name       : Unknown
+📞 Phone     : Unknown
+📅 Date      : 6/1/2025
+⏰ Start Time: 10:26:20 PM
+⏳ Time Taken: 0 min 36 sec
+🏆 Score     : 13/50 (26.00%)
+-----------------------------------
+🧑 Name       : Unknown
+📞 Phone     : Unknown
+📅 Date      : 6/1/2025
+⏰ Start Time: 11:27:27 PM
+⏳ Time Taken: 0 min 29 sec
+🏆 Score     : 9/50 (18.00%)
+-----------------------------------
+🧑 Name       : Unknown
+📞 Phone     : Unknown
+📅 Date      : 6/1/2025
+⏰ Start Time: ١١:٣٠:٣٥ م
+⏳ Time Taken: 0 min 59 sec
+🏆 Score     : 13/50 (26.00%)
+-----------------------------------
+🧑 Name       : Unknown
+📞 Phone     : Unknown
+📅 Date      : 6/1/2025
+⏰ Start Time: ١١:٣٦:٠٥ م
+⏳ Time Taken: 0 min 34 sec
+🏆 Score     : 9/25 (36.00%)
+-----------------------------------
+🧑 Name       : Unknown
+📞 Phone     : Unknown
+📅 Date      : 6/2/2025
+⏰ Start Time: 11:59:37 م
+⏳ Time Taken: 1 min 37 sec
+🏆 Score     : 12/25 (48.00%)
+-----------------------------------
+🧑 Name       : Unknown
+📞 Phone     : Unknown
+📅 Date      : 6/2/2025
+⏰ Start Time: 10:10:23 PM
+⏳ Time Taken: 0 min 20 sec
+🏆 Score     : 9/25 (36.00%)
+-----------------------------------
+🧑 Name       : Unknown
+📞 Phone     : Unknown
+📅 Date      : 6/2/2025
+⏰ Start Time: ١٠:١١:٢٨ م
+⏳ Time Taken: 0 min 39 sec
+🏆 Score     : 13/25 (52.00%)
+-----------------------------------
+🧑 Name       : Unknown
+📞 Phone     : Unknown
+📅 Date      : 6/2/2025
+⏰ Start Time: 10:58:01 PM
+⏳ Time Taken: 0 min 23 sec
+🏆 Score     : 9/25 (36.00%)
+-----------------------------------
+🧑 Name       : Unknown
+📞 Phone     : Unknown
+📅 Date      : 6/2/2025
+⏰ Start Time: ١١:٠٠:١٩ م
+⏳ Time Taken: 0 min 51 sec
+🏆 Score     : 8/25 (32.00%)
+-----------------------------------
+🧑 Name       : Unknown
+📞 Phone     : Unknown
+📅 Date      : 6/2/2025
+⏰ Start Time: ١١:٠١:٣٤ م
+⏳ Time Taken: 0 min 37 sec
+🏆 Score     : 8/25 (32.00%)
+-----------------------------------
+🧑 Name       : Unknown
+📞 Phone     : Unknown
+📅 Date      : 6/3/2025
+⏰ Start Time: ٩:٠٨:٣٨ م
+⏳ Time Taken: 0 min 31 sec
+🏆 Score     : 7/25 (28.00%)
+-----------------------------------
+🧑 Name       : Unknown
+📞 Phone     : Unknown
+📅 Date      : 7/11/2025
+⏰ Start Time: 5:43:46 PM
+⏳ Time Taken: 0 min 27 sec
+🏆 Score     : 14/25 (56.00%)
+-----------------------------------
+🧑 Name       : Unknown
+📞 Phone     : Unknown
+📅 Date      : 7/11/2025
+⏰ Start Time: 5:48:32 PM
+⏳ Time Taken: 0 min 32 sec
+🏆 Score     : 13/50 (26.00%)
+-----------------------------------
+🧑 Name       : test
+📞 Phone     : 123142342322424
+📅 Date      : 7/12/2025
+⏰ Start Time: 2:08:05 AM
+⏳ Time Taken: 0 min 24 sec
+🏆 Score     : 14/50 (28.00%)
+-----------------------------------
+🧑 Name       : Unknown
+📞 Phone     : Unknown
+📅 Date      : 7/12/2025
+⏰ Start Time: 3:27:46 AM
+⏳ Time Taken: 0 min 51 sec
+🏆 Score     : 11/50 (22.00%)
+-----------------------------------
+🧑 Name       : test
+📞 Phone     : 1225224242452
+📅 Date      : 7/12/2025
+⏰ Start Time: 3:37:10 AM
+⏳ Time Taken: 0 min 25 sec
+🏆 Score     : 13/50 (26.00%)
+-----------------------------------
+🧑 Name       : amer
+📞 Phone     : 22123414343
+📅 Date      : 7/12/2025
+⏰ Start Time: 3:38:48 AM
+⏳ Time Taken: 0 min 27 sec
+🏆 Score     : 13/50 (26.00%)
+-----------------------------------
+🧑 Name       : amer
+📞 Phone     : 1112312312
+📅 Date      : 7/12/2025
+⏰ Start Time: 3:44:27 AM
+⏳ Time Taken: 0 min 26 sec
+🏆 Score     : 13/50 (26.00%)
+-----------------------------------
+🧑 Name       : new
+📞 Phone     : 1123123121
+📅 Date      : 7/12/2025
+⏰ Start Time: 3:48:01 AM
+⏳ Time Taken: 0 min 28 sec
+🏆 Score     : 13/50 (26.00%)
+-----------------------------------
+🧑 Name       : ققق
+📞 Phone     : 3333
+📅 Date      : 7/12/2025
+⏰ Start Time: 12 July 2025 at 4:12:31 am
+⏳ Time Taken: 0 min 24 sec
+🏆 Score     : 13/50 (26.00%)
+-----------------------------------
+🧑 Name       : new
+📞 Phone     : 567668464
+📅 Date      : 7/12/2025
+⏰ Start Time: 12 July 2025 at 4:19:10 am
+⏳ Time Taken: 0 min 29 sec
+🏆 Score     : 13/50 (26.00%)
+-----------------------------------
+🧑 Name       : www
+📞 Phone     : 323424
+📅 Date      : 7/12/2025
+⏰ Start Time: 12 July 2025 at 4:28:15 am
+⏳ Time Taken: 0 min 34 sec
+🏆 Score     : 12/50 (24.00%)
+-----------------------------------
+🧑 Name       : ttttt
+📞 Phone     : 32424
+📅 Date      : 7/12/2025
+⏰ Start Time: 12 July 2025 at 4:35:04 am
+⏳ Time Taken: 0 min 28 sec
+🏆 Score     : 13/50 (26.00%)
+-----------------------------------
+🧑 Name       : edit
+📞 Phone     : 23121
+📅 Date      : 7/12/2025
+⏰ Start Time: 12 July 2025 at 4:45:05 am
+⏳ Time Taken: 0 min 25 sec
+🏆 Score     : 13/50 (26.00%)
+-----------------------------------
+🧑 Name       : امل السيد محمود 
+📞 Phone     : 01224703903
+📅 Date      : 7/12/2025
+⏰ Start Time: 12 July 2025 at 11:18:51 pm
+⏳ Time Taken: 0 min 25 sec
+🏆 Score     : 13/50 (26.00%)
+-----------------------------------
+🧑 Name       : على محمد على 
+📞 Phone     : 232342342
+📅 Date      : 7/12/2025
+⏰ Start Time: 12 July 2025 at 11:22:56 pm
+⏳ Time Taken: 0 min 29 sec
+🏆 Score     : 13/50 (26.00%)
+-----------------------------------
+🧑 Name       : محمد محمد على 
+📞 Phone     : 324345542
+📅 Date      : 7/12/2025
+⏰ Start Time: 12 July 2025 at 11:29:02 pm
+⏳ Time Taken: 0 min 37 sec
+🏆 Score     : 13/50 (26.00%)
+-----------------------------------
+🧑 Name       : ضضضض
+📞 Phone     : 13423424
+📅 Date      : 7/12/2025
+⏰ Start Time: 12 July 2025 at 11:31:21 pm
+⏳ Time Taken: 0 min 31 sec
+🏆 Score     : 13/50 (26.00%)
+-----------------------------------
+🧑 Name       : ساهر السيد 
+📞 Phone     : 4224
+📅 Date      : 7/12/2025
+⏰ Start Time: 12 July 2025 at 11:32:57 pm
+⏳ Time Taken: 0 min 39 sec
+🏆 Score     : 13/50 (26.00%)
+-----------------------------------
+🧑 Name       : كريم محمد السيد 
+📞 Phone     : 01224703903
+📅 Date      : 7/12/2025
+⏰ Start Time: 12 July 2025 at 11:34:34 pm
+⏳ Time Taken: 0 min 30 sec
+🏆 Score     : 13/50 (26.00%)
+-----------------------------------
+🧑 Name       : بسسبس
+📞 Phone     : 1234
+📅 Date      : 7/12/2025
+⏰ Start Time: 12 July 2025 at 11:36:05 pm
+⏳ Time Taken: 0 min 25 sec
+🏆 Score     : 13/50 (26.00%)
+-----------------------------------
+🧑 Name       : ناصر محمد عادل 
+📞 Phone     : 1345454444
+📅 Date      : 7/12/2025
+⏰ Start Time: 12 July 2025 at 11:38:29 pm
+⏳ Time Taken: 0 min 23 sec
+🏆 Score     : 13/50 (26.00%)
+-----------------------------------
+🧑 Name       : اختبار
+📞 Phone     : 331
+📅 Date      : 7/12/2025
+⏰ Start Time: 12 July 2025 at 11:39:49 pm
+⏳ Time Taken: 0 min 29 sec
+🏆 Score     : 13/50 (26.00%)
+-----------------------------------
+🧑 Name       : محمد محمد احمد 
+📞 Phone     : 343444
+📅 Date      : 7/12/2025
+⏰ Start Time: 12 July 2025 at 11:41:00 pm
+⏳ Time Taken: 0 min 22 sec
+🏆 Score     : 13/50 (26.00%)
+-----------------------------------
+🧑 Name       : هانى 
+📞 Phone     : 23121
+📅 Date      : 7/12/2025
+⏰ Start Time: 12 July 2025 at 11:49:19 pm
+⏳ Time Taken: 0 min 34 sec
+🏆 Score     : 13/50 (26.00%)
+-----------------------------------
+🧑 Name       : تليفون
+📞 Phone     : 1346
+📅 Date      : 7/13/2025
+⏰ Start Time: 12 July 2025, 11:58:14 pm
+⏳ Time Taken: 2 min 7 sec
+🏆 Score     : 19/50 (38.00%)
+-----------------------------------
+🧑 Name       : online
+📞 Phone     : 347788
+📅 Date      : 7/13/2025
+⏰ Start Time: 13 July 2025 at 11:20:10 pm
+⏳ Time Taken: 0 min 42 sec
+🏆 Score     : 13/50 (26.00%)
+-----------------------------------
+🧑 Name       : test2
+📞 Phone     : 212114
+📅 Date      : 7/14/2025
+⏰ Start Time: 14 July 2025 at 11:34:06 pm
+⏳ Time Taken: 0 min 13 sec
+🏆 Score     : 1/50 (2.00%)
+-----------------------------------
+🧑 Name       : test4
+📞 Phone     : 11341334
+📅 Date      : 7/14/2025
+⏰ Start Time: 14 July 2025 at 11:47:14 pm
+⏳ Time Taken: 0 min 13 sec
+🏆 Score     : 0/50 (0.00%)
+-----------------------------------
+🧑 Name       : test1
+📞 Phone     : 1223434
+📅 Date      : 7/14/2025
+⏰ Start Time: 14 July 2025 at 11:53:56 pm
+⏳ Time Taken: 0 min 11 sec
+🏆 Score     : 0/50 (0.00%)
+-----------------------------------
+🧑 Name       : test2
+📞 Phone     : 3134234
+📅 Date      : 7/14/2025
+⏰ Start Time: 14 July 2025 at 11:55:06 pm
+⏳ Time Taken: 0 min 13 sec
+🏆 Score     : 0/50 (0.00%)
+-----------------------------------
+🧑 Name       : test2
+📞 Phone     : 124214
+📅 Date      : 7/14/2025
+⏰ Start Time: 14 July 2025 at 11:55:50 pm
+⏳ Time Taken: 0 min 12 sec
+🏆 Score     : 0/50 (0.00%)
+-----------------------------------
+🧑 Name       : test3
+📞 Phone     : 31442
+📅 Date      : 7/14/2025
+⏰ Start Time: 14 July 2025 at 11:57:04 pm
+⏳ Time Taken: 0 min 13 sec
+🏆 Score     : 0/50 (0.00%)
+-----------------------------------
+🧑 Name       : test4
+📞 Phone     : 12345
+📅 Date      : 7/14/2025
+⏰ Start Time: 14 July 2025 at 11:58:11 pm
+⏳ Time Taken: 0 min 12 sec
+🏆 Score     : 0/50 (0.00%)
+-----------------------------------
+🧑 Name       : test5
+📞 Phone     : 1332323
+📅 Date      : 7/14/2025
+⏰ Start Time: 14 July 2025 at 11:59:06 pm
+⏳ Time Taken: 0 min 15 sec
+🏆 Score     : 0/50 (0.00%)
+-----------------------------------
+🧑 Name       : test6
+📞 Phone     : 12346678
+📅 Date      : 7/15/2025
+⏰ Start Time: 15 July 2025 at 12:00:19 am
+⏳ Time Taken: 0 min 13 sec
+🏆 Score     : 0/50 (0.00%)
+-----------------------------------
+🧑 Name       : test
+📞 Phone     : 3445476768
+📅 Date      : 7/15/2025
+⏰ Start Time: 15 July 2025 at 12:04:24 am
+⏳ Time Taken: 0 min 18 sec
+🏆 Score     : 0/50 (0.00%)
+-----------------------------------
+🧑 Name       : test1
+📞 Phone     : 3142324
+📅 Date      : 7/15/2025
+⏰ Start Time: 15 July 2025 at 12:11:02 am
+⏳ Time Taken: 0 min 13 sec
+🏆 Score     : 0/50 (0.00%)
+-----------------------------------
+🧑 Name       : test
+📞 Phone     : 1234545645
+📅 Date      : 7/15/2025
+⏰ Start Time: 15 July 2025 at 12:34:25 am
+⏳ Time Taken: 0 min 19 sec
+🏆 Score     : 0/50 (0.00%)
+-----------------------------------
+🧑 Name       : test
+📞 Phone     : 123423333
+📅 Date      : 7/15/2025
+⏰ Start Time: 15 July 2025 at 12:36:57 am
+⏳ Time Taken: 0 min 19 sec
+🏆 Score     : 0/50 (0.00%)
+-----------------------------------
+🧑 Name       : test
+📞 Phone     : 1453555
+📅 Date      : 7/15/2025
+⏰ Start Time: 15 July 2025 at 1:07:15 am
+⏳ Time Taken: 0 min 49 sec
+🏆 Score     : 3/50 (6.00%)
+-----------------------------------
+🧑 Name       : test
+📞 Phone     : 1132242
+📅 Date      : 7/15/2025
+⏰ Start Time: 15 July 2025 at 10:43:46 pm
+⏳ Time Taken: 18 min 22 sec
+🏆 Score     : 9/50 (18.00%)
+-----------------------------------
+🧑 Name       : test
+📞 Phone     : 1323423
+📅 Date      : 7/16/2025
+⏰ Start Time: 16 July 2025 at 12:21:29 am
+⏳ Time Taken: 2 min 54 sec
+🏆 Score     : 9/50 (18.00%)
+-----------------------------------
+🧑 Name       : testagain
+📞 Phone     : 131123
+📅 Date      : 7/16/2025
+⏰ Start Time: 16 July 2025 at 12:31:37 am
+⏳ Time Taken: 2 min 38 sec
+🏆 Score     : 9/50 (18.00%)
+-----------------------------------
+🧑 Name       : testeeeeeee
+📞 Phone     : 3423423
+📅 Date      : 7/16/2025
+⏰ Start Time: 16 July 2025 at 12:41:09 am
+⏳ Time Taken: 3 min 11 sec
+🏆 Score     : 24/50 (48.00%)
+-----------------------------------
+🧑 Name       : agiinn
+📞 Phone     : 3424
+📅 Date      : 7/16/2025
+⏰ Start Time: 16 July 2025 at 12:45:08 am
+⏳ Time Taken: 2 min 21 sec
+🏆 Score     : 24/50 (48.00%)
+-----------------------------------
+🧑 Name       : newone
+📞 Phone     : 11231
+📅 Date      : 7/16/2025
+⏰ Start Time: 16 July 2025 at 12:54:14 am
+⏳ Time Taken: 2 min 50 sec
+🏆 Score     : 24/50 (48.00%)
+-----------------------------------
+🧑 Name       : done
+📞 Phone     : 24523414232
+📅 Date      : 7/16/2025
+⏰ Start Time: 16 July 2025 at 1:01:24 am
+⏳ Time Taken: 2 min 25 sec
+🏆 Score     : 24/50 (48.00%)
+-----------------------------------
+🧑 Name       : test
+📞 Phone     : 12314
+📅 Date      : 7/16/2025
+⏰ Start Time: 16 July 2025 at 1:11:18 am
+⏳ Time Taken: 2 min 2 sec
+🏆 Score     : 25/50 (50.00%)
+-----------------------------------
+🧑 Name       : twytwr
+📞 Phone     : shsh
+📅 Date      : 7/19/2025
+⏰ Start Time: 19 July 2025 at 9:01:17 am
+⏳ Time Taken: 0 min 25 sec
+🏆 Score     : 20/50 (40.00%)
+-----------------------------------
+🧑 Name       : Mostafa talhaa 
+📞 Phone     : 01272431662
+📅 Date      : 8/4/2025
+⏰ Start Time: 4 August 2025 at 11:36:59 pm
+⏳ Time Taken: 5 min 53 sec
+🏆 Score     : 12/25 (48.00%)
+-----------------------------------
+🧑 Name       : ee
+📞 Phone     : ee
+📅 Date      : 8/21/2025
+⏰ Start Time: 21 August 2025 at 10:08:33 pm
+⏳ Time Taken: 0 min 21 sec
+🏆 Score     : 7/25 (28.00%)
+-----------------------------------
+🧑 Name       : محمد امين ابو السعود
+📞 Phone     : 01030145920
+📅 Date      : 9/1/2025
+⏰ Start Time: 1 September 2025, 11:16:41 pm
+⏳ Time Taken: 6 min 24 sec
+🏆 Score     : 17/25 (68.00%)
+-----------------------------------
+🧑 Name       : Ahmed Sobhy
+📞 Phone     : 01277971891
+📅 Date      : 9/1/2025
+⏰ Start Time: 1 September 2025, 10:24:33 pm
+⏳ Time Taken: 4 min 6 sec
+🏆 Score     : 19/25 (76.00%)
+-----------------------------------
+🧑 Name       : Mohmed amin
+📞 Phone     : 01030145920
+📅 Date      : 9/1/2025
+⏰ Start Time: 1 September 2025, 11:34:48 pm
+⏳ Time Taken: 2 min 0 sec
+🏆 Score     : 7/25 (28.00%)
+-----------------------------------
+🧑 Name       : Zainab Samy Helmy El said 
+📞 Phone     : 01093676310
+📅 Date      : 9/1/2025
+⏰ Start Time: 1 September 2025 at 11:16:22 pm
+⏳ Time Taken: 25 min 18 sec
+🏆 Score     : 23/25 (92.00%)
+-----------------------------------
+🧑 Name       : Norhan Ashraf Elkholy 
+📞 Phone     : 01022672735
+📅 Date      : 9/1/2025
+⏰ Start Time: 1 September 2025 at 11:47:59 pm
+⏳ Time Taken: 4 min 33 sec
+🏆 Score     : 10/25 (40.00%)
+-----------------------------------
+🧑 Name       : test
+📞 Phone     : test
+📅 Date      : 10/31/2025
+⏰ Start Time: 31 October 2025 at 9:02:10 pm
+⏳ Time Taken: 0 min 31 sec
+🏆 Score     : 8/25 (32.00%)
+-----------------------------------
+🧑 Name       : س
+📞 Phone     : س
+📅 Date      : 11/1/2025
+⏰ Start Time: 1 November 2025 at 1:34:38 pm
+⏳ Time Taken: 6 min 18 sec
+🏆 Score     : 16/25 (64.00%)
+-----------------------------------

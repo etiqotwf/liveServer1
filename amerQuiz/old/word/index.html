@@ -1,0 +1,954 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reading Comprehension Quiz</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            background: #1e1e2e;
+            color: white;
+        }
+        .container {
+            width: 95%;
+            max-width: 1200px;
+            background: #282a36;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.5);
+            text-align: left;
+        }
+        .question {
+            font-weight: bold;
+            font-size: 30px;
+            margin-bottom: 20px;
+        }
+        .options label {
+            display: block;
+            padding: 10px;
+        }
+        .btn {
+            background: #ff5555;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            cursor: pointer;
+            border-radius: 5px;
+            margin-top: 20px;
+            font-size: 18px;
+            display: block;
+        }
+        .btn:hover {
+            background: #ff79c6;
+        }
+
+        .result-screen {
+    display: none;
+    background: #44475a;
+    padding: 30px;
+    border-radius: 10px;
+    text-align: center;
+    width: 100%;
+  }
+
+  #resultScore {
+    font-size: 36px;
+    font-weight: bold;
+    color: #ffffff;
+    margin-top: 20px;
+  }
+
+  .result-screen p {
+    font-size: 20px;
+    font-weight: bold;
+    color: #f8f8f2;
+  }
+
+  #timer {
+    font-size: 28px;         /* حجم أكبر */
+    color: yellow;           /* اللون أصفر */
+    font-weight: bold;       /* خط عريض */
+    padding: 10px;
+    border-radius: 10px;
+    width: fit-content;
+    margin: 10px auto;
+  }
+
+      
+      .author {
+  font-size: 24px;        /* تكبير الخط */
+  color: #ffd700;         /* لون ذهبي مميز */
+  text-align: center;
+  font-weight: bold;      /* جعله عريض */
+  margin-bottom: 15px;
+  position: relative;     /* إزالة الوضع المطلق حتى يظهر في مكانه الطبيعي */
+  top: auto;
+}
+
+
+
+
+label {
+  font-size: 22px; /* حجم نص الاختيار */
+  padding: 10px;
+  display: block;
+}
+
+input[type="radio"] {
+  transform: scale(1.5); /* تكبير حجم الدائرة */
+  margin-right: 10px;
+}
+
+
+  #passage {
+    font-size: 16px;     /* حجم الخط */
+    font-weight: bold;   /* خط عريض */
+  }
+
+
+#startScreen p {
+  font-size: 22px;
+  font-weight: bold;
+}
+#startScreen input {
+  font-size: 20px;
+  font-weight: bold;
+  padding: 8px;
+}
+
+  
+
+#startScreen h1 {
+  font-size: 40px; /* حجم الخط */
+  font-weight: bold; /* عريض */
+  color: #ffd700; /* لون مميز مثل الذهبي (اختياري) */
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+
+
+
+    </style>
+</head>
+<body>
+
+
+<div style="position: absolute; top: 30px; right: 100px; display: flex; align-items: center;">
+  <div style="font-size: 50px; margin-right: 14px;"></div>
+  <div id="timer" style="font-size: 20px; color: #fffb00;"></div>
+</div>
+
+  
+    <div class="container" id="startScreen">
+        <h1>📘 𝒯𝒽𝑒 𝐵𝓇𝒾𝓉𝒾𝓈𝒽 𝐼𝓃𝓉𝑒𝓇𝓃𝒶𝓉𝒾𝑜𝓃𝒶𝓁 𝐿𝑒𝒶𝓇𝓃𝒾𝓃𝑔 𝒞𝑒𝓃𝓉𝑒𝓇 (𝐼𝐿𝐶)
+
+</h1>
+        <h2></h2>
+<p>Course Name: <input type="text" id="courseName" value="Word Test" readonly style="background-color: #f0f0f0; border: none;"></p>
+        <p>Enter Your Name: <input type="text" id="traineeName"></p>
+        <p>Enter Your Phone Number: <input type="text" id="traineePhone"></p>
+        <p>Enter Password: <input type="password" id="password"></p>
+        <button class="btn" onclick="startQuiz()">Start Quiz</button>
+    </div>
+
+    <div class="container" id="quizContainer" style="display: none;">
+        <h2 id="quizTitle">Placement Test</h2>
+        <p class="author"></p>
+        <p>Date: <span id="date"></span></p>
+        <p id="timer"></p>
+        <div id="passage">
+  <h3></h3>
+  <p style="font-size: 22px;">
+    
+                        </div>
+        <div id="quiz"></div>
+    </div>
+    
+    <div class="result-screen" id="resultScreen" style="display: none;">
+        <h2>Test Result</h2>
+        <p class="author">Created by: Ahmed Amer</p>
+        <p><strong>Course Name:</strong> <span id="resultCourse"></span></p>
+        <p><strong>Name:</strong> <span id="resultName"></span></p>
+        <p><strong>Phone Number:</strong> <span id="resultPhone"></span></p>
+        <p><strong>Test Date:</strong> <span id="resultDate"></span></p>
+        <p><strong>Start Time:</strong> <span id="resultStartTime"></span></p>
+        <p><strong>Time Taken:</strong> <span id="resultTime"></span></p>
+        <p><strong>Score:</strong> <span id="resultScore"></span></p>
+    </div>
+
+
+ 
+
+ 
+
+  </div>
+<div style="
+  position: fixed;
+  top: 40px;
+  right: 40px;
+  font-size: 30px;
+  font-weight: bold;
+  color: #ffd700;
+">
+  ✏️ 
+
+  
+</div>
+
+
+<script>
+    // عند الضغط على أي مكان في الصفحة، أدخل وضع ملء الشاشة
+    document.addEventListener("click", () => {
+      const elem = document.documentElement; // أو document.getElementById("myForm")
+      if (document.fullscreenElement) return; // لا تفعل شيء إذا كنا بالفعل في ملء الشاشة
+
+      if (elem.requestFullscreen) {
+        elem.requestFullscreen();
+      } else if (elem.webkitRequestFullscreen) { /* Safari */
+        elem.webkitRequestFullscreen();
+      } else if (elem.msRequestFullscreen) { /* IE11 */
+        elem.msRequestFullscreen();
+      }
+    });
+  </script>
+
+    
+    <script>
+        document.getElementById("date").innerText = new Date().toLocaleDateString("en-US");
+    
+    const trueFalseQuestions = [
+
+
+ {
+  passage: `Passage interface:<br><strong>The Word Interface</strong><br>
+When you open Microsoft Word, the first thing you see is the user interface. It includes the ribbon at the top, which contains tabs like Home, Insert, and Layout. Each tab gives access to different tools, such as changing fonts, inserting pictures, or adjusting page settings. On the left, there’s the navigation pane, and in the center, the document area where you type your text. Understanding this interface helps you work faster and use Word’s full potential.<br><br>
+
+<pre style="text-align:left; font-size:13px;">
++----------------------------------------------------------------------------------+
+|                             Title Bar (اسم الملف + تحكم)                        |
++-----------------+--------------------------------------------------------------+
+| Quick Access    | Ribbon Tabs: Home | Insert | Layout | References | Review     |
+| Toolbar (حفظ)   +--------------------------------------------------------------+
+|                 | ▼ Ribbon Commands (مثل: Font, Paragraph, Styles...)          |
++-----------------+--------------------------------------------------------------+
+| Navigation Pane |                         Document Area                         |
+| (التنقل الجانبي)|          << مكان الكتابة وكتابة النصوص والتحرير >>           |
+|                 |                                                               |
++-----------------+--------------------------------------------------------------+
+|                            Status Bar (عدد الكلمات، اللغة...)                   |
++----------------------------------------------------------------------------------+
+</pre>
+`,
+  q: `Understanding the Word interface helps users to ----------------.`,
+  a: "b",
+  options: ["Close documents", "Work faster", "Print photos", "Open Excel"]
+},
+
+
+{
+  passage: `Passage main:<br>
+<strong>To:</strong> hr@company.com<br>
+<strong>Subject:</strong> Job Application - Marketing Specialist<br><br>
+
+Dear HR Manager,<br><br>
+
+I hope this message finds you well. I am writing to express my interest in the Marketing Specialist position recently posted on your company’s website. With a degree in Business Administration and over three years of experience in digital marketing, I am confident in my ability to contribute significantly to your team. My skills include SEO, social media strategy, and content creation. I am excited about the opportunity to bring my expertise to your organization.<br><br>
+
+Thank you for considering my application. I look forward to the opportunity to discuss how I can be an asset to your team.<br><br>
+
+Sincerely,<br>
+Betty Chan`,
+
+  q: "Betty's --------------------- in this email.",
+  a: "a",
+  options: ["applying for a job", "resigning from a job", "requesting a recommendation", "inquiring about a service"]
+},
+
+
+    {
+  passage: `Passage main:<br>
+<strong>To:</strong> hr@company.com<br>
+<strong>Subject:</strong> <span style="font-weight:bold; font-size: 16px;">Job Application - <mark>Marketing Specialist</mark></span><br><br>
+
+Dear HR Manager,<br><br>
+
+I hope this message finds you well. I am writing to express my interest in the 
+<span style="font-weight:bold; font-size: 16px;"><mark>Marketing Specialist</mark></span> position recently posted on your company’s website. With a degree in Business Administration and over three years of experience in digital marketing, I am confident in my ability to contribute significantly to your team. My skills include <mark>SEO</mark>, <mark>social media strategy</mark>, and <mark>content creation</mark>. I am excited about the opportunity to bring my expertise to your organization.<br><br>
+
+Thank you for considering my application. I look forward to the opportunity to discuss how I can be an asset to your team.<br><br>
+
+Sincerely,<br>
+Betty Chan`,
+
+q: "How can you apply bold, font size, and highlight effects to text in Microsoft Word?",
+  a: "b",
+  options: [
+    "Only by using the keyboard",
+    "By selecting the text and using the toolbar options like 'Bold (B)', 'Font Size', and 'Text Highlight Color'",
+    "By right-clicking and choosing 'Save As'",
+    "These effects are only available in PowerPoint"
+  ]
+},
+
+{
+  passage: `Passage main:<br>
+<div style="text-align: justify; line-height: 1.5;">
+
+  <strong style="font-size: 18px;">To:</strong> hr@company.com<br>
+  <strong style="font-size: 18px;">Subject:</strong> 
+  <span style="font-weight: bold; font-size: 16px; margin-left: 1.5cm;">Job Application - <mark>Marketing Specialist</mark></span><br><br>
+
+  <p style="text-indent: 1cm; margin-top: 1em;">
+    Dear HR Manager,
+  </p>
+
+  <p style="text-indent: 1cm;">
+    I hope this message finds you well. I am writing to express my interest in the 
+    <span style="font-weight: bold; font-size: 16px;"><mark>Marketing Specialist</mark></span> position recently posted on your company’s website. With a degree in Business Administration and over three years of experience in digital marketing, I am confident in my ability to contribute significantly to your team. My skills include 
+    <mark>SEO</mark>, <mark>social media strategy</mark>, and <mark>content creation</mark>. I am excited about the opportunity to bring my expertise to your organization.
+  </p>
+
+  <p style="text-indent: 1cm;">
+    Thank you for considering my application. I look forward to the opportunity to discuss how I can be an asset to your team.
+  </p>
+
+  <p style="text-indent: 1cm;">
+    Sincerely,<br>
+    Betty Chan
+  </p>
+
+</div>`,
+
+  q: "Which of the following best describes how to professionally format the email in Microsoft Word, as shown in the passage?",
+  a: "c",
+  options: [
+    "Use center alignment and double spacing, with bold only in the signature.",
+    "Apply left alignment, line spacing of 2.0, and remove all indentation.",
+    "Apply justified alignment, 1.5 line spacing, and set a special 'First Line' indent of 1 cm.",
+    "Use bold text only for the email address and subject, with no spacing or indentation."
+  ]
+},
+
+{
+  passage: `Passage main:<br>
+<div style="position: relative; font-family: 'Times New Roman', serif;">
+
+  <!-- العلامة المائية -->
+<div style="
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotate(-30deg);
+  font-size: 60px;
+  color: rgba(255, 255, 255, 0.4);
+  font-weight: bold;
+  z-index: 0;
+  pointer-events: none;
+  white-space: nowrap;
+  user-select: none;
+">
+  Job Application
+</div>
+
+
+  <!-- محتوى الإيميل داخل إطار -->
+  <div style="border: 2px solid #333; padding: 20px; background-color: transparent; position: relative; z-index: 1;">
+
+    <!-- الرأس -->
+    <div style="text-align: center; font-weight: bold; font-size: 18px; border-bottom: 2px solid white;
+                padding-bottom: 10px; margin-bottom: 20px;">
+      Official Email Format
+    </div>
+
+    <!-- النص الرئيسي -->
+    <div style="text-align: justify; line-height: 1.5;">
+
+      <strong style="font-size: 18px;">To:</strong> hr@company.com<br>
+      <strong style="font-size: 18px;">Subject:</strong>
+      <span style="font-weight: bold; font-size: 16px; margin-left: 1.5cm;">Job Application - <mark>Marketing Specialist</mark></span><br><br>
+
+      <p style="text-indent: 1cm; margin-top: 1em;">
+        Dear HR Manager,
+      </p>
+
+      <p style="text-indent: 1cm;">
+        I hope this message finds you well. I am writing to express my interest in the 
+        <span style="font-weight: bold; font-size: 16px;"><mark>Marketing Specialist</mark></span> position recently posted on your company’s website. With a degree in Business Administration and over three years of experience in digital marketing, I am confident in my ability to contribute significantly to your team. My skills include 
+        <mark>SEO</mark>, <mark>social media strategy</mark>, and <mark>content creation</mark>. I am excited about the opportunity to bring my expertise to your organization.
+      </p>
+
+      <p style="text-indent: 1cm;">
+        Thank you for considering my application. I look forward to the opportunity to discuss how I can be an asset to your team.
+      </p>
+
+      <p style="text-indent: 1cm;">
+        Sincerely,<br>
+        Betty Chan
+      </p>
+    </div>
+
+    <!-- التذييل -->
+    <div style="text-align: center; border-top: 2px solid white; margin-top: 30px;
+                padding-top: 10px; font-size: 13px; color: white ; font-weight: bold;">
+      This email was prepared following professional formatting standards in Microsoft Word.
+    </div>
+  </div>
+</div>`,
+
+  q: "Which of the following Microsoft Word formatting techniques are clearly demonstrated in the professionally formatted email?",
+  a: "b",
+  options: [
+    "Single spacing with no indents and minimal formatting.",
+    "Justified alignment, 1.5 line spacing, first-line indent, watermark, header, and footer.",
+    "Center-aligned text and bold subject only, with no structural styling.",
+    "Right-aligned paragraphs with double spacing and plain body content."
+  ]
+},
+
+
+
+    
+
+{
+  passage: `Passage 1:<br><strong>Formatting Text</strong><br>In Microsoft Word, you can format your text using the Home tab on the ribbon. It allows you to change font type, size, color, and apply styles like bold, italic, or underline.`,
+  q: "The Home tab allows you to ----------------------.",
+  a: "b",
+  options: ["Insert pictures", "Format text", "Create tables", "Change page layout"]
+},
+{
+  passage: `Passage 2:<br><strong>Saving Documents</strong><br>To save your work in Word, click on File > Save or use the shortcut Ctrl + S. It's important to save your document regularly to avoid losing any progress.`,
+  q: "Ctrl + S is used to ----------------------.",
+  a: "a",
+  options: ["save the document", "print the document", "open a new document", "undo an action"]
+},
+{
+  passage: `Passage 3:<br><strong>Undo and Redo</strong><br>Word allows you to undo your last action by pressing Ctrl + Z. If you change your mind, you can redo it using Ctrl + Y.`,
+  q: "To undo your last action in Word, you press ----------------------.",
+  a: "b",
+  options: ["Ctrl + P", "Ctrl + Z", "Ctrl + Y", "Ctrl + S"]
+},
+{
+  passage: `Passage 4:<br><strong>The Word Interface</strong><br>When you open Microsoft Word, the first thing you see is the user interface. It includes the ribbon at the top, which contains tabs like Home, Insert, and Layout. Each tab gives access to different tools, such as changing fonts, inserting pictures, or adjusting page settings.`,
+  q: "Understanding the Word interface helps users to ----------------------.",
+  a: "b",
+  options: ["Close documents", "Work faster", "Print photos", "Open Excel"]
+},
+{
+  passage: `Passage 5:<br><strong>Spell Check</strong><br>Word has a built-in spell checker that underlines misspelled words in red. You can right-click on the word to see suggestions and correct it easily.`,
+  q: "Word highlights misspelled words using ----------------------.",
+  a: "a",
+  options: ["a red underline", "a green box", "bold text", "italic style"]
+},
+{
+  passage: `Passage 6:<br><strong>Inserting Images</strong><br>To add an image in Word, go to the Insert tab and choose Picture. You can insert an image from your computer and resize it as needed.`,
+  q: "You insert images into Word from the ---------------------- tab.",
+  a: "c",
+  options: ["Home", "Layout", "Insert", "View"]
+},
+{
+  passage: `Passage 7:<br><strong>Headers and Footers</strong><br>You can add headers and footers to your Word document using the Insert tab. This is useful for displaying page numbers, document titles, or dates on every page.`,
+  q: "Headers and footers are added using the ---------------------- tab.",
+  a: "c",
+  options: ["Home", "Layout", "Insert", "Review"]
+},
+{
+  passage: `Passage 8:<br><strong>Page Orientation</strong><br>To change the page orientation in Word, go to the Layout tab and select either Portrait or Landscape.`,
+  q: "The Layout tab is used to change ----------------------.",
+  a: "a",
+  options: ["page orientation", "font size", "spell check", "save file"]
+},
+{
+  passage: `Passage 9:<br><strong>Creating Tables</strong><br>You can insert tables in your document by going to the Insert tab and selecting Table. Tables help in organizing data into rows and columns.`,
+  q: "Tables are used in Word to ----------------------.",
+  a: "b",
+  options: ["format text", "organize data", "insert pictures", "add themes"]
+},
+{
+  passage: `Passage 10:<br><strong>Zooming In and Out</strong><br>At the bottom-right corner of Word, there is a zoom slider that lets you adjust how large or small the document appears on the screen.`,
+  q: "The zoom slider is used to ----------------------.",
+  a: "d",
+  options: ["edit headers", "change font", "insert a page", "adjust document view size"]
+},
+{
+  passage: `Passage 11:<br><strong>Saving As PDF</strong><br>Microsoft Word allows you to save your document as a PDF file by choosing "Save As" and selecting PDF as the file type.`,
+  q: "You can save a Word document as a PDF by using ----------------------.",
+  a: "b",
+  options: ["Print command", "Save As option", "Insert tab", "Review tools"]
+},
+{
+  passage: `Passage 12:<br><strong>Shortcuts for Formatting</strong><br>Ctrl + B makes text bold, Ctrl + I makes it italic, and Ctrl + U underlines the text. These shortcuts help in quick formatting.`,
+  q: "The shortcut Ctrl + U is used for ----------------------.",
+  a: "c",
+  options: ["bold", "italic", "underline", "uppercase"]
+},
+{
+  passage: `Passage 13:<br><strong>Track Changes</strong><br>The Review tab contains a feature called Track Changes. It helps you see edits made to the document, which is useful for collaboration.`,
+  q: "Track Changes is found under the ---------------------- tab.",
+  a: "d",
+  options: ["Insert", "Layout", "View", "Review"]
+},
+{
+  passage: `Passage 14:<br><strong>Checking Word Count</strong><br>You can check how many words you’ve written by clicking on Review > Word Count, or looking at the word count at the bottom of the screen.`,
+  q: "Word count is available in the ---------------------- tab.",
+  a: "d",
+  options: ["Insert", "Layout", "Home", "Review"]
+},
+{
+  passage: `Passage 15:<br><strong>Copy and Paste</strong><br>In Word, you can copy text using Ctrl + C and paste it using Ctrl + V. This makes editing and moving text easy and fast.`,
+  q: "Ctrl + C followed by Ctrl + V is used to ----------------------.",
+  a: "b",
+  options: ["delete text", "copy and paste", "change style", "close document"]
+},
+
+  
+
+{
+  q: "Which shortcut is used to copy selected text in Word?",
+  a: "b",
+  options: ["Ctrl + X", "Ctrl + C", "Ctrl + V", "Ctrl + B"]
+},
+{
+  q: "To insert a page number in Word, you should go to --------.",
+  a: "c",
+  options: ["Layout", "References", "Insert", "Home"]
+},
+{
+  q: "Which feature allows you to find and replace words in a document?",
+  a: "d",
+  options: ["Track Changes", "Comments", "Page Setup", "Find and Replace"]
+},
+{
+  q: "The shortcut to redo an undone action is --------.",
+  a: "a",
+  options: ["Ctrl + Y", "Ctrl + Z", "Ctrl + R", "Ctrl + Q"]
+},
+{
+  q: "You can change the page orientation from Portrait to Landscape under the -------- tab.",
+  a: "c",
+  options: ["Insert", "Home", "Layout", "Design"]
+},
+
+
+{
+  passage: `Passage 1:<br><strong>Creating a New Document</strong><br>
+To create a new document in Microsoft Word, you can click on File > New, or simply use a keyboard shortcut. This opens a blank page ready for writing. Using shortcuts saves time and improves workflow efficiency.`,
+  q: `Which keyboard shortcut is used to create a new document in Word?`,
+  a: "a",
+  options: ["Ctrl + N", "Ctrl + O", "Ctrl + P", "Ctrl + S"]
+},
+
+{
+  passage: `Passage 2:<br><strong>Saving Your Work</strong><br>
+It's important to save your work regularly. You can click on the Save icon in the Quick Access Toolbar or press a shortcut key. Word allows saving in multiple formats like .docx or .pdf.`,
+  q: `What is the keyboard shortcut for saving a document in Word?`,
+  a: "d",
+  options: ["Ctrl + P", "Ctrl + Z", "Ctrl + O", "Ctrl + S"]
+},
+
+{
+  passage: `Passage 3:<br><strong>Understanding the Ribbon</strong><br>
+The Ribbon in Word organizes tools into tabs like Home, Insert, and Design. The Home tab includes tools like font formatting, alignment, and bullet points. This makes it easier to access frequently used features.`,
+  q: `Which tab contains tools for text formatting like bold, italics, and font size?`,
+  a: "c",
+  options: ["Insert", "Layout", "Home", "View"]
+},
+
+{
+  passage: `Passage 4:<br><strong>Printing a Document</strong><br>
+To print a document, you can go to File > Print or use a keyboard shortcut. The print screen allows you to select the printer, number of copies, and print range.`,
+  q: `What is the keyboard shortcut to print a document in Microsoft Word?`,
+  a: "b",
+  options: ["Ctrl + O", "Ctrl + P", "Ctrl + D", "Ctrl + S"]
+},
+
+{
+  passage: `Passage 5:<br><strong>Undo and Redo Actions</strong><br>
+Sometimes you make a mistake while editing. Word lets you undo your last action or redo it. These features are available on the Quick Access Toolbar and have keyboard shortcuts.`,
+  q: `Which shortcut lets you undo the last action in Word?`,
+  a: "a",
+  options: ["Ctrl + Z", "Ctrl + Y", "Ctrl + X", "Ctrl + A"]
+},
+
+
+];
+
+    
+const questions = [
+  {
+  q: "To save a document in Word, press -------- on your keyboard.",
+  a: "a",
+  options: ["Ctrl + S", "Ctrl + P", "Ctrl + C", "Ctrl + A"]
+},
+{
+  q: "You can make selected text bold in Word by pressing --------.",
+  a: "c",
+  options: ["Ctrl + U", "Ctrl + I", "Ctrl + B", "Ctrl + Z"]
+},
+{
+  q: "To open a new blank document in Microsoft Word, click on --------.",
+  a: "b",
+  options: ["Insert", "File > New", "Home", "Design"]
+},
+{
+  q: "The tool used to check spelling and grammar is called --------.",
+  a: "d",
+  options: ["AutoCorrect", "Find", "Replace", "Spelling & Grammar"]
+},
+{
+  q: "To quickly undo the last action in Word, use the shortcut --------.",
+  a: "b",
+  options: ["Ctrl + Y", "Ctrl + Z", "Ctrl + X", "Ctrl + V"]
+},
+{
+  q: "Which of the following tabs contains font, paragraph, and styles?",
+  a: "a",
+  options: ["Home", "Insert", "Layout", "References"]
+},
+{
+  q: "The shortcut -------- is used to print a document in Microsoft Word.",
+  a: "c",
+  options: ["Ctrl + N", "Ctrl + E", "Ctrl + P", "Ctrl + D"]
+},
+{
+  q: "To select all the content in your Word document, press --------.",
+  a: "a",
+  options: ["Ctrl + A", "Ctrl + Q", "Ctrl + M", "Ctrl + L"]
+},
+{
+  q: "The command to cut selected text in Word is --------.",
+  a: "d",
+  options: ["Ctrl + C", "Ctrl + V", "Ctrl + Z", "Ctrl + X"]
+},
+{
+  q: "To insert a table in Word, go to the -------- tab.",
+  a: "b",
+  options: ["Home", "Insert", "Layout", "Review"]
+}
+
+];
+
+
+
+    
+        let currentTFQuestion = 0;
+        let tfCorrectAnswers = 0;
+        let currentQuestion = 0;
+        let correctAnswers = 0;
+        let timeLeft = 3600;
+        let timerInterval;
+        let startTime;
+    
+        function startQuiz() {
+    let name = document.getElementById("traineeName").value.trim();
+    let phone = document.getElementById("traineePhone").value.trim();
+    let password = document.getElementById("password").value;
+    let course = document.getElementById("courseName").value.trim(); // 🆕 قراءة اسم الكورس
+    let quizTitle = document.getElementById("quizTitle"); // 🆕 العنوان اللي هيتغير
+
+    if (!name) {
+        alert("❗ برجاء إدخال الاسم.");
+        return;
+    }
+
+    if (!phone) {
+        alert("❗ برجاء إدخال رقم التليفون.");
+        return;
+    }
+
+    if (password !== "1550") {
+        alert("❌ كلمة المرور غير صحيحة! الرجاء المحاولة مرة أخرى.");
+        return;
+    }
+
+    // 🆕 تغيير العنوان بناءً على اسم الكورس
+    quizTitle.textContent = course || "Placement Test";
+
+    document.getElementById("startScreen").style.display = "none";
+    document.getElementById("quizContainer").style.display = "block";
+    startTime = new Date();
+    startTimer();
+    loadTFQuestion();
+
+    // تشغيل وضع ملء الشاشة
+    let elem = document.documentElement;
+    if (elem.requestFullscreen) {
+        elem.requestFullscreen();
+    } else if (elem.mozRequestFullScreen) {
+        elem.mozRequestFullScreen();
+    } else if (elem.webkitRequestFullscreen) {
+        elem.webkitRequestFullscreen();
+    } else if (elem.msRequestFullscreen) {
+        elem.msRequestFullscreen();
+    }
+}
+
+
+
+    
+        function startTimer() {
+            timerInterval = setInterval(() => {
+                let minutes = Math.floor(timeLeft / 60);
+                let seconds = timeLeft % 60;
+                document.getElementById("timer").innerText = `Time Remaining: ${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+                if (timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    showResult();
+                }
+                timeLeft--;
+            }, 1000);
+        }
+    
+      function loadTFQuestion() {
+    let quizDiv = document.getElementById("quiz");
+    let passageDiv = document.getElementById("passage");
+
+    if (currentTFQuestion < trueFalseQuestions.length) {
+        let q = trueFalseQuestions[currentTFQuestion];
+
+        // عرض المقطع
+        passageDiv.innerHTML = `
+            <h3></h3>
+            <p style="font-size: 22px;">${q.passage}</p>
+        `;
+
+        // عرض السؤال والاختيارات
+        let questionHTML = `<p class='question'><strong>${currentTFQuestion + 1}- ${q.q}</strong></p>`;
+
+        q.options.forEach((option, index) => {
+    const letter = String.fromCharCode(97 + index); // "a", "b", ...
+    questionHTML += `
+        <label>
+            <input type='radio' name='answer' value='${letter}'>
+            ${option}
+        </label><br>
+    `;
+});
+
+        questionHTML += `<button class='btn' onclick='nextTFQuestion()'>Next</button>`;
+        quizDiv.innerHTML = questionHTML;
+    } else {
+        // الانتهاء من عرض كل الأسئلة
+        document.getElementById("passage").style.display = "none";
+        quizDiv.innerHTML = "<p>You've finished all reading questions.</p>";
+        loadQuestion(); // لو فيه مرحلة تانية
+    }
+}
+
+    
+  let score = 0;
+
+function nextTFQuestion() {
+  const selectedAnswer = document.querySelector("input[name='answer']:checked");
+  if (!selectedAnswer) {
+    alert("Please select an answer");
+    return;
+  }
+
+  const q = trueFalseQuestions[currentTFQuestion];
+  const selectedValue = selectedAnswer.value;
+
+  const isAnswerKeyALetter = q.a.length === 1 && ["a", "b", "c", "d"].includes(q.a.toLowerCase());
+
+  if (isAnswerKeyALetter) {
+    if (selectedValue === q.a.toLowerCase()) {
+      score++;
+    }
+  } else {
+    const selectedOptionIndex = selectedValue.charCodeAt(0) - 97;
+    const selectedOptionText = q.options[selectedOptionIndex];
+
+    if (selectedOptionText.trim().toLowerCase() === q.a.trim().toLowerCase()) {
+      score++;
+    }
+  }
+
+  currentTFQuestion++;
+  loadTFQuestion();
+}
+
+
+
+        function loadQuestion() {
+            let quizDiv = document.getElementById("quiz");
+            let q = questions[currentQuestion];
+            quizDiv.innerHTML = `<p class='question'>${q.q}</p>` +
+                q.options.map((option, index) => `<label><input type='radio' name='answer' value='${String.fromCharCode(97 + index)}'> ${option}</label>`).join('') +
+                `<button class='btn' onclick='nextQuestion()'>${currentQuestion === questions.length - 1 ? "Finish" : "Next"}</button>`;
+        }
+    
+        function nextQuestion() {
+            let selectedAnswer = document.querySelector("input[name='answer']:checked");
+            if (!selectedAnswer) return;
+            if (selectedAnswer.value === questions[currentQuestion].a) {
+                correctAnswers++;
+            }
+            if (currentQuestion < questions.length - 1) {
+                currentQuestion++;
+                loadQuestion();
+            } else {
+                showResult();
+            }
+        }
+    
+let serverUrl = ""; // سيتم تحديثه تلقائيًا عند تحميل الصفحة
+
+// دالة لجلب رابط السيرفر المخزن في GitHub
+function fetchServerUrl() {
+fetch("https://raw.githubusercontent.com/etiqotwf/liveServer1/main/serverUrl.json")
+        .then(response => response.json())
+        .then(data => {
+            if (data.serverUrl) {
+                serverUrl = data.serverUrl;
+                console.log("✅ رابط السيرفر المحدث من GitHub:", serverUrl);
+            } else {
+                console.error("❌ لم يتم العثور على رابط السيرفر في المستودع.");
+                retryFetchServerUrl();
+            }
+        })
+        .catch(error => {
+            console.error("❌ خطأ في جلب رابط السيرفر من GitHub:", error);
+            retryFetchServerUrl();
+        });
+}
+
+// دالة لإعادة المحاولة عند الفشل
+function retryFetchServerUrl() {
+    if (retryCount < MAX_RETRIES) {
+        retryCount++;
+        console.log(`🔄 إعادة المحاولة (${retryCount}/${MAX_RETRIES}) بعد 3 ثوانٍ...`);
+        setTimeout(fetchServerUrl, 3000);
+    } else {
+        console.error("⛔ تم الوصول إلى الحد الأقصى من المحاولات، تعذر جلب رابط السيرفر.");
+    }
+}
+
+// تحميل رابط السيرفر عند فتح الصفحة
+fetchServerUrl();
+
+function showResult() {
+    clearInterval(timerInterval);
+
+    let endTime = new Date();
+    let timeTaken = Math.floor((endTime - startTime) / 1000);
+    let minutesTaken = Math.floor(timeTaken / 60);
+    let secondsTaken = timeTaken % 60;
+
+    let name = document.getElementById("traineeName").value || "Unknown";
+    let phone = document.getElementById("traineePhone").value || "Unknown";
+    let date = new Date().toLocaleDateString("en-US");
+    let course = document.getElementById("courseName").value || "Unknown";
+
+    let totalQuestions = trueFalseQuestions.length + questions.length;
+    let totalCorrectAnswers = tfCorrectAnswers + correctAnswers;
+
+    let resultData = {
+        name: name,
+        phone: phone,
+        date: date,
+        course: course,
+        startTime: startTime.toLocaleString("en-GB", {
+            timeZone: "Africa/Cairo",
+            year: "numeric",
+            month: "long",
+            day: "numeric",
+            hour: "numeric",
+            minute: "numeric",
+            second: "numeric",
+            hour12: true
+        }),
+        timeTaken: `${minutesTaken} min ${secondsTaken} sec`,
+        score: `${totalCorrectAnswers} / ${totalQuestions}`
+    };
+
+    // إرسال البيانات إلى السيرفر إذا تم تحميل الرابط
+    if (!serverUrl) {
+        console.log("⏳ انتظار تحميل رابط السيرفر...");
+        fetchServerUrl().then(() => {
+            if (serverUrl) {
+                sendDataToServer(resultData);
+            } else {
+                console.error("❌ لم يتم تحميل رابط السيرفر بعد.");
+                alert("⚠️ تعذر إرسال البيانات! تأكد من اتصال الإنترنت وأعد المحاولة.");
+            }
+        });
+    } else {
+        sendDataToServer(resultData);
+    }
+
+    // إرسال البيانات إلى Google Sheets
+    sendDataToGoogleSheet(resultData);
+
+    // تحديث واجهة المستخدم
+    document.getElementById("resultCourse").innerText = course;
+    document.getElementById("resultName").innerText = name;
+    document.getElementById("resultPhone").innerText = phone;
+    document.getElementById("resultDate").innerText = date;
+    document.getElementById("resultStartTime").innerText = startTime.toLocaleTimeString();
+    document.getElementById("resultTime").innerText = `${minutesTaken} min ${secondsTaken} sec`;
+    document.getElementById("resultScore").innerText = `${totalCorrectAnswers} / ${totalQuestions}`;
+
+    document.getElementById("quizContainer").style.display = "none";
+    document.getElementById("resultScreen").style.display = "block";
+}
+
+// إرسال البيانات إلى السيرفر الأساسي
+function sendDataToServer(resultData) {
+    fetch(`${serverUrl}/submit`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(resultData)
+    })
+    .then(response => response.json())
+    .then(data => console.log("✅ تم الإرسال إلى السيرفر بنجاح:", data))
+    .catch(error => console.error("❌ خطأ أثناء الإرسال إلى السيرفر:", error));
+}
+
+
+
+
+
+function sendDataToGoogleSheet(resultData) {
+    const formData = new URLSearchParams();
+    formData.append("course", resultData.course);
+    formData.append("name", resultData.name);
+    formData.append("phone", resultData.phone);
+    formData.append("date", resultData.date);
+    formData.append("startTime", resultData.startTime);
+    formData.append("timeTaken", resultData.timeTaken);
+    formData.append("score", resultData.score);
+    formData.append("course", resultData.course);
+
+
+    fetch("https://script.google.com/macros/s/AKfycbybhyNx3uPAoAjGlvHe_jumSp_NKeOIIwoAPHWOqzUukmlmtoTlE5wF8Y_w17l5m9FS/exec", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+        },
+        body: formData.toString(),
+    })
+    .then(response => response.text())
+    .then(responseText => {
+        console.log("✅ تم الإرسال إلى Google Sheet:", responseText);
+    })
+    .catch(error => {
+        console.error("❌ خطأ في الإرسال إلى Google Sheet:", error);
+    });
+}
+
+
+
+
+    </script>
+    </body>
+</html>
