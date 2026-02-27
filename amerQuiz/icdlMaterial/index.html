@@ -348,1268 +348,7 @@ function goToQuestion() {
     const trueFalseQuestions = [
 
 
-
-      {
-  "passage": `
-<div style="margin-top: 40px; max-width: 1100px; margin-left:auto; margin-right:auto; font-family:'Segoe UI', Arial, sans-serif; line-height:1.7;">
-
-  <!-- Intro Passage -->
-  <div style="background:linear-gradient(135deg,#f7fbff,#ffffff); padding:28px; border:1px solid #dfefff; border-radius:16px; box-shadow:0 6px 18px rgba(0,0,0,0.08); margin-bottom:40px;">
-    <h2 style="color:#003b70; margin-bottom:14px;">📘 IT Applications – Intro Lesson Quiz</h2>
-    <p style="color:#214b77; font-size:18px;">
-      This quiz introduces the <strong>basic concepts</strong> for each IT application.  
-      Each card contains <strong>introductory questions</strong> about what the program is, why we use it,  
-      and what learners will achieve after mastering it. Hover over a question to reveal the <strong>answer</strong>. 🎯
-    </p>
-  </div>
-
-  <!-- Cards Grid -->
-  <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(340px,1fr)); gap:28px;">
-
-    <!-- Word -->
-    <div class="task-card" style="--color:#0078d7;">
-      <h3>Task 1: Microsoft Word</h3>
-      <div class="questions">
-        <ol>
-          <li class="question">What is Microsoft Word mainly used for?
-            <span class="answer">✅ Creating and editing text documents</span>
-          </li>
-          <li class="question">True/False: Word is a word-processing program.
-            <span class="answer">✅ True</span>
-          </li>
-          <li class="question">Fill in the blank: Word documents usually end with the extension _______.
-            <span class="answer">✅ .docx</span>
-          </li>
-          <li class="question">What is the first screen you see when you open Word?
-            <span class="answer">✅ The Start Screen with templates</span>
-          </li>
-          <li class="question">Why do people use Microsoft Word?
-            <span class="answer">✅ To create professional documents quickly</span>
-          </li>
-          <li class="question">Which feature helps format text easily?
-            <span class="answer">✅ The Ribbon</span>
-          </li>
-          <li class="question">True/False: Word can be used to create reports and CVs.
-            <span class="answer">✅ True</span>
-          </li>
-          <li class="question">Complete: Mastering Word helps you improve your _______ skills.
-            <span class="answer">✅ document creation</span>
-          </li>
-          <li class="question">What kind of files can you create using Word?
-            <span class="answer">✅ Letters, reports, CVs, forms, and more</span>
-          </li>
-          <li class="question">What is the Ribbon used for?
-            <span class="answer">✅ Accessing tools and commands</span>
-          </li>
-        </ol>
-      </div>
-    </div>
-
-    <!-- Excel -->
-    <div class="task-card" style="--color:#00b294;">
-      <h3>Task 2: Microsoft Excel</h3>
-      <div class="questions">
-        <ol>
-          <li class="question">What is the main purpose of Excel?
-            <span class="answer">✅ Performing calculations and organizing data</span>
-          </li>
-          <li class="question">True/False: Excel is a spreadsheet program.
-            <span class="answer">✅ True</span>
-          </li>
-          <li class="question">Fill in the blank: Excel files usually use the extension _______.
-            <span class="answer">✅ .xlsx</span>
-          </li>
-          <li class="question">What do we call the boxes in Excel?
-            <span class="answer">✅ Cells</span>
-          </li>
-          <li class="question">Why is Excel important in business?
-            <span class="answer">✅ It helps analyze and manage large amounts of data</span>
-          </li>
-          <li class="question">Which tool helps visualize data?
-            <span class="answer">✅ Charts</span>
-          </li>
-          <li class="question">True/False: Excel can perform automatic calculations.
-            <span class="answer">✅ True</span>
-          </li>
-          <li class="question">Complete: Rows run _______ and columns run _______.
-            <span class="answer">✅ horizontally / vertically</span>
-          </li>
-          <li class="question">What is the first thing you see in Excel?
-            <span class="answer">✅ A blank worksheet made of cells</span>
-          </li>
-          <li class="question">Why should learners master Excel?
-            <span class="answer">✅ To improve data management and analytical skills</span>
-          </li>
-        </ol>
-      </div>
-    </div>
-
-    <!-- Access -->
-    <div class="task-card" style="--color:#e81123;">
-      <h3>Task 3: Microsoft Access</h3>
-      <div class="questions">
-        <ol>
-          <li class="question">What is Microsoft Access used for?
-            <span class="answer">✅ Creating and managing databases</span>
-          </li>
-          <li class="question">True/False: Access stores data in tables.
-            <span class="answer">✅ True</span>
-          </li>
-          <li class="question">Fill in the blank: An Access file usually ends with _______.
-            <span class="answer">✅ .accdb</span>
-          </li>
-          <li class="question">What is the purpose of Access?
-            <span class="answer">✅ To organize large collections of information</span>
-          </li>
-          <li class="question">What does the Access workspace mainly show?
-            <span class="answer">✅ Objects like tables, forms, queries, and reports</span>
-          </li>
-          <li class="question">Why is Access useful?
-            <span class="answer">✅ It links related data and reduces duplication</span>
-          </li>
-          <li class="question">True/False: Access can handle small and large databases.
-            <span class="answer">✅ True</span>
-          </li>
-          <li class="question">Complete: A _______ key uniquely identifies each record.
-            <span class="answer">✅ Primary</span>
-          </li>
-          <li class="question">What will learners achieve if they master Access?
-            <span class="answer">✅ The ability to build full database systems</span>
-          </li>
-          <li class="question">What is the first thing you see when opening Access?
-            <span class="answer">✅ Templates and options to create a new database</span>
-          </li>
-        </ol>
-      </div>
-    </div>
-
-    <!-- PowerPoint -->
-    <div class="task-card" style="--color:#ffb900;">
-      <h3>Task 4: Microsoft PowerPoint</h3>
-      <div class="questions">
-        <ol>
-          <li class="question">What is PowerPoint mainly used for?
-            <span class="answer">✅ Creating presentations</span>
-          </li>
-          <li class="question">True/False: PowerPoint uses slides to display content.
-            <span class="answer">✅ True</span>
-          </li>
-          <li class="question">Fill in the blank: PowerPoint files end with _______.
-            <span class="answer">✅ .pptx</span>
-          </li>
-          <li class="question">Why do people use PowerPoint?
-            <span class="answer">✅ To present information visually and clearly</span>
-          </li>
-          <li class="question">What does the main screen show when you open PowerPoint?
-            <span class="answer">✅ A blank slide and layout options</span>
-          </li>
-          <li class="question">What is a slide?
-            <span class="answer">✅ A single page in a presentation</span>
-          </li>
-          <li class="question">True/False: PowerPoint can include pictures, videos, and charts.
-            <span class="answer">✅ True</span>
-          </li>
-          <li class="question">Complete: Mastering PowerPoint improves your _______ skills.
-            <span class="answer">✅ communication and presentation</span>
-          </li>
-          <li class="question">What makes PowerPoint useful for teachers and trainers?
-            <span class="answer">✅ It helps explain ideas visually</span>
-          </li>
-          <li class="question">What can you add to make a presentation more attractive?
-            <span class="answer">✅ Themes, colors, and simple animations</span>
-          </li>
-        </ol>
-      </div>
-    </div>
-
-    <!-- Windows -->
-    <div class="task-card" style="--color:#605e5c;">
-      <h3>Task 5: Windows</h3>
-      <div class="questions">
-        <ol>
-          <li class="question">What is the Windows operating system?
-            <span class="answer">✅ The main software that controls the computer</span>
-          </li>
-          <li class="question">True/False: Windows helps open programs and manage files.
-            <span class="answer">✅ True</span>
-          </li>
-          <li class="question">Fill in the blank: The main screen in Windows is called the _______.
-            <span class="answer">✅ Desktop</span>
-          </li>
-          <li class="question">Why is Windows important?
-            <span class="answer">✅ It allows users to interact with the computer easily</span>
-          </li>
-          <li class="question">What is the Start Menu used for?
-            <span class="answer">✅ Accessing apps, settings, and power options</span>
-          </li>
-          <li class="question">What is the Taskbar?
-            <span class="answer">✅ A bar that shows open programs and shortcuts</span>
-          </li>
-          <li class="question">True/False: The Recycle Bin stores deleted files.
-            <span class="answer">✅ True</span>
-          </li>
-          <li class="question">Complete: Windows provides a _______ interface for users.
-            <span class="answer">✅ graphical</span>
-          </li>
-          <li class="question">What will learners achieve by mastering Windows?
-            <span class="answer">✅ Better file management and computer skills</span>
-          </li>
-          <li class="question">What appears when Windows starts?
-            <span class="answer">✅ The Desktop and Taskbar</span>
-          </li>
-        </ol>
-      </div>
-    </div>
-
-    <!-- IT -->
-    <div class="task-card" style="--color:#107c10;">
-      <h3>Task 6: IT</h3>
-      <div class="questions">
-        <ol>
-          <li class="question">What does IT stand for?
-            <span class="answer">✅ Information Technology</span>
-          </li>
-          <li class="question">True/False: IT includes both hardware and software.
-            <span class="answer">✅ True</span>
-          </li>
-          <li class="question">Fill in the blank: The _______ is known as the brain of the computer.
-            <span class="answer">✅ CPU</span>
-          </li>
-          <li class="question">Why is IT important today?
-            <span class="answer">✅ It powers communication, business, and data systems</span>
-          </li>
-          <li class="question">What will learners gain from studying IT?
-            <span class="answer">✅ Strong understanding of computers and technology</span>
-          </li>
-          <li class="question">What is hardware?
-            <span class="answer">✅ The physical parts of a computer</span>
-          </li>
-          <li class="question">True/False: Software refers to applications and programs.
-            <span class="answer">✅ True</span>
-          </li>
-          <li class="question">Complete: RAM is _______ memory.
-            <span class="answer">✅ temporary</span>
-          </li>
-          <li class="question">What is an operating system?
-            <span class="answer">✅ Software that manages computer resources</span>
-          </li>
-          <li class="question">What happens if a computer has no OS?
-            <span class="answer">✅ It cannot function or run applications</span>
-          </li>
-        </ol>
-      </div>
-    </div>
-
-    <!-- Internet -->
-    <div class="task-card" style="--color:#0099cc;">
-      <h3>Task 7: Internet</h3>
-      <div class="questions">
-        <ol>
-          <li class="question">What is the Internet?
-            <span class="answer">✅ A global network that connects computers worldwide</span>
-          </li>
-          <li class="question">True/False: The Internet allows communication and information sharing.
-            <span class="answer">✅ True</span>
-          </li>
-          <li class="question">Fill in the blank: A website’s address is called a _______.
-            <span class="answer">✅ URL</span>
-          </li>
-          <li class="question">What is the purpose of a web browser?
-            <span class="answer">✅ To access and view websites</span>
-          </li>
-          <li class="question">Why is the Internet important?
-            <span class="answer">✅ It provides information, services, and communication</span>
-          </li>
-          <li class="question">What is a search engine?
-            <span class="answer">✅ A tool used to find information online</span>
-          </li>
-          <li class="question">True/False: Email is an Internet service.
-            <span class="answer">✅ True</span>
-          </li>
-          <li class="question">Complete: Upload means to _______ files online.
-            <span class="answer">✅ send</span>
-          </li>
-          <li class="question">What will learners achieve by understanding the Internet?
-            <span class="answer">✅ Safe and effective online usage</span>
-          </li>
-          <li class="question">What is the difference between Internet and WWW?
-            <span class="answer">✅ Internet = network; WWW = websites and pages</span>
-          </li>
-        </ol>
-      </div>
-    </div>
-
-  </div>
-</div>
-
-<style>
-.task-card {
-  background:#ffffff;
-  border-left:8px solid var(--color);
-  border-radius:16px;
-  padding:22px;
-  box-shadow:0 8px 26px rgba(0,0,0,0.07);
-  transition: transform 0.28s, box-shadow 0.28s;
-}
-.task-card h3 {
-  color:var(--color);
-  font-size:20px;
-  margin-bottom:12px;
-}
-.task-card:hover {
-  transform: translateY(-8px) scale(1.01);
-  box-shadow:0 22px 50px rgba(0,0,0,0.15);
-}
-.questions ol {
-  padding-left: 20px;
-  margin: 0;
-}
-.questions li {
-  margin-bottom: 14px;
-  font-size: 16px;
-  color:#333;
-  position: relative;
-  cursor: pointer;
-}
-.answer {
-  display: none;
-  margin-top: 6px;
-  font-size: 15px;
-  color: #107c10;
-  background:#f0fff4;
-  padding:6px 10px;
-  border-radius:6px;
-  border:1px solid #cce5cc;
-  animation: fadeIn 0.3s ease-in-out;
-}
-.question:hover .answer {
-  display: inline-block;
-}
-@keyframes fadeIn {
-  from {opacity:0; transform:translateY(-5px);}
-  to {opacity:1; transform:translateY(0);}
-}
-</style>
-`,
-
-  "q": "Which complete workflow is most suitable for intro-level IT learners to understand how Word, Excel, Access, PowerPoint, Windows, IT, and Internet fit together?",
-  "a": "b",
-  "options": [
-    "Practice each program separately without understanding their purpose",
-    "Learn the basics of each program → Understand file management in Windows → Explore IT fundamentals → Use the Internet to gather information",
-    "Open each program randomly without direction",
-    "Skip learning and depend only on Internet searches"
-  ]
-},
-
-    
-
-
-      {
-  "passage": `
-<div style="margin-top: 40px; max-width: 1100px; margin-left:auto; margin-right:auto; font-family:'Segoe UI', Arial, sans-serif; line-height:1.7;">
-
-  <!-- Intro Passage -->
-  <div style="background:linear-gradient(135deg,#f7fbff,#ffffff); padding:28px; border:1px solid #dfefff; border-radius:16px; box-shadow:0 6px 18px rgba(0,0,0,0.08); margin-bottom:40px;">
-    <h2 style="color:#003b70; margin-bottom:14px;">📘 IT Applications – Review Quiz</h2>
-    <p style="color:#214b77; font-size:18px;">
-      This quiz is designed as a <strong>final review</strong> for intermediate IT learners.  
-      Each card focuses on one topic (Word, Excel, Access, PowerPoint, Windows, IT & Internet).  
-      Hover over a question to reveal the <strong>correct answer</strong>. 🎯
-    </p>
-  </div>
-
-  <!-- Cards Grid -->
-  <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(340px,1fr)); gap:28px;">
-
-    <!-- Word -->
-    <div class="task-card" style="--color:#0078d7;">
-      <h3>Task 1: Microsoft Word</h3>
-      <div class="questions">
-        <ol>
-          <li class="question">Which feature helps to create consistent headings?
-            <span class="answer">✅ Styles</span>
-          </li>
-          <li class="question">True/False: Word allows inserting tables and images.
-            <span class="answer">✅ True</span>
-          </li>
-          <li class="question">Fill in the blank: _______ is used to check spelling mistakes.
-            <span class="answer">✅ Spelling & Grammar Checker</span>
-          </li>
-          <li class="question">What is the shortcut for Copy?
-            <span class="answer">✅ Ctrl + C</span>
-          </li>
-          <li class="question">Define the function of "Track Changes".
-            <span class="answer">✅ Tracks edits and comments for review</span>
-          </li>
-          <li class="question">Which tab contains Page Layout options?
-            <span class="answer">✅ Layout tab</span>
-          </li>
-          <li class="question">True/False: You cannot insert SmartArt in Word.
-            <span class="answer">❌ False</span>
-          </li>
-          <li class="question">Complete: Header and Footer are placed at the _______ of the page.
-            <span class="answer">✅ Top and Bottom</span>
-          </li>
-          <li class="question">What is the benefit of using Styles in Word?
-            <span class="answer">✅ Consistency and easy formatting</span>
-          </li>
-          <li class="question">Which feature creates an automatic list of contents?
-            <span class="answer">✅ Table of Contents</span>
-          </li>
-        </ol>
-      </div>
-    </div>
-
-    <!-- Excel -->
-    <div class="task-card" style="--color:#00b294;">
-      <h3>Task 2: Microsoft Excel</h3>
-      <div class="questions">
-        <ol>
-          <li class="question">Which function calculates the average of numbers?
-            <span class="answer">✅ AVERAGE()</span>
-          </li>
-          <li class="question">True/False: The formula =SUM(A1:A5) adds values from A1 to A5.
-            <span class="answer">✅ True</span>
-          </li>
-          <li class="question">Fill in the blank: _______ function returns the highest value.
-            <span class="answer">✅ MAX()</span>
-          </li>
-          <li class="question">What is the shortcut to create a new workbook?
-            <span class="answer">✅ Ctrl + N</span>
-          </li>
-          <li class="question">Explain the purpose of cell referencing.
-            <span class="answer">✅ To reuse values and build dynamic formulas</span>
-          </li>
-          <li class="question">Which chart is best for showing trends over time?
-            <span class="answer">✅ Line Chart</span>
-          </li>
-          <li class="question">True/False: Conditional Formatting highlights cells based on rules.
-            <span class="answer">✅ True</span>
-          </li>
-          <li class="question">Fill in the blank: The _______ tab is used to insert charts.
-            <span class="answer">✅ Insert tab</span>
-          </li>
-          <li class="question">What is a PivotTable used for?
-            <span class="answer">✅ Summarizing and analyzing data</span>
-          </li>
-          <li class="question">Which symbol starts every formula in Excel?
-            <span class="answer">✅ =</span>
-          </li>
-        </ol>
-      </div>
-    </div>
-
-    <!-- Access -->
-    <div class="task-card" style="--color:#e81123;">
-      <h3>Task 3: Microsoft Access</h3>
-      <div class="questions">
-        <ol>
-          <li class="question">Why is a primary key important in a table?
-            <span class="answer">✅ To uniquely identify each record</span>
-          </li>
-          <li class="question">True/False: Queries can filter and sort data.
-            <span class="answer">✅ True</span>
-          </li>
-          <li class="question">Fill in the blank: _______ are used to enter data into tables.
-            <span class="answer">✅ Forms</span>
-          </li>
-          <li class="question">What is the purpose of relationships between tables?
-            <span class="answer">✅ To connect related data across tables</span>
-          </li>
-          <li class="question">Explain the difference between tables and queries.
-            <span class="answer">✅ Tables store data, queries extract data</span>
-          </li>
-          <li class="question">Which object is used to print well-formatted reports?
-            <span class="answer">✅ Reports</span>
-          </li>
-          <li class="question">True/False: Access cannot handle more than one table.
-            <span class="answer">❌ False</span>
-          </li>
-          <li class="question">Fill in the blank: A _______ field uniquely identifies each record.
-            <span class="answer">✅ Primary Key</span>
-          </li>
-          <li class="question">What is a query used for?
-            <span class="answer">✅ To filter, sort, and calculate data</span>
-          </li>
-          <li class="question">Which data type is best for storing names?
-            <span class="answer">✅ Text</span>
-          </li>
-        </ol>
-      </div>
-    </div>
-
-    <!-- PowerPoint -->
-    <div class="task-card" style="--color:#ffb900;">
-      <h3>Task 4: Microsoft PowerPoint</h3>
-      <div class="questions">
-        <ol>
-          <li class="question">Which feature controls how slides move between each other?
-            <span class="answer">✅ Transitions</span>
-          </li>
-          <li class="question">True/False: Animations can be applied to text and pictures.
-            <span class="answer">✅ True</span>
-          </li>
-          <li class="question">Fill in the blank: _______ view shows all slides in thumbnails.
-            <span class="answer">✅ Slide Sorter View</span>
-          </li>
-          <li class="question">What is the shortcut to start a slideshow?
-            <span class="answer">✅ F5</span>
-          </li>
-          <li class="question">Explain the use of slide master.
-            <span class="answer">✅ Controls global slide design and layout</span>
-          </li>
-          <li class="question">Which file extension is used for PowerPoint presentations?
-            <span class="answer">✅ .pptx</span>
-          </li>
-          <li class="question">True/False: Themes help keep design consistent.
-            <span class="answer">✅ True</span>
-          </li>
-          <li class="question">Fill in the blank: _______ are notes for the presenter only.
-            <span class="answer">✅ Speaker Notes</span>
-          </li>
-          <li class="question">What is the difference between transitions and animations?
-            <span class="answer">✅ Transitions = slide-to-slide, Animations = object effects</span>
-          </li>
-          <li class="question">Which tab allows you to insert pictures and shapes?
-            <span class="answer">✅ Insert tab</span>
-          </li>
-        </ol>
-      </div>
-    </div>
-
-    <!-- Windows -->
-    <div class="task-card" style="--color:#605e5c;">
-      <h3>Task 5: Windows</h3>
-      <div class="questions">
-        <ol>
-          <li class="question">Which shortcut creates a new folder?
-            <span class="answer">✅ Ctrl + Shift + N</span>
-          </li>
-          <li class="question">True/False: Ctrl+C copies a file.
-            <span class="answer">✅ True</span>
-          </li>
-          <li class="question">Fill in the blank: _______ + Tab switches between programs.
-            <span class="answer">✅ Alt + Tab</span>
-          </li>
-          <li class="question">What is the purpose of the Recycle Bin?
-            <span class="answer">✅ Stores deleted files temporarily</span>
-          </li>
-          <li class="question">Explain how to rename a file.
-            <span class="answer">✅ Right-click → Rename OR press F2</span>
-          </li>
-          <li class="question">Which menu contains shutdown and restart options?
-            <span class="answer">✅ Start Menu</span>
-          </li>
-          <li class="question">True/False: Windows Explorer is used for file management.
-            <span class="answer">✅ True</span>
-          </li>
-          <li class="question">Fill in the blank: The _______ bar shows open applications.
-            <span class="answer">✅ Taskbar</span>
-          </li>
-          <li class="question">What is the shortcut for selecting all items?
-            <span class="answer">✅ Ctrl + A</span>
-          </li>
-          <li class="question">Which feature helps search for files quickly?
-            <span class="answer">✅ Windows Search</span>
-          </li>
-        </ol>
-      </div>
-    </div>
-
-    <!-- IT -->
-    <div class="task-card" style="--color:#107c10;">
-      <h3>Task 6: IT</h3>
-      <div class="questions">
-        <ol>
-          <li class="question">What does IT stand for?
-            <span class="answer">✅ Information Technology</span>
-          </li>
-          <li class="question">True/False: Hardware refers to physical components.
-            <span class="answer">✅ True</span>
-          </li>
-          <li class="question">Fill in the blank: _______ is the brain of the computer.
-            <span class="answer">✅ CPU</span>
-          </li>
-          <li class="question">What is the difference between RAM and ROM?
-            <span class="answer">✅ RAM = temporary memory, ROM = permanent storage</span>
-          </li>
-          <li class="question">Explain the function of an operating system.
-            <span class="answer">✅ Manages hardware and software resources</span>
-          </li>
-          <li class="question">Which device is an input device?
-            <span class="answer">✅ Keyboard</span>
-          </li>
-          <li class="question">True/False: Software includes programs and applications.
-            <span class="answer">✅ True</span>
-          </li>
-          <li class="question">Fill in the blank: _______ memory is temporary and volatile.
-            <span class="answer">✅ RAM</span>
-          </li>
-          <li class="question">What is the role of antivirus software?
-            <span class="answer">✅ Protects against malware and threats</span>
-          </li>
-          <li class="question">Which port is commonly used for internet connection?
-            <span class="answer">✅ Ethernet / RJ45</span>
-          </li>
-        </ol>
-      </div>
-    </div>
-
-    <!-- Internet -->
-    <div class="task-card" style="--color:#0099cc;">
-      <h3>Task 7: Internet</h3>
-      <div class="questions">
-        <ol>
-          <li class="question">What does URL stand for?
-            <span class="answer">✅ Uniform Resource Locator</span>
-          </li>
-          <li class="question">True/False: HTTP is more secure than HTTPS.
-            <span class="answer">❌ False (HTTPS is more secure)</span>
-          </li>
-          <li class="question">Fill in the blank: _______ is used to find information online.
-            <span class="answer">✅ Search Engine</span>
-          </li>
-          <li class="question">What is the purpose of a web browser?
-            <span class="answer">✅ To access and view web pages</span>
-          </li>
-          <li class="question">Explain the use of bookmarks.
-            <span class="answer">✅ Save and organize favorite websites</span>
-          </li>
-          <li class="question">Which search engine is most popular worldwide?
-            <span class="answer">✅ Google</span>
-          </li>
-          <li class="question">True/False: Email is a service of the internet.
-            <span class="answer">✅ True</span>
-          </li>
-          <li class="question">Fill in the blank: _______ protects your computer from online threats.
-            <span class="answer">✅ Firewall</span>
-          </li>
-          <li class="question">What is the difference between upload and download?
-            <span class="answer">✅ Upload = send files, Download = receive files</span>
-          </li>
-          <li class="question">Which protocol is used to transfer files over the internet?
-            <span class="answer">✅ FTP</span>
-          </li>
-        </ol>
-      </div>
-    </div>
-
-  </div>
-</div>
-
-<style>
-.task-card {
-  background:#ffffff;
-  border-left:8px solid var(--color);
-  border-radius:16px;
-  padding:22px;
-  box-shadow:0 8px 26px rgba(0,0,0,0.07);
-  transition: transform 0.28s, box-shadow 0.28s;
-}
-.task-card h3 {
-  color:var(--color);
-  font-size:20px;
-  margin-bottom:12px;
-}
-.task-card:hover {
-  transform: translateY(-8px) scale(1.01);
-  box-shadow:0 22px 50px rgba(0,0,0,0.15);
-}
-.questions ol {
-  padding-left: 20px;
-  margin: 0;
-}
-.questions li {
-  margin-bottom: 14px;
-  font-size: 16px;
-  color:#333;
-  position: relative;
-  cursor: pointer;
-}
-.answer {
-  display: none;
-  margin-top: 6px;
-  font-size: 15px;
-  color: #107c10;
-  background:#f0fff4;
-  padding:6px 10px;
-  border-radius:6px;
-  border:1px solid #cce5cc;
-  animation: fadeIn 0.3s ease-in-out;
-}
-.question:hover .answer {
-  display: inline-block;
-}
-@keyframes fadeIn {
-  from {opacity:0; transform:translateY(-5px);}
-  to {opacity:1; transform:translateY(0);}
-}
-</style>
-`,
-
-
-"q": "Which complete workflow is most suitable for intermediate IT learners to practice using Word, Excel, Access, PowerPoint, Windows, IT, and Internet together?",
-"a": "b",
-"options": [
-  "Practice each program randomly without connection",
-  "Write a report in Word → Calculate grades in Excel → Build a student database in Access → Create a presentation in PowerPoint → Organize files in Windows → Apply IT concepts → Search resources on the Internet",
-  "Just open applications without creating any project",
-  "Shut down the computer after opening one program"
-]
-
-},
-
-
-
-{
-  "passage": `<div style="margin-top: 40px; max-width: 1100px; margin-left:auto; margin-right:auto; position: relative;">
-
-  <!-- Emoji Sticky Animation -->
-  <div id="emoji-character" style="
-    position: sticky;
-    top: 20px;
-    float: right;
-    font-size: 64px;
-    margin-left: auto;
-    display: block;
-    z-index: 10;
-  ">🧑‍💻</div>
-
-  <!-- Main Container -->
-  <div style="font-family: 'Segoe UI', Arial, sans-serif; background: linear-gradient(135deg, #f7fbff, #ffffff); color: #222; padding: 34px; border: 1px solid #dfefff; border-radius: 22px; font-size: 18px; line-height:1.7; box-shadow: 0 10px 28px rgba(0,0,0,0.08); position: relative; z-index: 5;">
-    
-    <strong style="font-size: 28px; color: #003b70; display:block; margin-bottom:18px;">
-      ⚡ Practical IT Tasks: Intermediate Level
-    </strong>
-    
-    <p style="margin-bottom:20px; color:#214b77;">
-      <em><u style="color:#0056b3;">Intermediate Challenge (Each card):</u></em><br>
-      Each card includes: clear steps, a multiple-choice question, the correct answer with explanation, a simple example, and a short practice table. Content is simplified to match intermediate students.
-    </p>
-
-    <!-- Cards Grid (medium level tasks) -->
-    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 28px; align-items: start;">
-
-      <!-- Word -->
-      <div class="task-card" style="--color:#0078d7; padding:30px; min-height:460px;">
-        <h3>Task 1: Microsoft Word</h3>
-        <p><strong>Steps:</strong><br>
-        Create a school report with a title, headings, and insert a picture.</p>
-
-        <p><strong>Question:</strong><br>
-        Which feature is best for creating consistent titles and headings?</p>
-        <ul>
-          <li>A) Bold/Italic only</li>
-          <li>B) Styles (Heading 1, Heading 2)</li>
-          <li>C) Page Break</li>
-          <li>D) Track Changes</li>
-        </ul>
-
-        <div class="explanation" style="background:#f0f6ff; padding:14px; border-radius:10px; margin-top:12px; border-left:6px solid var(--color);">
-          <h4>Answer & Explanation</h4>
-          <p><strong>Correct:</strong> B) Styles (Heading 1, Heading 2).</p>
-          <p>Explanation: Styles make the report professional, allow automatic table of contents, and keep formatting consistent.</p>
-        </div>
-      </div>
-
-      <!-- Excel -->
-      <div class="task-card" style="--color:#00b294; padding:30px; min-height:460px;">
-        <h3>Task 2: Microsoft Excel</h3>
-        <p><strong>Steps:</strong><br>
-        Make a student grade sheet and calculate averages.</p>
-
-        <p><strong>Question:</strong><br>
-        Which function quickly calculates the average grade?</p>
-        <ul>
-          <li>A) =SUM()</li>
-          <li>B) =IF()</li>
-          <li>C) =AVERAGE()</li>
-          <li>D) =MAX()</li>
-        </ul>
-
-        <div class="explanation" style="background:#f0fff4; padding:14px; border-radius:10px; margin-top:12px; border-left:6px solid var(--color);">
-          <h4>Answer & Explanation</h4>
-          <p><strong>Correct:</strong> C) =AVERAGE().</p>
-          <p>Explanation: The AVERAGE function calculates the mean of selected numbers, which is ideal for grades.</p>
-        </div>
-      </div>
-
-      <!-- Access -->
-      <div class="task-card" style="--color:#e81123; padding:30px; min-height:460px;">
-        <h3>Task 3: Microsoft Access</h3>
-        <p><strong>Steps:</strong><br>
-        Create a simple database of students with ID, Name, and Grade.</p>
-
-        <p><strong>Question:</strong><br>
-        Why do we set the StudentID as a primary key?</p>
-        <ul>
-          <li>A) To decorate the table</li>
-          <li>B) To uniquely identify each student</li>
-          <li>C) To sort names alphabetically</li>
-          <li>D) To calculate grades automatically</li>
-        </ul>
-
-        <div class="explanation" style="background:#fff5f5; padding:14px; border-radius:10px; margin-top:12px; border-left:6px solid var(--color);">
-          <h4>Answer & Explanation</h4>
-          <p><strong>Correct:</strong> B) To uniquely identify each student.</p>
-          <p>Explanation: Primary key ensures no two students have the same ID, which keeps the data organized.</p>
-        </div>
-      </div>
-
-      <!-- PowerPoint -->
-      <div class="task-card" style="--color:#ffb900; padding:30px; min-height:460px;">
-        <h3>Task 4: PowerPoint</h3>
-        <p><strong>Steps:</strong><br>
-        Create a short presentation with slide titles and pictures.</p>
-
-        <p><strong>Question:</strong><br>
-        Which feature makes text or pictures move onto the slide?</p>
-        <ul>
-          <li>A) Transition</li>
-          <li>B) Animation</li>
-          <li>C) Hyperlink</li>
-          <li>D) Theme</li>
-        </ul>
-
-        <div class="explanation" style="background:#fffaf0; padding:14px; border-radius:10px; margin-top:12px; border-left:6px solid var(--color);">
-          <h4>Answer & Explanation</h4>
-          <p><strong>Correct:</strong> B) Animation.</p>
-          <p>Explanation: Animations control how objects (text, images) appear or move, while transitions apply to the whole slide.</p>
-        </div>
-      </div>
-
-      <!-- Windows -->
-      <div class="task-card" style="--color:#605e5c; padding:30px; min-height:460px;">
-        <h3>Task 5: Windows</h3>
-        <p><strong>Steps:</strong><br>
-        Create a new folder and organize documents.</p>
-
-        <p><strong>Question:</strong><br>
-        Which shortcut quickly creates a new folder in Windows?</p>
-        <ul>
-          <li>A) Ctrl + N</li>
-          <li>B) Ctrl + Shift + N</li>
-          <li>C) Alt + Tab</li>
-          <li>D) Ctrl + C</li>
-        </ul>
-
-        <div class="explanation" style="background:#f6f6f8; padding:14px; border-radius:10px; margin-top:12px; border-left:6px solid var(--color);">
-          <h4>Answer & Explanation</h4>
-          <p><strong>Correct:</strong> B) Ctrl + Shift + N.</p>
-          <p>Explanation: This shortcut creates a new folder instantly without using the mouse.</p>
-        </div>
-      </div>
-
-      <!-- IT -->
-      <div class="task-card" style="--color:#107c10; padding:30px; min-height:460px;">
-        <h3>Task 6: IT & Internet</h3>
-        <p><strong>Steps:</strong><br>
-        Open a browser, search for information, and bookmark the page.</p>
-
-        <p><strong>Question:</strong><br>
-        What is the main purpose of bookmarking a page?</p>
-        <ul>
-          <li>A) To change the website design</li>
-          <li>B) To block ads</li>
-          <li>C) To save the page for quick access later</li>
-          <li>D) To download the website</li>
-        </ul>
-
-        <div class="explanation" style="background:#f0fff4; padding:14px; border-radius:10px; margin-top:12px; border-left:6px solid var(--color);">
-          <h4>Answer & Explanation</h4>
-          <p><strong>Correct:</strong> C) To save the page for quick access later.</p>
-          <p>Explanation: Bookmarking lets you store frequently used sites and open them easily without searching again.</p>
-        </div>
-      </div>
-
-    </div>
-  </div>
-</div>
-
-<style>
-.task-card {
-  background:#ffffff; 
-  border-left:8px solid var(--color); 
-  border-radius:16px; 
-  padding:22px; 
-  box-shadow:0 8px 26px rgba(0,0,0,0.07);
-  transition: transform 0.28s, box-shadow 0.28s;
-  position: relative;
-  overflow: visible;
-}
-.task-card h3 {
-  color: var(--color);
-  font-size:22px;
-  margin-bottom:12px;
-}
-.task-card:hover {
-  transform: translateY(-10px) scale(1.02);
-  box-shadow: 0 28px 60px rgba(0, 0, 0, 0.18);
-}
-ul {
-  list-style: none;
-  padding-left: 0;
-  margin:8px 0 12px 0;
-}
-ul li {
-  margin-bottom: 8px;
-  padding-left: 8px;
-}
-.explanation h4 { font-size:16px; color:#0b3b66; }
-table, th, td {
-  border:1px solid #d6e6ff;
-}
-th {
-  background:#f5fbff;
-}
-</style>`,
-  "q": "Which sequence of tasks is suitable for intermediate IT learners?",
-  "a": "b",
-  "options": [
-    "Do tasks randomly without order",
-    "Word (report) → Excel (grades) → Access (student database) → PowerPoint (presentation) → Windows (folders) → Internet (bookmarks)",
-    "Just open apps without practicing",
-    "Turn off the computer immediately"
-  ]
-},
-
-
-
-
-
-
-{
-  "passage": `<div style="margin-top: 40px; max-width: 1100px; margin-left:auto; margin-right:auto; position: relative;">
-
-  <!-- Emoji Sticky Animation -->
-  <div id="emoji-character" style="
-    position: sticky;
-    top: 20px;
-    float: right;
-    font-size: 64px;
-    margin-left: auto;
-    display: block;
-    z-index: 10;
-  ">🧑‍💻</div>
-
-  <!-- Main Container -->
-  <div style="font-family: 'Segoe UI', Arial, sans-serif; background: linear-gradient(135deg, #f7fbff, #ffffff); color: #222; padding: 34px; border: 1px solid #dfefff; border-radius: 22px; font-size: 18px; line-height:1.7; box-shadow: 0 10px 28px rgba(0,0,0,0.08); position: relative; z-index: 5;">
-    
-    <strong style="font-size: 28px; color: #003b70; display:block; margin-bottom:18px;">
-      ⚡ Professional Advanced Tasks: Integrated IT Skills
-    </strong>
-    
-    <p style="margin-bottom:20px; color:#214b77;">
-      <em><u style="color:#0056b3;">Advanced Challenge (Each card):</u></em><br>
-      Each card now includes: Steps, a multiple-choice question (A–D), the correct answer with a detailed explanation, a practical example, and a small training table. Cards are enlarged to fit the content.
-    </p>
-
-    <!-- Cards Grid (larger cards) -->
-    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 28px; align-items: start;">
-
-      <!-- Word -->
-      <div class="task-card" style="--color:#0078d7; padding:30px; min-height:520px;">
-        <h3>Task 1: Microsoft Word</h3>
-        <p><strong>Steps:</strong><br>
-        Create a thesis with sections, cross-references, footnotes, and bibliography.</p>
-
-        <p><strong>Question:</strong><br>
-        Which feature lets you add citations and automatically build a bibliography?</p>
-        <ul>
-          <li>A) Track Changes</li>
-          <li>B) Cross-reference</li>
-          <li>C) Footnotes</li>
-          <li>D) References → Manage Sources</li>
-        </ul>
-
-        <div class="explanation" style="background:#f0f6ff; padding:14px; border-radius:10px; margin-top:12px; border-left:6px solid var(--color);">
-          <h4 style="margin:0 0 8px 0;">Answer & Explanation</h4>
-          <p style="margin:0 0 8px 0;"><strong>Correct:</strong> D) References → Manage Sources.</p>
-          <p style="margin:0 0 8px 0;">
-            Explanation: Use the References tab → "Manage Sources" / "Insert Citation" to add structured bibliographic entries (Book, Article, etc.). Word stores the sources and can automatically generate a bibliography in styles like APA or MLA. Footnotes are for in-page notes, cross-references link to figures/sections, and Track Changes is for editing history.
-          </p>
-
-          <p style="margin:0 0 8px 0;"><strong>Practical example (step-by-step):</strong></p>
-          <ol style="margin:0 0 8px 18px;">
-            <li>Open References → Click "Insert Citation" → "Add New Source".</li>
-            <li>Choose Type: Book → fill Author, Title, Year → OK.</li>
-            <li>Place cursor where citation should appear → References → Insert Citation → select the source.</li>
-            <li>When ready, put cursor at end → References → Bibliography → choose APA style.</li>
-          </ol>
-
-          <p style="margin:0 0 8px 0;"><strong>Training table:</strong></p>
-          <table border="1" style="border-collapse:collapse; width:100%; text-align:left; font-size:14px;">
-            <tr style="background:#eaf4ff;"><th style="padding:6px;">Action</th><th style="padding:6px;">Location</th><th style="padding:6px;">Example</th></tr>
-            <tr><td style="padding:6px;">Add source</td><td style="padding:6px;">References → Add New Source</td><td style="padding:6px;">Book: "Web Dev Basics", 2020</td></tr>
-            <tr><td style="padding:6px;">Insert citation</td><td style="padding:6px;">References → Insert Citation</td><td style="padding:6px;">(Smith, 2020)</td></tr>
-            <tr><td style="padding:6px;">Generate bibliography</td><td style="padding:6px;">References → Bibliography</td><td style="padding:6px;">APA formatted list</td></tr>
-          </table>
-        </div>
-      </div>
-
-      <!-- Excel -->
-      <div class="task-card" style="--color:#00b294; padding:30px; min-height:520px;">
-        <h3>Task 2: Microsoft Excel</h3>
-        <p><strong>Steps:</strong><br>
-        Summarize sales data with PivotTables, slicers and dashboards.</p>
-
-        <p><strong>Question:</strong><br>
-        Which Excel feature is best to filter data interactively in a PivotTable?</p>
-        <ul>
-          <li>A) Data Validation</li>
-          <li>B) Slicer</li>
-          <li>C) Conditional Formatting</li>
-          <li>D) Find & Replace</li>
-        </ul>
-
-        <div class="explanation" style="background:#f0fff4; padding:14px; border-radius:10px; margin-top:12px; border-left:6px solid var(--color);">
-          <h4 style="margin:0 0 8px 0;">Answer & Explanation</h4>
-          <p style="margin:0 0 8px 0;"><strong>Correct:</strong> B) Slicer.</p>
-          <p style="margin:0 0 8px 0;">
-            Explanation: Slicers provide a visual, clickable way to filter PivotTable data by fields (e.g., Region, Product). They are more user-friendly than manual filters and work well in dashboards.
-          </p>
-
-          <p style="margin:0 0 8px 0;"><strong>Practical example (step-by-step):</strong></p>
-          <ol style="margin:0 0 8px 18px;">
-            <li>Select the data range → Insert → PivotTable → create PivotTable.</li>
-            <li>Add fields (Rows: Product, Values: Sum of Sales).</li>
-            <li>With PivotTable selected → Insert → Slicer → choose "Region".</li>
-            <li>Click the slicer buttons to filter the PivotTable and charts instantly.</li>
-          </ol>
-
-          <p style="margin:0 0 8px 0;"><strong>Sample data:</strong></p>
-          <pre style="background:#fff; padding:8px; border-radius:6px; overflow:auto; font-size:13px;">Date,Product,Region,Sales
-2025-09-01,Laptop,North,5000
-2025-09-01,Printer,South,2000
-2025-09-02,Scanner,East,1500</pre>
-
-          <p style="margin:0 0 8px 0;"><strong>Training table:</strong></p>
-          <table border="1" style="border-collapse:collapse; width:100%; text-align:left; font-size:14px;">
-            <tr style="background:#f0fff7;"><th style="padding:6px;">Action</th><th style="padding:6px;">Location</th><th style="padding:6px;">Result</th></tr>
-            <tr><td style="padding:6px;">Create PivotTable</td><td style="padding:6px;">Insert → PivotTable</td><td style="padding:6px;">Aggregated sales by product</td></tr>
-            <tr><td style="padding:6px;">Add Slicer</td><td style="padding:6px;">Insert → Slicer</td><td style="padding:6px;">Interactive Region filter</td></tr>
-            <tr><td style="padding:6px;">Insert Chart</td><td style="padding:6px;">PivotChart</td><td style="padding:6px;">Visual KPI for dashboard</td></tr>
-          </table>
-        </div>
-      </div>
-
-      <!-- Access -->
-      <div class="task-card" style="--color:#e81123; padding:30px; min-height:520px;">
-        <h3>Task 3: Microsoft Access</h3>
-        <p><strong>Steps:</strong><br>
-        Create tables, set relationships and generate reports for staff data.</p>
-
-        <p><strong>Question:</strong><br>
-        What is the main purpose of setting a primary key in a table?</p>
-        <ul>
-          <li>A) To sort records automatically</li>
-          <li>B) To uniquely identify each record</li>
-          <li>C) To speed up queries only</li>
-          <li>D) To create a form design</li>
-        </ul>
-
-        <div class="explanation" style="background:#fff5f5; padding:14px; border-radius:10px; margin-top:12px; border-left:6px solid var(--color);">
-          <h4 style="margin:0 0 8px 0;">Answer & Explanation</h4>
-          <p style="margin:0 0 8px 0;"><strong>Correct:</strong> B) To uniquely identify each record.</p>
-          <p style="margin:0 0 8px 0;">
-            Explanation: A primary key ensures each row is unique (no duplicates) and is used to create relationships between tables (one-to-many). It also helps indexing and data integrity.
-          </p>
-
-          <p style="margin:0 0 8px 0;"><strong>Practical example (step-by-step):</strong></p>
-          <ol style="margin:0 0 8px 18px;">
-            <li>Create table "Employees" with fields: EmployeeID (AutoNumber), Name (Text), DeptID (Number).</li>
-            <li>Set EmployeeID as Primary Key (right-click field → Primary Key).</li>
-            <li>Create table "Departments" with DeptID (Primary Key) and DeptName.</li>
-            <li>Design relationship: Employees.DeptID → Departments.DeptID.</li>
-          </ol>
-
-          <p style="margin:0 0 8px 0;"><strong>Training table:</strong></p>
-          <table border="1" style="border-collapse:collapse; width:100%; text-align:left; font-size:14px;">
-            <tr style="background:#ffecec;"><th style="padding:6px;">Field</th><th style="padding:6px;">Type</th><th style="padding:6px;">Example</th></tr>
-            <tr><td style="padding:6px;">EmployeeID</td><td style="padding:6px;">AutoNumber (PK)</td><td style="padding:6px;">1001</td></tr>
-            <tr><td style="padding:6px;">Name</td><td style="padding:6px;">Short Text</td><td style="padding:6px;">Ahmed Ali</td></tr>
-            <tr><td style="padding:6px;">DeptID</td><td style="padding:6px;">Number (FK)</td><td style="padding:6px;">10</td></tr>
-          </table>
-        </div>
-      </div>
-
-      <!-- PowerPoint -->
-      <div class="task-card" style="--color:#ffb900; padding:30px; min-height:520px;">
-        <h3>Task 4: PowerPoint</h3>
-        <p><strong>Steps:</strong><br>
-        Build an interactive pitch deck with transitions, hyperlinks and embedded media.</p>
-
-        <p><strong>Question:</strong><br>
-        Which action makes a slide element link to another slide?</p>
-        <ul>
-          <li>A) Animation</li>
-          <li>B) Transition</li>
-          <li>C) Hyperlink</li>
-          <li>D) Theme</li>
-        </ul>
-
-        <div class="explanation" style="background:#fffaf0; padding:14px; border-radius:10px; margin-top:12px; border-left:6px solid var(--color);">
-          <h4 style="margin:0 0 8px 0;">Answer & Explanation</h4>
-          <p style="margin:0 0 8px 0;"><strong>Correct:</strong> C) Hyperlink.</p>
-          <p style="margin:0 0 8px 0;">
-            Explanation: Use Insert → Link / Hyperlink (or right-click → Link) and choose "Place in This Document" to point to a specific slide. Animations and transitions are visual effects, while theme changes the design.
-          </p>
-
-          <p style="margin:0 0 8px 0;"><strong>Practical example (step-by-step):</strong></p>
-          <ol style="margin:0 0 8px 18px;">
-            <li>Create two slides: Slide 1 (Menu), Slide 5 (Details).</li>
-            <li>On Slide 1, add text "Go to Details" → select text → Insert → Link → Place in This Document → Slide 5 → OK.</li>
-            <li>In Slide Show mode, clicking the text navigates to Slide 5.</li>
-          </ol>
-
-          <p style="margin:0 0 8px 0;"><strong>Training table:</strong></p>
-          <table border="1" style="border-collapse:collapse; width:100%; text-align:left; font-size:14px;">
-            <tr style="background:#fff8e6;"><th style="padding:6px;">Element</th><th style="padding:6px;">Action</th><th style="padding:6px;">Result</th></tr>
-            <tr><td style="padding:6px;">Button/Text</td><td style="padding:6px;">Insert → Link → Place in This Document</td><td style="padding:6px;">Jump to specific slide</td></tr>
-            <tr><td style="padding:6px;">Video</td><td style="padding:6px;">Insert → Video → Embed</td><td style="padding:6px;">Play within slide</td></tr>
-            <tr><td style="padding:6px;">Transition</td><td style="padding:6px;">Animations/Transitions tab</td><td style="padding:6px;">Slide movement effects</td></tr>
-          </table>
-        </div>
-      </div>
-
-      <!-- Windows -->
-      <div class="task-card" style="--color:#605e5c; padding:30px; min-height:520px;">
-        <h3>Task 5: Windows</h3>
-        <p><strong>Steps:</strong><br>
-        Manage users, create backup folders and schedule automated backups.</p>
-
-        <p><strong>Question:</strong><br>
-        Which Windows tool is used to run a daily backup at 8 PM?</p>
-        <ul>
-          <li>A) Device Manager</li>
-          <li>B) Task Scheduler</li>
-          <li>C) Event Viewer</li>
-          <li>D) Control Panel → Power Options</li>
-        </ul>
-
-        <div class="explanation" style="background:#f6f6f8; padding:14px; border-radius:10px; margin-top:12px; border-left:6px solid var(--color);">
-          <h4 style="margin:0 0 8px 0;">Answer & Explanation</h4>
-          <p style="margin:0 0 8px 0;"><strong>Correct:</strong> B) Task Scheduler.</p>
-          <p style="margin:0 0 8px 0;">
-            Explanation: Task Scheduler allows creating tasks triggered at specific times (daily, weekly) to run programs or scripts (e.g., backup commands). Device Manager manages drivers, Event Viewer shows logs, and Power Options manages power settings.
-          </p>
-
-          <p style="margin:0 0 8px 0;"><strong>Practical example (step-by-step):</strong></p>
-          <ol style="margin:0 0 8px 18px;">
-            <li>Create backup folder: C:\Backup\Documents.</li>
-            <li>Create a small backup script using Robocopy (save as backup.bat):</li>
-            <pre style="background:#fff; padding:8px; border-radius:6px; overflow:auto; font-size:13px;">robocopy "C:\Users\Me\Documents" "C:\Backup\Documents" /MIR /XO</pre>
-            <li>Open Task Scheduler → Create Basic Task → Name: DailyBackup → Trigger: Daily 8:00 PM → Action: Start a program → program: backup.bat → Finish.</li>
-          </ol>
-
-          <p style="margin:0 0 8px 0;"><strong>Training table:</strong></p>
-          <table border="1" style="border-collapse:collapse; width:100%; text-align:left; font-size:14px;">
-            <tr style="background:#f0f0f2;"><th style="padding:6px;">Setting</th><th style="padding:6px;">Location</th><th style="padding:6px;">Example</th></tr>
-            <tr><td style="padding:6px;">Backup script</td><td style="padding:6px;">C:\Scripts\backup.bat</td><td style="padding:6px;">robocopy command</td></tr>
-            <tr><td style="padding:6px;">Scheduler trigger</td><td style="padding:6px;">Task Scheduler</td><td style="padding:6px;">Daily @ 20:00</td></tr>
-            <tr><td style="padding:6px;">Action</td><td style="padding:6px;">Start a program</td><td style="padding:6px;">backup.bat</td></tr>
-          </table>
-        </div>
-      </div>
-
-      <!-- IT -->
-      <div class="task-card" style="--color:#107c10; padding:30px; min-height:520px;">
-        <h3>Task 6: IT & Internet</h3>
-        <p><strong>Steps:</strong><br>
-        Configure VPN, browser security extensions and test secure connections.</p>
-
-        <p><strong>Question:</strong><br>
-        Why is a VPN important for remote employees?</p>
-        <ul>
-          <li>A) To increase internet speed</li>
-          <li>B) To block pop-ups</li>
-          <li>C) To encrypt traffic and secure data</li>
-          <li>D) To install software remotely</li>
-        </ul>
-
-        <div class="explanation" style="background:#f0fff4; padding:14px; border-radius:10px; margin-top:12px; border-left:6px solid var(--color);">
-          <h4 style="margin:0 0 8px 0;">Answer & Explanation</h4>
-          <p style="margin:0 0 8px 0;"><strong>Correct:</strong> C) To encrypt traffic and secure data.</p>
-          <p style="margin:0 0 8px 0;">
-            Explanation: A VPN creates an encrypted tunnel between the user's device and the company network, protecting data from eavesdropping especially on public networks. It does not inherently increase speed or block pop-ups.
-          </p>
-
-          <p style="margin:0 0 8px 0;"><strong>Practical example (step-by-step):</strong></p>
-          <ol style="margin:0 0 8px 18px;">
-            <li>Install the company VPN client (e.g., OpenVPN, Cisco AnyConnect).</li>
-            <li>Open client → Enter company VPN credentials → Connect.</li>
-            <li>Verify connection: visit <code>https://whatismyip.com</code> (shows company exit IP) and access internal site (e.g., intranet.company.local).</li>
-          </ol>
-
-          <p style="margin:0 0 8px 0;"><strong>Training table:</strong></p>
-          <table border="1" style="border-collapse:collapse; width:100%; text-align:left; font-size:14px;">
-            <tr style="background:#eaffef;"><th style="padding:6px;">Tool</th><th style="padding:6px;">Purpose</th><th style="padding:6px;">Example</th></tr>
-            <tr><td style="padding:6px;">VPN client</td><td style="padding:6px;">Encrypt & access internal network</td><td style="padding:6px;">Cisco AnyConnect</td></tr>
-            <tr><td style="padding:6px;">Browser extension</td><td style="padding:6px;">Block trackers/ads</td><td style="padding:6px;">uBlock Origin</td></tr>
-            <tr><td style="padding:6px;">HTTPS check</td><td style="padding:6px;">Ensure secure connection</td><td style="padding:6px;">Lock icon in address bar</td></tr>
-          </table>
-        </div>
-      </div>
-
-    </div>
-  </div>
-</div>
-
-<style>
-.task-card {
-  background:#ffffff; 
-  border-left:8px solid var(--color); 
-  border-radius:16px; 
-  padding:22px; 
-  box-shadow:0 8px 26px rgba(0,0,0,0.07);
-  transition: transform 0.28s, box-shadow 0.28s;
-  position: relative;
-  overflow: visible;
-}
-.task-card h3 {
-  color: var(--color);
-  font-size:22px;
-  margin-bottom:12px;
-}
-.task-card:hover {
-  transform: translateY(-10px) scale(1.02);
-  box-shadow: 0 28px 60px rgba(0, 0, 0, 0.18);
-}
-ul {
-  list-style: none;
-  padding-left: 0;
-  margin:8px 0 12px 0;
-}
-ul li {
-  margin-bottom: 8px;
-  padding-left: 8px;
-}
-.explanation h4 { font-size:16px; color:#0b3b66; }
-table, th, td {
-  border:1px solid #d6e6ff;
-}
-th {
-  background:#f5fbff;
-}
-</style>`,
-  "q": "Which advanced sequence of IT tasks demonstrates an integrated professional workflow?",
-  "a": "b",
-  "options": [
-    "Do random tasks in separate tools without relation",
-    "Word (report) → Excel (dashboard) → Access (database) → PowerPoint (presentation) → Windows (automation) → IT & Internet (security)",
-    "Only open apps without doing anything advanced",
-    "Shut down the computer without saving"
-  ]
-},
-
-
-
-
-
-
-
-   {
+  {
   "passage": `<div style="margin-top: 60px; max-width: 1000px; margin-left:auto; margin-right:auto; position: relative;">
 
   <!-- Emoji Sticky Animation -->
@@ -4781,6 +3520,1268 @@ Get-Process |
     "System Clock"
   ]
 },
+
+
+
+
+
+
+      {
+  "passage": `
+<div style="margin-top: 40px; max-width: 1100px; margin-left:auto; margin-right:auto; font-family:'Segoe UI', Arial, sans-serif; line-height:1.7;">
+
+  <!-- Intro Passage -->
+  <div style="background:linear-gradient(135deg,#f7fbff,#ffffff); padding:28px; border:1px solid #dfefff; border-radius:16px; box-shadow:0 6px 18px rgba(0,0,0,0.08); margin-bottom:40px;">
+    <h2 style="color:#003b70; margin-bottom:14px;">📘 IT Applications – Intro Lesson Quiz</h2>
+    <p style="color:#214b77; font-size:18px;">
+      This quiz introduces the <strong>basic concepts</strong> for each IT application.  
+      Each card contains <strong>introductory questions</strong> about what the program is, why we use it,  
+      and what learners will achieve after mastering it. Hover over a question to reveal the <strong>answer</strong>. 🎯
+    </p>
+  </div>
+
+  <!-- Cards Grid -->
+  <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(340px,1fr)); gap:28px;">
+
+    <!-- Word -->
+    <div class="task-card" style="--color:#0078d7;">
+      <h3>Task 1: Microsoft Word</h3>
+      <div class="questions">
+        <ol>
+          <li class="question">What is Microsoft Word mainly used for?
+            <span class="answer">✅ Creating and editing text documents</span>
+          </li>
+          <li class="question">True/False: Word is a word-processing program.
+            <span class="answer">✅ True</span>
+          </li>
+          <li class="question">Fill in the blank: Word documents usually end with the extension _______.
+            <span class="answer">✅ .docx</span>
+          </li>
+          <li class="question">What is the first screen you see when you open Word?
+            <span class="answer">✅ The Start Screen with templates</span>
+          </li>
+          <li class="question">Why do people use Microsoft Word?
+            <span class="answer">✅ To create professional documents quickly</span>
+          </li>
+          <li class="question">Which feature helps format text easily?
+            <span class="answer">✅ The Ribbon</span>
+          </li>
+          <li class="question">True/False: Word can be used to create reports and CVs.
+            <span class="answer">✅ True</span>
+          </li>
+          <li class="question">Complete: Mastering Word helps you improve your _______ skills.
+            <span class="answer">✅ document creation</span>
+          </li>
+          <li class="question">What kind of files can you create using Word?
+            <span class="answer">✅ Letters, reports, CVs, forms, and more</span>
+          </li>
+          <li class="question">What is the Ribbon used for?
+            <span class="answer">✅ Accessing tools and commands</span>
+          </li>
+        </ol>
+      </div>
+    </div>
+
+    <!-- Excel -->
+    <div class="task-card" style="--color:#00b294;">
+      <h3>Task 2: Microsoft Excel</h3>
+      <div class="questions">
+        <ol>
+          <li class="question">What is the main purpose of Excel?
+            <span class="answer">✅ Performing calculations and organizing data</span>
+          </li>
+          <li class="question">True/False: Excel is a spreadsheet program.
+            <span class="answer">✅ True</span>
+          </li>
+          <li class="question">Fill in the blank: Excel files usually use the extension _______.
+            <span class="answer">✅ .xlsx</span>
+          </li>
+          <li class="question">What do we call the boxes in Excel?
+            <span class="answer">✅ Cells</span>
+          </li>
+          <li class="question">Why is Excel important in business?
+            <span class="answer">✅ It helps analyze and manage large amounts of data</span>
+          </li>
+          <li class="question">Which tool helps visualize data?
+            <span class="answer">✅ Charts</span>
+          </li>
+          <li class="question">True/False: Excel can perform automatic calculations.
+            <span class="answer">✅ True</span>
+          </li>
+          <li class="question">Complete: Rows run _______ and columns run _______.
+            <span class="answer">✅ horizontally / vertically</span>
+          </li>
+          <li class="question">What is the first thing you see in Excel?
+            <span class="answer">✅ A blank worksheet made of cells</span>
+          </li>
+          <li class="question">Why should learners master Excel?
+            <span class="answer">✅ To improve data management and analytical skills</span>
+          </li>
+        </ol>
+      </div>
+    </div>
+
+    <!-- Access -->
+    <div class="task-card" style="--color:#e81123;">
+      <h3>Task 3: Microsoft Access</h3>
+      <div class="questions">
+        <ol>
+          <li class="question">What is Microsoft Access used for?
+            <span class="answer">✅ Creating and managing databases</span>
+          </li>
+          <li class="question">True/False: Access stores data in tables.
+            <span class="answer">✅ True</span>
+          </li>
+          <li class="question">Fill in the blank: An Access file usually ends with _______.
+            <span class="answer">✅ .accdb</span>
+          </li>
+          <li class="question">What is the purpose of Access?
+            <span class="answer">✅ To organize large collections of information</span>
+          </li>
+          <li class="question">What does the Access workspace mainly show?
+            <span class="answer">✅ Objects like tables, forms, queries, and reports</span>
+          </li>
+          <li class="question">Why is Access useful?
+            <span class="answer">✅ It links related data and reduces duplication</span>
+          </li>
+          <li class="question">True/False: Access can handle small and large databases.
+            <span class="answer">✅ True</span>
+          </li>
+          <li class="question">Complete: A _______ key uniquely identifies each record.
+            <span class="answer">✅ Primary</span>
+          </li>
+          <li class="question">What will learners achieve if they master Access?
+            <span class="answer">✅ The ability to build full database systems</span>
+          </li>
+          <li class="question">What is the first thing you see when opening Access?
+            <span class="answer">✅ Templates and options to create a new database</span>
+          </li>
+        </ol>
+      </div>
+    </div>
+
+    <!-- PowerPoint -->
+    <div class="task-card" style="--color:#ffb900;">
+      <h3>Task 4: Microsoft PowerPoint</h3>
+      <div class="questions">
+        <ol>
+          <li class="question">What is PowerPoint mainly used for?
+            <span class="answer">✅ Creating presentations</span>
+          </li>
+          <li class="question">True/False: PowerPoint uses slides to display content.
+            <span class="answer">✅ True</span>
+          </li>
+          <li class="question">Fill in the blank: PowerPoint files end with _______.
+            <span class="answer">✅ .pptx</span>
+          </li>
+          <li class="question">Why do people use PowerPoint?
+            <span class="answer">✅ To present information visually and clearly</span>
+          </li>
+          <li class="question">What does the main screen show when you open PowerPoint?
+            <span class="answer">✅ A blank slide and layout options</span>
+          </li>
+          <li class="question">What is a slide?
+            <span class="answer">✅ A single page in a presentation</span>
+          </li>
+          <li class="question">True/False: PowerPoint can include pictures, videos, and charts.
+            <span class="answer">✅ True</span>
+          </li>
+          <li class="question">Complete: Mastering PowerPoint improves your _______ skills.
+            <span class="answer">✅ communication and presentation</span>
+          </li>
+          <li class="question">What makes PowerPoint useful for teachers and trainers?
+            <span class="answer">✅ It helps explain ideas visually</span>
+          </li>
+          <li class="question">What can you add to make a presentation more attractive?
+            <span class="answer">✅ Themes, colors, and simple animations</span>
+          </li>
+        </ol>
+      </div>
+    </div>
+
+    <!-- Windows -->
+    <div class="task-card" style="--color:#605e5c;">
+      <h3>Task 5: Windows</h3>
+      <div class="questions">
+        <ol>
+          <li class="question">What is the Windows operating system?
+            <span class="answer">✅ The main software that controls the computer</span>
+          </li>
+          <li class="question">True/False: Windows helps open programs and manage files.
+            <span class="answer">✅ True</span>
+          </li>
+          <li class="question">Fill in the blank: The main screen in Windows is called the _______.
+            <span class="answer">✅ Desktop</span>
+          </li>
+          <li class="question">Why is Windows important?
+            <span class="answer">✅ It allows users to interact with the computer easily</span>
+          </li>
+          <li class="question">What is the Start Menu used for?
+            <span class="answer">✅ Accessing apps, settings, and power options</span>
+          </li>
+          <li class="question">What is the Taskbar?
+            <span class="answer">✅ A bar that shows open programs and shortcuts</span>
+          </li>
+          <li class="question">True/False: The Recycle Bin stores deleted files.
+            <span class="answer">✅ True</span>
+          </li>
+          <li class="question">Complete: Windows provides a _______ interface for users.
+            <span class="answer">✅ graphical</span>
+          </li>
+          <li class="question">What will learners achieve by mastering Windows?
+            <span class="answer">✅ Better file management and computer skills</span>
+          </li>
+          <li class="question">What appears when Windows starts?
+            <span class="answer">✅ The Desktop and Taskbar</span>
+          </li>
+        </ol>
+      </div>
+    </div>
+
+    <!-- IT -->
+    <div class="task-card" style="--color:#107c10;">
+      <h3>Task 6: IT</h3>
+      <div class="questions">
+        <ol>
+          <li class="question">What does IT stand for?
+            <span class="answer">✅ Information Technology</span>
+          </li>
+          <li class="question">True/False: IT includes both hardware and software.
+            <span class="answer">✅ True</span>
+          </li>
+          <li class="question">Fill in the blank: The _______ is known as the brain of the computer.
+            <span class="answer">✅ CPU</span>
+          </li>
+          <li class="question">Why is IT important today?
+            <span class="answer">✅ It powers communication, business, and data systems</span>
+          </li>
+          <li class="question">What will learners gain from studying IT?
+            <span class="answer">✅ Strong understanding of computers and technology</span>
+          </li>
+          <li class="question">What is hardware?
+            <span class="answer">✅ The physical parts of a computer</span>
+          </li>
+          <li class="question">True/False: Software refers to applications and programs.
+            <span class="answer">✅ True</span>
+          </li>
+          <li class="question">Complete: RAM is _______ memory.
+            <span class="answer">✅ temporary</span>
+          </li>
+          <li class="question">What is an operating system?
+            <span class="answer">✅ Software that manages computer resources</span>
+          </li>
+          <li class="question">What happens if a computer has no OS?
+            <span class="answer">✅ It cannot function or run applications</span>
+          </li>
+        </ol>
+      </div>
+    </div>
+
+    <!-- Internet -->
+    <div class="task-card" style="--color:#0099cc;">
+      <h3>Task 7: Internet</h3>
+      <div class="questions">
+        <ol>
+          <li class="question">What is the Internet?
+            <span class="answer">✅ A global network that connects computers worldwide</span>
+          </li>
+          <li class="question">True/False: The Internet allows communication and information sharing.
+            <span class="answer">✅ True</span>
+          </li>
+          <li class="question">Fill in the blank: A website’s address is called a _______.
+            <span class="answer">✅ URL</span>
+          </li>
+          <li class="question">What is the purpose of a web browser?
+            <span class="answer">✅ To access and view websites</span>
+          </li>
+          <li class="question">Why is the Internet important?
+            <span class="answer">✅ It provides information, services, and communication</span>
+          </li>
+          <li class="question">What is a search engine?
+            <span class="answer">✅ A tool used to find information online</span>
+          </li>
+          <li class="question">True/False: Email is an Internet service.
+            <span class="answer">✅ True</span>
+          </li>
+          <li class="question">Complete: Upload means to _______ files online.
+            <span class="answer">✅ send</span>
+          </li>
+          <li class="question">What will learners achieve by understanding the Internet?
+            <span class="answer">✅ Safe and effective online usage</span>
+          </li>
+          <li class="question">What is the difference between Internet and WWW?
+            <span class="answer">✅ Internet = network; WWW = websites and pages</span>
+          </li>
+        </ol>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<style>
+.task-card {
+  background:#ffffff;
+  border-left:8px solid var(--color);
+  border-radius:16px;
+  padding:22px;
+  box-shadow:0 8px 26px rgba(0,0,0,0.07);
+  transition: transform 0.28s, box-shadow 0.28s;
+}
+.task-card h3 {
+  color:var(--color);
+  font-size:20px;
+  margin-bottom:12px;
+}
+.task-card:hover {
+  transform: translateY(-8px) scale(1.01);
+  box-shadow:0 22px 50px rgba(0,0,0,0.15);
+}
+.questions ol {
+  padding-left: 20px;
+  margin: 0;
+}
+.questions li {
+  margin-bottom: 14px;
+  font-size: 16px;
+  color:#333;
+  position: relative;
+  cursor: pointer;
+}
+.answer {
+  display: none;
+  margin-top: 6px;
+  font-size: 15px;
+  color: #107c10;
+  background:#f0fff4;
+  padding:6px 10px;
+  border-radius:6px;
+  border:1px solid #cce5cc;
+  animation: fadeIn 0.3s ease-in-out;
+}
+.question:hover .answer {
+  display: inline-block;
+}
+@keyframes fadeIn {
+  from {opacity:0; transform:translateY(-5px);}
+  to {opacity:1; transform:translateY(0);}
+}
+</style>
+`,
+
+  "q": "Which complete workflow is most suitable for intro-level IT learners to understand how Word, Excel, Access, PowerPoint, Windows, IT, and Internet fit together?",
+  "a": "b",
+  "options": [
+    "Practice each program separately without understanding their purpose",
+    "Learn the basics of each program → Understand file management in Windows → Explore IT fundamentals → Use the Internet to gather information",
+    "Open each program randomly without direction",
+    "Skip learning and depend only on Internet searches"
+  ]
+},
+
+    
+
+
+      {
+  "passage": `
+<div style="margin-top: 40px; max-width: 1100px; margin-left:auto; margin-right:auto; font-family:'Segoe UI', Arial, sans-serif; line-height:1.7;">
+
+  <!-- Intro Passage -->
+  <div style="background:linear-gradient(135deg,#f7fbff,#ffffff); padding:28px; border:1px solid #dfefff; border-radius:16px; box-shadow:0 6px 18px rgba(0,0,0,0.08); margin-bottom:40px;">
+    <h2 style="color:#003b70; margin-bottom:14px;">📘 IT Applications – Review Quiz</h2>
+    <p style="color:#214b77; font-size:18px;">
+      This quiz is designed as a <strong>final review</strong> for intermediate IT learners.  
+      Each card focuses on one topic (Word, Excel, Access, PowerPoint, Windows, IT & Internet).  
+      Hover over a question to reveal the <strong>correct answer</strong>. 🎯
+    </p>
+  </div>
+
+  <!-- Cards Grid -->
+  <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(340px,1fr)); gap:28px;">
+
+    <!-- Word -->
+    <div class="task-card" style="--color:#0078d7;">
+      <h3>Task 1: Microsoft Word</h3>
+      <div class="questions">
+        <ol>
+          <li class="question">Which feature helps to create consistent headings?
+            <span class="answer">✅ Styles</span>
+          </li>
+          <li class="question">True/False: Word allows inserting tables and images.
+            <span class="answer">✅ True</span>
+          </li>
+          <li class="question">Fill in the blank: _______ is used to check spelling mistakes.
+            <span class="answer">✅ Spelling & Grammar Checker</span>
+          </li>
+          <li class="question">What is the shortcut for Copy?
+            <span class="answer">✅ Ctrl + C</span>
+          </li>
+          <li class="question">Define the function of "Track Changes".
+            <span class="answer">✅ Tracks edits and comments for review</span>
+          </li>
+          <li class="question">Which tab contains Page Layout options?
+            <span class="answer">✅ Layout tab</span>
+          </li>
+          <li class="question">True/False: You cannot insert SmartArt in Word.
+            <span class="answer">❌ False</span>
+          </li>
+          <li class="question">Complete: Header and Footer are placed at the _______ of the page.
+            <span class="answer">✅ Top and Bottom</span>
+          </li>
+          <li class="question">What is the benefit of using Styles in Word?
+            <span class="answer">✅ Consistency and easy formatting</span>
+          </li>
+          <li class="question">Which feature creates an automatic list of contents?
+            <span class="answer">✅ Table of Contents</span>
+          </li>
+        </ol>
+      </div>
+    </div>
+
+    <!-- Excel -->
+    <div class="task-card" style="--color:#00b294;">
+      <h3>Task 2: Microsoft Excel</h3>
+      <div class="questions">
+        <ol>
+          <li class="question">Which function calculates the average of numbers?
+            <span class="answer">✅ AVERAGE()</span>
+          </li>
+          <li class="question">True/False: The formula =SUM(A1:A5) adds values from A1 to A5.
+            <span class="answer">✅ True</span>
+          </li>
+          <li class="question">Fill in the blank: _______ function returns the highest value.
+            <span class="answer">✅ MAX()</span>
+          </li>
+          <li class="question">What is the shortcut to create a new workbook?
+            <span class="answer">✅ Ctrl + N</span>
+          </li>
+          <li class="question">Explain the purpose of cell referencing.
+            <span class="answer">✅ To reuse values and build dynamic formulas</span>
+          </li>
+          <li class="question">Which chart is best for showing trends over time?
+            <span class="answer">✅ Line Chart</span>
+          </li>
+          <li class="question">True/False: Conditional Formatting highlights cells based on rules.
+            <span class="answer">✅ True</span>
+          </li>
+          <li class="question">Fill in the blank: The _______ tab is used to insert charts.
+            <span class="answer">✅ Insert tab</span>
+          </li>
+          <li class="question">What is a PivotTable used for?
+            <span class="answer">✅ Summarizing and analyzing data</span>
+          </li>
+          <li class="question">Which symbol starts every formula in Excel?
+            <span class="answer">✅ =</span>
+          </li>
+        </ol>
+      </div>
+    </div>
+
+    <!-- Access -->
+    <div class="task-card" style="--color:#e81123;">
+      <h3>Task 3: Microsoft Access</h3>
+      <div class="questions">
+        <ol>
+          <li class="question">Why is a primary key important in a table?
+            <span class="answer">✅ To uniquely identify each record</span>
+          </li>
+          <li class="question">True/False: Queries can filter and sort data.
+            <span class="answer">✅ True</span>
+          </li>
+          <li class="question">Fill in the blank: _______ are used to enter data into tables.
+            <span class="answer">✅ Forms</span>
+          </li>
+          <li class="question">What is the purpose of relationships between tables?
+            <span class="answer">✅ To connect related data across tables</span>
+          </li>
+          <li class="question">Explain the difference between tables and queries.
+            <span class="answer">✅ Tables store data, queries extract data</span>
+          </li>
+          <li class="question">Which object is used to print well-formatted reports?
+            <span class="answer">✅ Reports</span>
+          </li>
+          <li class="question">True/False: Access cannot handle more than one table.
+            <span class="answer">❌ False</span>
+          </li>
+          <li class="question">Fill in the blank: A _______ field uniquely identifies each record.
+            <span class="answer">✅ Primary Key</span>
+          </li>
+          <li class="question">What is a query used for?
+            <span class="answer">✅ To filter, sort, and calculate data</span>
+          </li>
+          <li class="question">Which data type is best for storing names?
+            <span class="answer">✅ Text</span>
+          </li>
+        </ol>
+      </div>
+    </div>
+
+    <!-- PowerPoint -->
+    <div class="task-card" style="--color:#ffb900;">
+      <h3>Task 4: Microsoft PowerPoint</h3>
+      <div class="questions">
+        <ol>
+          <li class="question">Which feature controls how slides move between each other?
+            <span class="answer">✅ Transitions</span>
+          </li>
+          <li class="question">True/False: Animations can be applied to text and pictures.
+            <span class="answer">✅ True</span>
+          </li>
+          <li class="question">Fill in the blank: _______ view shows all slides in thumbnails.
+            <span class="answer">✅ Slide Sorter View</span>
+          </li>
+          <li class="question">What is the shortcut to start a slideshow?
+            <span class="answer">✅ F5</span>
+          </li>
+          <li class="question">Explain the use of slide master.
+            <span class="answer">✅ Controls global slide design and layout</span>
+          </li>
+          <li class="question">Which file extension is used for PowerPoint presentations?
+            <span class="answer">✅ .pptx</span>
+          </li>
+          <li class="question">True/False: Themes help keep design consistent.
+            <span class="answer">✅ True</span>
+          </li>
+          <li class="question">Fill in the blank: _______ are notes for the presenter only.
+            <span class="answer">✅ Speaker Notes</span>
+          </li>
+          <li class="question">What is the difference between transitions and animations?
+            <span class="answer">✅ Transitions = slide-to-slide, Animations = object effects</span>
+          </li>
+          <li class="question">Which tab allows you to insert pictures and shapes?
+            <span class="answer">✅ Insert tab</span>
+          </li>
+        </ol>
+      </div>
+    </div>
+
+    <!-- Windows -->
+    <div class="task-card" style="--color:#605e5c;">
+      <h3>Task 5: Windows</h3>
+      <div class="questions">
+        <ol>
+          <li class="question">Which shortcut creates a new folder?
+            <span class="answer">✅ Ctrl + Shift + N</span>
+          </li>
+          <li class="question">True/False: Ctrl+C copies a file.
+            <span class="answer">✅ True</span>
+          </li>
+          <li class="question">Fill in the blank: _______ + Tab switches between programs.
+            <span class="answer">✅ Alt + Tab</span>
+          </li>
+          <li class="question">What is the purpose of the Recycle Bin?
+            <span class="answer">✅ Stores deleted files temporarily</span>
+          </li>
+          <li class="question">Explain how to rename a file.
+            <span class="answer">✅ Right-click → Rename OR press F2</span>
+          </li>
+          <li class="question">Which menu contains shutdown and restart options?
+            <span class="answer">✅ Start Menu</span>
+          </li>
+          <li class="question">True/False: Windows Explorer is used for file management.
+            <span class="answer">✅ True</span>
+          </li>
+          <li class="question">Fill in the blank: The _______ bar shows open applications.
+            <span class="answer">✅ Taskbar</span>
+          </li>
+          <li class="question">What is the shortcut for selecting all items?
+            <span class="answer">✅ Ctrl + A</span>
+          </li>
+          <li class="question">Which feature helps search for files quickly?
+            <span class="answer">✅ Windows Search</span>
+          </li>
+        </ol>
+      </div>
+    </div>
+
+    <!-- IT -->
+    <div class="task-card" style="--color:#107c10;">
+      <h3>Task 6: IT</h3>
+      <div class="questions">
+        <ol>
+          <li class="question">What does IT stand for?
+            <span class="answer">✅ Information Technology</span>
+          </li>
+          <li class="question">True/False: Hardware refers to physical components.
+            <span class="answer">✅ True</span>
+          </li>
+          <li class="question">Fill in the blank: _______ is the brain of the computer.
+            <span class="answer">✅ CPU</span>
+          </li>
+          <li class="question">What is the difference between RAM and ROM?
+            <span class="answer">✅ RAM = temporary memory, ROM = permanent storage</span>
+          </li>
+          <li class="question">Explain the function of an operating system.
+            <span class="answer">✅ Manages hardware and software resources</span>
+          </li>
+          <li class="question">Which device is an input device?
+            <span class="answer">✅ Keyboard</span>
+          </li>
+          <li class="question">True/False: Software includes programs and applications.
+            <span class="answer">✅ True</span>
+          </li>
+          <li class="question">Fill in the blank: _______ memory is temporary and volatile.
+            <span class="answer">✅ RAM</span>
+          </li>
+          <li class="question">What is the role of antivirus software?
+            <span class="answer">✅ Protects against malware and threats</span>
+          </li>
+          <li class="question">Which port is commonly used for internet connection?
+            <span class="answer">✅ Ethernet / RJ45</span>
+          </li>
+        </ol>
+      </div>
+    </div>
+
+    <!-- Internet -->
+    <div class="task-card" style="--color:#0099cc;">
+      <h3>Task 7: Internet</h3>
+      <div class="questions">
+        <ol>
+          <li class="question">What does URL stand for?
+            <span class="answer">✅ Uniform Resource Locator</span>
+          </li>
+          <li class="question">True/False: HTTP is more secure than HTTPS.
+            <span class="answer">❌ False (HTTPS is more secure)</span>
+          </li>
+          <li class="question">Fill in the blank: _______ is used to find information online.
+            <span class="answer">✅ Search Engine</span>
+          </li>
+          <li class="question">What is the purpose of a web browser?
+            <span class="answer">✅ To access and view web pages</span>
+          </li>
+          <li class="question">Explain the use of bookmarks.
+            <span class="answer">✅ Save and organize favorite websites</span>
+          </li>
+          <li class="question">Which search engine is most popular worldwide?
+            <span class="answer">✅ Google</span>
+          </li>
+          <li class="question">True/False: Email is a service of the internet.
+            <span class="answer">✅ True</span>
+          </li>
+          <li class="question">Fill in the blank: _______ protects your computer from online threats.
+            <span class="answer">✅ Firewall</span>
+          </li>
+          <li class="question">What is the difference between upload and download?
+            <span class="answer">✅ Upload = send files, Download = receive files</span>
+          </li>
+          <li class="question">Which protocol is used to transfer files over the internet?
+            <span class="answer">✅ FTP</span>
+          </li>
+        </ol>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<style>
+.task-card {
+  background:#ffffff;
+  border-left:8px solid var(--color);
+  border-radius:16px;
+  padding:22px;
+  box-shadow:0 8px 26px rgba(0,0,0,0.07);
+  transition: transform 0.28s, box-shadow 0.28s;
+}
+.task-card h3 {
+  color:var(--color);
+  font-size:20px;
+  margin-bottom:12px;
+}
+.task-card:hover {
+  transform: translateY(-8px) scale(1.01);
+  box-shadow:0 22px 50px rgba(0,0,0,0.15);
+}
+.questions ol {
+  padding-left: 20px;
+  margin: 0;
+}
+.questions li {
+  margin-bottom: 14px;
+  font-size: 16px;
+  color:#333;
+  position: relative;
+  cursor: pointer;
+}
+.answer {
+  display: none;
+  margin-top: 6px;
+  font-size: 15px;
+  color: #107c10;
+  background:#f0fff4;
+  padding:6px 10px;
+  border-radius:6px;
+  border:1px solid #cce5cc;
+  animation: fadeIn 0.3s ease-in-out;
+}
+.question:hover .answer {
+  display: inline-block;
+}
+@keyframes fadeIn {
+  from {opacity:0; transform:translateY(-5px);}
+  to {opacity:1; transform:translateY(0);}
+}
+</style>
+`,
+
+
+"q": "Which complete workflow is most suitable for intermediate IT learners to practice using Word, Excel, Access, PowerPoint, Windows, IT, and Internet together?",
+"a": "b",
+"options": [
+  "Practice each program randomly without connection",
+  "Write a report in Word → Calculate grades in Excel → Build a student database in Access → Create a presentation in PowerPoint → Organize files in Windows → Apply IT concepts → Search resources on the Internet",
+  "Just open applications without creating any project",
+  "Shut down the computer after opening one program"
+]
+
+},
+
+
+
+{
+  "passage": `<div style="margin-top: 40px; max-width: 1100px; margin-left:auto; margin-right:auto; position: relative;">
+
+  <!-- Emoji Sticky Animation -->
+  <div id="emoji-character" style="
+    position: sticky;
+    top: 20px;
+    float: right;
+    font-size: 64px;
+    margin-left: auto;
+    display: block;
+    z-index: 10;
+  ">🧑‍💻</div>
+
+  <!-- Main Container -->
+  <div style="font-family: 'Segoe UI', Arial, sans-serif; background: linear-gradient(135deg, #f7fbff, #ffffff); color: #222; padding: 34px; border: 1px solid #dfefff; border-radius: 22px; font-size: 18px; line-height:1.7; box-shadow: 0 10px 28px rgba(0,0,0,0.08); position: relative; z-index: 5;">
+    
+    <strong style="font-size: 28px; color: #003b70; display:block; margin-bottom:18px;">
+      ⚡ Practical IT Tasks: Intermediate Level
+    </strong>
+    
+    <p style="margin-bottom:20px; color:#214b77;">
+      <em><u style="color:#0056b3;">Intermediate Challenge (Each card):</u></em><br>
+      Each card includes: clear steps, a multiple-choice question, the correct answer with explanation, a simple example, and a short practice table. Content is simplified to match intermediate students.
+    </p>
+
+    <!-- Cards Grid (medium level tasks) -->
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 28px; align-items: start;">
+
+      <!-- Word -->
+      <div class="task-card" style="--color:#0078d7; padding:30px; min-height:460px;">
+        <h3>Task 1: Microsoft Word</h3>
+        <p><strong>Steps:</strong><br>
+        Create a school report with a title, headings, and insert a picture.</p>
+
+        <p><strong>Question:</strong><br>
+        Which feature is best for creating consistent titles and headings?</p>
+        <ul>
+          <li>A) Bold/Italic only</li>
+          <li>B) Styles (Heading 1, Heading 2)</li>
+          <li>C) Page Break</li>
+          <li>D) Track Changes</li>
+        </ul>
+
+        <div class="explanation" style="background:#f0f6ff; padding:14px; border-radius:10px; margin-top:12px; border-left:6px solid var(--color);">
+          <h4>Answer & Explanation</h4>
+          <p><strong>Correct:</strong> B) Styles (Heading 1, Heading 2).</p>
+          <p>Explanation: Styles make the report professional, allow automatic table of contents, and keep formatting consistent.</p>
+        </div>
+      </div>
+
+      <!-- Excel -->
+      <div class="task-card" style="--color:#00b294; padding:30px; min-height:460px;">
+        <h3>Task 2: Microsoft Excel</h3>
+        <p><strong>Steps:</strong><br>
+        Make a student grade sheet and calculate averages.</p>
+
+        <p><strong>Question:</strong><br>
+        Which function quickly calculates the average grade?</p>
+        <ul>
+          <li>A) =SUM()</li>
+          <li>B) =IF()</li>
+          <li>C) =AVERAGE()</li>
+          <li>D) =MAX()</li>
+        </ul>
+
+        <div class="explanation" style="background:#f0fff4; padding:14px; border-radius:10px; margin-top:12px; border-left:6px solid var(--color);">
+          <h4>Answer & Explanation</h4>
+          <p><strong>Correct:</strong> C) =AVERAGE().</p>
+          <p>Explanation: The AVERAGE function calculates the mean of selected numbers, which is ideal for grades.</p>
+        </div>
+      </div>
+
+      <!-- Access -->
+      <div class="task-card" style="--color:#e81123; padding:30px; min-height:460px;">
+        <h3>Task 3: Microsoft Access</h3>
+        <p><strong>Steps:</strong><br>
+        Create a simple database of students with ID, Name, and Grade.</p>
+
+        <p><strong>Question:</strong><br>
+        Why do we set the StudentID as a primary key?</p>
+        <ul>
+          <li>A) To decorate the table</li>
+          <li>B) To uniquely identify each student</li>
+          <li>C) To sort names alphabetically</li>
+          <li>D) To calculate grades automatically</li>
+        </ul>
+
+        <div class="explanation" style="background:#fff5f5; padding:14px; border-radius:10px; margin-top:12px; border-left:6px solid var(--color);">
+          <h4>Answer & Explanation</h4>
+          <p><strong>Correct:</strong> B) To uniquely identify each student.</p>
+          <p>Explanation: Primary key ensures no two students have the same ID, which keeps the data organized.</p>
+        </div>
+      </div>
+
+      <!-- PowerPoint -->
+      <div class="task-card" style="--color:#ffb900; padding:30px; min-height:460px;">
+        <h3>Task 4: PowerPoint</h3>
+        <p><strong>Steps:</strong><br>
+        Create a short presentation with slide titles and pictures.</p>
+
+        <p><strong>Question:</strong><br>
+        Which feature makes text or pictures move onto the slide?</p>
+        <ul>
+          <li>A) Transition</li>
+          <li>B) Animation</li>
+          <li>C) Hyperlink</li>
+          <li>D) Theme</li>
+        </ul>
+
+        <div class="explanation" style="background:#fffaf0; padding:14px; border-radius:10px; margin-top:12px; border-left:6px solid var(--color);">
+          <h4>Answer & Explanation</h4>
+          <p><strong>Correct:</strong> B) Animation.</p>
+          <p>Explanation: Animations control how objects (text, images) appear or move, while transitions apply to the whole slide.</p>
+        </div>
+      </div>
+
+      <!-- Windows -->
+      <div class="task-card" style="--color:#605e5c; padding:30px; min-height:460px;">
+        <h3>Task 5: Windows</h3>
+        <p><strong>Steps:</strong><br>
+        Create a new folder and organize documents.</p>
+
+        <p><strong>Question:</strong><br>
+        Which shortcut quickly creates a new folder in Windows?</p>
+        <ul>
+          <li>A) Ctrl + N</li>
+          <li>B) Ctrl + Shift + N</li>
+          <li>C) Alt + Tab</li>
+          <li>D) Ctrl + C</li>
+        </ul>
+
+        <div class="explanation" style="background:#f6f6f8; padding:14px; border-radius:10px; margin-top:12px; border-left:6px solid var(--color);">
+          <h4>Answer & Explanation</h4>
+          <p><strong>Correct:</strong> B) Ctrl + Shift + N.</p>
+          <p>Explanation: This shortcut creates a new folder instantly without using the mouse.</p>
+        </div>
+      </div>
+
+      <!-- IT -->
+      <div class="task-card" style="--color:#107c10; padding:30px; min-height:460px;">
+        <h3>Task 6: IT & Internet</h3>
+        <p><strong>Steps:</strong><br>
+        Open a browser, search for information, and bookmark the page.</p>
+
+        <p><strong>Question:</strong><br>
+        What is the main purpose of bookmarking a page?</p>
+        <ul>
+          <li>A) To change the website design</li>
+          <li>B) To block ads</li>
+          <li>C) To save the page for quick access later</li>
+          <li>D) To download the website</li>
+        </ul>
+
+        <div class="explanation" style="background:#f0fff4; padding:14px; border-radius:10px; margin-top:12px; border-left:6px solid var(--color);">
+          <h4>Answer & Explanation</h4>
+          <p><strong>Correct:</strong> C) To save the page for quick access later.</p>
+          <p>Explanation: Bookmarking lets you store frequently used sites and open them easily without searching again.</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<style>
+.task-card {
+  background:#ffffff; 
+  border-left:8px solid var(--color); 
+  border-radius:16px; 
+  padding:22px; 
+  box-shadow:0 8px 26px rgba(0,0,0,0.07);
+  transition: transform 0.28s, box-shadow 0.28s;
+  position: relative;
+  overflow: visible;
+}
+.task-card h3 {
+  color: var(--color);
+  font-size:22px;
+  margin-bottom:12px;
+}
+.task-card:hover {
+  transform: translateY(-10px) scale(1.02);
+  box-shadow: 0 28px 60px rgba(0, 0, 0, 0.18);
+}
+ul {
+  list-style: none;
+  padding-left: 0;
+  margin:8px 0 12px 0;
+}
+ul li {
+  margin-bottom: 8px;
+  padding-left: 8px;
+}
+.explanation h4 { font-size:16px; color:#0b3b66; }
+table, th, td {
+  border:1px solid #d6e6ff;
+}
+th {
+  background:#f5fbff;
+}
+</style>`,
+  "q": "Which sequence of tasks is suitable for intermediate IT learners?",
+  "a": "b",
+  "options": [
+    "Do tasks randomly without order",
+    "Word (report) → Excel (grades) → Access (student database) → PowerPoint (presentation) → Windows (folders) → Internet (bookmarks)",
+    "Just open apps without practicing",
+    "Turn off the computer immediately"
+  ]
+},
+
+
+
+
+
+
+{
+  "passage": `<div style="margin-top: 40px; max-width: 1100px; margin-left:auto; margin-right:auto; position: relative;">
+
+  <!-- Emoji Sticky Animation -->
+  <div id="emoji-character" style="
+    position: sticky;
+    top: 20px;
+    float: right;
+    font-size: 64px;
+    margin-left: auto;
+    display: block;
+    z-index: 10;
+  ">🧑‍💻</div>
+
+  <!-- Main Container -->
+  <div style="font-family: 'Segoe UI', Arial, sans-serif; background: linear-gradient(135deg, #f7fbff, #ffffff); color: #222; padding: 34px; border: 1px solid #dfefff; border-radius: 22px; font-size: 18px; line-height:1.7; box-shadow: 0 10px 28px rgba(0,0,0,0.08); position: relative; z-index: 5;">
+    
+    <strong style="font-size: 28px; color: #003b70; display:block; margin-bottom:18px;">
+      ⚡ Professional Advanced Tasks: Integrated IT Skills
+    </strong>
+    
+    <p style="margin-bottom:20px; color:#214b77;">
+      <em><u style="color:#0056b3;">Advanced Challenge (Each card):</u></em><br>
+      Each card now includes: Steps, a multiple-choice question (A–D), the correct answer with a detailed explanation, a practical example, and a small training table. Cards are enlarged to fit the content.
+    </p>
+
+    <!-- Cards Grid (larger cards) -->
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 28px; align-items: start;">
+
+      <!-- Word -->
+      <div class="task-card" style="--color:#0078d7; padding:30px; min-height:520px;">
+        <h3>Task 1: Microsoft Word</h3>
+        <p><strong>Steps:</strong><br>
+        Create a thesis with sections, cross-references, footnotes, and bibliography.</p>
+
+        <p><strong>Question:</strong><br>
+        Which feature lets you add citations and automatically build a bibliography?</p>
+        <ul>
+          <li>A) Track Changes</li>
+          <li>B) Cross-reference</li>
+          <li>C) Footnotes</li>
+          <li>D) References → Manage Sources</li>
+        </ul>
+
+        <div class="explanation" style="background:#f0f6ff; padding:14px; border-radius:10px; margin-top:12px; border-left:6px solid var(--color);">
+          <h4 style="margin:0 0 8px 0;">Answer & Explanation</h4>
+          <p style="margin:0 0 8px 0;"><strong>Correct:</strong> D) References → Manage Sources.</p>
+          <p style="margin:0 0 8px 0;">
+            Explanation: Use the References tab → "Manage Sources" / "Insert Citation" to add structured bibliographic entries (Book, Article, etc.). Word stores the sources and can automatically generate a bibliography in styles like APA or MLA. Footnotes are for in-page notes, cross-references link to figures/sections, and Track Changes is for editing history.
+          </p>
+
+          <p style="margin:0 0 8px 0;"><strong>Practical example (step-by-step):</strong></p>
+          <ol style="margin:0 0 8px 18px;">
+            <li>Open References → Click "Insert Citation" → "Add New Source".</li>
+            <li>Choose Type: Book → fill Author, Title, Year → OK.</li>
+            <li>Place cursor where citation should appear → References → Insert Citation → select the source.</li>
+            <li>When ready, put cursor at end → References → Bibliography → choose APA style.</li>
+          </ol>
+
+          <p style="margin:0 0 8px 0;"><strong>Training table:</strong></p>
+          <table border="1" style="border-collapse:collapse; width:100%; text-align:left; font-size:14px;">
+            <tr style="background:#eaf4ff;"><th style="padding:6px;">Action</th><th style="padding:6px;">Location</th><th style="padding:6px;">Example</th></tr>
+            <tr><td style="padding:6px;">Add source</td><td style="padding:6px;">References → Add New Source</td><td style="padding:6px;">Book: "Web Dev Basics", 2020</td></tr>
+            <tr><td style="padding:6px;">Insert citation</td><td style="padding:6px;">References → Insert Citation</td><td style="padding:6px;">(Smith, 2020)</td></tr>
+            <tr><td style="padding:6px;">Generate bibliography</td><td style="padding:6px;">References → Bibliography</td><td style="padding:6px;">APA formatted list</td></tr>
+          </table>
+        </div>
+      </div>
+
+      <!-- Excel -->
+      <div class="task-card" style="--color:#00b294; padding:30px; min-height:520px;">
+        <h3>Task 2: Microsoft Excel</h3>
+        <p><strong>Steps:</strong><br>
+        Summarize sales data with PivotTables, slicers and dashboards.</p>
+
+        <p><strong>Question:</strong><br>
+        Which Excel feature is best to filter data interactively in a PivotTable?</p>
+        <ul>
+          <li>A) Data Validation</li>
+          <li>B) Slicer</li>
+          <li>C) Conditional Formatting</li>
+          <li>D) Find & Replace</li>
+        </ul>
+
+        <div class="explanation" style="background:#f0fff4; padding:14px; border-radius:10px; margin-top:12px; border-left:6px solid var(--color);">
+          <h4 style="margin:0 0 8px 0;">Answer & Explanation</h4>
+          <p style="margin:0 0 8px 0;"><strong>Correct:</strong> B) Slicer.</p>
+          <p style="margin:0 0 8px 0;">
+            Explanation: Slicers provide a visual, clickable way to filter PivotTable data by fields (e.g., Region, Product). They are more user-friendly than manual filters and work well in dashboards.
+          </p>
+
+          <p style="margin:0 0 8px 0;"><strong>Practical example (step-by-step):</strong></p>
+          <ol style="margin:0 0 8px 18px;">
+            <li>Select the data range → Insert → PivotTable → create PivotTable.</li>
+            <li>Add fields (Rows: Product, Values: Sum of Sales).</li>
+            <li>With PivotTable selected → Insert → Slicer → choose "Region".</li>
+            <li>Click the slicer buttons to filter the PivotTable and charts instantly.</li>
+          </ol>
+
+          <p style="margin:0 0 8px 0;"><strong>Sample data:</strong></p>
+          <pre style="background:#fff; padding:8px; border-radius:6px; overflow:auto; font-size:13px;">Date,Product,Region,Sales
+2025-09-01,Laptop,North,5000
+2025-09-01,Printer,South,2000
+2025-09-02,Scanner,East,1500</pre>
+
+          <p style="margin:0 0 8px 0;"><strong>Training table:</strong></p>
+          <table border="1" style="border-collapse:collapse; width:100%; text-align:left; font-size:14px;">
+            <tr style="background:#f0fff7;"><th style="padding:6px;">Action</th><th style="padding:6px;">Location</th><th style="padding:6px;">Result</th></tr>
+            <tr><td style="padding:6px;">Create PivotTable</td><td style="padding:6px;">Insert → PivotTable</td><td style="padding:6px;">Aggregated sales by product</td></tr>
+            <tr><td style="padding:6px;">Add Slicer</td><td style="padding:6px;">Insert → Slicer</td><td style="padding:6px;">Interactive Region filter</td></tr>
+            <tr><td style="padding:6px;">Insert Chart</td><td style="padding:6px;">PivotChart</td><td style="padding:6px;">Visual KPI for dashboard</td></tr>
+          </table>
+        </div>
+      </div>
+
+      <!-- Access -->
+      <div class="task-card" style="--color:#e81123; padding:30px; min-height:520px;">
+        <h3>Task 3: Microsoft Access</h3>
+        <p><strong>Steps:</strong><br>
+        Create tables, set relationships and generate reports for staff data.</p>
+
+        <p><strong>Question:</strong><br>
+        What is the main purpose of setting a primary key in a table?</p>
+        <ul>
+          <li>A) To sort records automatically</li>
+          <li>B) To uniquely identify each record</li>
+          <li>C) To speed up queries only</li>
+          <li>D) To create a form design</li>
+        </ul>
+
+        <div class="explanation" style="background:#fff5f5; padding:14px; border-radius:10px; margin-top:12px; border-left:6px solid var(--color);">
+          <h4 style="margin:0 0 8px 0;">Answer & Explanation</h4>
+          <p style="margin:0 0 8px 0;"><strong>Correct:</strong> B) To uniquely identify each record.</p>
+          <p style="margin:0 0 8px 0;">
+            Explanation: A primary key ensures each row is unique (no duplicates) and is used to create relationships between tables (one-to-many). It also helps indexing and data integrity.
+          </p>
+
+          <p style="margin:0 0 8px 0;"><strong>Practical example (step-by-step):</strong></p>
+          <ol style="margin:0 0 8px 18px;">
+            <li>Create table "Employees" with fields: EmployeeID (AutoNumber), Name (Text), DeptID (Number).</li>
+            <li>Set EmployeeID as Primary Key (right-click field → Primary Key).</li>
+            <li>Create table "Departments" with DeptID (Primary Key) and DeptName.</li>
+            <li>Design relationship: Employees.DeptID → Departments.DeptID.</li>
+          </ol>
+
+          <p style="margin:0 0 8px 0;"><strong>Training table:</strong></p>
+          <table border="1" style="border-collapse:collapse; width:100%; text-align:left; font-size:14px;">
+            <tr style="background:#ffecec;"><th style="padding:6px;">Field</th><th style="padding:6px;">Type</th><th style="padding:6px;">Example</th></tr>
+            <tr><td style="padding:6px;">EmployeeID</td><td style="padding:6px;">AutoNumber (PK)</td><td style="padding:6px;">1001</td></tr>
+            <tr><td style="padding:6px;">Name</td><td style="padding:6px;">Short Text</td><td style="padding:6px;">Ahmed Ali</td></tr>
+            <tr><td style="padding:6px;">DeptID</td><td style="padding:6px;">Number (FK)</td><td style="padding:6px;">10</td></tr>
+          </table>
+        </div>
+      </div>
+
+      <!-- PowerPoint -->
+      <div class="task-card" style="--color:#ffb900; padding:30px; min-height:520px;">
+        <h3>Task 4: PowerPoint</h3>
+        <p><strong>Steps:</strong><br>
+        Build an interactive pitch deck with transitions, hyperlinks and embedded media.</p>
+
+        <p><strong>Question:</strong><br>
+        Which action makes a slide element link to another slide?</p>
+        <ul>
+          <li>A) Animation</li>
+          <li>B) Transition</li>
+          <li>C) Hyperlink</li>
+          <li>D) Theme</li>
+        </ul>
+
+        <div class="explanation" style="background:#fffaf0; padding:14px; border-radius:10px; margin-top:12px; border-left:6px solid var(--color);">
+          <h4 style="margin:0 0 8px 0;">Answer & Explanation</h4>
+          <p style="margin:0 0 8px 0;"><strong>Correct:</strong> C) Hyperlink.</p>
+          <p style="margin:0 0 8px 0;">
+            Explanation: Use Insert → Link / Hyperlink (or right-click → Link) and choose "Place in This Document" to point to a specific slide. Animations and transitions are visual effects, while theme changes the design.
+          </p>
+
+          <p style="margin:0 0 8px 0;"><strong>Practical example (step-by-step):</strong></p>
+          <ol style="margin:0 0 8px 18px;">
+            <li>Create two slides: Slide 1 (Menu), Slide 5 (Details).</li>
+            <li>On Slide 1, add text "Go to Details" → select text → Insert → Link → Place in This Document → Slide 5 → OK.</li>
+            <li>In Slide Show mode, clicking the text navigates to Slide 5.</li>
+          </ol>
+
+          <p style="margin:0 0 8px 0;"><strong>Training table:</strong></p>
+          <table border="1" style="border-collapse:collapse; width:100%; text-align:left; font-size:14px;">
+            <tr style="background:#fff8e6;"><th style="padding:6px;">Element</th><th style="padding:6px;">Action</th><th style="padding:6px;">Result</th></tr>
+            <tr><td style="padding:6px;">Button/Text</td><td style="padding:6px;">Insert → Link → Place in This Document</td><td style="padding:6px;">Jump to specific slide</td></tr>
+            <tr><td style="padding:6px;">Video</td><td style="padding:6px;">Insert → Video → Embed</td><td style="padding:6px;">Play within slide</td></tr>
+            <tr><td style="padding:6px;">Transition</td><td style="padding:6px;">Animations/Transitions tab</td><td style="padding:6px;">Slide movement effects</td></tr>
+          </table>
+        </div>
+      </div>
+
+      <!-- Windows -->
+      <div class="task-card" style="--color:#605e5c; padding:30px; min-height:520px;">
+        <h3>Task 5: Windows</h3>
+        <p><strong>Steps:</strong><br>
+        Manage users, create backup folders and schedule automated backups.</p>
+
+        <p><strong>Question:</strong><br>
+        Which Windows tool is used to run a daily backup at 8 PM?</p>
+        <ul>
+          <li>A) Device Manager</li>
+          <li>B) Task Scheduler</li>
+          <li>C) Event Viewer</li>
+          <li>D) Control Panel → Power Options</li>
+        </ul>
+
+        <div class="explanation" style="background:#f6f6f8; padding:14px; border-radius:10px; margin-top:12px; border-left:6px solid var(--color);">
+          <h4 style="margin:0 0 8px 0;">Answer & Explanation</h4>
+          <p style="margin:0 0 8px 0;"><strong>Correct:</strong> B) Task Scheduler.</p>
+          <p style="margin:0 0 8px 0;">
+            Explanation: Task Scheduler allows creating tasks triggered at specific times (daily, weekly) to run programs or scripts (e.g., backup commands). Device Manager manages drivers, Event Viewer shows logs, and Power Options manages power settings.
+          </p>
+
+          <p style="margin:0 0 8px 0;"><strong>Practical example (step-by-step):</strong></p>
+          <ol style="margin:0 0 8px 18px;">
+            <li>Create backup folder: C:\Backup\Documents.</li>
+            <li>Create a small backup script using Robocopy (save as backup.bat):</li>
+            <pre style="background:#fff; padding:8px; border-radius:6px; overflow:auto; font-size:13px;">robocopy "C:\Users\Me\Documents" "C:\Backup\Documents" /MIR /XO</pre>
+            <li>Open Task Scheduler → Create Basic Task → Name: DailyBackup → Trigger: Daily 8:00 PM → Action: Start a program → program: backup.bat → Finish.</li>
+          </ol>
+
+          <p style="margin:0 0 8px 0;"><strong>Training table:</strong></p>
+          <table border="1" style="border-collapse:collapse; width:100%; text-align:left; font-size:14px;">
+            <tr style="background:#f0f0f2;"><th style="padding:6px;">Setting</th><th style="padding:6px;">Location</th><th style="padding:6px;">Example</th></tr>
+            <tr><td style="padding:6px;">Backup script</td><td style="padding:6px;">C:\Scripts\backup.bat</td><td style="padding:6px;">robocopy command</td></tr>
+            <tr><td style="padding:6px;">Scheduler trigger</td><td style="padding:6px;">Task Scheduler</td><td style="padding:6px;">Daily @ 20:00</td></tr>
+            <tr><td style="padding:6px;">Action</td><td style="padding:6px;">Start a program</td><td style="padding:6px;">backup.bat</td></tr>
+          </table>
+        </div>
+      </div>
+
+      <!-- IT -->
+      <div class="task-card" style="--color:#107c10; padding:30px; min-height:520px;">
+        <h3>Task 6: IT & Internet</h3>
+        <p><strong>Steps:</strong><br>
+        Configure VPN, browser security extensions and test secure connections.</p>
+
+        <p><strong>Question:</strong><br>
+        Why is a VPN important for remote employees?</p>
+        <ul>
+          <li>A) To increase internet speed</li>
+          <li>B) To block pop-ups</li>
+          <li>C) To encrypt traffic and secure data</li>
+          <li>D) To install software remotely</li>
+        </ul>
+
+        <div class="explanation" style="background:#f0fff4; padding:14px; border-radius:10px; margin-top:12px; border-left:6px solid var(--color);">
+          <h4 style="margin:0 0 8px 0;">Answer & Explanation</h4>
+          <p style="margin:0 0 8px 0;"><strong>Correct:</strong> C) To encrypt traffic and secure data.</p>
+          <p style="margin:0 0 8px 0;">
+            Explanation: A VPN creates an encrypted tunnel between the user's device and the company network, protecting data from eavesdropping especially on public networks. It does not inherently increase speed or block pop-ups.
+          </p>
+
+          <p style="margin:0 0 8px 0;"><strong>Practical example (step-by-step):</strong></p>
+          <ol style="margin:0 0 8px 18px;">
+            <li>Install the company VPN client (e.g., OpenVPN, Cisco AnyConnect).</li>
+            <li>Open client → Enter company VPN credentials → Connect.</li>
+            <li>Verify connection: visit <code>https://whatismyip.com</code> (shows company exit IP) and access internal site (e.g., intranet.company.local).</li>
+          </ol>
+
+          <p style="margin:0 0 8px 0;"><strong>Training table:</strong></p>
+          <table border="1" style="border-collapse:collapse; width:100%; text-align:left; font-size:14px;">
+            <tr style="background:#eaffef;"><th style="padding:6px;">Tool</th><th style="padding:6px;">Purpose</th><th style="padding:6px;">Example</th></tr>
+            <tr><td style="padding:6px;">VPN client</td><td style="padding:6px;">Encrypt & access internal network</td><td style="padding:6px;">Cisco AnyConnect</td></tr>
+            <tr><td style="padding:6px;">Browser extension</td><td style="padding:6px;">Block trackers/ads</td><td style="padding:6px;">uBlock Origin</td></tr>
+            <tr><td style="padding:6px;">HTTPS check</td><td style="padding:6px;">Ensure secure connection</td><td style="padding:6px;">Lock icon in address bar</td></tr>
+          </table>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<style>
+.task-card {
+  background:#ffffff; 
+  border-left:8px solid var(--color); 
+  border-radius:16px; 
+  padding:22px; 
+  box-shadow:0 8px 26px rgba(0,0,0,0.07);
+  transition: transform 0.28s, box-shadow 0.28s;
+  position: relative;
+  overflow: visible;
+}
+.task-card h3 {
+  color: var(--color);
+  font-size:22px;
+  margin-bottom:12px;
+}
+.task-card:hover {
+  transform: translateY(-10px) scale(1.02);
+  box-shadow: 0 28px 60px rgba(0, 0, 0, 0.18);
+}
+ul {
+  list-style: none;
+  padding-left: 0;
+  margin:8px 0 12px 0;
+}
+ul li {
+  margin-bottom: 8px;
+  padding-left: 8px;
+}
+.explanation h4 { font-size:16px; color:#0b3b66; }
+table, th, td {
+  border:1px solid #d6e6ff;
+}
+th {
+  background:#f5fbff;
+}
+</style>`,
+  "q": "Which advanced sequence of IT tasks demonstrates an integrated professional workflow?",
+  "a": "b",
+  "options": [
+    "Do random tasks in separate tools without relation",
+    "Word (report) → Excel (dashboard) → Access (database) → PowerPoint (presentation) → Windows (automation) → IT & Internet (security)",
+    "Only open apps without doing anything advanced",
+    "Shut down the computer without saving"
+  ]
+},
+
+
+
 
 
 
