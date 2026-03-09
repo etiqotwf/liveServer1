@@ -321,11 +321,11 @@ letter-spacing:2px;
 
 background: linear-gradient(
 120deg,
-#ff3c3c,
-#ffd700,
-#00e5ff,
-#9b5cff,
-#ff3c3c
+#7f1d1d,
+#991b1b,
+#1e3a8a,
+#312e81,
+#7f1d1d
 );
 
 -webkit-background-clip:text;
@@ -366,6 +366,113 @@ box-shadow:0 0 6px rgba(255,255,255,0.3);
 
 }
 
+
+
+.cert-table{
+
+width:100%;
+border-collapse:collapse;
+margin-top:20px;
+background:white;
+
+}
+
+.cert-table th{
+
+background:#111827;
+color:white;
+padding:10px;
+
+}
+
+.cert-table td{
+
+padding:10px;
+border-bottom:1px solid #ddd;
+text-align:center;
+
+}
+
+.cert-table tr:hover{
+
+background:#f1f5f9;
+
+}
+
+.cert-table button{
+
+padding:6px 10px;
+border:none;
+border-radius:6px;
+cursor:pointer;
+margin:2px;
+
+}
+
+.cert-table button:nth-child(1){
+
+background:#2563eb;
+color:white;
+
+}
+
+.cert-table button:nth-child(2){
+
+background:#16a34a;
+color:white;
+
+}
+
+.cert-table button:nth-child(3){
+
+background:#dc2626;
+color:white;
+
+}
+
+
+/* container للسكرول */
+
+.table-container{
+
+max-height:300px;   /* تقريبا 5 صفوف */
+
+overflow-y:auto;
+
+border-radius:8px;
+
+border:1px solid #e5e7eb;
+
+}
+
+/* شكل السكرول */
+
+.table-container::-webkit-scrollbar{
+
+width:8px;
+
+}
+
+.table-container::-webkit-scrollbar-track{
+
+background:#f1f5f9;
+
+}
+
+.table-container::-webkit-scrollbar-thumb{
+
+background:#64748b;
+
+border-radius:4px;
+
+}
+
+.table-container::-webkit-scrollbar-thumb:hover{
+
+background:#334155;
+
+}
+
 </style>
 </head>
 
@@ -397,10 +504,13 @@ box-shadow:0 0 6px rgba(255,255,255,0.3);
 <br><br>
 
 <h3>Search Certificate</h3>
-
+<div id="adminTable"></div>
 <input id="searchSerial" placeholder="Enter Serial Number">
 
 <button onclick="searchCertificate()">Search</button>
+
+<button onclick="showAdminTable()">Admin Dashboard</button>
+
 
 </div>
 
@@ -477,7 +587,6 @@ serial
 
 localStorage.setItem("certificates",JSON.stringify(certs))
 
-alert("Certificate Generated")
 
 }
 
@@ -558,6 +667,117 @@ document.getElementById("serial").innerText="Serial : "+student.serial
 }
 
 }
+
+}
+
+
+function showAdminTable(){
+
+let container = document.getElementById("adminTable");
+
+/* لو الجدول ظاهر اخفيه */
+
+if(container.innerHTML !== ""){
+container.innerHTML = "";
+return;
+}
+
+let certs = JSON.parse(localStorage.getItem("certificates") || "[]");
+
+if(certs.length === 0){
+container.innerHTML = "No Certificates Found";
+return;
+}
+
+let html = `
+<h2>Certificates Dashboard</h2>
+
+<div class="table-container">
+
+<table class="cert-table">
+
+<tr>
+<th>Serial</th>
+<th>Student Name</th>
+<th>Course</th>
+<th>Actions</th>
+</tr>
+`;
+
+certs.forEach((cert,index)=>{
+
+html += `
+<tr>
+
+<td>${cert.serial}</td>
+
+<td>${cert.name}</td>
+
+<td>${cert.course}</td>
+
+<td>
+
+<button onclick="viewCert('${cert.serial}')">View</button>
+
+<button onclick="download()">Download</button>
+
+<button onclick="deleteCert(${index})">Delete</button>
+
+</td>
+
+</tr>
+`;
+
+});
+
+html += `
+</table>
+</div>
+`;
+
+container.innerHTML = html;
+
+}
+function deleteCert(index){
+
+let certs = JSON.parse(localStorage.getItem("certificates") || "[]");
+
+certs.splice(index,1);
+
+localStorage.setItem("certificates",JSON.stringify(certs));
+
+showAdminTable();
+
+}
+
+function viewCert(serial){
+
+let certs = JSON.parse(localStorage.getItem("certificates") || "[]");
+
+let cert = certs.find(c => c.serial === serial);
+
+if(!cert){
+alert("Certificate not found");
+return;
+}
+
+// عرض الشهادة مباشرة
+
+document.getElementById("name").innerText = cert.name;
+document.getElementById("course").innerText = cert.course;
+document.getElementById("grade").innerText = cert.grade;
+document.getElementById("date").innerText = cert.date;
+document.getElementById("serial").innerText = "Serial : " + cert.serial;
+
+// إعادة إنشاء QR
+
+document.getElementById("qrcode").innerHTML = "";
+
+new QRCode(document.getElementById("qrcode"),{
+text: location.href + "?serial=" + cert.serial,
+width:90,
+height:90
+});
 
 }
 
