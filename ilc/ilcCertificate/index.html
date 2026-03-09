@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<meta charset="UTF-8">
+<title>Certificate Generator</title>
+
+<script src="https://cdn.jsdelivr.net/npm/qrcodejs/qrcode.min.js"></script>
+<script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+
+<style>
+
+*{
+box-sizing:border-box;
+}
+
+body{
+margin:0;
+padding:0;
+font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+background:linear-gradient(135deg,#0f172a,#1e293b);
+color:#333;
+min-height:100vh;
+}
+
+/* ===== ADMIN PANEL ===== */
+
+.admin{
+
+max-width:950px;
+margin:40px auto;
+
+background:white;
+padding:30px;
+
+border-radius:12px;
+
+box-shadow:0 15px 40px rgba(0,0,0,0.25);
+
+}
+
+.admin h2{
+margin-top:0;
+color:#0f172a;
+}
+
+.admin h3{
+color:#334155;
+margin-top:25px;
+}
+
+/* ===== INPUTS ===== */
+
+input{
+
+padding:12px 14px;
+margin:6px;
+
+width:200px;
+
+border:1px solid #cbd5e1;
+
+border-radius:6px;
+
+font-size:14px;
+
+transition:0.3s;
+
+}
+
+input:focus{
+
+outline:none;
+
+border-color:#3b82f6;
+
+box-shadow:0 0 0 3px rgba(59,130,246,0.15);
+
+}
+
+/* ===== BUTTONS ===== */
+
+button{
+
+padding:12px 20px;
+
+border:none;
+
+border-radius:6px;
+
+cursor:pointer;
+
+font-size:14px;
+
+font-weight:600;
+
+margin:5px;
+
+transition:0.3s;
+
+}
+
+/* generate */
+
+button:nth-of-type(1){
+
+background:#2563eb;
+color:white;
+
+}
+
+button:nth-of-type(1):hover{
+
+background:#1d4ed8;
+
+}
+
+/* download */
+
+#downloadBtn{
+
+background:#10b981;
+color:white;
+
+}
+
+#downloadBtn:hover{
+
+background:#059669;
+
+}
+
+/* search */
+
+button:last-of-type{
+
+background:#f59e0b;
+color:white;
+
+}
+
+button:last-of-type:hover{
+
+background:#d97706;
+
+}
+
+/* ===== CERTIFICATE AREA ===== */
+
+#certificate{
+
+position:relative;
+
+width:641px;
+height:907px;
+
+margin:40px auto;
+
+background:white;
+
+border-radius:8px;
+
+box-shadow:0 20px 60px rgba(0,0,0,0.4);
+
+overflow:hidden;
+
+}
+
+/* certificate bg */
+
+.bg{
+
+position:absolute;
+
+width:100%;
+height:100%;
+
+top:0;
+left:0;
+
+z-index:1;
+
+}
+
+/* text layers */
+
+#certificate div{
+
+z-index:2;
+
+}
+
+/* student name */
+
+.name{
+
+position:absolute;
+
+top:538px;
+
+left:0;
+right:0;
+
+text-align:center;
+
+font-size:25px;
+
+font-weight:bold;
+
+color:#111827;
+
+letter-spacing:1px;
+
+}
+
+/* course */
+
+.course{
+
+position:absolute;
+
+top:645px;
+
+left:0;
+right:0;
+
+text-align:center;
+
+font-size:26px;
+
+color:#1f2937;
+
+}
+
+/* date */
+
+.date{
+
+position:absolute;
+
+bottom:125px;
+
+left:205px;
+
+font-size:18px;
+
+color:#111827;
+
+}
+
+/* grade */
+
+.grade{
+
+position:absolute;
+
+bottom:100px;
+
+left:200px;
+
+font-size:18px;
+
+color:#111827;
+
+}
+
+/* serial */
+
+.serial{
+
+position:absolute;
+
+bottom:75px;
+
+right:190px;
+
+font-size:16px;
+
+color:#374151;
+
+}
+
+/* QR */
+
+.qr{
+
+position:absolute;
+
+bottom:180px;
+
+right:90px;
+
+}
+
+/* ===== Responsive ===== */
+
+@media(max-width:700px){
+
+#certificate{
+
+transform:scale(.7);
+transform-origin:top;
+
+}
+
+}
+
+.app-title{
+
+text-align:center;
+
+font-size:40px;
+
+font-weight:900;
+
+margin-top:30px;
+
+letter-spacing:2px;
+
+/* metallic gamer gradient */
+
+background: linear-gradient(
+120deg,
+#ff3c3c,
+#ffd700,
+#00e5ff,
+#9b5cff,
+#ff3c3c
+);
+
+-webkit-background-clip:text;
+-webkit-text-fill-color:transparent;
+
+/* shine */
+
+
+}
+
+
+/* الخط المعدني تحت العنوان */
+
+.app-title::after{
+
+content:"";
+
+display:block;
+
+width:320px;
+
+height:4px;
+
+margin:12px auto;
+
+background: linear-gradient(
+90deg,
+#ff00cc,
+#00ffff,
+#00ff9d,
+#ffe600,
+#ff00cc
+);
+
+border-radius:6px;
+
+box-shadow:0 0 6px rgba(255,255,255,0.3);
+
+}
+
+</style>
+</head>
+
+<body>
+
+
+<div class="admin">
+
+<h1 class="app-title">
+ IBI Certificate Management System 
+</h1>
+<h2>Admin Panel</h2>
+
+
+<input id="nameInput" placeholder="Student Name">
+
+<input id="courseInput" placeholder="Course Name">
+
+<input id="gradeInput" placeholder="Grade">
+
+<input type="date" id="dateInput">
+
+<br><br>
+
+<button onclick="generate()">Generate Certificate</button>
+
+<button id="downloadBtn">Download Image</button>
+
+<br><br>
+
+<h3>Search Certificate</h3>
+
+<input id="searchSerial" placeholder="Enter Serial Number">
+
+<button onclick="searchCertificate()">Search</button>
+
+</div>
+
+
+<div id="certificate">
+
+<img src="certificate.jpeg" class="bg">
+
+<div class="serial" id="serial"></div>
+<div class="name" id="name"></div>
+<div class="course" id="course"></div>
+<div class="date" id="date"></div>
+<div class="grade" id="grade"></div>
+<div class="qr" id="qrcode"></div>
+
+</div>
+
+<script>
+
+
+    // عند الضغط على أي مكان في الصفحة، أدخل وضع ملء الشاشة
+    document.addEventListener("click", () => {
+      const elem = document.documentElement; // أو document.getElementById("myForm")
+      if (document.fullscreenElement) return; // لا تفعل شيء إذا كنا بالفعل في ملء الشاشة
+
+      if (elem.requestFullscreen) {
+        elem.requestFullscreen();
+      } else if (elem.webkitRequestFullscreen) { /* Safari */
+        elem.webkitRequestFullscreen();
+      } else if (elem.msRequestFullscreen) { /* IE11 */
+        elem.msRequestFullscreen();
+      }
+    });
+
+
+function generateSerial(){
+return "IBI-"+Math.floor(Math.random()*100000000)
+}
+
+function generate(){
+
+let name=document.getElementById("nameInput").value
+let course=document.getElementById("courseInput").value
+let grade=document.getElementById("gradeInput").value
+let date=document.getElementById("dateInput").value
+
+let serial=generateSerial()
+
+document.getElementById("name").innerText=name
+document.getElementById("course").innerText=course
+document.getElementById("grade").innerText=grade
+document.getElementById("date").innerText=date
+document.getElementById("serial").innerText="Serial : "+serial
+
+let verifyLink=location.origin+location.pathname+"?serial="+serial
+
+document.getElementById("qrcode").innerHTML=""
+
+new QRCode(document.getElementById("qrcode"),{
+text:verifyLink,
+width:90,
+height:90
+})
+
+let certs=JSON.parse(localStorage.getItem("certificates")||"[]")
+
+certs.push({
+name,
+course,
+grade,
+date,
+serial
+})
+
+localStorage.setItem("certificates",JSON.stringify(certs))
+
+alert("Certificate Generated")
+
+}
+
+
+function download(){
+
+const cert = document.getElementById("certificate");
+
+html2canvas(cert,{
+scale:3
+}).then(canvas => {
+
+const link = document.createElement("a");
+link.download = "certificate.png";
+link.href = canvas.toDataURL();
+link.click();
+
+});
+
+}
+
+document.getElementById("downloadBtn").addEventListener("click", download);
+
+
+function searchCertificate(){
+
+let serial=document.getElementById("searchSerial").value
+
+let certs=JSON.parse(localStorage.getItem("certificates")||"[]")
+
+let student=certs.find(c=>c.serial===serial)
+
+if(student){
+
+document.getElementById("name").innerText=student.name
+document.getElementById("course").innerText=student.course
+document.getElementById("grade").innerText=student.grade
+document.getElementById("date").innerText=student.date
+document.getElementById("serial").innerText="Serial : "+student.serial
+
+document.getElementById("qrcode").innerHTML=""
+
+new QRCode(document.getElementById("qrcode"),{
+text:location.href,
+width:90,
+height:90
+})
+
+}else{
+
+alert("Certificate Not Found")
+
+}
+
+}
+
+
+window.onload=function(){
+
+let params=new URLSearchParams(window.location.search)
+
+let serial=params.get("serial")
+
+if(serial){
+
+let certs=JSON.parse(localStorage.getItem("certificates")||"[]")
+
+let student=certs.find(c=>c.serial===serial)
+
+if(student){
+
+document.getElementById("name").innerText=student.name
+document.getElementById("course").innerText=student.course
+document.getElementById("grade").innerText=student.grade
+document.getElementById("date").innerText=student.date
+document.getElementById("serial").innerText="Serial : "+student.serial
+
+}
+
+}
+
+}
+
+</script>
+
+</body>
+</html>
