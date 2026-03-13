@@ -827,7 +827,6 @@ alert("Error deleting certificate");
 }
 
 
-
 function viewCert(serial){
 
 fetch("https://script.google.com/macros/s/AKfycbyqvacwgvC6UionZ7SmsI9HJUTOB_9isWkHWckaaf5UNGJnlqWaCnmabVAKtDv5ZDN6hg/exec?action=get&serial=" + serial)
@@ -841,11 +840,15 @@ alert("Certificate not found");
 return;
 }
 
+/* اصلاح التاريخ */
+
+let formattedDate = cert.date.split("T")[0];
+
 document.getElementById("name").innerText = cert.name;
 document.getElementById("course").innerText = cert.course;
 document.getElementById("grade").innerText = cert.grade;
-document.getElementById("date").innerText = cert.date;
-document.getElementById("serial").innerText = "Serial : " + cert.serial;
+document.getElementById("date").innerText = formattedDate;
+document.getElementById("serial").innerText = cert.serial;
 
 // إنشاء QR
 
@@ -869,7 +872,6 @@ alert("Error loading certificate");
 });
 
 }
-
 
 function updateCertificate(){
 
