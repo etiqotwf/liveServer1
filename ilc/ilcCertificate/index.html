@@ -473,6 +473,120 @@ background:#334155;
 
 }
 
+
+/* student verification page */
+
+.verify-page{
+
+max-width:420px;
+margin:40px auto;
+padding:25px;
+
+background:white;
+
+border-radius:14px;
+
+box-shadow:0 20px 60px rgba(0,0,0,.25);
+
+text-align:center;
+
+}
+
+.verify-header{
+
+font-size:24px;
+font-weight:700;
+
+color:#0f172a;
+
+margin-bottom:10px;
+
+}
+
+.verify-status{
+
+background:#dcfce7;
+color:#166534;
+
+padding:10px;
+
+border-radius:6px;
+
+font-weight:600;
+
+margin-bottom:20px;
+
+}
+
+.student-card{
+
+background:#f8fafc;
+
+padding:20px;
+
+border-radius:10px;
+
+text-align:left;
+
+}
+
+.student-row{
+
+margin:10px 0;
+
+font-size:15px;
+
+}
+
+.student-row span{
+
+font-weight:700;
+color:#111827;
+
+}
+
+.serial-box{
+
+margin-top:20px;
+
+padding:10px;
+
+background:#e2e8f0;
+
+border-radius:6px;
+
+font-size:14px;
+
+text-align:center;
+
+}
+
+.verify-logo{
+
+font-size:40px;
+
+margin-bottom:10px;
+
+}
+
+.mobile-hide{
+
+display:block;
+
+}
+
+@media(max-width:600px){
+
+.admin{
+display:none;
+}
+
+.mobile-hide{
+display:none;
+}
+
+}
+
 </style>
 </head>
 
@@ -511,6 +625,54 @@ background:#334155;
 
 <button onclick="showAdminTable()">Admin Dashboard</button>
 
+
+</div>
+
+
+
+<div id="verifyPage" style="display:none">
+
+<div class="verify-page">
+
+<div class="verify-logo">🎓</div>
+
+<div class="verify-header">
+IBI Certificate Verification
+</div>
+
+<div class="verify-status">
+✅ Certificate Verified
+</div>
+
+<div class="student-card">
+
+<div class="student-row">
+<span>Student Name:</span>
+<div id="v_name"></div>
+</div>
+
+<div class="student-row">
+<span>Course:</span>
+<div id="v_course"></div>
+</div>
+
+<div class="student-row">
+<span>Grade:</span>
+<div id="v_grade"></div>
+</div>
+
+<div class="student-row">
+<span>Date:</span>
+<div id="v_date"></div>
+</div>
+
+</div>
+
+<div class="serial-box">
+Certificate ID : <span id="v_serial"></span>
+</div>
+
+</div>
 
 </div>
 
@@ -658,11 +820,16 @@ let student=certs.find(c=>c.serial===serial)
 
 if(student){
 
-document.getElementById("name").innerText=student.name
-document.getElementById("course").innerText=student.course
-document.getElementById("grade").innerText=student.grade
-document.getElementById("date").innerText=student.date
-document.getElementById("serial").innerText="Serial : "+student.serial
+document.querySelector(".admin").style.display="none"
+document.getElementById("certificate").style.display="none"
+
+document.getElementById("verifyPage").style.display="block"
+
+document.getElementById("v_name").innerText=student.name
+document.getElementById("v_course").innerText=student.course
+document.getElementById("v_grade").innerText=student.grade
+document.getElementById("v_date").innerText=student.date
+document.getElementById("v_serial").innerText=student.serial
 
 }
 
