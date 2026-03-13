@@ -920,7 +920,6 @@ showAdminTable();
 });
 
 }
-
 function editCert(serial){
 
 fetch("https://script.google.com/macros/s/AKfycbyqvacwgvC6UionZ7SmsI9HJUTOB_9isWkHWckaaf5UNGJnlqWaCnmabVAKtDv5ZDN6hg/exec?action=get&serial=" + serial)
@@ -929,6 +928,13 @@ fetch("https://script.google.com/macros/s/AKfycbyqvacwgvC6UionZ7SmsI9HJUTOB_9isW
 
 .then(cert => {
 
+if(!cert){
+alert("Certificate not found");
+return;
+}
+
+/* ملء الفورم */
+
 document.getElementById("nameInput").value = cert.name;
 document.getElementById("courseInput").value = cert.course;
 document.getElementById("gradeInput").value = cert.grade;
@@ -936,6 +942,31 @@ document.getElementById("dateInput").value = cert.date;
 
 editingSerial = cert.serial;
 
+/* عرض الشهادة */
+
+document.getElementById("name").innerText = cert.name;
+document.getElementById("course").innerText = cert.course;
+document.getElementById("grade").innerText = cert.grade;
+document.getElementById("date").innerText = cert.date;
+document.getElementById("serial").innerText = "Serial : " + cert.serial;
+
+/* إنشاء QR */
+
+document.getElementById("qrcode").innerHTML="";
+
+let verifyLink="https://etiqotwf.github.io/liveServer1/ilc/ilcCertificate/verify.html?serial="+cert.serial;
+
+new QRCode(document.getElementById("qrcode"),{
+text:verifyLink,
+width:90,
+height:90
+});
+
+})
+
+.catch(err=>{
+console.error(err);
+alert("Error loading certificate");
 });
 
 }
