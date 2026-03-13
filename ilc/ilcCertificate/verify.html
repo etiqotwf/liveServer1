@@ -13,8 +13,8 @@
 body{
 
 margin:0;
-font-family:Segoe UI;
-background:linear-gradient(135deg,#0f172a,#1e293b);
+font-family:'Segoe UI',Tahoma;
+background:linear-gradient(135deg,#0f172a,#1e3a8a,#0f172a);
 display:flex;
 align-items:center;
 justify-content:center;
@@ -26,30 +26,47 @@ min-height:100vh;
 
 .verify-card{
 
-background:white;
+background:rgba(255,255,255,0.95);
 width:90%;
 max-width:420px;
-border-radius:14px;
-padding:25px;
-box-shadow:0 20px 60px rgba(0,0,0,.3);
+border-radius:18px;
+padding:30px;
+box-shadow:0 30px 80px rgba(0,0,0,.45);
 text-align:center;
+backdrop-filter:blur(10px);
+
+transition:.3s;
 
 }
 
-/* institute name */
+.verify-card:hover{
+
+transform:translateY(-5px);
+box-shadow:0 40px 90px rgba(0,0,0,.5);
+
+}
+
+/* institute */
 
 .institute{
 
-font-size:26px;
-font-weight:800;
-color:#0f172a;
+font-size:28px;
+font-weight:900;
+letter-spacing:1px;
+
+background:linear-gradient(90deg,#2563eb,#06b6d4,#2563eb);
+-webkit-background-clip:text;
+-webkit-text-fill-color:transparent;
+
+margin-bottom:5px;
 
 }
 
 .subtitle{
 
 color:#64748b;
-margin-bottom:15px;
+font-size:14px;
+margin-bottom:20px;
 
 }
 
@@ -57,12 +74,15 @@ margin-bottom:15px;
 
 .status{
 
-background:#dcfce7;
-color:#166534;
-padding:10px;
-border-radius:6px;
-font-weight:600;
+background:linear-gradient(90deg,#22c55e,#16a34a);
+color:white;
+padding:12px;
+border-radius:8px;
+font-weight:700;
 margin-bottom:20px;
+font-size:15px;
+
+box-shadow:0 6px 15px rgba(34,197,94,.4);
 
 }
 
@@ -70,22 +90,39 @@ margin-bottom:20px;
 
 .info{
 
-background:#f8fafc;
+background:#f1f5f9;
 padding:20px;
-border-radius:10px;
+border-radius:12px;
 text-align:left;
+
+box-shadow:inset 0 2px 10px rgba(0,0,0,.05);
 
 }
 
+/* row */
+
 .row{
 
-margin:10px 0;
+margin:14px 0;
+font-size:15px;
+
+display:flex;
+justify-content:space-between;
+align-items:center;
 
 }
 
 .row span{
 
-font-weight:bold;
+font-weight:800;
+color:#1e293b;
+
+}
+
+.row div{
+
+font-weight:700;
+color:#0f172a;
 
 }
 
@@ -93,112 +130,43 @@ font-weight:bold;
 
 .serial{
 
-margin-top:15px;
+margin-top:18px;
 font-size:14px;
-color:#475569;
+color:#334155;
+font-weight:700;
 
 }
 
-/* view button */
+/* button */
 
 .viewBtn{
 
-margin-top:20px;
-padding:12px 20px;
-background:#2563eb;
+margin-top:25px;
+padding:14px 25px;
+
+background:linear-gradient(90deg,#2563eb,#06b6d4);
+
 color:white;
 border:none;
-border-radius:6px;
+
+border-radius:8px;
 cursor:pointer;
-font-weight:600;
+
+font-weight:800;
+font-size:15px;
+
+transition:.3s;
+
+box-shadow:0 8px 20px rgba(37,99,235,.5);
 
 }
 
 .viewBtn:hover{
 
-background:#1d4ed8;
+transform:scale(1.05);
+box-shadow:0 12px 30px rgba(37,99,235,.7);
 
 }
-
-/* certificate popup */
-
-#certificate{
-
-display:none;
-
-position:fixed;
-
-top:50%;
-left:50%;
-
-transform:translate(-50%,-50%);
-
-width:640px;
-height:900px;
-
-background:white;
-
-box-shadow:0 30px 80px rgba(0,0,0,.6);
-
-z-index:1000;
-
-}
-
-.bg{
-
-position:absolute;
-width:100%;
-height:100%;
-
-}
-
-.name{
-
-position:absolute;
-top:538px;
-left:0;
-right:0;
-text-align:center;
-font-size:25px;
-font-weight:bold;
-
-}
-
-.course{
-
-position:absolute;
-top:645px;
-left:0;
-right:0;
-text-align:center;
-font-size:26px;
-
-}
-
-.date{
-
-position:absolute;
-bottom:125px;
-left:205px;
-
-}
-
-.grade{
-
-position:absolute;
-bottom:100px;
-left:200px;
-
-}
-
-.serialCert{
-
-position:absolute;
-bottom:75px;
-right:190px;
-
-}
-
 </style>
 
 </head>
@@ -220,25 +188,25 @@ Certificate Verification System
 </div>
 
 <div class="info">
-
+    
 <div class="row">
 <span>Student Name :</span>
-<div id="name"></div>
+<span id="name"></span>
 </div>
 
 <div class="row">
 <span>Course :</span>
-<div id="course"></div>
+<span id="course"></span>
 </div>
 
 <div class="row">
 <span>Grade :</span>
-<div id="grade"></div>
+<span id="grade"></span>
 </div>
 
 <div class="row">
 <span>Date :</span>
-<div id="date"></div>
+<span id="date"></span>
 </div>
 
 </div>

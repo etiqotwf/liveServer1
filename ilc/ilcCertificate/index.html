@@ -196,14 +196,14 @@ z-index:2;
 
 position:absolute;
 
-top:538px;
+top:525px;
 
 left:0;
 right:0;
 
 text-align:center;
 
-font-size:25px;
+font-size:28px;
 
 font-weight:bold;
 
@@ -219,7 +219,7 @@ letter-spacing:1px;
 
 position:absolute;
 
-top:645px;
+top:630px;
 
 left:0;
 right:0;
@@ -227,6 +227,7 @@ right:0;
 text-align:center;
 
 font-size:26px;
+font-weight:bold;
 
 color:#1f2937;
 
@@ -243,6 +244,7 @@ bottom:125px;
 left:205px;
 
 font-size:18px;
+font-weight:bold;
 
 color:#111827;
 
@@ -259,6 +261,7 @@ bottom:100px;
 left:200px;
 
 font-size:18px;
+font-weight:bold;
 
 color:#111827;
 
@@ -270,11 +273,12 @@ color:#111827;
 
 position:absolute;
 
-bottom:75px;
+bottom:715px;
 
-right:190px;
+right:80px;
 
 font-size:16px;
+font-weight:bold;
 
 color:#374151;
 
@@ -286,9 +290,9 @@ color:#374151;
 
 position:absolute;
 
-bottom:180px;
+bottom:150px;
 
-right:90px;
+right:80px;
 
 }
 
@@ -551,7 +555,7 @@ background:#334155;
 
 
 function generateSerial(){
-return "IBI-"+Math.floor(Math.random()*100000000)
+return Math.floor(10000000 + Math.random()*90000000).toString()
 }
 
 function generate(){
@@ -933,12 +937,16 @@ alert("Certificate not found");
 return;
 }
 
+/* تجهيز التاريخ */
+
+let formattedDate = cert.date.split("T")[0];
+
 /* ملء الفورم */
 
 document.getElementById("nameInput").value = cert.name;
 document.getElementById("courseInput").value = cert.course;
 document.getElementById("gradeInput").value = cert.grade;
-document.getElementById("dateInput").value = cert.date;
+document.getElementById("dateInput").value = formattedDate;
 
 editingSerial = cert.serial;
 
@@ -947,8 +955,8 @@ editingSerial = cert.serial;
 document.getElementById("name").innerText = cert.name;
 document.getElementById("course").innerText = cert.course;
 document.getElementById("grade").innerText = cert.grade;
-document.getElementById("date").innerText = cert.date;
-document.getElementById("serial").innerText = "Serial : " + cert.serial;
+document.getElementById("date").innerText = formattedDate;
+document.getElementById("serial").innerText = cert.serial;
 
 /* إنشاء QR */
 
@@ -970,7 +978,6 @@ alert("Error loading certificate");
 });
 
 }
-
 </script>
 
 </body>
