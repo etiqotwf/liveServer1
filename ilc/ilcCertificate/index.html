@@ -565,7 +565,7 @@ document.getElementById("grade").innerText=grade
 document.getElementById("date").innerText=date
 document.getElementById("serial").innerText="Serial : "+serial
 
-let verifyLink = location.origin+"/verify.html?serial="+serial
+let verifyLink = "https://etiqotwf.github.io/liveServer1/ilc/ilcCertificate/verify.html?serial=" + serial;
 document.getElementById("qrcode").innerHTML=""
 
 new QRCode(document.getElementById("qrcode"),{
