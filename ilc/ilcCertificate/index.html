@@ -499,6 +499,8 @@ background:#334155;
 
 <button onclick="generate()">Generate Certificate</button>
 
+<button onclick="updateCertificate()">Update Certificate</button>
+
 <button id="downloadBtn">Download Image</button>
 
 <br><br>
@@ -530,6 +532,8 @@ background:#334155;
 
 <script>
 
+  let editingSerial = null;
+
 
     // عند الضغط على أي مكان في الصفحة، أدخل وضع ملء الشاشة
     document.addEventListener("click", () => {
@@ -552,20 +556,23 @@ return "IBI-"+Math.floor(Math.random()*100000000)
 
 function generate(){
 
-let name=document.getElementById("nameInput").value
-let course=document.getElementById("courseInput").value
-let grade=document.getElementById("gradeInput").value
-let date=document.getElementById("dateInput").value
+let name = document.getElementById("nameInput").value
+let course = document.getElementById("courseInput").value
+let grade = document.getElementById("gradeInput").value
+let date = document.getElementById("dateInput").value
 
-let serial=generateSerial()
+let serial = editingSerial ? editingSerial : generateSerial()
 
-document.getElementById("name").innerText=name
-document.getElementById("course").innerText=course
-document.getElementById("grade").innerText=grade
-document.getElementById("date").innerText=date
-document.getElementById("serial").innerText="Serial : "+serial
+document.getElementById("name").innerText = name
+document.getElementById("course").innerText = course
+document.getElementById("grade").innerText = grade
+document.getElementById("date").innerText = date
+document.getElementById("serial").innerText = "Serial : " + serial
+
+/* رابط التحقق */
 
 let verifyLink = "https://etiqotwf.github.io/liveServer1/ilc/ilcCertificate/verify.html?serial=" + serial;
+
 document.getElementById("qrcode").innerHTML=""
 
 new QRCode(document.getElementById("qrcode"),{
@@ -574,7 +581,9 @@ width:90,
 height:90
 })
 
-let certs=JSON.parse(localStorage.getItem("certificates")||"[]")
+/* حفظ محلي */
+
+let certs = JSON.parse(localStorage.getItem("certificates") || "[]")
 
 certs.push({
 name,
@@ -584,11 +593,42 @@ date,
 serial
 })
 
-localStorage.setItem("certificates",JSON.stringify(certs))
+localStorage.setItem("certificates", JSON.stringify(certs))
 
+/* إرسال البيانات إلى Google Sheet */
+
+const formData = new URLSearchParams();
+
+formData.append("action","add");
+formData.append("name",name);
+formData.append("course",course);
+formData.append("grade",grade);
+formData.append("date",date);
+formData.append("serial",serial);
+
+fetch("https://script.google.com/macros/s/AKfycbyqvacwgvC6UionZ7SmsI9HJUTOB_9isWkHWckaaf5UNGJnlqWaCnmabVAKtDv5ZDN6hg/exec",{
+
+method:"POST",
+headers:{"Content-Type":"application/x-www-form-urlencoded"},
+body:formData.toString()
+
+
+})
+.then(response => response.text())
+.then(res => {
+
+console.log("✅ Certificate saved to Google Sheet:", res);
+
+})
+.catch(error => {
+
+console.error("❌ Error sending to Google Sheet:", error);
+
+});
+
+alert("Certificate Generated Successfully")
 
 }
-
 
 function download(){
 
@@ -628,8 +668,10 @@ document.getElementById("serial").innerText="Serial : "+student.serial
 
 document.getElementById("qrcode").innerHTML=""
 
+let verifyLink="https://etiqotwf.github.io/liveServer1/ilc/ilcCertificate/verify.html?serial="+student.serial;
+
 new QRCode(document.getElementById("qrcode"),{
-text:location.href,
+text:verifyLink,
 width:90,
 height:90
 })
@@ -674,19 +716,16 @@ function showAdminTable(){
 
 let container = document.getElementById("adminTable");
 
-/* لو الجدول ظاهر اخفيه */
-
 if(container.innerHTML !== ""){
-container.innerHTML = "";
+container.innerHTML="";
 return;
 }
 
-let certs = JSON.parse(localStorage.getItem("certificates") || "[]");
+fetch("https://script.google.com/macros/s/AKfycbyqvacwgvC6UionZ7SmsI9HJUTOB_9isWkHWckaaf5UNGJnlqWaCnmabVAKtDv5ZDN6hg/exec?action=list")
 
-if(certs.length === 0){
-container.innerHTML = "No Certificates Found";
-return;
-}
+.then(res=>res.json())
+
+.then(certs=>{
 
 let html = `
 <h2>Certificates Dashboard</h2>
@@ -697,15 +736,16 @@ let html = `
 
 <tr>
 <th>Serial</th>
-<th>Student Name</th>
+<th>Student</th>
 <th>Course</th>
 <th>Actions</th>
 </tr>
 `;
 
-certs.forEach((cert,index)=>{
+certs.forEach(cert=>{
 
 html += `
+
 <tr>
 
 <td>${cert.serial}</td>
@@ -718,49 +758,86 @@ html += `
 
 <button onclick="viewCert('${cert.serial}')">View</button>
 
-<button onclick="download()">Download</button>
+<button onclick="editCert('${cert.serial}')">Edit</button>
 
-<button onclick="deleteCert(${index})">Delete</button>
+<button onclick="deleteCert('${cert.serial}')">Delete</button>
 
 </td>
 
+
 </tr>
+
 `;
 
 });
 
-html += `
-</table>
-</div>
-`;
+html += `</table></div>`;
 
 container.innerHTML = html;
 
+});
+
 }
-function deleteCert(index){
 
-let certs = JSON.parse(localStorage.getItem("certificates") || "[]");
 
-certs.splice(index,1);
 
-localStorage.setItem("certificates",JSON.stringify(certs));
+function deleteCert(serial){
+
+if(!confirm("Are you sure you want to delete this certificate?")){
+return;
+}
+
+const formData = new URLSearchParams();
+
+formData.append("action","delete");
+formData.append("serial",serial);
+
+fetch("https://script.google.com/macros/s/AKfycbyqvacwgvC6UionZ7SmsI9HJUTOB_9isWkHWckaaf5UNGJnlqWaCnmabVAKtDv5ZDN6hg/exec",{
+
+method:"POST",
+
+headers:{
+"Content-Type":"application/x-www-form-urlencoded"
+},
+
+body:formData.toString()
+
+})
+
+.then(response => response.text())
+
+.then(res => {
+
+alert("Certificate Deleted Successfully");
 
 showAdminTable();
 
+})
+
+.catch(error => {
+
+console.error(error);
+
+alert("Error deleting certificate");
+
+});
+
 }
+
+
 
 function viewCert(serial){
 
-let certs = JSON.parse(localStorage.getItem("certificates") || "[]");
+fetch("https://script.google.com/macros/s/AKfycbyqvacwgvC6UionZ7SmsI9HJUTOB_9isWkHWckaaf5UNGJnlqWaCnmabVAKtDv5ZDN6hg/exec?action=get&serial=" + serial)
 
-let cert = certs.find(c => c.serial === serial);
+.then(response => response.json())
+
+.then(cert => {
 
 if(!cert){
 alert("Certificate not found");
 return;
 }
-
-// عرض الشهادة مباشرة
 
 document.getElementById("name").innerText = cert.name;
 document.getElementById("course").innerText = cert.course;
@@ -768,14 +845,100 @@ document.getElementById("grade").innerText = cert.grade;
 document.getElementById("date").innerText = cert.date;
 document.getElementById("serial").innerText = "Serial : " + cert.serial;
 
-// إعادة إنشاء QR
+// إنشاء QR
 
-document.getElementById("qrcode").innerHTML = "";
+document.getElementById("qrcode").innerHTML="";
+
+let verifyLink="https://etiqotwf.github.io/liveServer1/ilc/ilcCertificate/verify.html?serial="+cert.serial;
 
 new QRCode(document.getElementById("qrcode"),{
-text: location.href + "?serial=" + cert.serial,
+text:verifyLink,
 width:90,
 height:90
+});
+
+})
+
+.catch(err => {
+
+console.error(err);
+alert("Error loading certificate");
+
+});
+
+}
+
+
+function updateCertificate(){
+
+if(!editingSerial){
+
+alert("No certificate selected for editing");
+
+return;
+
+}
+
+let name = document.getElementById("nameInput").value
+let course = document.getElementById("courseInput").value
+let grade = document.getElementById("gradeInput").value
+let date = document.getElementById("dateInput").value
+
+const formData = new URLSearchParams();
+
+formData.append("action","update");
+formData.append("name",name);
+formData.append("course",course);
+formData.append("grade",grade);
+formData.append("date",date);
+formData.append("serial",editingSerial);
+
+fetch("https://script.google.com/macros/s/AKfycbyqvacwgvC6UionZ7SmsI9HJUTOB_9isWkHWckaaf5UNGJnlqWaCnmabVAKtDv5ZDN6hg/exec",{
+method:"POST",
+
+headers:{
+"Content-Type":"application/x-www-form-urlencoded"
+},
+
+body:formData.toString()
+
+})
+
+.then(res => res.text())
+
+.then(data => {
+
+alert("Certificate Updated Successfully");
+
+
+editingSerial = null;
+
+document.getElementById("nameInput").value="";
+document.getElementById("courseInput").value="";
+document.getElementById("gradeInput").value="";
+document.getElementById("dateInput").value="";
+
+showAdminTable();
+
+});
+
+}
+
+function editCert(serial){
+
+fetch("https://script.google.com/macros/s/AKfycbyqvacwgvC6UionZ7SmsI9HJUTOB_9isWkHWckaaf5UNGJnlqWaCnmabVAKtDv5ZDN6hg/exec?action=get&serial=" + serial)
+
+.then(res => res.json())
+
+.then(cert => {
+
+document.getElementById("nameInput").value = cert.name;
+document.getElementById("courseInput").value = cert.course;
+document.getElementById("gradeInput").value = cert.grade;
+document.getElementById("dateInput").value = cert.date;
+
+editingSerial = cert.serial;
+
 });
 
 }

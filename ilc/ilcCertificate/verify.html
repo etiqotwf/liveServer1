@@ -269,14 +269,15 @@ View Certificate
 </div>
 
 <script>
-
 function loadCert(serial){
 
-let certs = JSON.parse(localStorage.getItem("certificates") || "[]");
+fetch("https://script.google.com/macros/s/AKfycbyB6JrOtIoQxPcKPTiyto59ogKqsq1fBPt8X62c2i7Dw_Si9TmaTC84rdmWRCsBh_bHBQ/exec?serial=" + serial)
 
-let cert = certs.find(c => c.serial === serial);
+.then(response => response.json())
 
-if(!cert){
+.then(cert => {
+
+if(cert.error){
 
 alert("Certificate not found");
 return;
@@ -289,13 +290,21 @@ document.getElementById("grade").innerText = cert.grade;
 document.getElementById("date").innerText = cert.date;
 document.getElementById("serial").innerText = cert.serial;
 
-/* certificate */
+/* certificate view */
 
 document.getElementById("certName").innerText = cert.name;
 document.getElementById("certCourse").innerText = cert.course;
 document.getElementById("certGrade").innerText = cert.grade;
 document.getElementById("certDate").innerText = cert.date;
 document.getElementById("certSerial").innerText = cert.serial;
+
+})
+
+.catch(error => {
+
+console.error("Error loading certificate:", error);
+
+});
 
 }
 
