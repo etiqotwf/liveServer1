@@ -207,6 +207,17 @@ font-weight:bold;
 
 }
 
+
+
+#certificate{
+cursor:pointer;
+transition:transform .3s;
+}
+
+#certificate.zoom{
+transform:translate(-50%,-50%) scale(1.5);
+}
+
 </style>
 
 </head>
@@ -333,6 +344,16 @@ if(serial){
 loadCert(serial)
 
 }
+
+
+
+let certBox = document.getElementById("certificate");
+
+certBox.addEventListener("click", function(){
+
+certBox.classList.toggle("zoom");
+
+});
 
 </script>
 
