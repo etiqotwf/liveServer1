@@ -355,14 +355,14 @@ let dateOnly = d.toLocaleDateString("en-GB");
 
 document.getElementById("date").innerText = dateOnly;
 document.getElementById("certDate").innerText = dateOnly;
-document.getElementById("serial").innerText = cert.serial;
+document.getElementById("serial").innerText = "Serial ILC :" + serial
 
 /* certificate view */
 
 document.getElementById("certName").innerText = cert.name;
 document.getElementById("certCourse").innerText = cert.course;
 document.getElementById("certGrade").innerText = cert.grade;
-document.getElementById("certSerial").innerText = cert.serial;
+document.getElementById("serial").innerText = "Serial ILC :" + serial
 /* إنشاء QR للشهادة */
 let verifyLink = "https://etiqotwf.github.io/liveServer1/ilc/ilcCertificate/verify.html?serial=" + cert.serial;
 
