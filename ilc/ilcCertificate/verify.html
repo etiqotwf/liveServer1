@@ -142,15 +142,6 @@ box-shadow:0 30px 80px rgba(0,0,0,.6);
 
 z-index:1000;
 
-overflow:auto; /* مهم */
-
-cursor:pointer;
-
-transition:transform .3s;
-
-max-width:90vw;
-max-height:90vh;
-
 }
 
 .bg{
@@ -320,7 +311,6 @@ let dateOnly = d.toLocaleDateString("en-GB");
 
 document.getElementById("date").innerText = dateOnly;
 document.getElementById("certDate").innerText = dateOnly;
-
 document.getElementById("serial").innerText = cert.serial;
 
 /* certificate view */
