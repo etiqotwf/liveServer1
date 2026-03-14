@@ -6,6 +6,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+
 <title>ILC Institute - Certificate Verification</title>
 
 <style>
@@ -256,6 +257,7 @@ right:80px;
 </style>
 
 </head>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 
 <body>
 
@@ -322,7 +324,10 @@ View Certificate
 <div class="grade" id="certGrade"></div>
 <div class="serialCert" id="certSerial"></div>
 
+<div class="qr" id="certQR"></div>
+
 </div>
+
 
 </div>
 
@@ -357,8 +362,18 @@ document.getElementById("serial").innerText = cert.serial;
 document.getElementById("certName").innerText = cert.name;
 document.getElementById("certCourse").innerText = cert.course;
 document.getElementById("certGrade").innerText = cert.grade;
-document.getElementById("certDate").innerText = cert.date;
 document.getElementById("certSerial").innerText = cert.serial;
+/* إنشاء QR للشهادة */
+let verifyLink = "https://etiqotwf.github.io/liveServer1/ilc/ilcCertificate/verify.html?serial=" + cert.serial;
+
+document.getElementById("certQR").innerHTML = "";
+
+new QRCode(document.getElementById("certQR"),{
+text: verifyLink,
+width:100,
+height:100
+});
+
 
 })
 
