@@ -501,11 +501,22 @@ background:#334155;
 
 <br><br>
 
-<button onclick="generate()">Generate Certificate</button>
+<button id="generateBtn" onclick="generate()">Generate Certificate</button>
 
 <button onclick="updateCertificate()">Update Certificate</button>
 
 <button id="downloadBtn">Download Image</button>
+
+<button onclick="printCertificate()">Print Certificate</button>
+
+
+<h3>Print Calibration</h3>
+
+<button onclick="moveUp()">⬆ Up</button>
+<button onclick="moveDown()">⬇ Down</button>
+<button onclick="moveLeft()">⬅ Left</button>
+<button onclick="moveRight()">➡ Right</button>
+<button onclick="resetPrint()">Reset</button>
 
 <br><br>
 
@@ -536,6 +547,10 @@ background:#334155;
 
 <script>
 
+let offsetX = localStorage.getItem("printOffsetX") || 0;
+let offsetY = localStorage.getItem("printOffsetY") || 0;
+
+
   let editingSerial = null;
 
 
@@ -560,12 +575,38 @@ return Math.floor(10000000 + Math.random()*90000000).toString()
 
 function generate(){
 
-let name = document.getElementById("nameInput").value
-let course = document.getElementById("courseInput").value
-let grade = document.getElementById("gradeInput").value
+let btn = document.getElementById("generateBtn");
+
+if(btn.disabled){
+return;
+}
+
+btn.disabled = true;
+btn.innerText = "Generating...";
+
+/* قراءة البيانات */
+
+let name = document.getElementById("nameInput").value.trim()
+let course = document.getElementById("courseInput").value.trim()
+let grade = document.getElementById("gradeInput").value.trim()
 let date = document.getElementById("dateInput").value
 
+/* تحقق من المدخلات */
+
+if(!name || !course || !grade || !date){
+
+alert("Please fill all fields");
+
+btn.disabled = false;
+btn.innerText = "Generate Certificate";
+
+return;
+
+}
+
 let serial = editingSerial ? editingSerial : generateSerial()
+
+/* عرض البيانات على الشهادة */
 
 document.getElementById("name").innerText = name
 document.getElementById("course").innerText = course
@@ -616,22 +657,33 @@ method:"POST",
 headers:{"Content-Type":"application/x-www-form-urlencoded"},
 body:formData.toString()
 
-
 })
 .then(response => response.text())
+
 .then(res => {
 
 console.log("✅ Certificate saved to Google Sheet:", res);
 
+/* إعادة تفعيل الزر */
+
+btn.disabled = false;
+btn.innerText = "Generate Certificate";
+
 })
+
 .catch(error => {
 
 console.error("❌ Error sending to Google Sheet:", error);
 
+/* إعادة تفعيل الزر عند الخطأ */
+
+btn.disabled = false;
+btn.innerText = "Generate Certificate";
+
 });
 
-
 }
+
 
 function download(){
 
@@ -980,6 +1032,174 @@ alert("Error loading certificate");
 });
 
 }
+
+
+
+function printCertificate(){
+
+let qrHTML = document.getElementById("qrcode").innerHTML;
+
+let printContent = `
+<html>
+<head>
+
+<style>
+
+body{
+margin:0;
+padding:0;
+}
+
+/* نفس مقاسات الشهادة */
+
+.print-area{
+position:relative;
+width:641px;
+height:907px;
+}
+
+/* النصوص */
+
+.name{
+position:absolute;
+top:525px;
+left:0;
+right:0;
+text-align:center;
+font-size:28px;
+font-weight:bold;
+}
+
+.course{
+position:absolute;
+top:630px;
+left:0;
+right:0;
+text-align:center;
+font-size:26px;
+font-weight:bold;
+}
+
+.date{
+position:absolute;
+bottom:125px;
+left:205px;
+font-size:18px;
+font-weight:bold;
+}
+
+.grade{
+position:absolute;
+bottom:100px;
+left:200px;
+font-size:18px;
+font-weight:bold;
+}
+
+.serial{
+position:absolute;
+bottom:715px;
+right:80px;
+font-size:16px;
+font-weight:bold;
+}
+
+/* QR */
+
+.qr{
+position:absolute;
+bottom:150px;
+right:80px;
+}
+
+.qr img{
+width:110px;
+height:110px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="print-area" style="transform:translate(${offsetX}px,${offsetY}px)">
+
+<div class="name">${document.getElementById("name").innerText}</div>
+
+<div class="course">${document.getElementById("course").innerText}</div>
+
+<div class="date">${document.getElementById("date").innerText}</div>
+
+<div class="grade">${document.getElementById("grade").innerText}</div>
+
+<div class="serial">${document.getElementById("serial").innerText}</div>
+
+<div class="qr">${qrHTML}</div>
+
+</div>
+
+<script>
+
+window.onload=function(){
+window.print();
+}
+
+<\/script>
+
+</body>
+</html>
+`;
+
+let win = window.open("", "", "width=700,height=900");
+
+win.document.write(printContent);
+
+win.document.close();
+
+}
+
+function moveUp(){
+offsetY--;
+saveOffset();
+}
+
+function moveDown(){
+offsetY++;
+saveOffset();
+}
+
+function moveLeft(){
+offsetX--;
+saveOffset();
+}
+
+function moveRight(){
+offsetX++;
+saveOffset();
+}
+
+function resetPrint(){
+
+offsetX=0;
+offsetY=0;
+
+saveOffset();
+
+alert("Calibration Reset");
+
+}
+
+function saveOffset(){
+
+localStorage.setItem("printOffsetX",offsetX);
+localStorage.setItem("printOffsetY",offsetY);
+
+alert("Offset X : "+offsetX+" | Offset Y : "+offsetY);
+
+}
+
+
 </script>
 
 </body>
