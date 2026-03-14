@@ -128,19 +128,19 @@ display:none;
 
 position:fixed;
 
-top:50%;
-left:50%;
+top:0;
+left:0;
 
-transform:translate(-50%,-50%);
+width:100%;
+height:100%;
 
-width:640px;
-height:900px;
-
-background:white;
-
-box-shadow:0 30px 80px rgba(0,0,0,.6);
+background:rgba(0,0,0,.85);
 
 z-index:1000;
+
+/* أهم سطر */
+
+overflow:auto;
 
 }
 
@@ -218,6 +218,22 @@ transition:transform .3s;
 transform:translate(-50%,-50%) scale(1.5);
 }
 
+
+.certContainer{
+
+position:relative;
+
+width:640px;
+height:900px;
+
+margin:40px auto;
+
+background:white;
+
+box-shadow:0 30px 80px rgba(0,0,0,.6);
+
+}
+
 </style>
 
 </head>
@@ -277,6 +293,8 @@ View Certificate
 
 <div id="certificate">
 
+<div class="certContainer">
+
 <img src="certificate.jpeg" class="bg">
 
 <div class="name" id="certName"></div>
@@ -284,6 +302,8 @@ View Certificate
 <div class="date" id="certDate"></div>
 <div class="grade" id="certGrade"></div>
 <div class="serialCert" id="certSerial"></div>
+
+</div>
 
 </div>
 
