@@ -148,102 +148,223 @@ background:#d97706;
 /* ===== CERTIFICATE AREA ===== */
 
 #certificate{
-width:794px;
-height:1123px;
+
+position:relative;
+
+width:641px;
+height:907px;
+
+margin:40px auto;
+
+background:white;
+
+border-radius:8px;
+
+box-shadow:0 20px 60px rgba(0,0,0,0.4);
+
+overflow:hidden;
+
 }
 
-/* البيانات الشخصية */
-.nom{
+/* certificate bg */
+
+.bg{
+
 position:absolute;
-top:250px;
-left:80px;
-font-size:20px;
+
+width:100%;
+height:100%;
+
+top:0;
+left:0;
+
+z-index:1;
+
 }
+
+/* text layers */
+
+#certificate div{
+
+z-index:2;
+
+}
+
+/* student name */
+
+.name{
+position:absolute;
+top:175px;   /* مكان Nom */
+left:120px;  /* جنب الكلمة */
+font-size:16px;
+font-weight:bold;
+color:#111827;
+text-align:left;
+}
+
+
+/* ===== LEFT INFO ===== */
 
 .prenom{
 position:absolute;
-top:280px;
-left:80px;
-font-size:20px;
+top:205px;
+left:120px;
+font-size:16px;
+font-weight:bold;
 }
 
-.birth{
+.birthDate{
 position:absolute;
-top:310px;
-left:80px;
-font-size:20px;
+top:235px;
+left:120px;
+font-size:16px;
 }
 
-.code{
+.candidateCode{
 position:absolute;
-top:340px;
-left:80px;
-font-size:20px;
+top:265px;
+left:120px;
+font-size:16px;
 }
 
-/* بيانات المركز */
+/* ===== CENTER INFO ===== */
+
 .centre{
 position:absolute;
-top:390px;
-left:80px;
-font-size:20px;
+top:320px;
+left:120px;
+font-size:16px;
 }
 
 .sessionDate{
 position:absolute;
-top:420px;
-left:80px;
-font-size:20px;
+top:350px;
+left:120px;
+font-size:16px;
 }
 
 .resultDate{
 position:absolute;
-top:450px;
-left:80px;
-font-size:20px;
+top:380px;
+left:120px;
+font-size:16px;
 }
 
-/* النتائج */
+/* ===== RESULTS TABLE ===== */
+
 .writing{
 position:absolute;
-top:560px;
-left:120px;
+top:470px;
+left:260px;
+font-size:16px;
+font-weight:bold;
 }
 
 .reading{
 position:absolute;
-top:600px;
-left:120px;
+top:510px;
+left:260px;
+font-size:16px;
+font-weight:bold;
 }
 
 .listening{
 position:absolute;
-top:640px;
-left:120px;
+top:550px;
+left:260px;
+font-size:16px;
+font-weight:bold;
 }
 
 .speaking{
 position:absolute;
-top:680px;
-left:120px;
-}
-
-/* المستوى النهائي */
-.finalLevel{
-position:absolute;
-top:750px;
-left:300px;
-font-size:22px;
+top:590px;
+left:260px;
+font-size:16px;
 font-weight:bold;
 }
 
-/* serial */
-.serial{
+/* ===== FINAL LEVEL ===== */
+
+.finalLevel{
 position:absolute;
-top:180px;
-right:100px;
+top:640px;
+left:350px;
 font-size:18px;
+font-weight:bold;
 }
+
+/* course */
+
+.course{
+
+position:absolute;
+
+top:643px;
+
+left:0;
+right:0;
+
+text-align:center;
+
+font-size:19px;
+font-weight:bold;
+
+color:#1f2937;
+
+}
+
+/* date */
+
+.date{
+
+position:absolute;
+
+bottom:125px;
+
+left:205px;
+
+font-size:17px;
+font-weight:bold;
+
+color:#111827;
+
+}
+
+/* grade */
+
+.grade{
+
+position:absolute;
+
+bottom:100px;
+
+left:200px;
+
+font-size:17px;
+font-weight:bold;
+
+color:#111827;
+
+}
+
+/* serial */
+
+.serial{
+
+position:absolute;
+
+bottom:715px;
+
+right:80px;
+
+font-size:16px;
+font-weight:bold;
+
+color:#374151;
+
+}
+
 /* QR */
 
 .qr{
@@ -442,7 +563,6 @@ background:#334155;
 
 <body>
 
-
 <div class="admin">
 
 <h1 class="app-title">
@@ -450,34 +570,31 @@ background:#334155;
 </h1>
 <h2>Admin Panel</h2>
 
-<input id="nameInput" placeholder="Nom">
-<input id="prenomInput" placeholder="Prénom">
-<input id="birthInput" placeholder="Date de naissance">
-<input id="codeInput" placeholder="Code candidat">
+<!-- البيانات الشخصية -->
+<input id="nameInput" placeholder="Nom (Last Name)">
+<input id="prenomInput" placeholder="Prénom (First Name)">
+<input type="date" id="birthInput" placeholder="Date de naissance">
+<input id="codeInput" placeholder="Code Candidat">
 
+<!-- بيانات المركز -->
 <input id="centreInput" placeholder="Centre">
-<input id="sessionDateInput" placeholder="Date de la session">
-<input id="resultDateInput" placeholder="Date de délivrance">
+<input type="date" id="sessionInput" placeholder="Date de la session">
+<input type="date" id="resultInput" placeholder="Date de délivrance des résultats">
 
-<br><br>
+<!-- الدرجات -->
+<input id="writingInput" placeholder="Compétences en rédaction /10">
+<input id="readingInput" placeholder="Compétences en lecture /10">
+<input id="listeningInput" placeholder="Capacité d'écoute /10">
+<input id="speakingInput" placeholder="Compétences orales /10">
 
-<h3>Résultats</h3>
+<input id="levelInput" placeholder="Niveau CECRL Final">
 
-<input id="writingInput" placeholder="Rédaction /10">
-<input id="readingInput" placeholder="Lecture /10">
-<input id="listeningInput" placeholder="Écoute /10">
-<input id="speakingInput" placeholder="Oral /10">
-<input id="finalLevelInput" placeholder="Niveau CECRL">
 <br><br>
 
 <button id="generateBtn" onclick="generate()">Generate Certificate</button>
-
 <button onclick="updateCertificate()">Update Certificate</button>
-
 <button id="downloadBtn">Download Image</button>
-
 <button onclick="printCertificate()">Print Certificate</button>
-
 
 <h3>Print Calibration</h3>
 
@@ -494,40 +611,44 @@ background:#334155;
 <input id="searchSerial" placeholder="Enter Serial Number">
 
 <button onclick="searchCertificate()">Search</button>
-
 <button onclick="showAdminTable()">Admin Dashboard</button>
-
 
 </div>
 
 
+<!-- الشهادة -->
 <div id="certificate">
 
 <img src="certificate.jpeg" class="bg">
 
-<div class="nom" id="nom"></div>
-<div class="prenom" id="prenom"></div>
-<div class="birth" id="birth"></div>
-<div class="code" id="code"></div>
+<div class="serial" id="serial"></div>
 
+<!-- البيانات الشخصية -->
+<div class="name" id="name"></div>
+<div class="prenom" id="prenom"></div>
+<div class="birthDate" id="birthDate"></div>
+<div class="candidateCode" id="candidateCode"></div>
+
+<!-- بيانات المركز -->
 <div class="centre" id="centre"></div>
 <div class="sessionDate" id="sessionDate"></div>
 <div class="resultDate" id="resultDate"></div>
 
-<!-- scores -->
+<!-- النتائج -->
 <div class="writing" id="writing"></div>
 <div class="reading" id="reading"></div>
 <div class="listening" id="listening"></div>
 <div class="speaking" id="speaking"></div>
 
+<!-- النتيجة النهائية -->
 <div class="finalLevel" id="finalLevel"></div>
 
-<div class="serial" id="serial"></div>
+<!-- QR -->
+<div class="qr" id="qrcode"></div>
 
 </div>
 
-</div>
-
+</body>
 <script>
 
 let offsetX = localStorage.getItem("printOffsetX") || 0;
@@ -551,107 +672,183 @@ let offsetY = localStorage.getItem("printOffsetY") || 0;
       }
     });
 
-    function generateSerial(){
-return Math.floor(10000000 + Math.random() * 90000000).toString();
+
+function generateSerial(){
+return Math.floor(10000000 + Math.random()*90000000).toString()
+}
+
+
+function safeValue(id){
+let el = document.getElementById(id);
+return el ? el.value.trim() : "";
 }
 
 function generate(){
 
-try{
-
 let btn = document.getElementById("generateBtn");
+
+if(btn.disabled){
+return;
+}
 
 btn.disabled = true;
 btn.innerText = "Generating...";
 
-/* قراءة */
+/* قراءة البيانات */
 
-let nom = document.getElementById("nameInput").value;
-let prenom = document.getElementById("prenomInput").value;
-let birth = document.getElementById("birthInput").value;
-let code = document.getElementById("codeInput").value;
+let name = safeValue("nameInput")
+let prenom = safeValue("prenomInput")
+let birthDate = safeValue("birthInput")
+let candidateCode = safeValue("codeInput")
 
-let centre = document.getElementById("centreInput").value;
-let sessionDate = document.getElementById("sessionDateInput").value;
-let resultDate = document.getElementById("resultDateInput").value;
+let centre = safeValue("centreInput")
+let sessionDate = safeValue("sessionInput")
+let resultDate = safeValue("resultInput")
 
-let writing = document.getElementById("writingInput").value;
-let reading = document.getElementById("readingInput").value;
-let listening = document.getElementById("listeningInput").value;
-let speaking = document.getElementById("speakingInput").value;
+let writing = safeValue("writingInput")
+let reading = safeValue("readingInput")
+let listening = safeValue("listeningInput")
+let speaking = safeValue("speakingInput")
 
-let finalLevel = document.getElementById("finalLevelInput").value;
+let finalLevel = safeValue("levelInput")
 
-/* تحقق */
+/* تحقق بسيط */
 
-if(
-!nom || !prenom || !birth || !code ||
-!centre || !sessionDate || !resultDate ||
-!writing || !reading || !listening || !speaking || !finalLevel
-){
-alert("Fill all fields");
-throw "missing data";
+if(!name || !prenom){
+alert("Please enter Name & Prenom");
+btn.disabled = false;
+btn.innerText = "Generate Certificate";
+return;
 }
 
-/* Serial */
+/* سيريال */
 
-let serial = editingSerial ? editingSerial : generateSerial();
+let serial = editingSerial ? editingSerial : generateSerial()
 
-/* عرض */
+/* عرض البيانات */
 
-document.getElementById("nom").innerText = nom;
-document.getElementById("prenom").innerText = prenom;
-document.getElementById("birth").innerText = birth;
-document.getElementById("code").innerText = code;
+document.getElementById("name").innerText = name
 
-document.getElementById("centre").innerText = centre;
-document.getElementById("sessionDate").innerText = sessionDate;
-document.getElementById("resultDate").innerText = resultDate;
+if(document.getElementById("prenom"))
+document.getElementById("prenom").innerText = prenom
 
-document.getElementById("writing").innerText = writing;
-document.getElementById("reading").innerText = reading;
-document.getElementById("listening").innerText = listening;
-document.getElementById("speaking").innerText = speaking;
+if(document.getElementById("birthDate"))
+document.getElementById("birthDate").innerText = birthDate
 
-document.getElementById("finalLevel").innerText = finalLevel;
+if(document.getElementById("candidateCode"))
+document.getElementById("candidateCode").innerText = candidateCode
 
-document.getElementById("serial").innerText = "Serial: " + serial;
+if(document.getElementById("centre"))
+document.getElementById("centre").innerText = centre
+
+if(document.getElementById("sessionDate"))
+document.getElementById("sessionDate").innerText = sessionDate
+
+if(document.getElementById("resultDate"))
+document.getElementById("resultDate").innerText = resultDate
+
+if(document.getElementById("writing"))
+document.getElementById("writing").innerText = writing
+
+if(document.getElementById("reading"))
+document.getElementById("reading").innerText = reading
+
+if(document.getElementById("listening"))
+document.getElementById("listening").innerText = listening
+
+if(document.getElementById("speaking"))
+document.getElementById("speaking").innerText = speaking
+
+if(document.getElementById("finalLevel"))
+document.getElementById("finalLevel").innerText = finalLevel
+
+/* السيريال */
+
+document.getElementById("serial").innerText = "Serial ILC : " + serial
 
 /* QR */
 
-let qrContainer = document.getElementById("qrcode");
+let verifyLink = "https://etiqotwf.github.io/liveServer1/ilc/ilcCertificate/verify.html?serial=" + serial;
 
-if(qrContainer){
-qrContainer.innerHTML = "";
-new QRCode(qrContainer,{
-text:"verify:"+serial,
+document.getElementById("qrcode").innerHTML=""
+
+new QRCode(document.getElementById("qrcode"),{
+text:verifyLink,
 width:90,
 height:90
-});
-}
+})
 
-/* حفظ */
+/* حفظ محلي */
 
-let certs = JSON.parse(localStorage.getItem("certificates") || "[]");
+let certs = JSON.parse(localStorage.getItem("certificates") || "[]")
 
-certs.push({nom,prenom,birth,code,centre,sessionDate,resultDate,writing,reading,listening,speaking,finalLevel,serial});
+certs.push({
+name,
+prenom,
+birthDate,
+candidateCode,
+centre,
+sessionDate,
+resultDate,
+writing,
+reading,
+listening,
+speaking,
+finalLevel,
+serial
+})
 
-localStorage.setItem("certificates", JSON.stringify(certs));
+localStorage.setItem("certificates", JSON.stringify(certs))
 
-btn.innerText = "Done ✅";
+/* إرسال Google Sheet */
 
-}catch(err){
+const formData = new URLSearchParams();
 
-console.error("ERROR:", err);
-alert("Error حصل — افتح Console");
+formData.append("action","add");
+formData.append("name",name);
+formData.append("prenom",prenom);
+formData.append("birthDate",birthDate);
+formData.append("candidateCode",candidateCode);
+formData.append("centre",centre);
+formData.append("sessionDate",sessionDate);
+formData.append("resultDate",resultDate);
+formData.append("writing",writing);
+formData.append("reading",reading);
+formData.append("listening",listening);
+formData.append("speaking",speaking);
+formData.append("finalLevel",finalLevel);
+formData.append("serial",serial);
 
-let btn = document.getElementById("generateBtn");
+fetch("https://script.google.com/macros/s/AKfycbyqvacwgvC6UionZ7SmsI9HJUTOB_9isWkHWckaaf5UNGJnlqWaCnmabVAKtDv5ZDN6hg/exec",{
+
+method:"POST",
+headers:{"Content-Type":"application/x-www-form-urlencoded"},
+body:formData.toString()
+
+})
+.then(response => response.text())
+
+.then(res => {
+
+console.log("✅ Certificate saved:", res);
+
 btn.disabled = false;
 btn.innerText = "Generate Certificate";
 
-}
+})
+
+.catch(error => {
+
+console.error("❌ Error:", error);
+
+btn.disabled = false;
+btn.innerText = "Generate Certificate";
+
+});
 
 }
+
+
 
 function download(){
 
@@ -864,24 +1061,15 @@ return;
 
 let formattedDate = cert.date.split("T")[0];
 
-document.getElementById("nom").innerText = nom;
-document.getElementById("prenom").innerText = prenom;
-document.getElementById("birth").innerText = birth;
-document.getElementById("code").innerText = code;
-
-document.getElementById("centre").innerText = centre;
-document.getElementById("sessionDate").innerText = sessionDate;
-document.getElementById("resultDate").innerText = resultDate;
-
-document.getElementById("writing").innerText = writing;
-document.getElementById("reading").innerText = reading;
-document.getElementById("listening").innerText = listening;
-document.getElementById("speaking").innerText = speaking;
-
-document.getElementById("finalLevel").innerText = finalLevel;
+document.getElementById("name").innerText = cert.name;
+document.getElementById("course").innerText = cert.course;
+document.getElementById("grade").innerText = cert.grade;
+document.getElementById("date").innerText = formattedDate;
+document.getElementById("serial").innerText = "Serial ILC : " + serial
 
 // إنشاء QR
 
+document.getElementById("qrcode").innerHTML="";
 
 let verifyLink="https://etiqotwf.github.io/liveServer1/ilc/ilcCertificate/verify.html?serial="+cert.serial;
 
