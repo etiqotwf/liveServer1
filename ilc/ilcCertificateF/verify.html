@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+<title>ILC Institute - Certificate Verification</title>
+
+<style>
+
+body{
+
+margin:0;
+font-family:Segoe UI;
+background:linear-gradient(135deg,#0f172a,#1e293b);
+display:flex;
+align-items:center;
+justify-content:center;
+min-height:100vh;
+
+}
+
+/* card */
+
+.verify-card{
+
+background:white;
+width:90%;
+max-width:420px;
+border-radius:14px;
+padding:25px;
+box-shadow:0 20px 60px rgba(0,0,0,.3);
+text-align:center;
+
+}
+
+/* institute name */
+
+.institute{
+
+font-size:26px;
+font-weight:800;
+color:#0f172a;
+
+}
+
+.subtitle{
+
+color:#64748b;
+margin-bottom:15px;
+
+}
+
+/* verified badge */
+
+.status{
+
+background:#dcfce7;
+color:#166534;
+padding:10px;
+border-radius:6px;
+font-weight:600;
+margin-bottom:20px;
+
+}
+
+/* info */
+
+.info{
+
+background:#f8fafc;
+padding:20px;
+border-radius:10px;
+text-align:left;
+
+}
+
+.row{
+
+margin:10px 0;
+
+}
+
+.row span{
+
+font-weight:bold;
+
+}
+
+/* serial */
+
+.serial{
+
+margin-top:15px;
+font-size:14px;
+color:#475569;
+
+}
+
+/* view button */
+
+.viewBtn{
+
+margin-top:20px;
+padding:12px 20px;
+background:#2563eb;
+color:white;
+border:none;
+border-radius:6px;
+cursor:pointer;
+font-weight:600;
+
+}
+
+.viewBtn:hover{
+
+background:#1d4ed8;
+
+}
+
+/* certificate popup */
+
+#certificate{
+
+display:none;
+
+position:fixed;
+
+top:0;
+left:0;
+
+width:100%;
+height:100%;
+
+background:rgba(0,0,0,.85);
+
+z-index:1000;
+
+/* أهم سطر */
+
+overflow:auto;
+
+}
+
+.bg{
+
+position:absolute;
+width:100%;
+height:100%;
+
+}
+
+.name{
+
+position:absolute;
+top:538px;
+left:0;
+right:0;
+text-align:center;
+font-size:21px;
+font-weight:bold;
+
+}
+
+.course{
+
+position:absolute;
+top:645px;
+left:0;
+right:0;
+text-align:center;
+font-size:19px;
+font-weight:bold;
+
+
+}
+
+.date{
+
+position:absolute;
+bottom:125px;
+left:205px;
+font-weight:bold;
+
+
+}
+
+.grade{
+
+position:absolute;
+bottom:100px;
+left:200px;
+font-weight:bold;
+
+
+}
+
+.serialCert{
+
+position:absolute;
+
+bottom:715px;
+
+right:80px;
+
+font-size:16px;
+font-weight:bold;
+
+color:#374151;
+
+
+
+}
+
+
+
+#certificate{
+cursor:pointer;
+transition:transform .3s;
+}
+
+#certificate.zoom{
+transform:translate(-50%,-50%) scale(1.5);
+}
+
+
+.certContainer{
+
+position:relative;
+
+width:640px;
+height:900px;
+
+margin:40px auto;
+
+background:white;
+
+box-shadow:0 30px 80px rgba(0,0,0,.6);
+
+}
+
+
+.qr{
+
+position:absolute;
+
+bottom:150px;
+
+right:80px;
+
+}
+
+
+</style>
+
+</head>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
+<body>
+
+<div class="verify-card">
+
+<div class="institute">
+ILC TANTA Institute
+</div>
+
+<div class="subtitle">
+Certificate Verification System
+</div>
+
+<div class="status">
+✅ Certificate Verified
+</div>
+
+<div class="info">
+
+<div class="row">
+<span>Student Name :</span>
+<div id="name"></div>
+</div>
+
+<div class="row">
+<span>Course :</span>
+<div id="course"></div>
+</div>
+
+<div class="row">
+<span>Grade :</span>
+<div id="grade"></div>
+</div>
+
+<div class="row">
+<span>Date :</span>
+<div id="date"></div>
+</div>
+
+</div>
+
+<div class="serial">
+Certificate ID : <span id="serial"></span>
+</div>
+
+<button class="viewBtn" onclick="showCertificate()">
+View Certificate
+</button>
+
+</div>
+
+
+<!-- certificate -->
+
+<div id="certificate">
+
+<div class="certContainer">
+
+<img src="certificate.jpeg" class="bg">
+
+<div class="name" id="certName"></div>
+<div class="course" id="certCourse"></div>
+<div class="date" id="certDate"></div>
+<div class="grade" id="certGrade"></div>
+<div class="serialCert" id="certSerial"></div>
+
+<div class="qr" id="certQR"></div>
+
+</div>
+
+
+</div>
+
+<script>
+function loadCert(serial){
+
+fetch("https://script.google.com/macros/s/AKfycbyB6JrOtIoQxPcKPTiyto59ogKqsq1fBPt8X62c2i7Dw_Si9TmaTC84rdmWRCsBh_bHBQ/exec?serial=" + serial)
+
+.then(response => response.json())
+
+.then(cert => {
+
+if(cert.error){
+
+alert("Certificate not found");
+return;
+
+}
+
+document.getElementById("name").innerText = cert.name;
+document.getElementById("course").innerText = cert.course;
+document.getElementById("grade").innerText = cert.grade;
+let d = new Date(cert.date);
+let dateOnly = d.toLocaleDateString("en-GB");
+
+document.getElementById("date").innerText = dateOnly;
+document.getElementById("certDate").innerText = dateOnly;
+document.getElementById("serial").innerText = "Serial ILC :" + serial
+
+/* certificate view */
+
+document.getElementById("certName").innerText = cert.name;
+document.getElementById("certCourse").innerText = cert.course;
+document.getElementById("certGrade").innerText = cert.grade;
+document.getElementById("certSerial").innerText = cert.serial;
+/* إنشاء QR للشهادة */
+let verifyLink = "https://etiqotwf.github.io/liveServer1/ilc/ilcCertificate/verify.html?serial=" + cert.serial;
+
+document.getElementById("certQR").innerHTML = "";
+
+new QRCode(document.getElementById("certQR"),{
+text: verifyLink,
+width:100,
+height:100
+});
+
+
+})
+
+.catch(error => {
+
+console.error("Error loading certificate:", error);
+
+});
+
+}
+
+function showCertificate(){
+
+document.getElementById("certificate").style.display="block"
+
+}
+
+/* load from QR */
+
+let params=new URLSearchParams(window.location.search)
+
+let serial=params.get("serial")
+
+if(serial){
+
+loadCert(serial)
+
+}
+
+
+
+let certBox = document.getElementById("certificate");
+
+certBox.addEventListener("click", function(){
+
+certBox.classList.toggle("zoom");
+
+});
+
+</script>
+
+</body>
+</html>
