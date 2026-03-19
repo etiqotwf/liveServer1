@@ -6,13 +6,13 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+<title>Certificate Verification</title>
 
-<title>ILC Institute - Certificate Verification</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 
 <style>
 
 body{
-
 margin:0;
 font-family:Segoe UI;
 background:linear-gradient(135deg,#0f172a,#1e293b);
@@ -20,13 +20,11 @@ display:flex;
 align-items:center;
 justify-content:center;
 min-height:100vh;
-
 }
 
-/* card */
+/* ===== CARD ===== */
 
 .verify-card{
-
 background:white;
 width:90%;
 max-width:420px;
@@ -34,76 +32,50 @@ border-radius:14px;
 padding:25px;
 box-shadow:0 20px 60px rgba(0,0,0,.3);
 text-align:center;
-
 }
 
-/* institute name */
-
 .institute{
-
 font-size:26px;
 font-weight:800;
 color:#0f172a;
-
 }
 
 .subtitle{
-
 color:#64748b;
 margin-bottom:15px;
-
 }
 
-/* verified badge */
-
 .status{
-
 background:#dcfce7;
 color:#166534;
 padding:10px;
 border-radius:6px;
 font-weight:600;
 margin-bottom:20px;
-
 }
 
-/* info */
-
 .info{
-
 background:#f8fafc;
 padding:20px;
 border-radius:10px;
 text-align:left;
-
 }
 
 .row{
-
-margin:10px 0;
-
+margin:8px 0;
 }
 
 .row span{
-
 font-weight:bold;
-
 }
 
-/* serial */
-
 .serial{
-
 margin-top:15px;
 font-size:14px;
 color:#475569;
-
 }
 
-/* view button */
-
 .viewBtn{
-
 margin-top:20px;
 padding:12px 20px;
 background:#2563eb;
@@ -111,206 +83,112 @@ color:white;
 border:none;
 border-radius:6px;
 cursor:pointer;
-font-weight:600;
-
 }
 
-.viewBtn:hover{
-
-background:#1d4ed8;
-
-}
-
-/* certificate popup */
+/* ===== CERTIFICATE ===== */
 
 #certificate{
-
 display:none;
-
 position:fixed;
-
 top:0;
 left:0;
-
 width:100%;
 height:100%;
-
 background:rgba(0,0,0,.85);
-
 z-index:1000;
-
-/* أهم سطر */
-
 overflow:auto;
+cursor:pointer;
+}
 
+.certContainer{
+position:relative;
+width:641px;
+height:907px;
+margin:40px auto;
+background:white;
 }
 
 .bg{
-
 position:absolute;
 width:100%;
 height:100%;
-
 }
 
-.name{
+/* ===== أماكن البيانات (مظبوطة حسب الصورة) ===== */
 
-position:absolute;
-top:538px;
-left:0;
-right:0;
-text-align:center;
-font-size:21px;
-font-weight:bold;
+.name{position:absolute;top:300px;left:350px;font-weight:bold;}
+.prenom{position:absolute;top:330px;left:350px;}
+.birth{position:absolute;top:360px;left:350px;}
+.code{position:absolute;top:390px;left:350px;}
 
-}
+.centre{position:absolute;top:445px;left:350px;}
+.session{position:absolute;top:475px;left:350px;}
+.result{position:absolute;top:505px;left:350px;}
 
-.course{
+.writing{position:absolute;top:585px;left:420px;}
+.reading{position:absolute;top:620px;left:420px;}
+.listening{position:absolute;top:655px;left:420px;}
+.speaking{position:absolute;top:690px;left:420px;}
 
-position:absolute;
-top:645px;
-left:0;
-right:0;
-text-align:center;
-font-size:19px;
-font-weight:bold;
-
-
-}
-
-.date{
-
-position:absolute;
-bottom:125px;
-left:205px;
-font-weight:bold;
-
-
-}
-
-.grade{
-
-position:absolute;
-bottom:100px;
-left:200px;
-font-weight:bold;
-
-
-}
+.level{position:absolute;top:740px;left:420px;font-weight:bold;}
 
 .serialCert{
-
 position:absolute;
-
-bottom:715px;
-
-right:80px;
-
-font-size:16px;
+top:210px;
+right:90px;
 font-weight:bold;
-
-color:#374151;
-
-
-
 }
-
-
-
-#certificate{
-cursor:pointer;
-transition:transform .3s;
-}
-
-#certificate.zoom{
-transform:translate(-50%,-50%) scale(1.5);
-}
-
-
-.certContainer{
-
-position:relative;
-
-width:640px;
-height:900px;
-
-margin:40px auto;
-
-background:white;
-
-box-shadow:0 30px 80px rgba(0,0,0,.6);
-
-}
-
 
 .qr{
-
 position:absolute;
-
 bottom:150px;
-
 right:80px;
-
 }
-
 
 </style>
 
 </head>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 
 <body>
 
+<!-- ===== CARD ===== -->
+
 <div class="verify-card">
 
-<div class="institute">
-ILC TANTA Institute
-</div>
+<div class="institute">ILC TANTA Institute</div>
+<div class="subtitle">Certificate Verification</div>
 
-<div class="subtitle">
-Certificate Verification System
-</div>
-
-<div class="status">
-✅ Certificate Verified
-</div>
+<div class="status">✅ Certificate Verified</div>
 
 <div class="info">
 
-<div class="row">
-<span>Student Name :</span>
-<div id="name"></div>
-</div>
+<div class="row"><span>Nom :</span> <div id="name"></div></div>
+<div class="row"><span>Prénom :</span> <div id="prenom"></div></div>
+<div class="row"><span>Date de naissance :</span> <div id="birthDate"></div></div>
+<div class="row"><span>Code Candidat :</span> <div id="candidateCode"></div></div>
 
-<div class="row">
-<span>Course :</span>
-<div id="course"></div>
-</div>
+<div class="row"><span>Centre :</span> <div id="centre"></div></div>
+<div class="row"><span>Date Session :</span> <div id="sessionDate"></div></div>
+<div class="row"><span>Date Résultats :</span> <div id="resultDate"></div></div>
 
-<div class="row">
-<span>Grade :</span>
-<div id="grade"></div>
-</div>
+<div class="row"><span>Writing :</span> <div id="writing"></div></div>
+<div class="row"><span>Reading :</span> <div id="reading"></div></div>
+<div class="row"><span>Listening :</span> <div id="listening"></div></div>
+<div class="row"><span>Speaking :</span> <div id="speaking"></div></div>
 
-<div class="row">
-<span>Date :</span>
-<div id="date"></div>
-</div>
+<div class="row"><span>Niveau :</span> <div id="finalLevel"></div></div>
 
 </div>
 
 <div class="serial">
-Certificate ID : <span id="serial"></span>
+Serial : <span id="serial"></span>
 </div>
 
-<button class="viewBtn" onclick="showCertificate()">
-View Certificate
-</button>
+<button class="viewBtn" onclick="showCertificate()">View Certificate</button>
 
 </div>
 
-
-<!-- certificate -->
+<!-- ===== الشهادة ===== -->
 
 <div id="certificate">
 
@@ -319,99 +197,118 @@ View Certificate
 <img src="certificate.jpeg" class="bg">
 
 <div class="name" id="certName"></div>
-<div class="course" id="certCourse"></div>
-<div class="date" id="certDate"></div>
-<div class="grade" id="certGrade"></div>
+<div class="prenom" id="certPrenom"></div>
+<div class="birth" id="certBirth"></div>
+<div class="code" id="certCode"></div>
+
+<div class="centre" id="certCentre"></div>
+<div class="session" id="certSession"></div>
+<div class="result" id="certResult"></div>
+
+<div class="writing" id="certWriting"></div>
+<div class="reading" id="certReading"></div>
+<div class="listening" id="certListening"></div>
+<div class="speaking" id="certSpeaking"></div>
+
+<div class="level" id="certLevel"></div>
+
 <div class="serialCert" id="certSerial"></div>
 
 <div class="qr" id="certQR"></div>
 
 </div>
 
-
 </div>
 
 <script>
+
 function loadCert(serial){
 
-fetch("https://script.google.com/macros/s/AKfycbyB6JrOtIoQxPcKPTiyto59ogKqsq1fBPt8X62c2i7Dw_Si9TmaTC84rdmWRCsBh_bHBQ/exec?serial=" + serial)
+fetch("https://script.google.com/macros/s/AKfycbyqvacwgvC6UionZ7SmsI9HJUTOB_9isWkHWckaaf5UNGJnlqWaCnmabVAKtDv5ZDN6hg/exec?action=get&serial=" + serial)
 
-.then(response => response.json())
+.then(res=>res.json())
 
-.then(cert => {
+.then(cert=>{
 
-if(cert.error){
-
+if(!cert){
 alert("Certificate not found");
 return;
-
 }
 
-document.getElementById("name").innerText = cert.name;
-document.getElementById("course").innerText = cert.course;
-document.getElementById("grade").innerText = cert.grade;
-let d = new Date(cert.date);
-let dateOnly = d.toLocaleDateString("en-GB");
+/* CARD */
 
-document.getElementById("date").innerText = dateOnly;
-document.getElementById("certDate").innerText = dateOnly;
-document.getElementById("serial").innerText = "Serial ILC :" + serial
+document.getElementById("name").innerText = cert.name || "";
+document.getElementById("prenom").innerText = cert.prenom || "";
+document.getElementById("birthDate").innerText = cert.birthDate || "";
+document.getElementById("candidateCode").innerText = cert.candidateCode || "";
 
-/* certificate view */
+document.getElementById("centre").innerText = cert.centre || "";
+document.getElementById("sessionDate").innerText = cert.sessionDate || "";
+document.getElementById("resultDate").innerText = cert.resultDate || "";
+
+document.getElementById("writing").innerText = cert.writing || "";
+document.getElementById("reading").innerText = cert.reading || "";
+document.getElementById("listening").innerText = cert.listening || "";
+document.getElementById("speaking").innerText = cert.speaking || "";
+
+document.getElementById("finalLevel").innerText = cert.finalLevel || "";
+
+document.getElementById("serial").innerText = cert.serial;
+
+/* CERTIFICATE */
 
 document.getElementById("certName").innerText = cert.name;
-document.getElementById("certCourse").innerText = cert.course;
-document.getElementById("certGrade").innerText = cert.grade;
-document.getElementById("certSerial").innerText = cert.serial;
-/* إنشاء QR للشهادة */
-let verifyLink = "https://etiqotwf.github.io/liveServer1/ilc/ilcCertificate/verify.html?serial=" + cert.serial;
+document.getElementById("certPrenom").innerText = cert.prenom;
+document.getElementById("certBirth").innerText = cert.birthDate;
+document.getElementById("certCode").innerText = cert.candidateCode;
+
+document.getElementById("certCentre").innerText = cert.centre;
+document.getElementById("certSession").innerText = cert.sessionDate;
+document.getElementById("certResult").innerText = cert.resultDate;
+
+document.getElementById("certWriting").innerText = cert.writing;
+document.getElementById("certReading").innerText = cert.reading;
+document.getElementById("certListening").innerText = cert.listening;
+document.getElementById("certSpeaking").innerText = cert.speaking;
+
+document.getElementById("certLevel").innerText = cert.finalLevel;
+
+document.getElementById("certSerial").innerText = "Serial ILC : " + cert.serial;
+
+/* QR */
+
+let link = "https://etiqotwf.github.io/liveServer1/ilc/ilcCertificateF/verify.html?serial=" + cert.serial;
 
 document.getElementById("certQR").innerHTML = "";
 
 new QRCode(document.getElementById("certQR"),{
-text: verifyLink,
+text:link,
 width:100,
 height:100
 });
 
-
 })
 
-.catch(error => {
-
-console.error("Error loading certificate:", error);
-
+.catch(err=>{
+console.error(err);
 });
 
 }
+
+/* عرض الشهادة */
 
 function showCertificate(){
-
-document.getElementById("certificate").style.display="block"
-
+document.getElementById("certificate").style.display="block";
 }
 
-/* load from QR */
+/* تحميل من QR */
 
-let params=new URLSearchParams(window.location.search)
-
-let serial=params.get("serial")
+let params = new URLSearchParams(window.location.search);
+let serial = params.get("serial");
 
 if(serial){
-
-loadCert(serial)
-
+loadCert(serial);
 }
-
-
-
-let certBox = document.getElementById("certificate");
-
-certBox.addEventListener("click", function(){
-
-certBox.classList.toggle("zoom");
-
-});
 
 </script>
 
