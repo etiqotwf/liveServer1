@@ -46,12 +46,26 @@ margin-bottom:15px;
 }
 
 .status{
-background:#dcfce7;
-color:#166534;
 padding:10px;
 border-radius:6px;
 font-weight:600;
 margin-bottom:20px;
+}
+
+/* ألوان الحالات */
+.success{
+background:#dcfce7;
+color:#166534;
+}
+
+.error{
+background:#fee2e2;
+color:#991b1b;
+}
+
+.warning{
+background:#fef3c7;
+color:#92400e;
 }
 
 .info{
@@ -114,28 +128,28 @@ width:100%;
 height:100%;
 }
 
-/* ===== أماكن البيانات (مظبوطة حسب الصورة) ===== */
+/* ===== أماكن البيانات ===== */
 
-.name{position:absolute;top:300px;left:350px;font-weight:bold;}
-.prenom{position:absolute;top:330px;left:350px;}
-.birth{position:absolute;top:360px;left:350px;}
-.code{position:absolute;top:390px;left:350px;}
+.name{position:absolute;top:188px;left:400px;font-weight:bold;}
+.prenom{position:absolute;top:204px;left:400px;}
+.birth{position:absolute;top:221px;left:400px;}
+.code{position:absolute;top:237px;left:400px;}
 
-.centre{position:absolute;top:445px;left:350px;}
-.session{position:absolute;top:475px;left:350px;}
-.result{position:absolute;top:505px;left:350px;}
+.centre{position:absolute;top:269px;left:400px;}
+.session{position:absolute;top:290px;left:400px;}
+.result{position:absolute;top:325px;left:400px;}
 
-.writing{position:absolute;top:585px;left:420px;}
-.reading{position:absolute;top:620px;left:420px;}
-.listening{position:absolute;top:655px;left:420px;}
-.speaking{position:absolute;top:690px;left:420px;}
+.writing{position:absolute;top:453px;left:400px;}
+.reading{position:absolute;top:487px;left:400px;}
+.listening{position:absolute;top:527px;left:400px;}
+.speaking{position:absolute;top:565px;left:400px;}
 
-.level{position:absolute;top:740px;left:420px;font-weight:bold;}
+.level{position:absolute;top:605px;left:400px;font-weight:bold;}
 
 .serialCert{
 position:absolute;
-top:210px;
-right:90px;
+bottom:715px;
+right:80px;
 font-weight:bold;
 }
 
@@ -158,25 +172,25 @@ right:80px;
 <div class="institute">ILC TANTA Institute</div>
 <div class="subtitle">Certificate Verification</div>
 
-<div class="status">✅ Certificate Verified</div>
+<div class="status" id="statusBox"></div>
 
 <div class="info">
 
-<div class="row"><span>Nom :</span> <div id="name"></div></div>
-<div class="row"><span>Prénom :</span> <div id="prenom"></div></div>
-<div class="row"><span>Date de naissance :</span> <div id="birthDate"></div></div>
-<div class="row"><span>Code Candidat :</span> <div id="candidateCode"></div></div>
+<div class="row"><span>Nom :</span> <span id="name"></span></div>
+<div class="row"><span>Prénom :</span> <span id="prenom"></span></div>
+<div class="row"><span>Date de naissance :</span> <span id="birthDate"></span></div>
+<div class="row"><span>Code Candidat :</span> <span id="candidateCode"></span></div>
 
-<div class="row"><span>Centre :</span> <div id="centre"></div></div>
-<div class="row"><span>Date Session :</span> <div id="sessionDate"></div></div>
-<div class="row"><span>Date Résultats :</span> <div id="resultDate"></div></div>
+<div class="row"><span>Centre :</span> <span id="centre"></span></div>
+<div class="row"><span>Date Session :</span> <span id="sessionDate"></span></div>
+<div class="row"><span>Date Résultats :</span> <span id="resultDate"></span></div>
 
-<div class="row"><span>Writing :</span> <div id="writing"></div></div>
-<div class="row"><span>Reading :</span> <div id="reading"></div></div>
-<div class="row"><span>Listening :</span> <div id="listening"></div></div>
-<div class="row"><span>Speaking :</span> <div id="speaking"></div></div>
+<div class="row"><span>Writing :</span> <span id="writing"></span></div>
+<div class="row"><span>Reading :</span> <span id="reading"></span></div>
+<div class="row"><span>Listening :</span> <span id="listening"></span></div>
+<div class="row"><span>Speaking :</span> <span id="speaking"></span></div>
 
-<div class="row"><span>Niveau :</span> <div id="finalLevel"></div></div>
+<div class="row"><span>Niveau :</span> <span id="finalLevel"></span></div>
 
 </div>
 
@@ -222,18 +236,32 @@ Serial : <span id="serial"></span>
 
 <script>
 
+function setStatus(message,type){
+
+let box = document.getElementById("statusBox");
+
+box.innerText = message;
+box.className = "status " + type;
+
+}
+
+/* تحميل البيانات */
+
 function loadCert(serial){
 
-fetch("https://script.google.com/macros/s/AKfycbyqvacwgvC6UionZ7SmsI9HJUTOB_9isWkHWckaaf5UNGJnlqWaCnmabVAKtDv5ZDN6hg/exec?action=get&serial=" + serial)
+fetch("https://script.google.com/macros/s/AKfycbxkETTKzwQH-ukaoewtpqPj5D8Qau8O7d56l0Fab4SZmJHCMkcLH8lNISZJo3WXX-KwBw/exec?action=get&serial=" + serial)
 
 .then(res=>res.json())
 
 .then(cert=>{
 
-if(!cert){
-alert("Certificate not found");
+if(!cert || Object.keys(cert).length === 0){
+setStatus("❌ Certificate Not Found","error");
 return;
 }
+
+/* حالة النجاح */
+setStatus("✅ Certificate Verified","success");
 
 /* CARD */
 
@@ -277,20 +305,23 @@ document.getElementById("certSerial").innerText = "Serial ILC : " + cert.serial;
 
 /* QR */
 
-let link = "https://etiqotwf.github.io/liveServer1/ilc/ilcCertificate/verify.html?serial=" + cert.serial;
+let link = "https://etiqotwf.github.io/liveServer1/ilc/ilcCertificateF/verify.html?serial=" + cert.serial;
 
 document.getElementById("certQR").innerHTML = "";
 
+if(cert.serial){
 new QRCode(document.getElementById("certQR"),{
 text:link,
 width:100,
 height:100
 });
+}
 
 })
 
 .catch(err=>{
 console.error(err);
+setStatus("⚠️ Error loading certificate","warning");
 });
 
 }
@@ -301,13 +332,21 @@ function showCertificate(){
 document.getElementById("certificate").style.display="block";
 }
 
-/* تحميل من QR */
+/* إغلاق الشهادة */
+
+document.getElementById("certificate").addEventListener("click",function(){
+this.style.display="none";
+});
+
+/* قراءة Serial من URL */
 
 let params = new URLSearchParams(window.location.search);
 let serial = params.get("serial");
 
 if(serial){
 loadCert(serial);
+}else{
+setStatus("⚠️ No Serial Provided","warning");
 }
 
 </script>
