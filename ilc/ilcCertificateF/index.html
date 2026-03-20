@@ -264,7 +264,7 @@ font-weight:bold;
 .writing{
 position:absolute;
 top:453px;
-left:400px;
+left:232px;
 font-size:16px;
 font-weight:bold;
 }
@@ -272,7 +272,7 @@ font-weight:bold;
 .reading{
 position:absolute;
 top:487px;
-left:400px;
+left:232px;
 font-size:16px;
 font-weight:bold;
 }
@@ -280,7 +280,7 @@ font-weight:bold;
 .listening{
 position:absolute;
 top:527px;
-left:400px;
+left:232px;
 font-size:16px;
 font-weight:bold;
 }
@@ -288,7 +288,7 @@ font-weight:bold;
 .speaking{
 position:absolute;
 top:565px;
-left:400px;
+left:232px;
 font-size:16px;
 font-weight:bold;
 }
@@ -363,9 +363,9 @@ color:#111827;
 
 position:absolute;
 
-bottom:715px;
+bottom:870px;
 
-right:80px;
+right:263px;
 
 font-size:16px;
 font-weight:bold;
@@ -380,9 +380,9 @@ color:#374151;
 
 position:absolute;
 
-bottom:150px;
+bottom:20px;
 
-right:80px;
+right:285px;
 
 }
 
@@ -691,7 +691,6 @@ function safeValue(id){
 let el = document.getElementById(id);
 return el ? el.value.trim() : "";
 }
-
 function generate(){
 
 let btn = document.getElementById("generateBtn");
@@ -719,7 +718,45 @@ let reading = safeValue("readingInput")
 let listening = safeValue("listeningInput")
 let speaking = safeValue("speakingInput")
 
-let finalLevel = safeValue("levelInput")
+/* 🔥 حساب الـ Level */
+
+function getLevelFrom10(score){
+
+score = Number(score)
+
+if(score < 3) return "A1"
+if(score < 5) return "A2"
+if(score < 7) return "B1"
+if(score < 8.5) return "B2"
+return "C1"
+
+}
+
+function getFinalLevel(levels){
+
+if(levels.includes("C1")) return "C1"
+if(levels.includes("B2")) return "B2"
+if(levels.includes("B1")) return "B1"
+if(levels.includes("A2")) return "A2"
+return "A1"
+
+}
+
+/* حساب لكل مهارة */
+
+let writingLevel = getLevelFrom10(writing)
+let readingLevel = getLevelFrom10(reading)
+let listeningLevel = getLevelFrom10(listening)
+let speakingLevel = getLevelFrom10(speaking)
+
+/* النتيجة النهائية */
+
+let finalLevel = getFinalLevel([
+writingLevel,
+readingLevel,
+listeningLevel,
+speakingLevel
+])
 
 /* تحقق بسيط */
 
@@ -756,17 +793,25 @@ document.getElementById("sessionDate").innerText = sessionDate
 if(document.getElementById("resultDate"))
 document.getElementById("resultDate").innerText = resultDate
 
+/* 🔥 عرض بشكل منسق (Score + Level بمسافة ثابتة) */
+
+function formatScore(score, level){
+return (score + "/10").padEnd(10, " ") + level
+}
+
 if(document.getElementById("writing"))
-document.getElementById("writing").innerText = writing
+document.getElementById("writing").innerText = formatScore(writing, writingLevel)
 
 if(document.getElementById("reading"))
-document.getElementById("reading").innerText = reading
+document.getElementById("reading").innerText = formatScore(reading, readingLevel)
 
 if(document.getElementById("listening"))
-document.getElementById("listening").innerText = listening
+document.getElementById("listening").innerText = formatScore(listening, listeningLevel)
 
 if(document.getElementById("speaking"))
-document.getElementById("speaking").innerText = speaking
+document.getElementById("speaking").innerText = formatScore(speaking, speakingLevel)
+
+/* Final Level */
 
 if(document.getElementById("finalLevel"))
 document.getElementById("finalLevel").innerText = finalLevel
@@ -775,7 +820,7 @@ document.getElementById("finalLevel").innerText = finalLevel
 
 document.getElementById("serial").innerText = "Serial ILC : " + serial
 
-/* ✅ QR بعد التعديل */
+/* QR */
 
 let verifyLink = "https://etiqotwf.github.io/liveServer1/ilc/ilcCertificateF/verify.html?serial=" + serial;
 
@@ -830,6 +875,7 @@ serial
 }
 
 localStorage.setItem("certificates", JSON.stringify(certs))
+
 /* إرسال Google Sheet */
 
 const formData = new URLSearchParams();
@@ -862,7 +908,7 @@ body:formData.toString()
 
 console.log("✅ Certificate saved:", res);
 
-/* 🔥 تفريغ الفورم */
+/* تفريغ الفورم */
 document.querySelectorAll("input").forEach(i => i.value = "")
 
 btn.disabled = false;
@@ -880,6 +926,8 @@ btn.innerText = "Generate Certificate";
 });
 
 }
+
+
 
 function download(){
 
@@ -1158,7 +1206,36 @@ alert("Error deleting certificate");
 });
 
 }
+
 function viewCert(serial){
+
+/* 🔥 دوال مساعدة */
+
+function getLevelFrom10(score){
+
+score = Number(score)
+
+if(score < 3) return "A1"
+if(score < 5) return "A2"
+if(score < 7) return "B1"
+if(score < 8.5) return "B2"
+return "C1"
+
+}
+
+function formatScore(score, level){
+return `
+<span style="display:inline-block; width:85px;">${score} /10</span>
+<span style="display:inline-block; width:50px; text-align:center;">${level}</span>
+`
+}
+
+function formatDate(dateStr){
+let d = new Date(dateStr)
+return d.toLocaleDateString("fr-FR")
+}
+
+/* 🔥 جلب البيانات */
 
 fetch("https://script.google.com/macros/s/AKfycbxkETTKzwQH-ukaoewtpqPj5D8Qau8O7d56l0Fab4SZmJHCMkcLH8lNISZJo3WXX-KwBw/exec?action=get&serial=" + serial)
 
@@ -1178,7 +1255,7 @@ if(document.getElementById("prenom"))
 document.getElementById("prenom").innerText = cert.prenom;
 
 if(document.getElementById("birthDate"))
-document.getElementById("birthDate").innerText = cert.birthDate;
+document.getElementById("birthDate").innerText = formatDate(cert.birthDate);
 
 if(document.getElementById("candidateCode"))
 document.getElementById("candidateCode").innerText = cert.candidateCode;
@@ -1188,23 +1265,31 @@ if(document.getElementById("centre"))
 document.getElementById("centre").innerText = cert.centre;
 
 if(document.getElementById("sessionDate"))
-document.getElementById("sessionDate").innerText = cert.sessionDate;
+document.getElementById("sessionDate").innerText = formatDate(cert.sessionDate);
 
 if(document.getElementById("resultDate"))
-document.getElementById("resultDate").innerText = cert.resultDate;
+document.getElementById("resultDate").innerText = formatDate(cert.resultDate);
 
-/* النتائج */
+/* 🔥 حساب Level */
+
+let writingLevel = getLevelFrom10(cert.writing)
+let readingLevel = getLevelFrom10(cert.reading)
+let listeningLevel = getLevelFrom10(cert.listening)
+let speakingLevel = getLevelFrom10(cert.speaking)
+
+/* 🔥 عرض Score + Level (مسافة صغيرة) */
+
 if(document.getElementById("writing"))
-document.getElementById("writing").innerText = cert.writing;
+document.getElementById("writing").innerHTML = formatScore(cert.writing, writingLevel);
 
 if(document.getElementById("reading"))
-document.getElementById("reading").innerText = cert.reading;
+document.getElementById("reading").innerHTML = formatScore(cert.reading, readingLevel);
 
 if(document.getElementById("listening"))
-document.getElementById("listening").innerText = cert.listening;
+document.getElementById("listening").innerHTML = formatScore(cert.listening, listeningLevel);
 
 if(document.getElementById("speaking"))
-document.getElementById("speaking").innerText = cert.speaking;
+document.getElementById("speaking").innerHTML = formatScore(cert.speaking, speakingLevel);
 
 /* المستوى النهائي */
 if(document.getElementById("finalLevel"))
@@ -1234,6 +1319,8 @@ alert("Error loading certificate");
 });
 
 }
+
+
 
 function updateCertificate(){
 
