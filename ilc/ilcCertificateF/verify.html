@@ -10,13 +10,11 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 
-*{
-box-sizing:border-box;
-}
+<style>
 
 body{
 margin:0;
-font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+font-family:Segoe UI;
 background:linear-gradient(135deg,#0f172a,#1e293b);
 display:flex;
 align-items:center;
@@ -54,9 +52,21 @@ font-weight:600;
 margin-bottom:20px;
 }
 
-.success{background:#dcfce7;color:#166534;}
-.error{background:#fee2e2;color:#991b1b;}
-.warning{background:#fef3c7;color:#92400e;}
+/* ألوان الحالات */
+.success{
+background:#dcfce7;
+color:#166534;
+}
+
+.error{
+background:#fee2e2;
+color:#991b1b;
+}
+
+.warning{
+background:#fef3c7;
+color:#92400e;
+}
 
 .info{
 background:#f8fafc;
@@ -89,7 +99,7 @@ border-radius:6px;
 cursor:pointer;
 }
 
-/* ===== OVERLAY ===== */
+/* ===== CERTIFICATE ===== */
 
 #certificate{
 display:none;
@@ -104,167 +114,53 @@ overflow:auto;
 cursor:pointer;
 }
 
-/* ===== نفس تصميم الأدمن ===== */
-
 .certContainer{
 position:relative;
 width:641px;
 height:907px;
 margin:40px auto;
 background:white;
-border-radius:8px;
-box-shadow:0 20px 60px rgba(0,0,0,0.4);
-overflow:hidden;
 }
-
-/* الخلفية */
 
 .bg{
 position:absolute;
 width:100%;
 height:100%;
-top:0;
-left:0;
-z-index:1;
 }
 
-/* كل النصوص فوق الصورة */
+/* ===== أماكن البيانات ===== */
 
-.certContainer div{
-position:absolute;
-z-index:2;
-color:#111827;
-font-weight:bold;
-}
+.name{position:absolute;top:188px;left:400px;font-weight:bold;}
+.prenom{position:absolute;top:204px;left:400px;}
+.birth{position:absolute;top:221px;left:400px;}
+.code{position:absolute;top:237px;left:400px;}
 
-/* ===== البيانات ===== */
+.centre{position:absolute;top:269px;left:400px;}
+.session{position:absolute;top:290px;left:400px;}
+.result{position:absolute;top:325px;left:400px;}
 
-.name{
-top:188px;
-left:400px;
-font-size:17px;
-}
+.writing{position:absolute;top:453px;left:400px;}
+.reading{position:absolute;top:487px;left:400px;}
+.listening{position:absolute;top:527px;left:400px;}
+.speaking{position:absolute;top:565px;left:400px;}
 
-.prenom{
-top:204px;
-left:400px;
-font-size:17px;
-}
-
-.birthDate{
-top:221px;
-left:400px;
-font-size:16px;
-}
-
-.candidateCode{
-top:237px;
-left:400px;
-font-size:16px;
-}
-
-.centre{
-top:269px;
-left:400px;
-font-size:16px;
-}
-
-.sessionDate{
-top:290px;
-left:400px;
-font-size:16px;
-}
-
-.resultDate{
-top:325px;
-left:400px;
-font-size:16px;
-}
-
-/* ===== الدرجات (مهم 👇 نفس الأدمن) */
-
-.writing{
-top:453px;
-left:232px;
-font-size:16px;
-}
-
-.reading{
-top:487px;
-left:232px;
-font-size:16px;
-}
-
-.listening{
-top:527px;
-left:232px;
-font-size:16px;
-}
-
-.speaking{
-top:565px;
-left:232px;
-font-size:16px;
-}
-
-/* ===== المستوى ===== */
-
-.finalLevel{
-top:605px;
-left:400px;
-font-size:18px;
-}
-
-/* ===== النص السفلي ===== */
-
-.finalText{
-position:absolute;
-top:640px;
-left:60px;
-right:60px;
-text-align:center;
-font-size:15px;
-line-height:1.4;
-font-weight:bold;
-}
-
-/* ===== التاريخ داخل النص ===== */
-
-.date{
-position:absolute;
-bottom:125px;
-left:205px;
-font-size:17px;
-}
-
-/* ===== السيريال ===== */
+.level{position:absolute;top:605px;left:400px;font-weight:bold;}
 
 .serialCert{
 position:absolute;
-bottom:870px;
-right:263px;
-font-size:16px;
-color:#374151;
+bottom:715px;
+right:80px;
+font-weight:bold;
 }
-
-/* ===== QR ===== */
 
 .qr{
 position:absolute;
-bottom:20px;
-right:285px;
+bottom:150px;
+right:80px;
 }
 
-/* ===== Responsive ===== */
+</style>
 
-@media(max-width:700px){
-
-.certContainer{
-transform:scale(.7);
-transform-origin:top;
-}
-
-}
 </head>
 
 <body>
