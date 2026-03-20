@@ -567,6 +567,22 @@ background:#334155;
 
 }
 
+
+.finalText{
+position:absolute;
+top:640px;
+left:60px;
+right:60px;
+font-size:13px;
+text-align:center;
+line-height:.8;
+color:#111827;
+font-size:15px;
+font-weight:bold;
+
+
+}
+
 </style>
 </head>
 
@@ -652,6 +668,21 @@ background:#334155;
 <!-- النتيجة النهائية -->
 <div class="finalLevel" id="finalLevel"></div>
 
+<div class="finalText">
+
+Ce certificat a été approuvé par le British International Center le 
+<span id="certDate"></span>
+et c'est un certificat de notre part<br><br>
+
+Ce certificat est certifié et notarié pour être présenté aux personnes intéressées<br><br>
+
+<b>Fabriquer et utiliser un faux document est un délit et est suivi de sanctions administratives ou pénales</b><br><br>
+
+Renseignez-vous sur la validité du certificat du British International Center<br><br>
+
+
+</div>
+
 <!-- QR -->
 <div class="qr" id="qrcode"></div>
 
@@ -719,6 +750,15 @@ let listening = safeValue("listeningInput")
 let speaking = safeValue("speakingInput")
 
 /* 🔥 حساب الـ Level */
+
+function formatDateFR(dateStr){
+let d = new Date(dateStr);
+return d.toLocaleDateString("fr-FR");
+}
+
+if(document.getElementById("certDate")){
+document.getElementById("certDate").innerText = formatDateFR(resultDate);
+}
 
 function getLevelFrom10(score){
 
