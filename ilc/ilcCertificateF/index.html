@@ -241,6 +241,13 @@ font-weight:bold;
 
 }
 
+#centreInput,
+#levelInput{
+display:none;
+}
+
+
+
 .sessionDate{
 position:absolute;
 top:290px;
@@ -257,6 +264,14 @@ left:400px;
 font-size:16px;
 font-weight:bold;
 
+}
+
+.resultDate2{
+position:absolute;
+top:308px; /* فوق الريزلت الأساسي */
+left:400px;
+font-size:16px;
+font-weight:bold;
 }
 
 /* ===== RESULTS TABLE ===== */
@@ -648,6 +663,7 @@ font-weight:bold;
 <div class="centre" id="centre"></div>
 <div class="sessionDate" id="sessionDate"></div>
 <div class="resultDate" id="resultDate"></div>
+<div class="resultDate2" id="resultDate2"></div>
 
 <!-- النتائج -->
 <div class="writing" id="writing"></div>
@@ -825,6 +841,9 @@ document.getElementById("sessionDate").innerText = sessionDate
 if(document.getElementById("resultDate"))
 document.getElementById("resultDate").innerText = resultDate
 
+if(document.getElementById("resultDate2"))
+document.getElementById("resultDate2").innerText = resultDate
+
 /* 🔥 عرض الدرجة بدون /10 */
 
 function formatScore(score, level){
@@ -958,26 +977,34 @@ btn.innerText = "Generate Certificate";
 });
 
 }
-
 function download(){
 
 const cert = document.getElementById("certificate");
 
 html2canvas(cert,{
-scale:4
+scale:3,
+useCORS:true,      // 🔥 مهم جداً
+allowTaint:true
 }).then(canvas => {
 
 const link = document.createElement("a");
-link.download = "certificate.jpeg";
-link.href = canvas.toDataURL();
-link.click();
 
+link.download = "certificate.png"; // PNG أفضل
+
+link.href = canvas.toDataURL("image/png");
+
+document.body.appendChild(link); // مهم لبعض المتصفحات
+link.click();
+document.body.removeChild(link);
+
+}).catch(err=>{
+console.error(err);
+alert("Download Error");
 });
 
 }
 
-document.getElementById("downloadBtn").addEventListener("click", download);
-function searchCertificate(){
+document.getElementById("downloadBtn").addEventListener("click", download);function searchCertificate(){
 
 let serial = document.getElementById("searchSerial").value.trim()
 
@@ -1304,9 +1331,10 @@ document.getElementById("centre").innerText = centre;
 if(document.getElementById("sessionDate"))
 document.getElementById("sessionDate").innerText = formatDate(cert.sessionDate);
 
-if(document.getElementById("resultDate"))
 document.getElementById("resultDate").innerText = formatDate(cert.resultDate);
 
+if(document.getElementById("resultDate2"))
+document.getElementById("resultDate2").innerText = formatDate(cert.resultDate);
 /* ✅ 🔥 إصلاح عرض تاريخ الشهادة أسفل */
 if(document.getElementById("certDate")){
 document.getElementById("certDate").innerText = formatDate(cert.resultDate);
