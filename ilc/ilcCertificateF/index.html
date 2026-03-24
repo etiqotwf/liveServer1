@@ -1915,7 +1915,7 @@ reader.onload = function(event){
 
 let fullBase64 = event.target.result;
 
-/* 🔥 نفصل base64 عن الهيدر */
+/* 🔥 فصل Base64 */
 let base64 = fullBase64.split(",")[1];
 
 /* عرض الصورة فورًا */
@@ -1930,8 +1930,11 @@ const formData = new URLSearchParams();
 
 formData.append("action","uploadImage");
 formData.append("serial", currentSerial);
-formData.append("image", fullBase64);
-/* 🔥 إرسال لـ Google Apps Script */
+
+/* 🔥 مهم: ابعت Base64 فقط */
+formData.append("image", base64);
+
+/* 🔥 إرسال */
 
 fetch("https://script.google.com/macros/s/AKfycbyj-j7w-3nYnqhvIUqXmiSNCp9g_M2UxqL0-xYtodwuqdxDD6Z05Ove-jDCT5WVEuVdhQ/exec",{
 
@@ -1947,12 +1950,21 @@ body:formData.toString()
 
 console.log("✅ Image uploaded:", data);
 
-/* 🔥 تحديث localStorage */
+/* ❌ لو السيرفر رجع error */
+if(data.startsWith("error")){
+alert("❌ Upload failed: " + data);
+return;
+}
+
+/* 🔥 استخدم اللينك الحقيقي من السيرفر */
+let imageUrl = data;
+
+/* 🔥 تحديث LocalStorage */
 let certs = JSON.parse(localStorage.getItem("certificates") || "[]");
 
 certs = certs.map(c => {
 if(c.serial === currentSerial){
-c.imageUrl = fullBase64; // أو data لو السيرفر بيرجع لينك
+c.imageUrl = imageUrl; // 🔥 هنا الصح
 }
 return c;
 });
@@ -1960,7 +1972,6 @@ return c;
 localStorage.setItem("certificates", JSON.stringify(certs));
 
 })
-
 .catch(err => {
 
 console.error(err);
@@ -1973,6 +1984,7 @@ alert("❌ Upload failed");
 reader.readAsDataURL(file);
 
 });
+
 
 </script>
 
