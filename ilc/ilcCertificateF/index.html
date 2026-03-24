@@ -259,8 +259,8 @@ font-weight:bold;
 
 .resultDate{
 position:absolute;
-top:325px;
-left:400px;
+top:675px;
+left:352px;
 font-size:16px;
 font-weight:bold;
 
@@ -365,6 +365,7 @@ color:#111827;
 /* serial */
 
 .serial{
+display:none;
 
 position:absolute;
 
@@ -385,9 +386,8 @@ color:#374151;
 
 position:absolute;
 
-bottom:20px;
-
-right:172px;
+top:460px;
+left:400px;
 
 }
 
@@ -574,6 +574,7 @@ background:#334155;
 
 
 .finalText{
+display:none;
 position:absolute;
 top:612px;
 left:60px;
@@ -586,6 +587,52 @@ font-size:13px;
 font-weight:bold;
 
 
+}
+
+
+.profileBox{
+position:absolute;
+top:105px;   /* عدل حسب مكانك */
+right:20px;
+
+width:120px;
+height:120px;
+
+border-radius:50%;
+overflow:hidden;
+
+background:#e5e7eb;
+cursor:pointer;
+
+display:flex;
+align-items:center;
+justify-content:center;
+
+font-size:12px;
+color:#555;
+}
+
+.profileBox::after{
+content:"Upload";
+position:absolute;
+bottom:5px;
+font-size:10px;
+background:rgba(0,0,0,0.5);
+color:white;
+padding:2px 6px;
+border-radius:6px;
+}
+
+
+/* 🔥 لما الصورة تكون موجودة اخفي Upload */
+.profileBox.hasImage::after{
+display:none;
+}
+
+#profileImage{
+width:100%;
+height:100%;
+object-fit:cover; /* 🔥 أهم حاجة */
 }
 
 </style>
@@ -604,8 +651,7 @@ font-weight:bold;
 <input id="nameInput" placeholder="Nom (Last Name)">
 <input id="prenomInput" placeholder="Prénom (First Name)">
 <input type="date" id="birthInput" placeholder="Date de naissance">
-<input id="codeInput" placeholder="Code Candidat">
-
+<input id="codeInput" placeholder="Code Candidat" readonly>
 <!-- بيانات المركز -->
 <input id="centreInput" placeholder="Centre">
 <input type="date" id="sessionInput" placeholder="Date de la session">
@@ -653,6 +699,12 @@ font-weight:bold;
 
 <div class="serial" id="serial"></div>
 
+<div class="profileBox" onclick="uploadImage()">
+  <img id="profileImage" src="" alt="">
+</div>
+
+<input type="file" id="imageInput" accept="image/*" style="display:none">
+
 <!-- البيانات الشخصية -->
 <div class="name" id="name"></div>
 <div class="prenom" id="prenom"></div>
@@ -695,6 +747,8 @@ Ce certificat est certifié et notarié pour être présenté aux personnes int�
 
 </body>
 <script>
+
+  let currentSerial = "";
 
 let offsetX = localStorage.getItem("printOffsetX") || 0;
 let offsetY = localStorage.getItem("printOffsetY") || 0;
@@ -744,8 +798,14 @@ btn.innerText = "Generating...";
 let name = safeValue("nameInput")
 let prenom = safeValue("prenomInput")
 let birthDate = safeValue("birthInput")
-let candidateCode = safeValue("codeInput")
+let serial = editingSerial ? editingSerial : generateSerial()
 
+currentSerial = serial;
+
+let candidateCode = "Serial ILC : " + serial
+
+// عرض في الانبوت
+document.getElementById("codeInput").value = candidateCode
 /* ✅ سنتر ثابت */
 let centre = "iLC Tanta, institut français d'Égypte";
 
@@ -817,7 +877,6 @@ return;
 
 /* سيريال */
 
-let serial = editingSerial ? editingSerial : generateSerial()
 
 /* عرض البيانات */
 
@@ -946,7 +1005,7 @@ formData.append("speaking",speaking);
 formData.append("finalLevel",finalLevel);
 formData.append("serial",serial);
 
-fetch("https://script.google.com/macros/s/AKfycbxkETTKzwQH-ukaoewtpqPj5D8Qau8O7d56l0Fab4SZmJHCMkcLH8lNISZJo3WXX-KwBw/exec",{
+fetch("https://script.google.com/macros/s/AKfycbxpX_STHKC93OusQJzf7dZs8C1tblXfGftf1zRu4d2c5tg0qILPOmB4AtAL_HAqIgz9UQ/exec",{
 
 method:"POST",
 headers:{"Content-Type":"application/x-www-form-urlencoded"},
@@ -1004,7 +1063,10 @@ alert("Download Error");
 
 }
 
-document.getElementById("downloadBtn").addEventListener("click", download);function searchCertificate(){
+document.getElementById("downloadBtn").addEventListener("click", download);
+
+
+function searchCertificate(){
 
 let serial = document.getElementById("searchSerial").value.trim()
 
@@ -1014,49 +1076,77 @@ let student = certs.find(c => c.serial === serial)
 
 if(student){
 
-/* البيانات الشخصية */
-document.getElementById("name").innerText = student.name
+/* 🔥 مهم */
+currentSerial = student.serial;
+
+/* ================== البيانات ================== */
+
+document.getElementById("name").innerText = student.name || ""
 
 if(document.getElementById("prenom"))
-document.getElementById("prenom").innerText = student.prenom
+document.getElementById("prenom").innerText = student.prenom || ""
 
 if(document.getElementById("birthDate"))
-document.getElementById("birthDate").innerText = student.birthDate
+document.getElementById("birthDate").innerText = student.birthDate || ""
 
 if(document.getElementById("candidateCode"))
-document.getElementById("candidateCode").innerText = student.candidateCode
+document.getElementById("candidateCode").innerText = student.candidateCode || ""
 
 /* بيانات المركز */
+
 if(document.getElementById("centre"))
-document.getElementById("centre").innerText = student.centre
+document.getElementById("centre").innerText = student.centre || ""
 
 if(document.getElementById("sessionDate"))
-document.getElementById("sessionDate").innerText = student.sessionDate
+document.getElementById("sessionDate").innerText = student.sessionDate || ""
 
 if(document.getElementById("resultDate"))
-document.getElementById("resultDate").innerText = student.resultDate
+document.getElementById("resultDate").innerText = student.resultDate || ""
 
 /* النتائج */
+
 if(document.getElementById("writing"))
-document.getElementById("writing").innerText = student.writing
+document.getElementById("writing").innerText = student.writing || ""
 
 if(document.getElementById("reading"))
-document.getElementById("reading").innerText = student.reading
+document.getElementById("reading").innerText = student.reading || ""
 
 if(document.getElementById("listening"))
-document.getElementById("listening").innerText = student.listening
+document.getElementById("listening").innerText = student.listening || ""
 
 if(document.getElementById("speaking"))
-document.getElementById("speaking").innerText = student.speaking
+document.getElementById("speaking").innerText = student.speaking || ""
 
 /* المستوى النهائي */
+
 if(document.getElementById("finalLevel"))
-document.getElementById("finalLevel").innerText = student.finalLevel
+document.getElementById("finalLevel").innerText = student.finalLevel || ""
 
 /* السيريال */
+
 document.getElementById("serial").innerText = "Serial ILC : " + student.serial
 
-/* QR */
+/* ================== 🔥 الصورة ================== */
+
+/* ================== 🔥 الصورة ================== */
+
+let img = document.getElementById("profileImage");
+let box = document.querySelector(".profileBox");
+
+if(student.imageUrl){
+
+img.src = student.imageUrl;
+box.classList.add("hasImage");
+
+}else{
+
+img.src = "";
+box.classList.remove("hasImage");
+
+}
+
+/* ================== QR ================== */
+
 document.getElementById("qrcode").innerHTML = ""
 
 let verifyLink = "https://etiqotwf.github.io/liveServer1/ilc/ilcCertificateF/verify.html?serial=" + student.serial;
@@ -1075,78 +1165,102 @@ alert("Certificate Not Found")
 
 }
 
+
 window.onload = function(){
 
-let params = new URLSearchParams(window.location.search)
+let params = new URLSearchParams(window.location.search);
+let serial = params.get("serial");
 
-let serial = params.get("serial")
+if(!serial) return;
 
-if(serial){
+/* جلب البيانات */
+let certs = JSON.parse(localStorage.getItem("certificates") || "[]");
+let student = certs.find(c => c.serial === serial);
 
-let certs = JSON.parse(localStorage.getItem("certificates") || "[]")
+if(!student){
+alert("Certificate not found");
+return;
+}
 
-let student = certs.find(c => c.serial === serial)
+/* 🔥 مهم جداً */
+currentSerial = student.serial;
 
-if(student){
+/* ================== البيانات ================== */
 
-/* البيانات الشخصية */
-document.getElementById("name").innerText = student.name
+document.getElementById("name").innerText = student.name || "";
 
 if(document.getElementById("prenom"))
-document.getElementById("prenom").innerText = student.prenom
+document.getElementById("prenom").innerText = student.prenom || "";
 
 if(document.getElementById("birthDate"))
-document.getElementById("birthDate").innerText = student.birthDate
+document.getElementById("birthDate").innerText = student.birthDate || "";
 
 if(document.getElementById("candidateCode"))
-document.getElementById("candidateCode").innerText = student.candidateCode
+document.getElementById("candidateCode").innerText = student.candidateCode || "";
 
-/* بيانات المركز */
 if(document.getElementById("centre"))
-document.getElementById("centre").innerText = student.centre
+document.getElementById("centre").innerText = student.centre || "";
 
 if(document.getElementById("sessionDate"))
-document.getElementById("sessionDate").innerText = student.sessionDate
+document.getElementById("sessionDate").innerText = student.sessionDate || "";
 
 if(document.getElementById("resultDate"))
-document.getElementById("resultDate").innerText = student.resultDate
+document.getElementById("resultDate").innerText = student.resultDate || "";
 
 /* النتائج */
+
 if(document.getElementById("writing"))
-document.getElementById("writing").innerText = student.writing
+document.getElementById("writing").innerText = student.writing || "";
 
 if(document.getElementById("reading"))
-document.getElementById("reading").innerText = student.reading
+document.getElementById("reading").innerText = student.reading || "";
 
 if(document.getElementById("listening"))
-document.getElementById("listening").innerText = student.listening
+document.getElementById("listening").innerText = student.listening || "";
 
 if(document.getElementById("speaking"))
-document.getElementById("speaking").innerText = student.speaking
+document.getElementById("speaking").innerText = student.speaking || "";
 
 /* المستوى النهائي */
+
 if(document.getElementById("finalLevel"))
-document.getElementById("finalLevel").innerText = student.finalLevel
+document.getElementById("finalLevel").innerText = student.finalLevel || "";
 
 /* السيريال */
-document.getElementById("serial").innerText = "Serial ILC : " + student.serial
 
-/* QR */
-document.getElementById("qrcode").innerHTML = ""
+document.getElementById("serial").innerText = "Serial ILC : " + student.serial;
+
+/* ================== الصورة ================== */
+let img = document.getElementById("profileImage");
+let box = document.querySelector(".profileBox");
+
+if(student.imageUrl){
+
+img.src = student.imageUrl;
+box.classList.add("hasImage");
+
+}else{
+
+img.src = "";
+box.classList.remove("hasImage");
+
+}
+
+/* ================== QR ================== */
 
 let verifyLink = "https://etiqotwf.github.io/liveServer1/ilc/ilcCertificateF/verify.html?serial=" + student.serial;
+
+document.getElementById("qrcode").innerHTML = "";
 
 new QRCode(document.getElementById("qrcode"),{
 text: verifyLink,
 width: 90,
 height: 90
-})
+});
 
 }
 
-}
 
-}
 function showAdminTable(){
 
 let container = document.getElementById("adminTable");
@@ -1156,7 +1270,7 @@ container.innerHTML="";
 return;
 }
 
-fetch("https://script.google.com/macros/s/AKfycbxkETTKzwQH-ukaoewtpqPj5D8Qau8O7d56l0Fab4SZmJHCMkcLH8lNISZJo3WXX-KwBw/exec?action=list")
+fetch("https://script.google.com/macros/s/AKfycbxpX_STHKC93OusQJzf7dZs8C1tblXfGftf1zRu4d2c5tg0qILPOmB4AtAL_HAqIgz9UQ/exec?action=list")
 
 .then(res=>res.json())
 
@@ -1224,7 +1338,7 @@ const formData = new URLSearchParams();
 formData.append("action","delete");
 formData.append("serial",serial);
 
-fetch("https://script.google.com/macros/s/AKfycbxkETTKzwQH-ukaoewtpqPj5D8Qau8O7d56l0Fab4SZmJHCMkcLH8lNISZJo3WXX-KwBw/exec",{
+fetch("https://script.google.com/macros/s/AKfycbxpX_STHKC93OusQJzf7dZs8C1tblXfGftf1zRu4d2c5tg0qILPOmB4AtAL_HAqIgz9UQ/exec",{
 
 method:"POST",
 
@@ -1263,6 +1377,8 @@ alert("Error deleting certificate");
 });
 
 }
+
+
 function viewCert(serial){
 
 /* 🔥 دوال مساعدة */
@@ -1296,11 +1412,27 @@ return d.toLocaleDateString("fr-FR")
 
 /* 🔥 جلب البيانات */
 
-fetch("https://script.google.com/macros/s/AKfycbxkETTKzwQH-ukaoewtpqPj5D8Qau8O7d56l0Fab4SZmJHCMkcLH8lNISZJo3WXX-KwBw/exec?action=get&serial=" + serial)
+fetch("https://script.google.com/macros/s/AKfycbxpX_STHKC93OusQJzf7dZs8C1tblXfGftf1zRu4d2c5tg0qILPOmB4AtAL_HAqIgz9UQ/exec?action=get&serial=" + serial)
 
 .then(response => response.json())
 
 .then(cert => {
+
+currentSerial = cert.serial;
+let img = document.getElementById("profileImage");
+let box = document.querySelector(".profileBox");
+
+if(cert.imageUrl){
+
+img.src = cert.imageUrl;
+box.classList.add("hasImage");
+
+}else{
+
+img.src = "";
+box.classList.remove("hasImage");
+
+}
 
 if(!cert){
 alert("Certificate not found");
@@ -1441,7 +1573,7 @@ formData.append("serial",editingSerial);
 
 /* إرسال */
 
-fetch("https://script.google.com/macros/s/AKfycbxkETTKzwQH-ukaoewtpqPj5D8Qau8O7d56l0Fab4SZmJHCMkcLH8lNISZJo3WXX-KwBw/exec",{
+fetch("https://script.google.com/macros/s/AKfycbxpX_STHKC93OusQJzf7dZs8C1tblXfGftf1zRu4d2c5tg0qILPOmB4AtAL_HAqIgz9UQ/exec",{
 
 method:"POST",
 
@@ -1484,7 +1616,7 @@ showAdminTable();
 
 function editCert(serial){
 
-fetch("https://script.google.com/macros/s/AKfycbxkETTKzwQH-ukaoewtpqPj5D8Qau8O7d56l0Fab4SZmJHCMkcLH8lNISZJo3WXX-KwBw/exec?action=get&serial=" + serial)
+fetch("https://script.google.com/macros/s/AKfycbxpX_STHKC93OusQJzf7dZs8C1tblXfGftf1zRu4d2c5tg0qILPOmB4AtAL_HAqIgz9UQ/exec?action=get&serial=" + serial)
 
 .then(res => res.json())
 
@@ -1748,6 +1880,100 @@ document.body.appendChild(display);
 display.innerText = "Offset X: " + offsetX + " | Offset Y: " + offsetY;
 
 }
+
+function uploadImage(){
+document.getElementById("imageInput").click();
+}
+
+document.getElementById("imageInput").addEventListener("change", function(e){
+
+let file = e.target.files[0];
+
+if(!file) return;
+
+/* 🔥 تحقق من السيريال */
+if(!currentSerial){
+alert("Generate or view certificate first");
+return;
+}
+
+/* 🔥 تحقق من نوع الصورة */
+if(!file.type.startsWith("image/")){
+alert("Please select a valid image");
+return;
+}
+
+/* 🔥 تحقق من الحجم */
+if(file.size > 2 * 1024 * 1024){
+alert("Image must be أقل من 2MB");
+return;
+}
+
+let reader = new FileReader();
+
+reader.onload = function(event){
+
+let fullBase64 = event.target.result;
+
+/* 🔥 نفصل base64 عن الهيدر */
+let base64 = fullBase64.split(",")[1];
+
+/* عرض الصورة فورًا */
+let img = document.getElementById("profileImage");
+img.src = fullBase64;
+
+/* اخفاء Upload */
+document.querySelector(".profileBox").classList.add("hasImage");
+
+/* 🔥 تجهيز البيانات */
+const formData = new URLSearchParams();
+
+formData.append("action","uploadImage");
+formData.append("serial", currentSerial);
+formData.append("image", base64);
+
+/* 🔥 إرسال لـ Google Apps Script */
+
+fetch("https://script.google.com/macros/s/AKfycbxpX_STHKC93OusQJzf7dZs8C1tblXfGftf1zRu4d2c5tg0qILPOmB4AtAL_HAqIgz9UQ/exec",{
+
+method:"POST",
+headers:{
+"Content-Type":"application/x-www-form-urlencoded"
+},
+body:formData.toString()
+
+})
+.then(res => res.text())
+..then(data => {
+
+console.log("✅ Image uploaded:", data);
+
+/* 🔥 تحديث localStorage */
+let certs = JSON.parse(localStorage.getItem("certificates") || "[]");
+
+certs = certs.map(c => {
+if(c.serial === currentSerial){
+c.imageUrl = fullBase64; // أو data لو السيرفر بيرجع لينك
+}
+return c;
+});
+
+localStorage.setItem("certificates", JSON.stringify(certs));
+
+})
+
+.catch(err => {
+
+console.error(err);
+alert("❌ Upload failed");
+
+});
+
+};
+
+reader.readAsDataURL(file);
+
+});
 
 </script>
 
