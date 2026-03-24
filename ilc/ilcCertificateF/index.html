@@ -1930,8 +1930,7 @@ const formData = new URLSearchParams();
 
 formData.append("action","uploadImage");
 formData.append("serial", currentSerial);
-formData.append("image", base64);
-
+formData.append("image", fullBase64);
 /* 🔥 إرسال لـ Google Apps Script */
 
 fetch("https://script.google.com/macros/s/AKfycbxpX_STHKC93OusQJzf7dZs8C1tblXfGftf1zRu4d2c5tg0qILPOmB4AtAL_HAqIgz9UQ/exec",{
@@ -1944,7 +1943,7 @@ body:formData.toString()
 
 })
 .then(res => res.text())
-..then(data => {
+.then(data => {
 
 console.log("✅ Image uploaded:", data);
 
