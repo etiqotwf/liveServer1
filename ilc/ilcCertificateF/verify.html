@@ -52,21 +52,9 @@ font-weight:600;
 margin-bottom:20px;
 }
 
-/* ألوان الحالات */
-.success{
-background:#dcfce7;
-color:#166534;
-}
-
-.error{
-background:#fee2e2;
-color:#991b1b;
-}
-
-.warning{
-background:#fef3c7;
-color:#92400e;
-}
+.success{background:#dcfce7;color:#166534;}
+.error{background:#fee2e2;color:#991b1b;}
+.warning{background:#fef3c7;color:#92400e;}
 
 .info{
 background:#f8fafc;
@@ -75,13 +63,8 @@ border-radius:10px;
 text-align:left;
 }
 
-.row{
-margin:8px 0;
-}
-
-.row span{
-font-weight:bold;
-}
+.row{margin:8px 0;}
+.row span{font-weight:bold;}
 
 .serial{
 margin-top:15px;
@@ -97,6 +80,23 @@ color:white;
 border:none;
 border-radius:6px;
 cursor:pointer;
+}
+
+/* 🔥 صورة الطالب في الكارد */
+
+.profileCard{
+width:100px;
+height:100px;
+border-radius:50%;
+overflow:hidden;
+margin:0 auto 15px;
+background:#e5e7eb;
+}
+
+.profileCard img{
+width:100%;
+height:100%;
+object-fit:cover;
 }
 
 /* ===== CERTIFICATE ===== */
@@ -126,6 +126,25 @@ background:white;
 position:absolute;
 width:100%;
 height:100%;
+}
+
+/* 🔥 صورة الشهادة */
+
+.profileCert{
+position:absolute;
+top:105px;
+right:20px;
+width:120px;
+height:120px;
+border-radius:50%;
+overflow:hidden;
+background:#e5e7eb;
+}
+
+.profileCert img{
+width:100%;
+height:100%;
+object-fit:cover;
 }
 
 /* ===== أماكن البيانات ===== */
@@ -165,12 +184,15 @@ right:80px;
 
 <body>
 
-<!-- ===== CARD ===== -->
-
 <div class="verify-card">
 
 <div class="institute">ILC TANTA Institute</div>
 <div class="subtitle">Certificate Verification</div>
+
+<!-- 🔥 صورة -->
+<div class="profileCard">
+  <img id="cardImage" src="">
+</div>
 
 <div class="status" id="statusBox"></div>
 
@@ -210,6 +232,11 @@ Serial : <span id="serial"></span>
 
 <img src="certificate.jpeg" class="bg">
 
+<!-- 🔥 صورة -->
+<div class="profileCert">
+  <img id="certImage" src="">
+</div>
+
 <div class="name" id="certName"></div>
 <div class="prenom" id="certPrenom"></div>
 <div class="birth" id="certBirth"></div>
@@ -237,19 +264,14 @@ Serial : <span id="serial"></span>
 <script>
 
 function setStatus(message,type){
-
 let box = document.getElementById("statusBox");
-
 box.innerText = message;
 box.className = "status " + type;
-
 }
-
-/* تحميل البيانات */
 
 function loadCert(serial){
 
-fetch("https://script.google.com/macros/s/AKfycbxkETTKzwQH-ukaoewtpqPj5D8Qau8O7d56l0Fab4SZmJHCMkcLH8lNISZJo3WXX-KwBw/exec?action=get&serial=" + serial)
+fetch("https://script.google.com/macros/s/AKfycbyw50e_Z6aafWAQ_vur61LljNaNnJhyNC6uFB9ivUzAOJpUaFrxBin5KPGXMv-7u6tYgA/exec?action=get&serial=" + serial)
 
 .then(res=>res.json())
 
@@ -260,10 +282,22 @@ setStatus("❌ Certificate Not Found","error");
 return;
 }
 
-/* حالة النجاح */
 setStatus("✅ Certificate Verified","success");
 
-/* CARD */
+/* 🔥 الصورة */
+
+let cardImg = document.getElementById("cardImage");
+let certImg = document.getElementById("certImage");
+
+if(cert.imageUrl){
+cardImg.src = cert.imageUrl;
+certImg.src = cert.imageUrl;
+}else{
+cardImg.style.display = "none";
+certImg.style.display = "none";
+}
+
+/* باقي البيانات */
 
 document.getElementById("name").innerText = cert.name || "";
 document.getElementById("prenom").innerText = cert.prenom || "";
@@ -283,7 +317,7 @@ document.getElementById("finalLevel").innerText = cert.finalLevel || "";
 
 document.getElementById("serial").innerText = cert.serial;
 
-/* CERTIFICATE */
+/* CERT */
 
 document.getElementById("certName").innerText = cert.name;
 document.getElementById("certPrenom").innerText = cert.prenom;
@@ -309,13 +343,11 @@ let link = "https://etiqotwf.github.io/liveServer1/ilc/ilcCertificateF/verify.ht
 
 document.getElementById("certQR").innerHTML = "";
 
-if(cert.serial){
 new QRCode(document.getElementById("certQR"),{
 text:link,
 width:100,
 height:100
 });
-}
 
 })
 
@@ -326,19 +358,15 @@ setStatus("⚠️ Error loading certificate","warning");
 
 }
 
-/* عرض الشهادة */
-
 function showCertificate(){
 document.getElementById("certificate").style.display="block";
 }
-
-/* إغلاق الشهادة */
 
 document.getElementById("certificate").addEventListener("click",function(){
 this.style.display="none";
 });
 
-/* قراءة Serial من URL */
+/* URL */
 
 let params = new URLSearchParams(window.location.search);
 let serial = params.get("serial");
