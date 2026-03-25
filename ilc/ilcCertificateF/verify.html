@@ -238,6 +238,8 @@ text-align:left;
 direction:ltr;
 }
 
+
+
 </style>
 
 </head>
@@ -441,7 +443,8 @@ document.getElementById("reading").innerText = formatScore(cert.reading);
 document.getElementById("listening").innerText = formatScore(cert.listening);
 document.getElementById("speaking").innerText = formatScore(cert.speaking);
 
-document.getElementById("finalLevel").innerText = cert.finalLevel || "";
+if(document.getElementById("finalLevel")){
+  document.getElementById("finalLevel").innerText = cert.finalLevel || "";
 
 document.getElementById("serial").innerText = cert.serial;
 
