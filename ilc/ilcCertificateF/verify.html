@@ -178,6 +178,66 @@ bottom:150px;
 right:80px;
 }
 
+
+.contactBox{
+margin-top:20px;
+padding:15px;
+background:#f1f5f9;
+border-radius:10px;
+text-align:left;
+border:1px solid #e2e8f0;
+}
+
+.contactTitle{
+font-weight:700;
+margin-bottom:10px;
+color:#0f172a;
+}
+
+.contactItem{
+margin:6px 0;
+color:#334155;
+font-size:14px;
+}
+
+
+.arabicOfficial{
+margin:15px 0;
+padding:18px;
+background:linear-gradient(135deg,#1e3a8a,#0f172a);
+border-radius:12px;
+color:white;
+direction:rtl;
+text-align:right;
+box-shadow:0 10px 25px rgba(0,0,0,0.25);
+}
+
+.arabicHeader{
+font-size:18px;
+font-weight:900;
+margin-bottom:5px;
+}
+
+.arabicSub{
+font-size:15px;
+color:#93c5fd;
+margin-bottom:10px;
+}
+
+.arabicDesc{
+font-size:14px;
+line-height:1.8;
+margin-bottom:10px;
+}
+
+.arabicSite{
+font-size:13px;
+color:#60a5fa;
+font-weight:bold;
+text-align:left;
+direction:ltr;
+}
+
 </style>
 
 </head>
@@ -212,12 +272,42 @@ right:80px;
 <div class="row"><span>Listening :</span> <span id="listening"></span></div>
 <div class="row"><span>Speaking :</span> <span id="speaking"></span></div>
 
-<div class="row"><span>Niveau :</span> <span id="finalLevel"></span></div>
 
 </div>
 
 <div class="serial">
 Serial : <span id="serial"></span>
+</div>
+
+<div class="arabicOfficial">
+
+<div class="arabicHeader">
+المعهد البريطاني للغات - ILC
+</div>
+
+<div class="arabicSub">
+مكتب ترجمة معتمد بطنطا
+</div>
+
+<div class="arabicDesc">
+هو مكتب ترجمة معتمد بطنطا ILC المعهد البريطاني للغات يقدم خدمات ترجمة احترافية لجميع الوثائق والمستندات الرسمية
+</div>
+
+<div class="arabicSite">
+www.ilceg.com
+</div>
+
+</div>
+
+<div class="contactBox">
+
+<div class="contactTitle">Informations de contact</div>
+
+<div class="contactItem">📞 +20 403 309 156</div>
+<div class="contactItem">📱 +20 100 733 1245</div>
+<div class="contactItem">🌐 www.ilceg.com</div>
+<div class="contactItem">🪪 Numéro de licence : NQI T 347/571</div>
+
 </div>
 
 <button class="viewBtn" onclick="showCertificate()">View Certificate</button>
@@ -263,11 +353,46 @@ Serial : <span id="serial"></span>
 
 <script>
 
+
+/* ===== أدوات احترافية ===== */
+
+/* 🇫🇷 تنسيق التاريخ */
+function formatDateFR(dateStr){
+if(!dateStr) return "";
+let d = new Date(dateStr);
+return d.toLocaleDateString("fr-FR", {
+year:"numeric",
+month:"long",
+day:"numeric",
+timeZone:"Africa/Cairo" // 🔥 توقيت مصر
+});
+}
+
+/* 🎯 حساب Level */
+function getLevelFrom699(score){
+score = Number(score)
+if(score < 200) return "A1"
+if(score < 350) return "A2"
+if(score < 500) return "B1"
+if(score < 600) return "B2"
+return "C1"
+}
+
+/* 🎯 عرض Score + Level */
+function formatScore(score){
+let level = getLevelFrom699(score)
+return score + "   " + level
+}
+
+/* ===== Status ===== */
+
 function setStatus(message,type){
 let box = document.getElementById("statusBox");
 box.innerText = message;
 box.className = "status " + type;
 }
+
+/* ===== تحميل الشهادة ===== */
 
 function loadCert(serial){
 
@@ -278,11 +403,11 @@ fetch("https://script.google.com/macros/s/AKfycbyw50e_Z6aafWAQ_vur61LljNaNnJhyNC
 .then(cert=>{
 
 if(!cert || Object.keys(cert).length === 0){
-setStatus("❌ Certificate Not Found","error");
+setStatus("❌ Certificat introuvable","error");
 return;
 }
 
-setStatus("✅ Certificate Verified","success");
+setStatus("✅ Certificat vérifié avec succès","success");
 
 /* 🔥 الصورة */
 
@@ -297,41 +422,45 @@ cardImg.style.display = "none";
 certImg.style.display = "none";
 }
 
-/* باقي البيانات */
+/* ===== البيانات (FR) ===== */
 
 document.getElementById("name").innerText = cert.name || "";
 document.getElementById("prenom").innerText = cert.prenom || "";
-document.getElementById("birthDate").innerText = cert.birthDate || "";
+document.getElementById("birthDate").innerText = formatDateFR(cert.birthDate);
 document.getElementById("candidateCode").innerText = cert.candidateCode || "";
 
 document.getElementById("centre").innerText = cert.centre || "";
-document.getElementById("sessionDate").innerText = cert.sessionDate || "";
-document.getElementById("resultDate").innerText = cert.resultDate || "";
+document.getElementById("sessionDate").innerText = formatDateFR(cert.sessionDate);
+document.getElementById("resultDate").innerText = formatDateFR(cert.resultDate);
 
-document.getElementById("writing").innerText = cert.writing || "";
-document.getElementById("reading").innerText = cert.reading || "";
-document.getElementById("listening").innerText = cert.listening || "";
-document.getElementById("speaking").innerText = cert.speaking || "";
+/* 🔥 Scores */
+
+document.getElementById("writing").innerText = formatScore(cert.writing);
+document.getElementById("reading").innerText = formatScore(cert.reading);
+document.getElementById("listening").innerText = formatScore(cert.listening);
+document.getElementById("speaking").innerText = formatScore(cert.speaking);
 
 document.getElementById("finalLevel").innerText = cert.finalLevel || "";
 
 document.getElementById("serial").innerText = cert.serial;
 
-/* CERT */
+/* ===== الشهادة (مطابقة الأدمن) ===== */
 
 document.getElementById("certName").innerText = cert.name;
 document.getElementById("certPrenom").innerText = cert.prenom;
-document.getElementById("certBirth").innerText = cert.birthDate;
+document.getElementById("certBirth").innerText = formatDateFR(cert.birthDate);
 document.getElementById("certCode").innerText = cert.candidateCode;
 
 document.getElementById("certCentre").innerText = cert.centre;
-document.getElementById("certSession").innerText = cert.sessionDate;
-document.getElementById("certResult").innerText = cert.resultDate;
+document.getElementById("certSession").innerText = formatDateFR(cert.sessionDate);
+document.getElementById("certResult").innerText = formatDateFR(cert.resultDate);
 
-document.getElementById("certWriting").innerText = cert.writing;
-document.getElementById("certReading").innerText = cert.reading;
-document.getElementById("certListening").innerText = cert.listening;
-document.getElementById("certSpeaking").innerText = cert.speaking;
+/* نفس فورمات الأدمن */
+
+document.getElementById("certWriting").innerText = formatScore(cert.writing);
+document.getElementById("certReading").innerText = formatScore(cert.reading);
+document.getElementById("certListening").innerText = formatScore(cert.listening);
+document.getElementById("certSpeaking").innerText = formatScore(cert.speaking);
 
 document.getElementById("certLevel").innerText = cert.finalLevel;
 
@@ -353,10 +482,12 @@ height:100
 
 .catch(err=>{
 console.error(err);
-setStatus("⚠️ Error loading certificate","warning");
+setStatus("⚠️ Erreur lors du chargement","warning");
 });
 
 }
+
+/* ===== عرض الشهادة ===== */
 
 function showCertificate(){
 document.getElementById("certificate").style.display="block";
@@ -366,7 +497,7 @@ document.getElementById("certificate").addEventListener("click",function(){
 this.style.display="none";
 });
 
-/* URL */
+/* ===== URL ===== */
 
 let params = new URLSearchParams(window.location.search);
 let serial = params.get("serial");
@@ -374,7 +505,7 @@ let serial = params.get("serial");
 if(serial){
 loadCert(serial);
 }else{
-setStatus("⚠️ No Serial Provided","warning");
+setStatus("⚠️ Aucun numéro fourni","warning");
 }
 
 </script>
