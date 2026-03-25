@@ -1005,7 +1005,7 @@ formData.append("speaking",speaking);
 formData.append("finalLevel",finalLevel);
 formData.append("serial",serial);
 
-fetch("https://script.google.com/macros/s/AKfycbxkETTKzwQH-ukaoewtpqPj5D8Qau8O7d56l0Fab4SZmJHCMkcLH8lNISZJo3WXX-KwBw/exec",{
+fetch("https://script.google.com/macros/s/AKfycbxHH7LPmRakDTWBrTM2aqZ9m500VvQfIm781RnpZeW-ZKobfvrpMCyE49zr4MnNl5QEBQ/exec",{
 
 method:"POST",
 headers:{"Content-Type":"application/x-www-form-urlencoded"},
@@ -1128,17 +1128,21 @@ document.getElementById("serial").innerText = "Serial ILC : " + student.serial
 
 /* ================== 🔥 الصورة ================== */
 
+/* ================== 🔥 الصورة ================== */
+
 let img = document.getElementById("profileImage");
 let box = document.querySelector(".profileBox");
 
-let savedImg = localStorage.getItem("profileImage_" + currentSerial);
+if(student.imageUrl){
 
-if(savedImg){
-img.src = savedImg;
+img.src = student.imageUrl;
 box.classList.add("hasImage");
+
 }else{
+
 img.src = "";
 box.classList.remove("hasImage");
+
 }
 
 /* ================== QR ================== */
@@ -1227,18 +1231,19 @@ document.getElementById("finalLevel").innerText = student.finalLevel || "";
 document.getElementById("serial").innerText = "Serial ILC : " + student.serial;
 
 /* ================== الصورة ================== */
-
 let img = document.getElementById("profileImage");
 let box = document.querySelector(".profileBox");
 
-let savedImg = localStorage.getItem("profileImage_" + currentSerial);
+if(student.imageUrl){
 
-if(savedImg){
-img.src = savedImg;
+img.src = student.imageUrl;
 box.classList.add("hasImage");
+
 }else{
+
 img.src = "";
 box.classList.remove("hasImage");
+
 }
 
 /* ================== QR ================== */
@@ -1265,7 +1270,7 @@ container.innerHTML="";
 return;
 }
 
-fetch("https://script.google.com/macros/s/AKfycbxkETTKzwQH-ukaoewtpqPj5D8Qau8O7d56l0Fab4SZmJHCMkcLH8lNISZJo3WXX-KwBw/exec?action=list")
+fetch("https://script.google.com/macros/s/AKfycbxHH7LPmRakDTWBrTM2aqZ9m500VvQfIm781RnpZeW-ZKobfvrpMCyE49zr4MnNl5QEBQ/exec?action=list")
 
 .then(res=>res.json())
 
@@ -1333,7 +1338,7 @@ const formData = new URLSearchParams();
 formData.append("action","delete");
 formData.append("serial",serial);
 
-fetch("https://script.google.com/macros/s/AKfycbxkETTKzwQH-ukaoewtpqPj5D8Qau8O7d56l0Fab4SZmJHCMkcLH8lNISZJo3WXX-KwBw/exec",{
+fetch("https://script.google.com/macros/s/AKfycbxHH7LPmRakDTWBrTM2aqZ9m500VvQfIm781RnpZeW-ZKobfvrpMCyE49zr4MnNl5QEBQ/exec",{
 
 method:"POST",
 
@@ -1407,30 +1412,24 @@ return d.toLocaleDateString("fr-FR")
 
 /* 🔥 جلب البيانات */
 
-fetch("https://script.google.com/macros/s/AKfycbxkETTKzwQH-ukaoewtpqPj5D8Qau8O7d56l0Fab4SZmJHCMkcLH8lNISZJo3WXX-KwBw/exec?action=get&serial=" + serial)
+fetch("https://script.google.com/macros/s/AKfycbxHH7LPmRakDTWBrTM2aqZ9m500VvQfIm781RnpZeW-ZKobfvrpMCyE49zr4MnNl5QEBQ/exec?action=get&serial=" + serial)
 
 .then(response => response.json())
 
 .then(cert => {
 
 currentSerial = cert.serial;
-let savedImg = localStorage.getItem("profileImage_" + cert.serial);
-
 let img = document.getElementById("profileImage");
 let box = document.querySelector(".profileBox");
 
-if(savedImg){
+if(cert.imageUrl){
 
-img.src = savedImg;
-
-/* 🔥 اخفاء Upload */
+img.src = cert.imageUrl;
 box.classList.add("hasImage");
 
 }else{
 
 img.src = "";
-
-/* 🔥 رجوع Upload */
 box.classList.remove("hasImage");
 
 }
@@ -1574,7 +1573,7 @@ formData.append("serial",editingSerial);
 
 /* إرسال */
 
-fetch("https://script.google.com/macros/s/AKfycbxkETTKzwQH-ukaoewtpqPj5D8Qau8O7d56l0Fab4SZmJHCMkcLH8lNISZJo3WXX-KwBw/exec",{
+fetch("https://script.google.com/macros/s/AKfycbxHH7LPmRakDTWBrTM2aqZ9m500VvQfIm781RnpZeW-ZKobfvrpMCyE49zr4MnNl5QEBQ/exec",{
 
 method:"POST",
 
@@ -1617,7 +1616,7 @@ showAdminTable();
 
 function editCert(serial){
 
-fetch("https://script.google.com/macros/s/AKfycbxkETTKzwQH-ukaoewtpqPj5D8Qau8O7d56l0Fab4SZmJHCMkcLH8lNISZJo3WXX-KwBw/exec?action=get&serial=" + serial)
+fetch("https://script.google.com/macros/s/AKfycbxHH7LPmRakDTWBrTM2aqZ9m500VvQfIm781RnpZeW-ZKobfvrpMCyE49zr4MnNl5QEBQ/exec?action=get&serial=" + serial)
 
 .then(res => res.json())
 
@@ -1904,7 +1903,7 @@ alert("Please select a valid image");
 return;
 }
 
-/* 🔥 تحقق من الحجم (اختياري) */
+/* 🔥 تحقق من الحجم */
 if(file.size > 2 * 1024 * 1024){
 alert("Image must be أقل من 2MB");
 return;
@@ -1914,23 +1913,79 @@ let reader = new FileReader();
 
 reader.onload = function(event){
 
-let imageData = event.target.result;
+let fullBase64 = event.target.result;
 
-/* عرض الصورة */
+/* 🔥 فصل Base64 */
+let base64 = fullBase64.split(",")[1];
+
+/* عرض الصورة فورًا */
 let img = document.getElementById("profileImage");
-img.src = imageData;
+img.src = fullBase64;
 
-/* 🔥 اخفاء كلمة Upload */
+/* اخفاء Upload */
 document.querySelector(".profileBox").classList.add("hasImage");
 
-/* حفظ الصورة */
-localStorage.setItem("profileImage_" + currentSerial, imageData);
+/* 🔥 تجهيز البيانات */
+const formData = new URLSearchParams();
+
+formData.append("action","uploadImage");
+formData.append("serial", currentSerial);
+
+/* 🔥 مهم: ابعت Base64 فقط */
+formData.append("image", base64);
+
+/* 🔥 إرسال */
+
+fetch("https://script.google.com/macros/s/AKfycbxHH7LPmRakDTWBrTM2aqZ9m500VvQfIm781RnpZeW-ZKobfvrpMCyE49zr4MnNl5QEBQ/exec",{
+
+method:"POST",
+headers:{
+"Content-Type":"application/x-www-form-urlencoded"
+},
+body:formData.toString()
+
+})
+.then(res => res.text())
+.then(data => {
+
+console.log("✅ Image uploaded:", data);
+
+/* ❌ لو السيرفر رجع error */
+if(data.startsWith("error")){
+alert("❌ Upload failed: " + data);
+return;
+}
+
+/* 🔥 استخدم اللينك الحقيقي من السيرفر */
+let imageUrl = data;
+
+/* 🔥 تحديث LocalStorage */
+let certs = JSON.parse(localStorage.getItem("certificates") || "[]");
+
+certs = certs.map(c => {
+if(c.serial === currentSerial){
+c.imageUrl = imageUrl; // 🔥 هنا الصح
+}
+return c;
+});
+
+localStorage.setItem("certificates", JSON.stringify(certs));
+
+})
+.catch(err => {
+
+console.error(err);
+alert("❌ Upload failed");
+
+});
 
 };
 
 reader.readAsDataURL(file);
 
 });
+
+
 </script>
 
 </body>
