@@ -828,26 +828,30 @@ if(document.getElementById("certDate")){
 document.getElementById("certDate").innerText = formatDateFR(resultDate);
 }
 
-/* 🔥 حساب المستوى من 699 */
+/* 🔥 حساب المستوى من 699 (النظام الجديد) */
 
 function getLevelFrom699(score){
 
-if(score < 200) return "A1"
-if(score < 350) return "A2"
-if(score < 500) return "B1"
-if(score < 600) return "B2"
-return "C1"
+score = Number(score)
 
+if(score >= 396 && score <= 457) return "B1"
+if(score >= 458 && score <= 522) return "B2"
+if(score >= 523 && score <= 548) return "C1"
+if(score >= 549 && score <= 699) return "C2"
+
+return "A2" // أقل من 396
 }
+
+/* 🔥 المستوى النهائي */
 
 function getFinalLevel(levels){
 
+if(levels.includes("C2")) return "C2"
 if(levels.includes("C1")) return "C1"
 if(levels.includes("B2")) return "B2"
 if(levels.includes("B1")) return "B1"
-if(levels.includes("A2")) return "A2"
-return "A1"
 
+return "A2"
 }
 
 /* حساب لكل مهارة */
