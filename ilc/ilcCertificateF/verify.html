@@ -405,16 +405,17 @@ timeZone:"Africa/Cairo" // 🔥 توقيت مصر
 });
 }
 
-/* 🎯 حساب Level */
 function getLevelFrom699(score){
-score = Number(score)
-if(score < 200) return "A1"
-if(score < 350) return "A2"
-if(score < 500) return "B1"
-if(score < 600) return "B2"
-return "C1"
-}
 
+score = Number(score)
+
+if(score >= 549) return "C2"
+if(score >= 523) return "C1"
+if(score >= 458) return "B2"
+if(score >= 396) return "B1"
+
+return "A2"
+}
 /* 🎯 عرض Score + Level */
 function formatScore(score){
 let level = getLevelFrom699(score)
