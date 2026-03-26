@@ -203,10 +203,46 @@ button:hover {
 html, body {
   height: 100%;
 }
+
+
+.fullscreen-btn{
+
+margin-left:10px;
+
+padding:6px 14px;
+
+background:#f59e0b; /* نفس لون search عشان consistency */
+color:white;
+
+border:none;
+border-radius:6px;
+
+cursor:pointer;
+
+font-size:13px;
+font-weight:600;
+
+display:flex;
+align-items:center;
+gap:6px;
+
+transition:0.3s;
+
+}
+
+.fullscreen-btn:hover{
+
+background:#d97706;
+transform:translateY(-1px);
+
+}
+
+
 </style>
 
 </head>
 <body>
+
 
 <div class="container">
   <h2>British International Learning Center (ILC)</h2>
@@ -220,11 +256,16 @@ html, body {
 
   <!-- Buttons -->
   <div class="buttons-row">
+    
     <button class="btn btn-primary" onclick="backupIndexedDB()">🔄 Backup</button>
     <button class="btn btn-primary" onclick="document.getElementById('restoreFile').click()">♻️ Restore</button>
     <input type="file" id="restoreFile" style="display:none;" onchange="restoreIndexedDB(event)" accept=".json" />
     <button class="btn btn-primary" onclick="refreshData()">🔄 Refresh</button>
     <button class="btn btn-primary" onclick="toggleAllTrainees()">🖨️ Print</button>
+    
+<button class="fullscreen-btn" onclick="goFullScreen()">
+  ⛶ Fullscreen
+</button>
   </div>
 
   <!-- Table -->
@@ -252,16 +293,6 @@ html, body {
 
 
 
-
-<script>
-  // Fullscreen on click
-  document.addEventListener("click", () => {
-    const elem = document.documentElement;
-    if (!document.fullscreenElement) {
-      elem.requestFullscreen?.() || elem.webkitRequestFullscreen?.() || elem.msRequestFullscreen?.();
-    }
-  });
-</script>
 
 </body>
 </html>
@@ -1467,6 +1498,12 @@ function printStatsAndCharts() {
 
 
   window.onload = openDB;
+
+
+function goFullScreen(){
+document.documentElement.requestFullscreen();
+}
+
 </script>
 </body>
 </html>
