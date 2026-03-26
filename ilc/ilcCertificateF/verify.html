@@ -251,9 +251,9 @@ direction:ltr;
 
 
 .result2{
-    position:absolute;
-top:308px; /* فوق الريزلت الأساسي */
-left:400px;
+  position:absolute;
+top:675px;
+left:352px;
 font-size:16px;
 font-weight:bold;
 }
@@ -287,7 +287,6 @@ font-weight:bold;
 <div class="row"><span>Centre :</span> <span id="centre"></span></div>
 <div class="row"><span>Date Session :</span> <span id="sessionDate"></span></div>
 <div class="row"><span>Date Résultats :</span> <span id="resultDate"></span></div>
-<div class="result2" id="certResult2"></div>
 
 <div class="row"><span>Writing :</span> <span id="writing"></span></div>
 <div class="row"><span>Reading :</span> <span id="reading"></span></div>
@@ -358,6 +357,7 @@ www.ilceg.com
 <div class="centre" id="certCentre"></div>
 <div class="session" id="certSession"></div>
 <div class="result" id="certResult"></div>
+<div class="result2" id="certResult2"></div>
 
 <div class="writing" id="certWriting"></div>
 <div class="reading" id="certReading"></div>
@@ -455,7 +455,6 @@ document.getElementById("candidateCode").innerText = cert.candidateCode || "";
 document.getElementById("centre").innerText = cert.centre || "";
 document.getElementById("sessionDate").innerText = formatDateFR(cert.sessionDate);
 document.getElementById("resultDate").innerText = formatDateFR(cert.resultDate);
-document.getElementById("certResult2").innerText = formatDateFR(cert.resultDate);
 
 /* 🔥 Scores */
 
