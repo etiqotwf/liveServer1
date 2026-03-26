@@ -67,6 +67,7 @@ text-align:left;
 .row span{font-weight:bold;}
 
 .serial{
+display:none;
 margin-top:15px;
 font-size:14px;
 color:#475569;
@@ -147,25 +148,30 @@ height:100%;
 object-fit:cover;
 }
 
+.level{
+    display: none;
+}
+
 /* ===== أماكن البيانات ===== */
 
-.name{position:absolute;top:188px;left:400px;font-weight:bold;}
-.prenom{position:absolute;top:204px;left:400px;}
-.birth{position:absolute;top:221px;left:400px;}
-.code{position:absolute;top:237px;left:400px;}
+.name{position:absolute;top:188px;left:220px;font-weight:bold;}
+.prenom{position:absolute;top:204px;left:220px;}
+.birth{position:absolute;top:221px;left:220px;}
+.code{position:absolute;top:237px;left:220px;}
 
-.centre{position:absolute;top:269px;left:400px;}
+.centre{position:absolute;top:269px;left:220px;}
 .session{position:absolute;top:290px;left:400px;}
 .result{position:absolute;top:325px;left:400px;}
 
-.writing{position:absolute;top:453px;left:400px;}
-.reading{position:absolute;top:487px;left:400px;}
-.listening{position:absolute;top:527px;left:400px;}
-.speaking{position:absolute;top:565px;left:400px;}
+.writing{position:absolute;top:453px;left:232px;}
+.reading{position:absolute;top:487px;left:232px;}
+.listening{position:absolute;top:527px;left:232px;}
+.speaking{position:absolute;top:565px;left:232px;}
 
 .level{position:absolute;top:605px;left:400px;font-weight:bold;}
 
 .serialCert{
+      display: none;
 position:absolute;
 bottom:715px;
 right:80px;
@@ -173,10 +179,15 @@ font-weight:bold;
 }
 
 .qr{
+
 position:absolute;
-bottom:150px;
-right:80px;
+
+top:460px;
+left:400px;
+
 }
+
+
 
 
 .contactBox{
@@ -399,7 +410,7 @@ box.className = "status " + type;
 
 function loadCert(serial){
 
-fetch("https://script.google.com/macros/s/AKfycbyw50e_Z6aafWAQ_vur61LljNaNnJhyNC6uFB9ivUzAOJpUaFrxBin5KPGXMv-7u6tYgA/exec?action=get&serial=" + serial)
+fetch("https://script.google.com/macros/s/AKfycbwODfc03GnwX4fqFgHHNXNVPUvYjFhpVMjoVOa1z_NjuVJ3z2bvMVvFvSb_DAg0kHhPLQ/exec?action=get&serial=" + serial)
 
 .then(res=>res.json())
 
