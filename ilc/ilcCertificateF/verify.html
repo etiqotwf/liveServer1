@@ -254,7 +254,7 @@ direction:ltr;
   position:absolute;
 top:675px;
 left:352px;
-font-size:13px;
+font-size:16px;
 font-weight:bold;
 }
 
@@ -478,6 +478,7 @@ document.getElementById("certCode").innerText = cert.candidateCode;
 document.getElementById("certCentre").innerText = cert.centre;
 document.getElementById("certSession").innerText = formatDateFR(cert.sessionDate);
 document.getElementById("certResult").innerText = formatDateFR(cert.resultDate);
+document.getElementById("certResult2").innerText = formatDateNUM(cert.resultDate);
 
 /* نفس فورمات الأدمن */
 
@@ -530,6 +531,19 @@ if(serial){
 loadCert(serial);
 }else{
 setStatus("⚠️ Aucun numéro fourni","warning");
+}
+
+
+function formatDateNUM(dateStr){
+if(!dateStr) return "";
+
+let d = new Date(dateStr);
+
+let day = String(d.getDate()).padStart(2,'0');
+let month = String(d.getMonth()+1).padStart(2,'0');
+let year = d.getFullYear();
+
+return day + "/" + month + "/" + year;
 }
 
 </script>
