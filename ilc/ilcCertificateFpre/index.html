@@ -195,7 +195,7 @@ z-index:2;
 .name{
 position:absolute;
 top:188px;   /* مكان Nom */
-left:220px;  /* جنب الكلمة */
+left:400px;  /* جنب الكلمة */
 font-size:17px;
 font-weight:bold;
 color:#111827;
@@ -208,7 +208,7 @@ text-align:left;
 .prenom{
 position:absolute;
 top:204px;
-left:220px;
+left:400px;
 font-size:17px;
 font-weight:bold;
 }
@@ -216,7 +216,7 @@ font-weight:bold;
 .birthDate{
 position:absolute;
 top:221px;
-left:220px;
+left:400px;
 font-size:16px;
 font-weight:bold;
 }
@@ -224,7 +224,7 @@ font-weight:bold;
 .candidateCode{
 position:absolute;
 top:237px;
-left:220px;
+left:400px;
 font-size:16px;
 font-weight:bold;
 
@@ -828,30 +828,26 @@ if(document.getElementById("certDate")){
 document.getElementById("certDate").innerText = formatDateFR(resultDate);
 }
 
-/* 🔥 حساب المستوى من 699 (النظام الجديد) */
+/* 🔥 حساب المستوى من 699 */
 
 function getLevelFrom699(score){
 
-score = Number(score)
+if(score < 200) return "A1"
+if(score < 350) return "A2"
+if(score < 500) return "B1"
+if(score < 600) return "B2"
+return "C1"
 
-if(score >= 396 && score <= 457) return "B1"
-if(score >= 458 && score <= 522) return "B2"
-if(score >= 523 && score <= 548) return "C1"
-if(score >= 549 && score <= 699) return "C2"
-
-return "A2" // أقل من 396
 }
-
-/* 🔥 المستوى النهائي */
 
 function getFinalLevel(levels){
 
-if(levels.includes("C2")) return "C2"
 if(levels.includes("C1")) return "C1"
 if(levels.includes("B2")) return "B2"
 if(levels.includes("B1")) return "B1"
+if(levels.includes("A2")) return "A2"
+return "A1"
 
-return "A2"
 }
 
 /* حساب لكل مهارة */
@@ -1009,7 +1005,7 @@ formData.append("speaking",speaking);
 formData.append("finalLevel",finalLevel);
 formData.append("serial",serial);
 
-fetch("https://script.google.com/macros/s/AKfycbwODfc03GnwX4fqFgHHNXNVPUvYjFhpVMjoVOa1z_NjuVJ3z2bvMVvFvSb_DAg0kHhPLQ/exec",{
+fetch("https://script.google.com/macros/s/AKfycbxkETTKzwQH-ukaoewtpqPj5D8Qau8O7d56l0Fab4SZmJHCMkcLH8lNISZJo3WXX-KwBw/exec",{
 
 method:"POST",
 headers:{"Content-Type":"application/x-www-form-urlencoded"},
@@ -1132,21 +1128,17 @@ document.getElementById("serial").innerText = "Serial ILC : " + student.serial
 
 /* ================== 🔥 الصورة ================== */
 
-/* ================== 🔥 الصورة ================== */
-
 let img = document.getElementById("profileImage");
 let box = document.querySelector(".profileBox");
 
-if(student.imageUrl){
+let savedImg = localStorage.getItem("profileImage_" + currentSerial);
 
-img.src = student.imageUrl;
+if(savedImg){
+img.src = savedImg;
 box.classList.add("hasImage");
-
 }else{
-
 img.src = "";
 box.classList.remove("hasImage");
-
 }
 
 /* ================== QR ================== */
@@ -1235,19 +1227,18 @@ document.getElementById("finalLevel").innerText = student.finalLevel || "";
 document.getElementById("serial").innerText = "Serial ILC : " + student.serial;
 
 /* ================== الصورة ================== */
+
 let img = document.getElementById("profileImage");
 let box = document.querySelector(".profileBox");
 
-if(student.imageUrl){
+let savedImg = localStorage.getItem("profileImage_" + currentSerial);
 
-img.src = student.imageUrl;
+if(savedImg){
+img.src = savedImg;
 box.classList.add("hasImage");
-
 }else{
-
 img.src = "";
 box.classList.remove("hasImage");
-
 }
 
 /* ================== QR ================== */
@@ -1274,7 +1265,7 @@ container.innerHTML="";
 return;
 }
 
-fetch("https://script.google.com/macros/s/AKfycbwODfc03GnwX4fqFgHHNXNVPUvYjFhpVMjoVOa1z_NjuVJ3z2bvMVvFvSb_DAg0kHhPLQ/exec?action=list")
+fetch("https://script.google.com/macros/s/AKfycbxkETTKzwQH-ukaoewtpqPj5D8Qau8O7d56l0Fab4SZmJHCMkcLH8lNISZJo3WXX-KwBw/exec?action=list")
 
 .then(res=>res.json())
 
@@ -1342,7 +1333,7 @@ const formData = new URLSearchParams();
 formData.append("action","delete");
 formData.append("serial",serial);
 
-fetch("https://script.google.com/macros/s/AKfycbwODfc03GnwX4fqFgHHNXNVPUvYjFhpVMjoVOa1z_NjuVJ3z2bvMVvFvSb_DAg0kHhPLQ/exec",{
+fetch("https://script.google.com/macros/s/AKfycbxkETTKzwQH-ukaoewtpqPj5D8Qau8O7d56l0Fab4SZmJHCMkcLH8lNISZJo3WXX-KwBw/exec",{
 
 method:"POST",
 
@@ -1416,24 +1407,30 @@ return d.toLocaleDateString("fr-FR")
 
 /* 🔥 جلب البيانات */
 
-fetch("https://script.google.com/macros/s/AKfycbwODfc03GnwX4fqFgHHNXNVPUvYjFhpVMjoVOa1z_NjuVJ3z2bvMVvFvSb_DAg0kHhPLQ/exec?action=get&serial=" + serial)
+fetch("https://script.google.com/macros/s/AKfycbxkETTKzwQH-ukaoewtpqPj5D8Qau8O7d56l0Fab4SZmJHCMkcLH8lNISZJo3WXX-KwBw/exec?action=get&serial=" + serial)
 
 .then(response => response.json())
 
 .then(cert => {
 
 currentSerial = cert.serial;
+let savedImg = localStorage.getItem("profileImage_" + cert.serial);
+
 let img = document.getElementById("profileImage");
 let box = document.querySelector(".profileBox");
 
-if(cert.imageUrl){
+if(savedImg){
 
-img.src = cert.imageUrl;
+img.src = savedImg;
+
+/* 🔥 اخفاء Upload */
 box.classList.add("hasImage");
 
 }else{
 
 img.src = "";
+
+/* 🔥 رجوع Upload */
 box.classList.remove("hasImage");
 
 }
@@ -1577,7 +1574,7 @@ formData.append("serial",editingSerial);
 
 /* إرسال */
 
-fetch("https://script.google.com/macros/s/AKfycbwODfc03GnwX4fqFgHHNXNVPUvYjFhpVMjoVOa1z_NjuVJ3z2bvMVvFvSb_DAg0kHhPLQ/exec",{
+fetch("https://script.google.com/macros/s/AKfycbxkETTKzwQH-ukaoewtpqPj5D8Qau8O7d56l0Fab4SZmJHCMkcLH8lNISZJo3WXX-KwBw/exec",{
 
 method:"POST",
 
@@ -1620,7 +1617,7 @@ showAdminTable();
 
 function editCert(serial){
 
-fetch("https://script.google.com/macros/s/AKfycbwODfc03GnwX4fqFgHHNXNVPUvYjFhpVMjoVOa1z_NjuVJ3z2bvMVvFvSb_DAg0kHhPLQ/exec?action=get&serial=" + serial)
+fetch("https://script.google.com/macros/s/AKfycbxkETTKzwQH-ukaoewtpqPj5D8Qau8O7d56l0Fab4SZmJHCMkcLH8lNISZJo3WXX-KwBw/exec?action=get&serial=" + serial)
 
 .then(res => res.json())
 
@@ -1907,7 +1904,7 @@ alert("Please select a valid image");
 return;
 }
 
-/* 🔥 تحقق من الحجم */
+/* 🔥 تحقق من الحجم (اختياري) */
 if(file.size > 2 * 1024 * 1024){
 alert("Image must be أقل من 2MB");
 return;
@@ -1917,79 +1914,23 @@ let reader = new FileReader();
 
 reader.onload = function(event){
 
-let fullBase64 = event.target.result;
+let imageData = event.target.result;
 
-/* 🔥 فصل Base64 */
-let base64 = fullBase64.split(",")[1];
-
-/* عرض الصورة فورًا */
+/* عرض الصورة */
 let img = document.getElementById("profileImage");
-img.src = fullBase64;
+img.src = imageData;
 
-/* اخفاء Upload */
+/* 🔥 اخفاء كلمة Upload */
 document.querySelector(".profileBox").classList.add("hasImage");
 
-/* 🔥 تجهيز البيانات */
-const formData = new URLSearchParams();
-
-formData.append("action","uploadImage");
-formData.append("serial", currentSerial);
-
-/* 🔥 مهم: ابعت Base64 فقط */
-formData.append("image", base64);
-
-/* 🔥 إرسال */
-
-fetch("https://script.google.com/macros/s/AKfycbwODfc03GnwX4fqFgHHNXNVPUvYjFhpVMjoVOa1z_NjuVJ3z2bvMVvFvSb_DAg0kHhPLQ/exec",{
-
-method:"POST",
-headers:{
-"Content-Type":"application/x-www-form-urlencoded"
-},
-body:formData.toString()
-
-})
-.then(res => res.text())
-.then(data => {
-
-console.log("✅ Image uploaded:", data);
-
-/* ❌ لو السيرفر رجع error */
-if(data.startsWith("error")){
-alert("❌ Upload failed: " + data);
-return;
-}
-
-/* 🔥 استخدم اللينك الحقيقي من السيرفر */
-let imageUrl = data;
-
-/* 🔥 تحديث LocalStorage */
-let certs = JSON.parse(localStorage.getItem("certificates") || "[]");
-
-certs = certs.map(c => {
-if(c.serial === currentSerial){
-c.imageUrl = imageUrl; // 🔥 هنا الصح
-}
-return c;
-});
-
-localStorage.setItem("certificates", JSON.stringify(certs));
-
-})
-.catch(err => {
-
-console.error(err);
-alert("❌ Upload failed");
-
-});
+/* حفظ الصورة */
+localStorage.setItem("profileImage_" + currentSerial, imageData);
 
 };
 
 reader.readAsDataURL(file);
 
 });
-
-
 </script>
 
 </body>
