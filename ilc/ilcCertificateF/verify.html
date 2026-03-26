@@ -155,18 +155,18 @@ object-fit:cover;
 /* ===== أماكن البيانات ===== */
 
 .name{position:absolute;top:188px;left:220px;font-weight:bold;}
-.prenom{position:absolute;top:204px;left:220px;}
-.birth{position:absolute;top:221px;left:220px;}
+.prenom{position:absolute;top:204px;left:220px;font-weight:bold;}
+.birth{position:absolute;top:221px;left:220px;font-weight:bold;}
 .code{position:absolute;top:237px;left:220px;}
 
-.centre{position:absolute;top:269px;left:220px;}
-.session{position:absolute;top:290px;left:400px;}
-.result{position:absolute;top:325px;left:400px;}
+.centre{position:absolute;top:269px;left:220px;font-weight:bold;}
+.session{position:absolute;top:290px;left:400px;font-weight:bold;}
+.result{position:absolute;top:308px;left:400px;font-weight:bold;}
 
-.writing{position:absolute;top:453px;left:232px;}
-.reading{position:absolute;top:487px;left:232px;}
-.listening{position:absolute;top:527px;left:232px;}
-.speaking{position:absolute;top:565px;left:232px;}
+.writing{position:absolute;top:453px;left:232px;font-weight:bold;}
+.reading{position:absolute;top:487px;left:232px;font-weight:bold;}
+.listening{position:absolute;top:527px;left:232px;font-weight:bold;}
+.speaking{position:absolute;top:565px;left:232px;font-weight:bold;}
 
 .level{position:absolute;top:605px;left:400px;font-weight:bold;}
 
@@ -250,6 +250,14 @@ direction:ltr;
 }
 
 
+.result2{
+    position:absolute;
+top:308px; /* فوق الريزلت الأساسي */
+left:400px;
+font-size:16px;
+font-weight:bold;
+}
+
 
 </style>
 
@@ -279,6 +287,7 @@ direction:ltr;
 <div class="row"><span>Centre :</span> <span id="centre"></span></div>
 <div class="row"><span>Date Session :</span> <span id="sessionDate"></span></div>
 <div class="row"><span>Date Résultats :</span> <span id="resultDate"></span></div>
+<div class="result2" id="certResult2"></div>
 
 <div class="row"><span>Writing :</span> <span id="writing"></span></div>
 <div class="row"><span>Reading :</span> <span id="reading"></span></div>
@@ -446,6 +455,7 @@ document.getElementById("candidateCode").innerText = cert.candidateCode || "";
 document.getElementById("centre").innerText = cert.centre || "";
 document.getElementById("sessionDate").innerText = formatDateFR(cert.sessionDate);
 document.getElementById("resultDate").innerText = formatDateFR(cert.resultDate);
+document.getElementById("certResult2").innerText = formatDateFR(cert.resultDate);
 
 /* 🔥 Scores */
 
