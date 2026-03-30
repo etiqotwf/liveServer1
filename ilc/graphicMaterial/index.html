@@ -1,296 +1,333 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Reading Comprehension Quiz</title>
-    <style>
-   body {
-    font-family: Arial, sans-serif;
-    text-align: center;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-start;
-    margin: 0;
-    background: #1e1e2e;
+  <!DOCTYPE html>
+  <html lang="en">
+  <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>Reading Comprehension Quiz</title>
+      <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      margin: 0;
+      background: #1e1e2e;
+      color: white;
+  }
+
+  .container {
+      margin-top: 5px; /* مسافة صغيرة جدًا */
+      width: 95%;
+      max-width: 1200px;
+      background: #282a36;
+      padding: 10px 30px 30px;
+      border-radius: 10px;
+      box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.5);
+      text-align: left;
+  }
+
+  h1, h2, p {
+      margin-top: 0;
+  }
+
+
+          .question {
+              font-weight: bold;
+              font-size: 30px;
+              margin-bottom: 20px;
+          }
+          .options label {
+              display: block;
+              padding: 10px;
+          }
+          .btn {
+    background: #ff5555;
     color: white;
+    border: none;
+    padding: 10px 15px;
+    cursor: pointer;
+    border-radius: 5px;
+    font-size: 16px;
+    margin: 0;
+    display: inline-block; /* مهم */
 }
+          .btn:hover {
+              background: #ff79c6;
+          }
 
-.container {
-    margin-top: 5px; /* مسافة صغيرة جدًا */
-    width: 95%;
-    max-width: 1200px;
-    background: #282a36;
-    padding: 10px 30px 30px;
-    border-radius: 10px;
-    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.5);
-    text-align: left;
-}
+          .result-screen {
+      display: none;
+      background: #44475a;
+      padding: 30px;
+      border-radius: 10px;
+      text-align: center;
+      width: 100%;
+    }
 
-h1, h2, p {
-    margin-top: 0;
-}
+    #resultScore {
+      font-size: 36px;
+      font-weight: bold;
+      color: #ffffff;
+      margin-top: 20px;
+    }
 
+    .result-screen p {
+      font-size: 20px;
+      font-weight: bold;
+      color: #f8f8f2;
+    }
 
-        .question {
-            font-weight: bold;
-            font-size: 30px;
-            margin-bottom: 20px;
-        }
-        .options label {
-            display: block;
-            padding: 10px;
-        }
-        .btn {
-            background: #ff5555;
-            color: white;
-            border: none;
-            padding: 12px 25px;
-            cursor: pointer;
-            border-radius: 5px;
-            margin-top: 200px;
-            font-size: 18px;
-            display: block;
-        }
-        .btn:hover {
-            background: #ff79c6;
-        }
+    #timer {
+      font-size: 28px;         /* حجم أكبر */
+      color: rgb(255, 255, 255);           /* اللون أصفر */
+      font-weight: bold;       /* خط عريض */
+      padding: 20px;
+      border-radius: 10px;
+      width: fit-content;
+      margin: 20px auto;
+    }
 
-        .result-screen {
-    display: none;
-    background: #44475a;
-    padding: 30px;
-    border-radius: 10px;
+        
+        .author {
+    font-size: 24px;        /* تكبير الخط */
+    color: #ffd700;         /* لون ذهبي مميز */
     text-align: center;
-    width: 100%;
+    font-weight: bold;      /* جعله عريض */
+    margin-bottom: 15px;
+    position: relative;     /* إزالة الوضع المطلق حتى يظهر في مكانه الطبيعي */
+    top: auto;
   }
 
-  #resultScore {
-    font-size: 36px;
+
+
+
+  label {
+    font-size: 22px; /* حجم نص الاختيار */
+    padding: 10px;
+    display: block;
+  }
+
+  input[type="radio"] {
+    transform: scale(1.5); /* تكبير حجم الدائرة */
+    margin-right: 10px;
+  }
+
+
+    #passage {
+      font-size: 16px;     /* حجم الخط */
+      font-weight: bold;   /* خط عريض */
+    }
+
+
+  #startScreen p {
+    font-size: 22px;
     font-weight: bold;
-    color: #ffffff;
-    margin-top: 20px;
   }
-
-  .result-screen p {
+  #startScreen input {
     font-size: 20px;
     font-weight: bold;
-    color: #f8f8f2;
+    padding: 8px;
   }
 
-  #timer {
-    font-size: 28px;         /* حجم أكبر */
-    color: rgb(255, 255, 255);           /* اللون أصفر */
-    font-weight: bold;       /* خط عريض */
-    padding: 20px;
-    border-radius: 10px;
-    width: fit-content;
-    margin: 20px auto;
-  }
-
-      
-      .author {
-  font-size: 24px;        /* تكبير الخط */
-  color: #ffd700;         /* لون ذهبي مميز */
-  text-align: center;
-  font-weight: bold;      /* جعله عريض */
-  margin-bottom: 15px;
-  position: relative;     /* إزالة الوضع المطلق حتى يظهر في مكانه الطبيعي */
-  top: auto;
-}
-
-
-
-
-label {
-  font-size: 22px; /* حجم نص الاختيار */
-  padding: 10px;
-  display: block;
-}
-
-input[type="radio"] {
-  transform: scale(1.5); /* تكبير حجم الدائرة */
-  margin-right: 10px;
-}
-
-
-  #passage {
-    font-size: 16px;     /* حجم الخط */
-    font-weight: bold;   /* خط عريض */
-  }
-
-
-#startScreen p {
-  font-size: 22px;
-  font-weight: bold;
-}
-#startScreen input {
-  font-size: 20px;
-  font-weight: bold;
-  padding: 8px;
-}
-
-  
-
-#startScreen h1 {
-  font-size: 40px; /* حجم الخط */
-  font-weight: bold; /* عريض */
-  color: #ffd700; /* لون مميز مثل الذهبي (اختياري) */
-  text-align: center;
-  margin-bottom: 20px;
-}
-
-
-
-
-    </style>
-</head>
-<body>
-
-
-
-
-   <div class="container" id="startScreen" 
-     style="max-width: 550px; margin: 60px auto; padding: 45px; 
-            background: #ffffff; border-radius: 25px; 
-            box-shadow: 0 14px 35px rgba(0,0,0,0.2); 
-            text-align: center; font-family: 'Segoe UI', sans-serif; 
-            animation: zoomFade 1.2s ease; position: relative; overflow:hidden;">
-
-  <!-- Floating Emoji Animation -->
-  <div class="floating-emojis" id="emojiBox">🤖</div>
-
-  <h1 style="font-size: 28px; color:#1e3c72; margin-bottom: 25px; line-height:1.5;">
-    📘 The British International Learning Center (ILC)
-  </h1>
-
-  <p style="font-size:18px; color:#333; text-align:left; margin:18px 0 10px;">
-    📦 Course Name:
-  </p>
-  <input type="text" id="courseName" value="GraphicDesignLevel1" 
-         readonly 
-         style="width:100%; padding:18px; border:none; 
-                border-radius:16px; background:#f0f0f0; font-size:17px;">
-
-  <p style="font-size:18px; color:#333; text-align:left; margin:25px 0 10px;">
-    🔑 Enter Password:
-  </p>
-  <input type="password" id="password" placeholder="Enter your password here"
-         style="width:100%; padding:18px; border:1px solid #ccc; 
-                border-radius:16px; font-size:17px; transition:0.3s;">
-  
-  <button class="btn" onclick="startQuiz()"
-          style="margin-top:35px; width:100%; padding:18px; border:none; 
-                 border-radius:50px; font-size:18px; font-weight:bold; 
-                 background:linear-gradient(135deg,#1e3c72,#2a5298); 
-                 color:#fff; cursor:pointer; transition:0.3s;">
-    🚀 Start Quiz
-  </button>
-
-  <p style="margin-top:35px; font-size:15px; color:#777; font-style:italic;">
-    ✍️ Edited by Ahmed Amer
-  </p>
-</div>
-
-<style>
-@keyframes zoomFade {
-  from {opacity: 0; transform: scale(0.9);}
-  to {opacity: 1; transform: scale(1);}
-}
-
-.floating-emojis {
-  position: absolute;
-  top: -10px;
-  left: 50%;
-  transform: translateX(-50%);
-  font-size: 36px;
-  animation: floatUp 6s infinite linear;
-  opacity: 0.9;
-}
-
-@keyframes floatUp {
-  0%   { transform: translateX(-50%) translateY(120%); opacity: 0; }
-  20%  { opacity: 1; }
-  50%  { transform: translateX(-50%) translateY(40%); opacity: 0.95; }
-  80%  { opacity: 1; }
-  100% { transform: translateX(-50%) translateY(-120%); opacity: 0; }
-}
-
-.btn:hover {
-  box-shadow: 0 0 15px rgba(30,60,114,0.4);
-  transform: translateY(-3px);
-}
-</style>
-
-<script>
-  // Array of AI-related emojis
-  const emojis = ["🤖"];
-  const emojiBox = document.getElementById("emojiBox");
-
-  setInterval(() => {
-    const randomEmoji = emojis[Math.floor(Math.random() * emojis.length)];
-    emojiBox.textContent = randomEmoji;
-  }, 2000); // change every 2 seconds
-</script>
-
-
-    <div class="container" id="quizContainer" style="display: none;">
-        <h2 id="quizTitle">Placement Test</h2>
-        <p class="author"> Drainage Training Center - Tanta (DTC)
- </p>
-        <p>Date: <span id="date"></span></p>
-        <p id="timer"> ----- </p>
-
- <!-- 🔎 مربع السيرش -->
-<div style="margin: 15px 0; text-align:center;">
-    <div style="display:inline-flex; align-items:center; border-radius:5px; overflow:hidden;">
-        <input type="number" id="searchQuestion" placeholder="Enter Question Number" 
-               style="padding:10px; width:200px; border:none; outline:none; font-size:16px;">
-        <button class="btn" style="margin:0; border-radius:0;" onclick="goToQuestion()">Go To Task</button>
-    </div>
-</div>
-
-
-
-        <div id="passage">
-  <h3>Read the following passage carefully and answer the following questions:</h3>
-  <p style="font-size: 22px;">
     
-                        </div>
-        <div id="quiz"></div>
-    </div>
+
+  #startScreen h1 {
+    font-size: 40px; /* حجم الخط */
+    font-weight: bold; /* عريض */
+    color: #ffd700; /* لون مميز مثل الذهبي (اختياري) */
+    text-align: center;
+    margin-bottom: 20px;
+  }
+
+  @media print {
+      body {
+          background: white;
+          color: black;
+      }
+
+      .btn, #searchQuestion {
+          display: none !important;
+      }
+
+      #quizContainer {
+          box-shadow: none;
+          background: white;
+      }
+
+      #timer {
+          color: black;
+      }
+  }
+
+
+      </style>
+  </head>
+  <body>
+
+
+
+
+    <div class="container" id="startScreen" 
+      style="max-width: 550px; margin: 60px auto; padding: 45px; 
+              background: #ffffff; border-radius: 25px; 
+              box-shadow: 0 14px 35px rgba(0,0,0,0.2); 
+              text-align: center; font-family: 'Segoe UI', sans-serif; 
+              animation: zoomFade 1.2s ease; position: relative; overflow:hidden;">
+
+    <!-- Floating Emoji Animation -->
+    <div class="floating-emojis" id="emojiBox">🤖</div>
+
+    <h1 style="font-size: 28px; color:#1e3c72; margin-bottom: 25px; line-height:1.5;">
+      📘 The British International Learning Center (ILC)
+    </h1>
+
+    <p style="font-size:18px; color:#333; text-align:left; margin:18px 0 10px;">
+      📦 Course Name:
+    </p>
+    <input type="text" id="courseName" value="GraphicDesignLevel1" 
+          readonly 
+          style="width:100%; padding:18px; border:none; 
+                  border-radius:16px; background:#f0f0f0; font-size:17px;">
+
+    <p style="font-size:18px; color:#333; text-align:left; margin:25px 0 10px;">
+      🔑 Enter Password:
+    </p>
+    <input type="password" id="password" placeholder="Enter your password here"
+          style="width:100%; padding:18px; border:1px solid #ccc; 
+                  border-radius:16px; font-size:17px; transition:0.3s;">
     
-    <div class="result-screen" id="resultScreen" style="display: none;">
-        <h2>Test Result</h2>
-        <p class="author">Created by: Ahmed Amer</p>
-        <p><strong>Course Name:</strong> <span id="resultCourse"></span></p>
-        <p><strong>Name:</strong> <span id="resultName"></span></p>
-        <p><strong>Phone Number:</strong> <span id="resultPhone"></span></p>
-        <p><strong>Test Date:</strong> <span id="resultDate"></span></p>
-        <p><strong>Start Time:</strong> <span id="resultStartTime"></span></p>
-        <p><strong>Time Taken:</strong> <span id="resultTime"></span></p>
-        <p><strong>Score:</strong> <span id="resultScore"></span></p>
-    </div>
+    <button class="btn" onclick="startQuiz()"
+            style="margin-top:35px; width:100%; padding:18px; border:none; 
+                  border-radius:50px; font-size:18px; font-weight:bold; 
+                  background:linear-gradient(135deg,#1e3c72,#2a5298); 
+                  color:#fff; cursor:pointer; transition:0.3s;">
+      🚀 Start Quiz
+    </button>
 
-
- 
-
- 
-
+    <p style="margin-top:35px; font-size:15px; color:#777; font-style:italic;">
+      ✍️ Edited by Ahmed Amer
+    </p>
   </div>
-<div style="
-  position: fixed;
-  top: 40px;
-  right: 40px;
-  font-size: 60px;
-  font-weight: bold;
-  color: #ffd700;
-">
 
-🎨
-  
+  <style>
+  @keyframes zoomFade {
+    from {opacity: 0; transform: scale(0.9);}
+    to {opacity: 1; transform: scale(1);}
+  }
+
+  .floating-emojis {
+    position: absolute;
+    top: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 36px;
+    animation: floatUp 6s infinite linear;
+    opacity: 0.9;
+  }
+
+  @keyframes floatUp {
+    0%   { transform: translateX(-50%) translateY(120%); opacity: 0; }
+    20%  { opacity: 1; }
+    50%  { transform: translateX(-50%) translateY(40%); opacity: 0.95; }
+    80%  { opacity: 1; }
+    100% { transform: translateX(-50%) translateY(-120%); opacity: 0; }
+  }
+
+  .btn:hover {
+    box-shadow: 0 0 15px rgba(30,60,114,0.4);
+    transform: translateY(-3px);
+  }
+  </style>
+
+  <script>
+    // Array of AI-related emojis
+    const emojis = ["🤖"];
+    const emojiBox = document.getElementById("emojiBox");
+
+    setInterval(() => {
+      const randomEmoji = emojis[Math.floor(Math.random() * emojis.length)];
+      emojiBox.textContent = randomEmoji;
+    }, 2000); // change every 2 seconds
+  </script>
+
+
+      <div class="container" id="quizContainer" style="display: none;">
+          <h2 id="quizTitle">Placement Test</h2>
+          <p class="author"> Drainage Training Center - Tanta (DTC)
+  </p>
+          <p>Date: <span id="date"></span></p>
+          <p id="timer"> ----- </p>
+
+  <!-- 🔎 مربع السيرش + الطباعة -->
+<div style="margin: 20px 0; text-align:center;">
+    
+    <div style="
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        flex-wrap: wrap;
+    ">
+        
+        <!-- Input -->
+        <input type="number" id="searchQuestion" placeholder="Enter Question Number" 
+               style="padding:10px; width:200px; border:none; outline:none; font-size:16px; border-radius:5px;">
+
+        <!-- Go To Task -->
+        <button class="btn" onclick="goToQuestion()">
+            Go To Task
+        </button>
+
+        <!-- Print -->
+        <button class="btn" onclick="printQuiz()">
+            🖨️ Print PDF
+        </button>
+
+    </div>
+
 </div>
+
+
+          <div id="passage">
+    <h3>Read the following passage carefully and answer the following questions:</h3>
+    <p style="font-size: 22px;">
+      
+                          </div>
+          <div id="quiz"></div>
+      </div>
+      
+      <div class="result-screen" id="resultScreen" style="display: none;">
+          <h2>Test Result</h2>
+          <p class="author">Created by: Ahmed Amer</p>
+          <p><strong>Course Name:</strong> <span id="resultCourse"></span></p>
+          <p><strong>Name:</strong> <span id="resultName"></span></p>
+          <p><strong>Phone Number:</strong> <span id="resultPhone"></span></p>
+          <p><strong>Test Date:</strong> <span id="resultDate"></span></p>
+          <p><strong>Start Time:</strong> <span id="resultStartTime"></span></p>
+          <p><strong>Time Taken:</strong> <span id="resultTime"></span></p>
+          <p><strong>Score:</strong> <span id="resultScore"></span></p>
+      </div>
+
+
+  
+
+  
+
+    </div>
+  <div style="
+    position: fixed;
+    top: 40px;
+    right: 40px;
+    font-size: 60px;
+    font-weight: bold;
+    color: #ffd700;
+  ">
+
+  🎨
+    
+  </div>
 
 
 <script>
@@ -1920,8 +1957,105 @@ function sendDataToGoogleSheet(resultData) {
     });
 }
 
+function printQuiz() {
+    let printWindow = window.open('', '', 'width=900,height=700');
 
+    let content = `
+        <html>
+        <head>
+            <title>Quiz Print</title>
+            <style>
+                body {
+                    font-family: Arial;
+                    padding: 30px;
+                    font-size: 26px; /* 🔥 أكبر من قبل */
+                    line-height: 2;
+                }
 
+                h2 {
+                    text-align: center;
+                    font-size: 36px;
+                    margin-bottom: 10px; /* 🔥 قللنا المسافة */
+                }
+
+                .header {
+                    page-break-after: avoid; /* 🔥 يمنع كسر الصفحة بعد العنوان */
+                }
+
+                .question {
+                    margin-bottom: 60px;
+                    page-break-inside: avoid;
+                }
+
+                .passage {
+                    background: #f5f5f5;
+                    padding: 25px;
+                    border-radius: 10px;
+                    margin-bottom: 20px;
+                    font-size: 26px;
+                }
+
+                p {
+                    font-size: 26px;
+                    margin: 10px 0;
+                }
+
+                strong {
+                    font-size: 28px;
+                }
+
+                img {
+                    max-width: 100%;
+                    display: block;
+                    margin: 15px auto;
+                }
+            </style>
+        </head>
+        <body>
+
+            <div class="header">
+                <h2>${document.getElementById("quizTitle").innerText}</h2>
+            </div>
+    `;
+
+    trueFalseQuestions.forEach((q, index) => {
+        content += `
+            <div class="question">
+                <div class="passage">${q.passage}</div>
+                <p><strong>${index + 1}- ${q.q}</strong></p>
+        `;
+
+        q.options.forEach((opt, i) => {
+            content += `<p>${String.fromCharCode(97 + i)}) ${opt}</p>`;
+        });
+
+        content += `</div>`;
+    });
+
+    content += `</body></html>`;
+
+    printWindow.document.write(content);
+    printWindow.document.close();
+
+    // ✅ انتظار تحميل الصور
+    let images = printWindow.document.images;
+    let totalImages = images.length;
+    let loadedImages = 0;
+
+    if (totalImages === 0) {
+        printWindow.print();
+        return;
+    }
+
+    for (let img of images) {
+        img.onload = img.onerror = function () {
+            loadedImages++;
+            if (loadedImages === totalImages) {
+                printWindow.print();
+            }
+        };
+    }
+}
 
     </script>
     </body>
