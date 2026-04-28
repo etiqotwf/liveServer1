@@ -182,25 +182,9 @@
   display: none;
 }
 
-.target-search-box {
-  margin-bottom: 15px;
-  text-align: center;
-}
 
-.target-search-box input {
-  width: 60%;
-  padding: 10px 15px;
-  border-radius: 25px;
-  border: 1px solid #ccc;
-  outline: none;
-  font-size: 14px;
-  transition: 0.3s;
-}
 
-.target-search-box input:focus {
-  border-color: #007bff;
-  box-shadow: 0 0 8px rgba(0,123,255,0.3);
-}
+
   </style>
 </head>
 
@@ -211,17 +195,8 @@
     <span class="close-modal" id="closeTargetGroup">&times;</span>
     <h2>📋 المجموعة المستهدفة</h2>
 
-  <div class="target-search-box">
-  <input 
-    type="text" 
-    id="targetSearchInput" 
-    placeholder="🔍 ابحث بالاسم أو الإدارة أو الوظيفة..."
-    oninput="handleTargetSearch(this.value)"
-  >
-</div>
-
-
-
+   
+    
     <table id="targetGroupTable" class="target-table">
       <thead>
         <tr>
@@ -2221,9 +2196,8 @@ function normalizeText(str) {
     .replace(/[ى]/g, 'ي')        // توحيد الألف المقصورة
     .replace(/[ة]/g, 'ه');       // توحيد التاء المربوطة
 }
-function handleTargetSearch(value) {
-  loadTargetGroup(value);
-}
+
+
 // تحميل وعرض الفئة المستهدفة في الـ Modal
 async function loadTargetGroup(filterText = "") {
   const tbody = document.querySelector("#targetGroupTable tbody");
@@ -2241,73 +2215,35 @@ async function loadTargetGroup(filterText = "") {
     return;
   }
 
-  const searchText = normalizeText(filterText || "");
-
   targetGroup.forEach(person => {
+    if (filterText && !person.name.includes(filterText)) return;
 
-    // 🔍 فلترة شاملة (اسم + إدارة + وظيفة + كورسات)
-    if (filterText) {
-      const name = normalizeText(person.name || "");
-      const dept = normalizeText(person.department || "");
-      const job = normalizeText(person.job || "");
-      const courses = targetCourses.map(c => normalizeText(c)).join(" ");
+    // مطابقة الاسم بالضبط (مع تجاهل المسافات الزائدة)
+    const personName = (person.name || "").replace(/\s+/g, '').trim();
 
-      const fullText = name + " " + dept + " " + job + " " + courses;
-
-      if (!fullText.includes(searchText)) return;
-    }
-
-    // مطابقة الاسم بالضبط
     const records = allTrainees.filter(t => {
-      return normalizeText(t.name) === normalizeText(person.name);
-    });
+  return normalizeText(t.name) === normalizeText(person.name);
+});
 
-    // تحديد الحضور
-    const attended = {};
-    targetCourses.forEach(c => {
-      attended[c] = records.some(r => normalizeText(r.course) === normalizeText(c));
-    });
+const attended = {};
+targetCourses.forEach(c => {
+  attended[c] = records.some(r => normalizeText(r.course) === normalizeText(c));
+});
 
-    // إنشاء الصف
+
     const tr = document.createElement("tr");
     tr.innerHTML = `
       <td>${person.name}</td>
       <td>${person.department || ""}</td>
       <td>${person.job || ""}</td>
-
-      <td class="${attended[targetCourses[0]] ? 'attended' : 'not-attended'}">
-        ${attended[targetCourses[0]] ? '<s>' + targetCourses[0] + '</s>' : targetCourses[0]}
-      </td>
-
-      <td class="${attended[targetCourses[1]] ? 'attended' : 'not-attended'}">
-        ${attended[targetCourses[1]] ? '<s>' + targetCourses[1] + '</s>' : targetCourses[1]}
-      </td>
-
-      <td>
-        <button class="btn-details" onclick="showDetails('${person.name.replace(/'/g,"\\'")}')">
-          عرض التفاصيل
-        </button>
-      </td>
+      <td class="${attended[targetCourses[0]] ? 'attended' : 'not-attended'}">${attended[targetCourses[0]] ? '<s>'+targetCourses[0]+'</s>' : targetCourses[0]}</td>
+      <td class="${attended[targetCourses[1]] ? 'attended' : 'not-attended'}">${attended[targetCourses[1]] ? '<s>'+targetCourses[1]+'</s>' : targetCourses[1]}</td>
+      <td><button class="btn-details" onclick="showDetails('${person.name.replace(/'/g,"\\'")}')">عرض التفاصيل</button></td>
     `;
-
     tbody.appendChild(tr);
   });
-
-  // لو مفيش نتائج
-  if (!tbody.innerHTML) {
-    tbody.innerHTML = `<tr><td colspan="6">❌ لا توجد نتائج مطابقة للبحث</td></tr>`;
-  }
 }
 
-// دالة لتوحيد النص (مهمة جدًا للبحث العربي)
-function normalizeText(text) {
-  return (text || "")
-    .toLowerCase()
-    .replace(/\s+/g, '')        // حذف المسافات
-    .replace(/[أإآ]/g, 'ا')     // توحيد الألف
-    .replace(/ة/g, 'ه')         // توحيد التاء المربوطة
-    .replace(/ى/g, 'ي');        // توحيد الياء
-}
 
 
 async function showDetails(name) {
