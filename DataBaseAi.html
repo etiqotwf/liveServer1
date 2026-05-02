@@ -182,9 +182,25 @@
   display: none;
 }
 
+.target-search-box {
+  margin-bottom: 15px;
+  text-align: center;
+}
 
+.target-search-box input {
+  width: 60%;
+  padding: 10px 15px;
+  border-radius: 25px;
+  border: 1px solid #ccc;
+  outline: none;
+  font-size: 14px;
+  transition: 0.3s;
+}
 
-
+.target-search-box input:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 8px rgba(0,123,255,0.3);
+}
   </style>
 </head>
 
@@ -193,19 +209,26 @@
 <div id="targetGroupModal" class="modal-overlay" style="display:none;">
   <div class="modal-box">
     <span class="close-modal" id="closeTargetGroup">&times;</span>
-    <h2>📋 المجموعة المستهدفة</h2>
+    <h2>📋 المجموعة المستهدفه </h2>
 
-   
-    
+  <div class="target-search-box">
+  <input 
+    type="text" 
+    id="targetSearchInput" 
+    placeholder="🔍 ابحث بالاسم أو الإدارة أو الوظيفة..."
+    oninput="handleTargetSearch(this.value)"
+  >
+</div>
+
+
+
     <table id="targetGroupTable" class="target-table">
       <thead>
         <tr>
           <th>الاسم</th>
           <th>الإدارة</th>
           <th>الوظيفة</th>
-          <th>ورشة عمل البنك الالمانى إدارة الأزمات</th>
-          <th>ورشة عمل الكتابة الفنية ومهارات العرض التقنى لموظفى الهيئة</th>
-          <th>تفاصيل</th>
+          <th>الدورات تم حضورها</th>
         </tr>
       </thead>
       <tbody></tbody>
@@ -1081,7 +1104,24 @@ box-shadow:
     font-size: 28px;         /* حجم الخط الكبير */
   }
 
+.attended-course {
+  background: linear-gradient(135deg, #28a745, #218838);
+  color: #fff;
+  padding: 6px 12px;
+  margin: 4px;
+  border-radius: 20px;
+  display: inline-block;
 
+  font-size: 14px;
+  font-weight: bold;
+
+  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+}
+
+.not-attended {
+  color: #999;
+  font-style: italic;
+}
 
 
 
@@ -2148,7 +2188,107 @@ const targetGroup = [
   { name: "نصر محمود علي احمد", department: "الإدارة العامة لصرف الوادي الجديد", job: "الثانية ب" },
 
   { name: "مصطفي عبد العزيز عبد النبي", department: "الإدارة العامة لصرف الوادي الجديد", job: "الثالثة أ" },
-  { name: "محمد جمال الدين حلمي", department: "الإدارة العامة لصرف الوادي الجديد", job: "الثالثة ب" }
+  { name: "محمد جمال الدين حلمي", department: "الإدارة العامة لصرف الوادي الجديد", job: "الثالثة ب" },
+
+  
+  { name: "طلعت رياض فتحي عثمان", department: "إدارة صرف الشرقية", job: "مهندسين جدد" },
+  { name: "محمود السيد رفعت منصور السيد", department: "إدارة صرف شمال الشرقية", job: "مهندسين جدد" },
+  { name: "مينا عدلي إبراهيم يوسف", department: "إدارة صرف شمال الشرقية", job: "مهندسين جدد" },
+  { name: "زينب إبراهيم سلامة حسين", department: "إدارة صرف جنوب الشرقية", job: "مهندسين جدد" },
+  { name: "أحمد محمد إبراهيم سالم", department: "إدارة صرف وسط الدقهلية", job: "مهندسين جدد" },
+  { name: "عمر محمود نجيب حسنين أحمد", department: "إدارة صرف جنوب الدقهلية", job: "مهندسين جدد" },
+  { name: "أحمد أبو بكر الصديق السيد", department: "إدارة صرف شمال الدقهلية", job: "مهندسين جدد" },
+  { name: "أحمد عبد الهادي عبد الهادي مصطفى", department: "إدارة صرف شمال الدقهلية", job: "مهندسين جدد" },
+  { name: "محمد السيد الدسوقي محمد", department: "مشروعات صرف شرق الدلتا", job: "مهندسين جدد" },
+  { name: "محمود عبد الحميد عبد البصير", department: "إدارة صرف بورسعيد", job: "مهندسين جدد" },
+  { name: "نورهان محمود محمد الحديدي", department: "إدارة صرف بورسعيد", job: "مهندسين جدد" },
+  { name: "إسلام محمدإبراهيم", department: "إدارة صرف السويس", job: "مهندسين جدد" },
+  { name: "محمد أحمد عبد الحليم السيد", department: "إدارة صرف شرق المنوفية", job: "مهندسين جدد" },
+  { name: "أحمد شبل أمين أحمد رزق", department: "إدارة صرف شرق المنوفية", job: "مهندسين جدد" },
+  { name: "جمال سعيد محمد أبو شعيشع", department: "إدارة صرف الغربية", job: "مهندسين جدد" },
+  { name: "محمد وجدي محمود محمد الشحات", department: "إدارة صرف الغربية", job: "مهندسين جدد" },
+  { name: "آية حسام الدين أحمد عبد الوهاب", department: "إدارة صرف دمياط", job: "مهندسين جدد" },
+  { name: "محمد عنتر خليل القحافي", department: "إدارة صرف شرق كفر الشيخ", job: "مهندسين جدد" },
+  { name: "إيمان محمد سعد البنواني", department: "إدارة صرف غرب كفر الشيخ", job: "مهندسين جدد" },
+  { name: "محمد أسامة شوقي عباس سراج", department: "إدارة صرف غرب المنوفية", job: "مهندسين جدد" },
+  { name: "زكي السيد زكي السيد", department: "إدارة صرف غرب المنوفية", job: "مهندسين جدد" },
+  { name: "أحمد إبراهيم علي خطاب", department: "إدارة صرف النصر", job: "مهندسين جدد" },
+  { name: "عمر عبد الحكيم بدر صومع", department: "إدارة صرف النوبارية", job: "مهندسين جدد" },
+  { name: "سارة هشام كمال بيومي", department: "إدارة صرف جنوب غرب البحيرة", job: "مهندسين جدد" },
+  { name: "ميرنا محمد حسين موصلي", department: "إدارة صرف جنوب شرق البحيرة", job: "مهندسين جدد" },
+  { name: "علاء سعيد عبد التواب عبد العليم", department: "إدارة صرف غرب الفيوم", job: "مهندسين جدد" },
+  { name: "محمد عماد محمود هارون", department: "إدارة صرف غرب الفيوم", job: "مهندسين جدد" },
+  { name: "أحمد محمد عبد المنعم محمد", department: "إدارة صرف شرق الفيوم", job: "مهندسين جدد" },
+  { name: "هشام مصطفى محمد عبد الحميد", department: "إدارة صرف شرق الفيوم", job: "مهندسين جدد" },
+  { name: "شريف محمد زكريا محمد", department: "إدارة صرف جنوب الجيزة", job: "مهندسين جدد" },
+  { name: "يارا مجدي أبو العزم أحمد", department: "إدارة صرف جنوب الجيزة", job: "مهندسين جدد" },
+  { name: "هيثم محمد فايز محمد", department: "إدارة صرف جنوب المنيا", job: "مهندسين جدد" },
+  { name: "يوسف سامح فاروق سعيد", department: "إدارة مشروعات صرف بني سويف", job: "مهندسين جدد" },
+  { name: "محمد السيد أحمد علي", department: "إدارة صرف سوهاج", job: "مهندسين جدد" },
+  { name: "أيمن كارم عبد العظيم عبد السيد", department: "إدارة صرف أسيوط", job: "مهندسين جدد" },
+  { name: "شيماء عبد الحميد عبد المريد أحمد", department: "إدارة صرف الوادي الجديد", job: "مهندسين جدد" },
+  { name: "فاطمة الزهراء إبراهيم الدسوقي خليفة", department: "إدارة صرف شمال قنا", job: "مهندسين جدد" },
+  { name: "محمود عبد القوي إسماعيل علي", department: "إدارة صرف شمال قنا", job: "مهندسين جدد" },
+  { name: "حسناء محمد إبراهيم بهيج", department: "إدارة صرف كوم امبو", job: "مهندسين جدد" },
+  { name: "مصطفى جمعة عيد مصطفى", department: "إدارة مشروعات صرف مصر العليا", job: "مهندسين جدد" },
+
+  { name: "أميرة محمود عبد الله أحمد", department: "إدارة صرف أسوان", job: "مهندسين جدد" },
+  { name: "أمنية شعبان مصطفى هاشم", department: "إدارة صرف أسوان", job: "مهندسين جدد" },
+  { name: "أحمد رمضان أحمد سليمان", department: "إدارة مشروعات صرف مصر العليا", job: "مهندسين جدد" },
+  { name: "محمود أحمد عيد عبد العزيز", department: "إدارة صرف جنوب قنا بإسنا", job: "مهندسين جدد" },
+  { name: "أحمد سيد أحمد حسن", department: "إدارة مشروعات صرف مصر الوسطى", job: "مهندسين جدد" },
+  { name: "محمد فتحي محمد أحمد", department: "إدارة صرف بني سويف", job: "مهندسين جدد" },
+  { name: "عمرو فايز علي محمد", department: "إدارة صرف شمال الجيزة", job: "مهندسين جدد" },
+  { name: "يسرا زين العابدين زكي علي", department: "إدارة صرف سوهاج", job: "مهندسين جدد" },
+  { name: "محمود خليفة محمد خليفة", department: "إدارة صرف سوهاج", job: "مهندسين جدد" },
+  { name: "هيثم جمال طه حسين", department: "إدارة صرف أسيوط", job: "مهندسين جدد" },
+  { name: "شادي ألفي سامي ميخائيل", department: "إدارة صرف أسيوط", job: "مهندسين جدد" },
+  { name: "أسماء محمد محمد سعدية", department: "إدارة مشروعات صرف وسط الدلتا", job: "مهندسين جدد" },
+  { name: "محمود مصطفى محمد خازي", department: "إدارة صرف الغربية", job: "مهندسين جدد" },
+  { name: "علي عطية موسى عبد اللطيف", department: "إدارة صرف شرق كفر الشيخ", job: "مهندسين جدد" },
+  { name: "محمد فؤاد حسين راميه", department: "إدارة صرف الغربية", job: "مهندسين جدد" },
+  { name: "عبد الرحمن أحمد محمد", department: "إدارة صرف شرق كفر الشيخ", job: "مهندسين جدد" },
+  { name: "نادية بسيوني حمدي إبراهيم", department: "إدارة صرف شرق كفر الشيخ", job: "مهندسين جدد" },
+  { name: "سعيد محمد عفيفي السيد", department: "إدارة صرف القليوبية", job: "مهندسين جدد" },
+  { name: "إسراء سعيد سالم محمد", department: "إدارة صرف القليوبية", job: "مهندسين جدد" },
+  { name: "أحمد محمد بهاء عبد الجواد", department: "إدارة صرف شرق المنوفية", job: "مهندسين جدد" },
+  { name: "إبراهيم محمد همام إبراهيم", department: "إدارة صرف غرب المنوفية", job: "مهندسين جدد" },
+  { name: "نسمة عبد الواحد السيد", department: "إدارة صرف غرب المنوفية", job: "مهندسين جدد" },
+  { name: "رنا أيمن محمد محمد", department: "إدارة صرف شرق المنوفية", job: "مهندسين جدد" },
+  { name: "محمد طه أحمد سيد", department: "إدارة صرف غرب الفيوم", job: "مهندسين جدد" },
+  { name: "رحمة مصطفى صابر محمد", department: "إدارة صرف غرب الفيوم", job: "مهندسين جدد" },
+  { name: "مصطفى عادل محمد إبراهيم", department: "إدارة صرف شرق الفيوم", job: "مهندسين جدد" },
+  { name: "عبد الرحمن بدر الدين", department: "إدارة صرف غرب الفيوم", job: "مهندسين جدد" },
+  { name: "أحمد إبراهيم سيد أحمد", department: "إدارة صرف الوادي الجديد", job: "مهندسين جدد" },
+  { name: "أحمد عبد الحفيظ عبد الشكور", department: "إدارة صرف الإسماعيلية", job: "مهندسين جدد" },
+  { name: "محمد فتحي عبد الرحمن", department: "إدارة مشروعات صرف شرق الدلتا", job: "مهندسين جدد" },
+  { name: "ندى عصام محمود سالم", department: "إدارة مشروعات صرف شرق الدلتا", job: "مهندسين جدد" },
+  { name: "محمد جمال محمود محمد", department: "إدارة مشروعات صرف شرق الدلتا", job: "مهندسين جدد" },
+  { name: "أحمد إبراهيم أحمد عبد ربه", department: "إدارة صرف وسط الدقهلية", job: "مهندسين جدد" },
+  { name: "ريهام عادل السيد محمد", department: "إدارة صرف وسط الدقهلية", job: "مهندسين جدد" },
+  { name: "عبد الله محمود السيد", department: "إدارة صرف شمال الدقهلية", job: "مهندسين جدد" },
+  { name: "عمر أحمد محمد مجاهد", department: "إدارة صرف وسط الدقهلية", job: "مهندسين جدد" },
+  { name: "مصطفى عمر رضوان هلال", department: "إدارة صرف شمال الدقهلية", job: "مهندسين جدد" },
+  { name: "منة الله صابر أحمد صالح", department: "إدارة صرف بورسعيد", job: "مهندسين جدد" },
+  { name: "ياسمين عرفة إبراهيم صالح", department: "إدارة مشروعات صرف غرب الدلتا", job: "مهندسين جدد" },
+  { name: "ندى فتحي علي الشرقاوي", department: "إدارة صرف النوبارية", job: "مهندسين جدد" },
+
+  { name: "محمود صلاح حافظ محمد", department: "التصميمات الإنشائية", job: "مهندسين جدد" },
+  { name: "عمار ناصر أحمد الملاح", department: "الإدارة العامة صيانة صرف الغربية", job: "مهندسين جدد" },
+  { name: "عمرو عبد المنصف طلحة", department: "الإدارة العامة نظم ومعلومات واتخاذ القرار", job: "مهندسين جدد" },
+  { name: "سها عيد حسن", department: "الإدارة العامة للصرف غرب كفر الشيخ", job: "مهندسين جدد" },
+  { name: "عايدة طارق نصر الهواري", department: "الإدارة العامة لصرف جنوب الدقهلية", job: "مهندسين جدد" },
+  { name: "فاطمة ربيع عبد السيد محمد", department: "أ. ع للأملاك هيئة الصرف", job: "مهندسين جدد" },
+  { name: "حبيبة محمد محمد", department: "الإدارة العامة للصرف وسط الدقهلية", job: "مهندسين جدد" },
+  { name: "زينب السيد محمد صالح", department: "الإدارة العامة لصيانة صرف شمال الشرقية", job: "مهندسين جدد" },
+  { name: "آية سمير علي شاطر", department: "صيانة صرف شمال الشرقية", job: "مهندسين جدد" },
+  { name: "هويدا هشام محمد السرسي", department: "دراسات خطية وتصميم شبكات صرف مغطى", job: "مهندسين جدد" },
+  { name: "هاجر عطية محمد دويب", department: "الإدارة العامة لمشروعات صرف وسط الدلتا", job: "مهندسين جدد" },
+  { name: "عبير عبد العزيز عبد العال", department: "الإدارة العامة لصيانة صرف الشرقية", job: "مهندسين جدد" },
+  { name: "محمد صابر أبو المعاطي عيطة", department: "الإدارة العامة لشئون الأقاليم بهيئة الصرف", job: "مهندسين جدد" },
+  { name: "آية وسيم محمد محمد", department: "الإدارة العامة لمشروعات صرف شرق الدلتا", job: "مهندسين جدد" },
+  { name: "أحمد قطب شفيق", department: "صرف غرب المنوفية", job: "مهندسين جدد" }
+
 
 
 ];
@@ -2196,8 +2336,10 @@ function normalizeText(str) {
     .replace(/[ى]/g, 'ي')        // توحيد الألف المقصورة
     .replace(/[ة]/g, 'ه');       // توحيد التاء المربوطة
 }
-
-
+function handleTargetSearch(value) {
+  loadTargetGroup(value);
+}
+// تحميل وعرض الفئة المستهدفة في الـ Modal
 // تحميل وعرض الفئة المستهدفة في الـ Modal
 async function loadTargetGroup(filterText = "") {
   const tbody = document.querySelector("#targetGroupTable tbody");
@@ -2215,36 +2357,75 @@ async function loadTargetGroup(filterText = "") {
     return;
   }
 
+  const searchText = normalizeText(filterText || "");
+
   targetGroup.forEach(person => {
-    if (filterText && !person.name.includes(filterText)) return;
 
-    // مطابقة الاسم بالضبط (مع تجاهل المسافات الزائدة)
-    const personName = (person.name || "").replace(/\s+/g, '').trim();
-
+    // 📌 مطابقة الاسم (كل سجلات الشخص)
     const records = allTrainees.filter(t => {
-  return normalizeText(t.name) === normalizeText(person.name);
-});
+      return normalizeText(t.name) === normalizeText(person.name);
+    });
 
-const attended = {};
-targetCourses.forEach(c => {
-  attended[c] = records.some(r => normalizeText(r.course) === normalizeText(c));
-});
+    // 📌 استخراج كل الكورسات اللي حضرها
+    const attendedCourses = [...new Set(
+      records.map(r => r.course).filter(Boolean)
+    )];
 
+    // 🔍 فلترة شاملة (اسم + إدارة + وظيفة + كورسات فعلية)
+    if (filterText) {
+      const name = normalizeText(person.name || "");
+      const dept = normalizeText(person.department || "");
+      const job = normalizeText(person.job || "");
+      const coursesText = normalizeText(attendedCourses.join(" "));
 
+      const fullText = name + dept + job + coursesText;
+
+      if (!fullText.includes(searchText)) return;
+    }
+
+    // 🧾 إنشاء الصف
     const tr = document.createElement("tr");
+
     tr.innerHTML = `
       <td>${person.name}</td>
       <td>${person.department || ""}</td>
       <td>${person.job || ""}</td>
-      <td class="${attended[targetCourses[0]] ? 'attended' : 'not-attended'}">${attended[targetCourses[0]] ? '<s>'+targetCourses[0]+'</s>' : targetCourses[0]}</td>
-      <td class="${attended[targetCourses[1]] ? 'attended' : 'not-attended'}">${attended[targetCourses[1]] ? '<s>'+targetCourses[1]+'</s>' : targetCourses[1]}</td>
-      <td><button class="btn-details" onclick="showDetails('${person.name.replace(/'/g,"\\'")}')">عرض التفاصيل</button></td>
+
+      <td colspan="2">
+        ${
+          attendedCourses.length
+            ? attendedCourses.map(c => 
+                `<span class="attended-course">${c}</span>`
+              ).join(" , ")
+            : `<span class="not-attended">لم يحضر أي دورة</span>`
+        }
+      </td>
+
+      <td>
+        <button class="btn-details" onclick="showDetails('${person.name.replace(/'/g,"\\'")}')">
+          عرض التفاصيل
+        </button>
+      </td>
     `;
+
     tbody.appendChild(tr);
   });
+
+  // ❌ لو مفيش نتائج
+  if (!tbody.innerHTML) {
+    tbody.innerHTML = `<tr><td colspan="6">❌ لا توجد نتائج مطابقة للبحث</td></tr>`;
+  }
 }
 
-
+// 🔤 دالة توحيد النص (مهمة جدًا للبحث العربي)
+function normalizeText(text) {
+  return (text || "")
+    .toLowerCase()
+    .replace(/\s+/g, '')        // حذف المسافات
+    .replace(/[أإآ]/g, 'ا')     // توحيد الألف
+    .replace(/ة/g, 'ه')         // توحيد التاء المربوطة
+    .replace(/ى/g, 'ي');        // توحيد الياء
+}
 
 async function showDetails(name) {
   const all = await getAllTraineesFromDB();
