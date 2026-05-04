@@ -150,7 +150,7 @@
 
   <script>
     document.addEventListener("DOMContentLoaded", function () {
-      fetch("https://script.google.com/macros/s/AKfycbzOJOaE5w41UKIv0opCgA5SWypplFKmTyrVhwpHYkc716Lgydma_iswF04r5o90ldVS/exec")
+      fetch("https://script.google.com/macros/s/AKfycbzmRvig1sNyOjU6S0l26TuB85LO0vgR1vgkUo_BoclofJ1oD9B6bUTZbrWkBLE2VpMc/exec")
         .then(response => response.json())
         .then(data => {
           const datalist = document.getElementById("courseList");
@@ -174,7 +174,7 @@
 
     <h2>📝 نموذج تقييم الدورة التدريبية</h2>
 
-    <form action="https://script.google.com/macros/s/AKfycbzOJOaE5w41UKIv0opCgA5SWypplFKmTyrVhwpHYkc716Lgydma_iswF04r5o90ldVS/exec" method="post">
+    <form action="https://script.google.com/macros/s/AKfycbzmRvig1sNyOjU6S0l26TuB85LO0vgR1vgkUo_BoclofJ1oD9B6bUTZbrWkBLE2VpMc/exec" method="post">
       <label>👤 اسم المتدرب:</label>
       <input type="text" name="traineeName" placeholder="ادخل اسمك الكامل" required>
 
@@ -235,7 +235,7 @@
   document.addEventListener("DOMContentLoaded", function () {
     // 🗂️ الدورات وتواريخها
     const courseData = {
-      "   test": { start: "2026-5-1", end: "2026-5-1" },
+      "   استخدام محطة الرصد للمهندسين الجدد ": { start: "2026-5-4", end: "2026-5-6" },
 
     };
 
@@ -319,7 +319,7 @@
 
   // ☁️ محاولة إرسال للـ Google Sheet
   function sendToGoogleSheets(formData, callback) {
-    fetch("https://script.google.com/macros/s/AKfycbzOJOaE5w41UKIv0opCgA5SWypplFKmTyrVhwpHYkc716Lgydma_iswF04r5o90ldVS/exec", {
+    fetch("https://script.google.com/macros/s/AKfycbzmRvig1sNyOjU6S0l26TuB85LO0vgR1vgkUo_BoclofJ1oD9B6bUTZbrWkBLE2VpMc/exec", {
       method: "POST",
       body: new URLSearchParams(formData)
     })
