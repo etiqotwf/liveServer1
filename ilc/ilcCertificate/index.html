@@ -275,7 +275,7 @@ position:absolute;
 
 bottom:715px;
 
-right:80px;
+right:70px;
 
 font-size:16px;
 font-weight:bold;
@@ -477,6 +477,77 @@ background:#334155;
 
 }
 
+
+.panel-header{
+
+display:flex;
+
+justify-content:space-between;
+
+align-items:center;
+
+margin-bottom:20px;
+
+}
+
+.fullscreen-btn{
+
+background:#7c3aed;
+
+color:white;
+
+padding:10px 18px;
+
+border:none;
+
+border-radius:8px;
+
+font-weight:bold;
+
+cursor:pointer;
+
+transition:.3s;
+
+}
+
+.fullscreen-btn:hover{
+
+background:#6d28d9;
+
+transform:scale(1.05);
+
+}
+
+
+
+.sync-btn{
+
+background:#0ea5e9;
+
+color:white;
+
+padding:10px 18px;
+
+border:none;
+
+border-radius:8px;
+
+font-weight:bold;
+
+cursor:pointer;
+
+transition:.3s;
+
+margin-left:10px;
+
+}
+
+.sync-btn:hover{
+
+background:#0284c7;
+
+}
+
 </style>
 </head>
 
@@ -488,8 +559,19 @@ background:#334155;
 <h1 class="app-title">
   Certificate Management System 
 </h1>
+<div class="panel-header">
+
 <h2>Admin Panel</h2>
 
+<button class="fullscreen-btn" onclick="toggleFullscreen()">
+Fullscreen
+</button>
+
+<button class="sync-btn" onclick="syncOfflineCertificates()">
+Upload Offline Data
+</button>
+
+</div>
 
 <input id="nameInput" placeholder="Student Name">
 
@@ -508,6 +590,7 @@ background:#334155;
 <button id="downloadBtn">Download Image</button>
 
 <button onclick="printCertificate()">Print Certificate</button>
+
 
 
 <h3>Print Calibration</h3>
@@ -553,20 +636,69 @@ let offsetY = localStorage.getItem("printOffsetY") || 0;
 
   let editingSerial = null;
 
+/*
 
-    // عند الضغط على أي مكان في الصفحة، أدخل وضع ملء الشاشة
-    document.addEventListener("click", () => {
-      const elem = document.documentElement; // أو document.getElementById("myForm")
-      if (document.fullscreenElement) return; // لا تفعل شيء إذا كنا بالفعل في ملء الشاشة
+document.addEventListener("click", () => {
+  const elem = document.documentElement;
 
-      if (elem.requestFullscreen) {
-        elem.requestFullscreen();
-      } else if (elem.webkitRequestFullscreen) { /* Safari */
-        elem.webkitRequestFullscreen();
-      } else if (elem.msRequestFullscreen) { /* IE11 */
-        elem.msRequestFullscreen();
-      }
-    });
+  if (document.fullscreenElement) return;
+
+  if (elem.requestFullscreen) {
+    elem.requestFullscreen();
+  } else if (elem.webkitRequestFullscreen) {
+    elem.webkitRequestFullscreen();
+  } else if (elem.msRequestFullscreen) {
+    elem.msRequestFullscreen();
+  }
+});
+
+*/
+
+
+let db;
+
+const request = indexedDB.open("OfflineCertificatesDB",1);
+
+request.onupgradeneeded = function(e){
+
+db = e.target.result;
+
+if(!db.objectStoreNames.contains("pendingCertificates")){
+
+db.createObjectStore("pendingCertificates",{
+keyPath:"serial"
+});
+
+}
+
+};
+
+request.onsuccess = function(e){
+
+db = e.target.result;
+
+console.log("IndexedDB Ready");
+
+};
+
+request.onerror = function(){
+
+console.log("IndexedDB Error");
+
+};
+
+
+function saveOfflineCertificate(data){
+
+let tx = db.transaction("pendingCertificates","readwrite");
+
+let store = tx.objectStore("pendingCertificates");
+
+store.put(data);
+
+alert("No internet. Certificate saved offline.");
+
+}
 
 
 function generateSerial(){
@@ -612,8 +744,7 @@ document.getElementById("name").innerText = name
 document.getElementById("course").innerText = course
 document.getElementById("grade").innerText = grade
 document.getElementById("date").innerText = date
-document.getElementById("serial").innerText = "Serial ILC : " + serial
-
+document.getElementById("serial").innerText = "CERTIFICATION ID : ILC " + serial
 /* رابط التحقق */
 
 let verifyLink = "https://etiqotwf.github.io/liveServer1/ilc/ilcCertificate/verify.html?serial=" + serial;
@@ -673,11 +804,20 @@ btn.innerText = "Generate Certificate";
 
 .catch(error => {
 
-console.error("❌ Error sending to Google Sheet:", error);
+console.error("❌ Offline Mode:", error);
 
-/* إعادة تفعيل الزر عند الخطأ */
+/* حفظ أوفلاين */
+
+saveOfflineCertificate({
+name,
+course,
+grade,
+date,
+serial
+});
 
 btn.disabled = false;
+
 btn.innerText = "Generate Certificate";
 
 });
@@ -719,8 +859,7 @@ document.getElementById("name").innerText=student.name
 document.getElementById("course").innerText=student.course
 document.getElementById("grade").innerText=student.grade
 document.getElementById("date").innerText=student.date
-document.getElementById("serial").innerText="Serial : "+student.serial
-
+document.getElementById("serial").innerText="CERTIFICATION ID : ILC "+student.serial
 document.getElementById("qrcode").innerHTML=""
 
 let verifyLink="https://etiqotwf.github.io/liveServer1/ilc/ilcCertificate/verify.html?serial="+student.serial;
@@ -758,8 +897,7 @@ document.getElementById("name").innerText=student.name
 document.getElementById("course").innerText=student.course
 document.getElementById("grade").innerText=student.grade
 document.getElementById("date").innerText=student.date
-document.getElementById("serial").innerText="Serial : "+student.serial
-
+document.getElementById("serial").innerText="CERTIFICATION ID : ILC "+student.serial
 }
 
 }
@@ -900,8 +1038,7 @@ document.getElementById("name").innerText = cert.name;
 document.getElementById("course").innerText = cert.course;
 document.getElementById("grade").innerText = cert.grade;
 document.getElementById("date").innerText = formattedDate;
-document.getElementById("serial").innerText = "Serial ILC : " + serial
-
+document.getElementById("serial").innerText = "CERTIFICATION ID : ILC " + serial
 // إنشاء QR
 
 document.getElementById("qrcode").innerHTML="";
@@ -1010,8 +1147,7 @@ document.getElementById("name").innerText = cert.name;
 document.getElementById("course").innerText = cert.course;
 document.getElementById("grade").innerText = cert.grade;
 document.getElementById("date").innerText = formattedDate;
-document.getElementById("serial").innerText = "Serial ILC : " + serial
-
+document.getElementById("serial").innerText = "CERTIFICATION ID : ILC " + serial
 /* إنشاء QR */
 
 document.getElementById("qrcode").innerHTML="";
@@ -1032,7 +1168,6 @@ alert("Error loading certificate");
 });
 
 }
-
 
 function printCertificate(){
 
@@ -1059,6 +1194,7 @@ overflow:hidden;
 
 /* الشهادة */
 
+
 .print-area{
 
 position:relative;
@@ -1070,9 +1206,17 @@ background:url('certificate.jpeg') no-repeat center;
 
 background-size:100% 100%;
 
-font-family:Georgia, serif;
+}
+
+/* تحويل كل الخطوط */
+
+.print-area,
+.print-area *{
+
+font-family:"Times New Roman", Times, serif !important;
 
 }
+
 
 /* الاسم */
 
@@ -1080,16 +1224,16 @@ font-family:Georgia, serif;
 
 position:absolute;
 
-top:535px;
+top:556px;
 
 left:50%;
 transform:translateX(-50%);
 
-width:80%;
+width:100%;
 
 text-align:center;
 
-font-size:30px;
+font-size:24px;
 
 font-weight:bold;
 
@@ -1103,16 +1247,16 @@ color:#111;
 
 position:absolute;
 
-top:655px;
+top:690px;
 
 left:50%;
 transform:translateX(-50%);
 
-width:80%;
+width:100%;
 
 text-align:center;
 
-font-size:27px;
+font-size:19px;
 
 font-weight:bold;
 
@@ -1126,11 +1270,11 @@ color:#111;
 
 position:absolute;
 
-bottom:118px;
+bottom:60px;
 
-left:170px;
+left:192px;
 
-font-size:20px;
+font-size:17px;
 
 font-weight:bold;
 
@@ -1144,11 +1288,11 @@ color:#111;
 
 position:absolute;
 
-bottom:82px;
+bottom:25px;
 
-left:155px;
+left:192px;
 
-font-size:20px;
+font-size:17px;
 
 font-weight:bold;
 
@@ -1162,11 +1306,11 @@ color:#111;
 
 position:absolute;
 
-top:105px;
+top:102px;
 
-right:80px;
+right:55px;
 
-font-size:16px;
+font-size:13px;
 
 font-weight:bold;
 
@@ -1180,16 +1324,31 @@ color:#222;
 
 position:absolute;
 
-bottom:120px;
+bottom:82px;
 
-right:70px;
+right:55px;
 
 }
 
 .qr img{
 
-width:105px !important;
-height:105px !important;
+width:90px !important;
+height:90px !important;
+
+}
+
+
+.signature{
+
+position:absolute; 
+
+bottom:2px;
+
+right:20px;
+
+width:200px;
+
+transform:translateY(20px);
 
 }
 
@@ -1225,6 +1384,8 @@ ${document.getElementById("grade").innerText}
 ${qrHTML}
 </div>
 
+<img src="signature.jpeg" class="signature">
+
 </div>
 
 <script>
@@ -1248,7 +1409,6 @@ win.document.write(printContent);
 win.document.close();
 
 }
-
 
 function moveUp(){
 offsetY--;
@@ -1287,6 +1447,136 @@ localStorage.setItem("printOffsetX",offsetX);
 localStorage.setItem("printOffsetY",offsetY);
 
 alert("Offset X : "+offsetX+" | Offset Y : "+offsetY);
+
+}
+
+
+
+function toggleFullscreen(){
+
+const elem = document.documentElement;
+
+/* دخول Fullscreen */
+
+if(!document.fullscreenElement){
+
+if(elem.requestFullscreen){
+
+elem.requestFullscreen();
+
+}else if(elem.webkitRequestFullscreen){
+
+elem.webkitRequestFullscreen();
+
+}else if(elem.msRequestFullscreen){
+
+elem.msRequestFullscreen();
+
+}
+
+}
+
+/* خروج من Fullscreen */
+
+else{
+
+if(document.exitFullscreen){
+
+document.exitFullscreen();
+
+}else if(document.webkitExitFullscreen){
+
+document.webkitExitFullscreen();
+
+}else if(document.msExitFullscreen){
+
+document.msExitFullscreen();
+
+}
+
+}
+
+}
+
+
+function syncOfflineCertificates(){
+
+if(!navigator.onLine){
+
+alert("No internet connection");
+
+return;
+
+}
+
+let tx = db.transaction("pendingCertificates","readonly");
+
+let store = tx.objectStore("pendingCertificates");
+
+let request = store.getAll();
+
+request.onsuccess = function(){
+
+let certificates = request.result;
+
+if(certificates.length === 0){
+
+alert("No offline certificates");
+
+return;
+
+}
+
+certificates.forEach(cert => {
+
+const formData = new URLSearchParams();
+
+formData.append("action","add");
+formData.append("name",cert.name);
+formData.append("course",cert.course);
+formData.append("grade",cert.grade);
+formData.append("date",cert.date);
+formData.append("serial",cert.serial);
+
+fetch("https://script.google.com/macros/s/AKfycbyqvacwgvC6UionZ7SmsI9HJUTOB_9isWkHWckaaf5UNGJnlqWaCnmabVAKtDv5ZDN6hg/exec",{
+
+method:"POST",
+
+headers:{
+"Content-Type":"application/x-www-form-urlencoded"
+},
+
+body:formData.toString()
+
+})
+
+.then(res => res.text())
+
+.then(() => {
+
+/* حذف بعد نجاح الإرسال */
+
+let deleteTx = db.transaction("pendingCertificates","readwrite");
+
+let deleteStore = deleteTx.objectStore("pendingCertificates");
+
+deleteStore.delete(cert.serial);
+
+console.log("Synced:", cert.serial);
+
+})
+
+.catch(err => {
+
+console.log("Sync Failed", err);
+
+});
+
+});
+
+alert("Offline certificates synced successfully");
+
+};
 
 }
 
