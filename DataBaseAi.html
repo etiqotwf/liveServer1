@@ -201,6 +201,24 @@
   border-color: #007bff;
   box-shadow: 0 0 8px rgba(0,123,255,0.3);
 }
+
+
+
+#printTargetBtn{
+  padding:10px 15px;
+  border:none;
+  border-radius:12px;
+  background:#198754;
+  color:#fff;
+  font-weight:bold;
+  cursor:pointer;
+  box-shadow:0 4px 10px rgba(0,0,0,.2);
+}
+
+#printTargetBtn:hover{
+  opacity:.9;
+}
+
   </style>
 </head>
 
@@ -211,13 +229,38 @@
     <span class="close-modal" id="closeTargetGroup">&times;</span>
     <h2>📋 المجموعة المستهدفه </h2>
 
-  <div class="target-search-box">
+ <div class="target-search-box" style="
+display:flex;
+align-items:center;
+justify-content:center;
+gap:12px;
+">
+
   <input 
     type="text" 
     id="targetSearchInput" 
     placeholder="🔍 ابحث بالاسم أو الإدارة أو الوظيفة..."
     oninput="handleTargetSearch(this.value)"
   >
+
+  <div id="targetCounter" style="
+    min-width:120px;
+    padding:10px 15px;
+    border-radius:12px;
+    background:linear-gradient(135deg,#0d6efd,#6610f2);
+    color:#fff;
+    font-weight:bold;
+    font-size:18px;
+    text-align:center;
+    box-shadow:0 4px 10px rgba(0,0,0,.2);
+  ">
+    📊 0
+  </div>
+
+<button id="printTargetBtn" onclick="printTargetResults()">
+  🖨️ طباعة النتائج
+</button>
+
 </div>
 
 
@@ -2336,13 +2379,16 @@ function normalizeText(str) {
     .replace(/[ى]/g, 'ي')        // توحيد الألف المقصورة
     .replace(/[ة]/g, 'ه');       // توحيد التاء المربوطة
 }
+
+
 function handleTargetSearch(value) {
   loadTargetGroup(value);
 }
 // تحميل وعرض الفئة المستهدفة في الـ Modal
-// تحميل وعرض الفئة المستهدفة في الـ Modal
 async function loadTargetGroup(filterText = "") {
   const tbody = document.querySelector("#targetGroupTable tbody");
+  const counter = document.getElementById("targetCounter");
+
   tbody.innerHTML = "";
 
   let allTrainees = [];
@@ -2354,36 +2400,45 @@ async function loadTargetGroup(filterText = "") {
 
   if (!allTrainees.length) {
     tbody.innerHTML = `<tr><td colspan="6">⚠️ لا توجد بيانات داخل قاعدة البيانات.</td></tr>`;
+    counter.textContent = "📊 0";
     return;
   }
 
   const searchText = normalizeText(filterText || "");
 
+  // إجمالي أفراد المجموعة المستهدفة
+  const totalCount = targetGroup.length;
+
+  // عدد النتائج المعروضة بعد الفلترة
+  let displayedCount = 0;
+
   targetGroup.forEach(person => {
 
-    // 📌 مطابقة الاسم (كل سجلات الشخص)
+    // مطابقة الاسم
     const records = allTrainees.filter(t => {
       return normalizeText(t.name) === normalizeText(person.name);
     });
 
-    // 📌 استخراج كل الكورسات اللي حضرها
+    // استخراج الدورات
     const attendedCourses = [...new Set(
       records.map(r => r.course).filter(Boolean)
     )];
 
-    // 🔍 فلترة شاملة (اسم + إدارة + وظيفة + كورسات فعلية)
+    // فلترة البحث
     if (filterText) {
       const name = normalizeText(person.name || "");
       const dept = normalizeText(person.department || "");
       const job = normalizeText(person.job || "");
       const coursesText = normalizeText(attendedCourses.join(" "));
 
-      const fullText = name + dept + job + coursesText;
+      const fullText = `${name} ${dept} ${job} ${coursesText}`;
 
       if (!fullText.includes(searchText)) return;
     }
 
-    // 🧾 إنشاء الصف
+    // زيادة العداد للسجلات المعروضة
+    displayedCount++;
+
     const tr = document.createElement("tr");
 
     tr.innerHTML = `
@@ -2394,7 +2449,7 @@ async function loadTargetGroup(filterText = "") {
       <td colspan="2">
         ${
           attendedCourses.length
-            ? attendedCourses.map(c => 
+            ? attendedCourses.map(c =>
                 `<span class="attended-course">${c}</span>`
               ).join(" , ")
             : `<span class="not-attended">لم يحضر أي دورة</span>`
@@ -2402,7 +2457,8 @@ async function loadTargetGroup(filterText = "") {
       </td>
 
       <td>
-        <button class="btn-details" onclick="showDetails('${person.name.replace(/'/g,"\\'")}')">
+        <button class="btn-details"
+          onclick="showDetails('${person.name.replace(/'/g,"\\'")}')">
           عرض التفاصيل
         </button>
       </td>
@@ -2411,12 +2467,19 @@ async function loadTargetGroup(filterText = "") {
     tbody.appendChild(tr);
   });
 
-  // ❌ لو مفيش نتائج
+  // تحديث العداد
+  if (filterText.trim()) {
+    counter.textContent = `📊 ${displayedCount}`;
+  } else {
+    counter.textContent = `📊 ${totalCount}`;
+  }
+
+  // لا توجد نتائج
   if (!tbody.innerHTML) {
     tbody.innerHTML = `<tr><td colspan="6">❌ لا توجد نتائج مطابقة للبحث</td></tr>`;
+    counter.textContent = "📊 0";
   }
 }
-
 // 🔤 دالة توحيد النص (مهمة جدًا للبحث العربي)
 function normalizeText(text) {
   return (text || "")
@@ -3979,6 +4042,71 @@ function printStatsAndCharts() {
       checkPassword();
     }
   });
+
+
+function printTargetResults() {
+
+  const table = document.getElementById("targetGroupTable");
+
+  const printWindow = window.open("", "_blank");
+
+  printWindow.document.write(`
+    <html dir="rtl">
+    <head>
+      <title>نتائج البحث</title>
+
+      <style>
+        body{
+          font-family:Tahoma;
+          direction:rtl;
+          padding:20px;
+        }
+
+        h2{
+          text-align:center;
+          margin-bottom:20px;
+        }
+
+        table{
+          width:100%;
+          border-collapse:collapse;
+        }
+
+        th,td{
+          border:1px solid #ccc;
+          padding:8px;
+          text-align:center;
+        }
+
+        th{
+          background:#0d6efd;
+          color:#fff;
+        }
+
+        button{
+          display:none;
+        }
+      </style>
+    </head>
+
+    <body>
+      <h2>نتائج المجموعة المستهدفة</h2>
+
+      ${table.outerHTML}
+
+    </body>
+    </html>
+  `);
+
+  printWindow.document.close();
+
+  setTimeout(() => {
+    printWindow.print();
+    printWindow.close();
+  }, 500);
+}
+
+
 </script>
 
 
