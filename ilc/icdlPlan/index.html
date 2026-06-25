@@ -552,10 +552,9 @@ h2 {
 
 
 
-<h2>📅 ICDL Schedule — G21 & G22 & G23</h2>
+<h2>📅 ICDL Schedule — Groups G21–G25</h2>
 <div class="meta">
-Training Days: Daily · Time: 3:00 PM · 1 session per day
-</div>
+<p><strong>Training Days:</strong> Daily · <strong>Sessions:</strong> 3:00 PM - 4:00 PM & 4:00 PM - 5:00 PM · <strong>2 Sessions per Day</strong></p></div>
 <div class="instructions">
   <button class="toggle-btn">📘  التعليمات الخاصة بالكورس اضغط على الزر لرؤية التعليمات</button>
   <div class="content">
@@ -632,11 +631,11 @@ Training Days: Daily · Time: 3:00 PM · 1 session per day
   <!-- أزرار G8 + G9 + G10 + G11 -->
 <div class="groups-buttons">
 <!-- 👇 المجموعات الجديدة -->
-<button id="btnG21" class="group-btn g21">🌈 G21</button>
-<button id="btnG22" class="group-btn g22">🏆 G22</button>
-<button id="btnG23" class="group-btn g23">🔥 G23</button>
-<button id="btnG24" class="group-btn g24">💎 G24</button>
-<button id="btnG25" class="group-btn g25">🚀 G25</button>
+<button id="btnG26" class="group-btn g26">🔴 G26</button>
+<button id="btnG27" class="group-btn g27">🔷 G27</button>
+<button id="btnG28" class="group-btn g28">🔴 G28</button>
+<button id="btnG29" class="group-btn g29">⭐ G29</button>
+<button id="btnG30" class="group-btn g30">🔴 G30</button>
 
 </div>
 
@@ -710,31 +709,46 @@ const scriptURL = "https://script.google.com/macros/s/AKfycbzbUWAlJ4oI-OF0xrGQmO
 // =======================
 // تعريف المجموعات
 // =======================
-const groups = Array.from({ length: 25 }, (_, i) => 'G' + (i + 1)); // G1–G25
+const groups = Array.from({ length: 30 }, (_, i) => 'G' + (i + 1)); // G1–G30
 
 // ✅ المجموعات المستخدمة في الجدول
-const tableGroups = ['G21', 'G22', 'G23'];
-const colors = [
-  '#FFCDD2', '#BBDEFB', '#C8E6C9', '#FFF9C4',
-  '#FFCCBC', '#D1C4E9', '#B2EBF2', '#FFE082',
-  '#D7CCC8', '#F5F5F5', '#90A4AE',
+const tableGroups = ['G21', 'G22', 'G23', 'G24', 'G25'];
 
+const colors = [
+  '#FFCDD2', // G1
+  '#BBDEFB', // G2
+  '#C8E6C9', // G3
+  '#FFF9C4', // G4
+  '#FFCCBC', // G5
+  '#D1C4E9', // G6
+  '#B2EBF2', // G7
+  '#FFE082', // G8
+  '#D7CCC8', // G9
+  '#F5F5F5', // G10
+  '#90A4AE', // G11
+  '#CE93D8', // G12
+  '#80CBC4', // G13
+  '#FFAB91', // G14
   '#A5D6A7', // G15
 
-  // 🎨 ألوان فاتحة G16 – G25
   '#E1BEE7', // G16
   '#B3E5FC', // G17
   '#FFCCBC', // G18
   '#D1C4E9', // G19
   '#B2DFDB', // G20
-  '#FFF9C4', // G21
-  '#F8BBD0', // G22
-  '#DCEDC8', // G23
-  '#CFD8DC', // G24
-  '#FFE0B2'  // G25
+
+  '#FFF176', // G21
+  '#F48FB1', // G22
+  '#66BB6A', // G23
+  '#42A5F5', // G24
+  '#FFA726', // G25
+
+  '#AB47BC', // G26 بنفسجي
+  '#26A69A', // G27 تركواز
+  '#EF5350', // G28 أحمر
+  '#5C6BC0', // G29 نيلي
+  '#8BC34A'  // G30 أخضر
 ];
-
-
 // =======================
 // التاريخ
 // =======================
@@ -763,11 +777,11 @@ groups.forEach(g => groupCounts[g] = 0);
 // الجدول الأساسي (متوازن لـ 5 مجموعات)
 // =======================
 let fixedSchedule = [
-  ['G21','-'], // 07 Jun
-  ['G22','-'], // 08 Jun
-  ['G21','-'], // 09 Jun
-  ['G22','-'], // 10 Jun
-  ['G21','-'], // 11 Jun
+  ['G21','-'],   // 07 Jun
+  ['G22','-'],   // 08 Jun
+  ['G21','-'],   // 09 Jun
+  ['G22','-'],   // 10 Jun
+  ['G21','-'],   // 11 Jun
 
   ['G22','G23'], // 14 Jun
   ['G21','-'],   // 15 Jun
@@ -782,15 +796,29 @@ let fixedSchedule = [
   ['G21','G23'], // 25 Jun
 
   ['G22','G23'], // 28 Jun
-  ['G21','-'],   // 29 Jun
+  ['G21','G24'], // 29 Jun
   ['G22','G23'], // 30 Jun
-  ['G21','-'],   // 01 Jul
+  ['G21','G25'], // 01 Jul
   ['G22','G23'], // 02 Jul
 
   ['G21','G23'], // 05 Jul
-  ['G22','-'],   // 06 Jul
+  ['G22','G24'], // 06 Jul
   ['G21','G23'], // 07 Jul
-  ['G22','G23']  // 08 Jul
+  ['G22','G23'], // 08 Jul
+  ['G21','G25'], // 09 Jul
+
+  // بعد انتهاء G21 و G22
+  ['G24','G25'], // 12 Jul
+  ['G25','G24'], // 13 Jul
+  ['G24','G25'], // 14 Jul
+  ['G25','G24'], // 15 Jul
+  ['G24','G25'], // 16 Jul
+
+  ['G25','G24'], // 19 Jul
+  ['G24','G25'], // 20 Jul
+  ['G25','G24'], // 21 Jul
+  ['G24','G25'], // 22 Jul
+  ['G25','G24']  // 23 Jul
 ];
 // =======================
 // ضبط الجدول النهائي
