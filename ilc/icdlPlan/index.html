@@ -552,7 +552,7 @@ h2 {
 
 
 
-<h2>📅 ICDL Schedule — Groups G24–G34</h2>
+<h2>📅 ICDL Schedule — Groups G24–G36</h2>
 <div class="meta">
 <p><strong>Training Days:</strong> Daily · <strong>Sessions:</strong> 2:30 PM - 4:00 PM & 4:00 PM - 5:30 PM  & 5:30 PM - 7:00 PM · <strong>3  per Day</strong></p></div>
 <div class="instructions">
@@ -629,13 +629,13 @@ h2 {
   </h2>
 
   <!-- أزرار G8 + G9 + G10 + G11 -->
-<<div class="groups-buttons">
+<div class="groups-buttons">
 <!-- 👇 المجموعات الجديدة -->
-<button id="btnG36" class="group-btn g36">🔴 G36</button>
-<button id="btnG37" class="group-btn g37">🔷 G37</button>
-<button id="btnG38" class="group-btn g38">🔴 G38</button>
-<button id="btnG39" class="group-btn g39">⭐ G39</button>
-<button id="btnG40" class="group-btn g40">🔴 G40</button>
+<button id="btnG41" class="group-btn g41">🔴 G41</button>
+<button id="btnG42" class="group-btn g42">🔷 G42</button>
+<button id="btnG43" class="group-btn g43">🔴 G43</button>
+<button id="btnG44" class="group-btn g44">⭐ G44</button>
+<button id="btnG45" class="group-btn g45">🔴 G45</button>
 
 </div>
 
@@ -710,7 +710,7 @@ const scriptURL = "https://script.google.com/macros/s/AKfycbzbUWAlJ4oI-OF0xrGQmO
 // =======================
 // تعريف المجموعات
 // =======================
-const groups = Array.from({ length: 40 }, (_, i) => 'G' + (i + 1)); // G1–G35
+const groups = Array.from({ length: 45 }, (_, i) => 'G' + (i + 1)); // G1–G45
 // ✅ المجموعات المستخدمة في الجدول
 const tableGroups = [
     'G24',
@@ -723,7 +723,8 @@ const tableGroups = [
     'G31',
     'G32',
     'G33',
-    'G34'
+    'G34',
+    
 ];
 const colors = [
   '#FFCDD2', // G1
@@ -767,6 +768,11 @@ const colors = [
   '#80CBC4', // G13
   '#FFAB91', // G14
   '#A5D6A7', // G15  // G35
+  '#C8E6C9', // G3
+  '#FFF9C4', // G4
+  '#FFCCBC', // G5
+  '#D1C4E9', // G6
+  '#B2EBF2', // G7
 
 ];
 // =======================
@@ -1080,7 +1086,7 @@ const emojis = [
   '✅'  // ✅ عنصر جديد 2
 ];
 
-      groups.slice(23).forEach((g)=>{
+      groups.slice(36).forEach((g)=>{
     const i = groups.indexOf(g);
         const div=document.createElement("div");
         div.style.flex="1 1 220px";
