@@ -1,0 +1,4697 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>AI Irrigation Intelligence</title>
+
+<style>
+
+:root{
+    --bg:#07111f;
+    --bg2:#0b1728;
+    --card:#101f33;
+    --card2:#142840;
+    --cyan:#35d9ff;
+    --blue:#3f7cff;
+    --green:#34e6a5;
+    --lime:#a6f36c;
+    --yellow:#ffd166;
+    --orange:#ff9f43;
+    --red:#ff6678;
+    --purple:#9b7cff;
+    --white:#f5f9ff;
+    --muted:#9db0c8;
+    --line:rgba(255,255,255,.09);
+    --shadow:0 20px 60px rgba(0,0,0,.35);
+}
+
+*{
+    box-sizing:border-box;
+}
+
+html{
+    scroll-behavior:smooth;
+}
+
+body{
+    margin:0;
+    font-family:
+        "Segoe UI",
+        Tahoma,
+        Arial,
+        sans-serif;
+    background:
+        radial-gradient(
+            circle at 20% 10%,
+            rgba(53,217,255,.12),
+            transparent 28%
+        ),
+        radial-gradient(
+            circle at 80% 20%,
+            rgba(63,124,255,.12),
+            transparent 28%
+        ),
+        linear-gradient(
+            180deg,
+            #06101d,
+            #081525 45%,
+            #06101b
+        );
+    color:var(--white);
+    line-height:1.8;
+    overflow-x:hidden;
+}
+
+.container{
+    width:min(1400px,94%);
+    margin:auto;
+}
+
+section{
+    padding:90px 0;
+    position:relative;
+}
+
+.section-number{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    padding:7px 14px;
+    border:1px solid rgba(53,217,255,.25);
+    background:rgba(53,217,255,.07);
+    border-radius:30px;
+    color:var(--cyan);
+    font-size:14px;
+    font-weight:800;
+    letter-spacing:.5px;
+}
+
+h1,h2,h3,h4{
+    margin-top:0;
+}
+
+h2{
+    font-size:clamp(30px,4vw,52px);
+    line-height:1.2;
+    margin:18px 0 18px;
+}
+
+h3{
+    font-size:25px;
+}
+
+.lead{
+    color:#c7d5e8;
+    font-size:21px;
+    max-width:1000px;
+}
+
+.small{
+    color:var(--muted);
+    font-size:15px;
+}
+
+.gradient-text{
+    background:
+        linear-gradient(
+            90deg,
+            var(--cyan),
+            var(--green),
+            var(--lime)
+        );
+    -webkit-background-clip:text;
+    background-clip:text;
+    color:transparent;
+}
+
+/* HERO */
+
+.hero{
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    overflow:hidden;
+    background:
+        radial-gradient(
+            circle at 50% 50%,
+            rgba(63,124,255,.13),
+            transparent 45%
+        );
+}
+
+.hero-grid{
+    display:grid;
+    grid-template-columns:1.1fr .9fr;
+    gap:50px;
+    align-items:center;
+}
+
+.hero h1{
+    font-size:clamp(48px,7vw,92px);
+    line-height:1.05;
+    margin:20px 0;
+}
+
+.hero-sub{
+    font-size:24px;
+    color:#b9cae1;
+    max-width:850px;
+}
+
+.badges{
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
+    margin-top:28px;
+}
+
+.badge{
+    padding:9px 15px;
+    border-radius:30px;
+    border:1px solid var(--line);
+    background:rgba(255,255,255,.04);
+    color:#dce9f8;
+    font-size:14px;
+}
+
+.hero-visual{
+    min-height:480px;
+    position:relative;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+
+.orbit{
+    width:390px;
+    height:390px;
+    border:1px solid rgba(53,217,255,.22);
+    border-radius:50%;
+    position:relative;
+    animation:spin 30s linear infinite;
+}
+
+.orbit::before,
+.orbit::after{
+    content:"";
+    position:absolute;
+    inset:45px;
+    border:1px dashed rgba(52,230,165,.25);
+    border-radius:50%;
+}
+
+.orbit::after{
+    inset:100px;
+    border-color:rgba(155,124,255,.3);
+}
+
+.satellite-core{
+    position:absolute;
+    width:150px;
+    height:150px;
+    border-radius:50%;
+    background:
+        radial-gradient(
+            circle at 35% 30%,
+            #7df1ff,
+            #3175e8 40%,
+            #101f4a 75%
+        );
+    box-shadow:
+        0 0 50px rgba(53,217,255,.35),
+        0 0 120px rgba(63,124,255,.15);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:70px;
+    animation:pulse 3s infinite;
+}
+
+.node{
+    position:absolute;
+    width:90px;
+    height:90px;
+    border-radius:20px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:rgba(16,31,51,.9);
+    border:1px solid rgba(255,255,255,.12);
+    box-shadow:var(--shadow);
+    font-size:32px;
+}
+
+.node.n1{top:5px;left:145px;}
+.node.n2{right:0;top:150px;}
+.node.n3{bottom:10px;left:145px;}
+.node.n4{left:0;top:150px;}
+
+@keyframes spin{
+    from{transform:rotate(0)}
+    to{transform:rotate(360deg)}
+}
+
+@keyframes pulse{
+    0%,100%{transform:scale(1)}
+    50%{transform:scale(1.07)}
+}
+
+/* FLOW */
+
+.flow{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    flex-wrap:wrap;
+    gap:10px;
+    margin:45px 0;
+}
+
+.flow-box{
+    min-width:145px;
+    padding:18px 20px;
+    border-radius:18px;
+    text-align:center;
+    background:
+        linear-gradient(
+            145deg,
+            rgba(255,255,255,.07),
+            rgba(255,255,255,.025)
+        );
+    border:1px solid var(--line);
+    box-shadow:0 10px 35px rgba(0,0,0,.2);
+}
+
+.flow-box strong{
+    display:block;
+    color:white;
+    font-size:17px;
+}
+
+.flow-box span{
+    color:var(--muted);
+    font-size:13px;
+}
+
+.arrow{
+    color:var(--cyan);
+    font-size:30px;
+}
+
+/* CARDS */
+
+.cards{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:22px;
+}
+
+.card{
+    background:
+        linear-gradient(
+            145deg,
+            rgba(255,255,255,.075),
+            rgba(255,255,255,.025)
+        );
+    border:1px solid var(--line);
+    border-radius:25px;
+    padding:28px;
+    box-shadow:var(--shadow);
+    position:relative;
+    overflow:hidden;
+}
+
+.card::before{
+    content:"";
+    position:absolute;
+    width:140px;
+    height:140px;
+    border-radius:50%;
+    background:rgba(53,217,255,.06);
+    top:-70px;
+    left:-70px;
+}
+
+.card-icon{
+    width:62px;
+    height:62px;
+    border-radius:18px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:30px;
+    margin-bottom:20px;
+    background:rgba(53,217,255,.09);
+    border:1px solid rgba(53,217,255,.15);
+}
+
+.card p{
+    color:#b7c7da;
+    font-size:17px;
+}
+
+.green{
+    color:var(--green);
+}
+
+.cyan{
+    color:var(--cyan);
+}
+
+.yellow{
+    color:var(--yellow);
+}
+
+.purple{
+    color:var(--purple);
+}
+
+.orange{
+    color:var(--orange);
+}
+
+/* MAP */
+
+.map-scene{
+    height:470px;
+    border-radius:30px;
+    position:relative;
+    overflow:hidden;
+    border:1px solid rgba(53,217,255,.2);
+    background:
+        linear-gradient(
+            135deg,
+            #0c382f,
+            #0c2c2a 40%,
+            #122d45
+        );
+    box-shadow:var(--shadow);
+}
+
+.map-grid{
+    position:absolute;
+    inset:0;
+    opacity:.18;
+    background-image:
+        linear-gradient(
+            rgba(255,255,255,.15) 1px,
+            transparent 1px
+        ),
+        linear-gradient(
+            90deg,
+            rgba(255,255,255,.15) 1px,
+            transparent 1px
+        );
+    background-size:45px 45px;
+}
+
+.field{
+    position:absolute;
+    border:1px solid rgba(166,243,108,.18);
+    background:rgba(166,243,108,.06);
+    transform:rotate(-7deg);
+}
+
+.field.f1{
+    width:260px;
+    height:150px;
+    top:40px;
+    right:100px;
+}
+
+.field.f2{
+    width:230px;
+    height:170px;
+    bottom:40px;
+    left:100px;
+}
+
+.drain-line{
+    position:absolute;
+    width:75%;
+    height:12px;
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            var(--cyan),
+            #1595c5,
+            var(--cyan),
+            transparent
+        );
+    border-radius:20px;
+    top:50%;
+    left:12%;
+    transform:rotate(-11deg);
+    box-shadow:0 0 25px rgba(53,217,255,.5);
+}
+
+.drain-label{
+    position:absolute;
+    top:36%;
+    right:27%;
+    background:#071525;
+    border:1px solid rgba(53,217,255,.35);
+    padding:8px 16px;
+    border-radius:12px;
+    color:var(--cyan);
+    font-weight:800;
+}
+
+.map-pin{
+    position:absolute;
+    top:44%;
+    right:48%;
+    font-size:42px;
+    filter:drop-shadow(0 0 15px rgba(255,102,120,.7));
+    animation:bounce 1.7s infinite;
+}
+
+@keyframes bounce{
+    0%,100%{transform:translateY(0)}
+    50%{transform:translateY(-10px)}
+}
+
+/* PROCESS STEPS */
+
+.timeline{
+    position:relative;
+    margin-top:55px;
+}
+
+.timeline::before{
+    content:"";
+    position:absolute;
+    right:30px;
+    top:0;
+    bottom:0;
+    width:3px;
+    background:
+        linear-gradient(
+            var(--cyan),
+            var(--green),
+            var(--purple)
+        );
+}
+
+.step{
+    position:relative;
+    padding-right:85px;
+    margin-bottom:35px;
+}
+
+.step-number{
+    position:absolute;
+    right:0;
+    top:0;
+    width:62px;
+    height:62px;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:#0b1c30;
+    border:2px solid var(--cyan);
+    color:var(--cyan);
+    font-size:20px;
+    font-weight:900;
+    box-shadow:
+        0 0 25px rgba(53,217,255,.18);
+}
+
+.step-content{
+    background:
+        linear-gradient(
+            145deg,
+            rgba(255,255,255,.07),
+            rgba(255,255,255,.025)
+        );
+    border:1px solid var(--line);
+    border-radius:22px;
+    padding:25px 30px;
+}
+
+.step-content h3{
+    margin-bottom:8px;
+}
+
+.step-content p{
+    color:#b9c9dc;
+    font-size:17px;
+}
+
+/* SATELLITE */
+
+.satellite-pipeline{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:15px;
+    margin-top:40px;
+}
+
+.sat-box{
+    padding:22px;
+    border-radius:20px;
+    text-align:center;
+    background:#0d1e32;
+    border:1px solid rgba(53,217,255,.15);
+}
+
+.sat-box .icon{
+    font-size:38px;
+    margin-bottom:10px;
+}
+
+.sat-box strong{
+    display:block;
+    font-size:18px;
+}
+
+.sat-box span{
+    color:var(--muted);
+    font-size:14px;
+}
+
+/* FORMULAS */
+
+.formula-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:25px;
+}
+
+.formula{
+    padding:35px;
+    border-radius:25px;
+    background:
+        linear-gradient(
+            145deg,
+            rgba(63,124,255,.11),
+            rgba(53,217,255,.03)
+        );
+    border:1px solid rgba(63,124,255,.2);
+}
+
+.formula-code{
+    direction:ltr;
+    text-align:center;
+    font-family:
+        Consolas,
+        "Courier New",
+        monospace;
+    font-size:25px;
+    color:var(--cyan);
+    padding:22px;
+    border-radius:15px;
+    background:#06111f;
+    border:1px solid rgba(53,217,255,.12);
+    margin:20px 0;
+}
+
+.variable{
+    display:grid;
+    grid-template-columns:100px 1fr;
+    gap:10px;
+    margin:9px 0;
+}
+
+.variable b{
+    color:var(--yellow);
+    direction:ltr;
+}
+
+/* COMPARISON */
+
+.compare{
+    display:grid;
+    grid-template-columns:1fr 100px 1fr;
+    gap:20px;
+    align-items:center;
+    margin:40px 0;
+}
+
+.image-card{
+    min-height:290px;
+    border-radius:25px;
+    border:1px solid var(--line);
+    position:relative;
+    overflow:hidden;
+}
+
+.image-card.baseline{
+    background:
+        radial-gradient(
+            ellipse at 40% 40%,
+            #52b96e,
+            #1b6047 25%,
+            #143b3b 50%,
+            #0d2533
+        );
+}
+
+.image-card.current{
+    background:
+        radial-gradient(
+            ellipse at 30% 60%,
+            #91d866,
+            #377f4f 20%,
+            #225548 40%,
+            #101f32
+        );
+}
+
+.image-card::before{
+    content:"";
+    position:absolute;
+    inset:20px;
+    border:2px dashed rgba(255,255,255,.2);
+    border-radius:18px;
+}
+
+.image-title{
+    position:absolute;
+    top:18px;
+    right:18px;
+    padding:7px 13px;
+    border-radius:10px;
+    background:rgba(0,0,0,.45);
+    z-index:2;
+}
+
+.compare-arrow{
+    font-size:50px;
+    color:var(--cyan);
+    text-align:center;
+}
+
+/* METRICS */
+
+.metrics{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:18px;
+    margin-top:35px;
+}
+
+.metric{
+    padding:25px;
+    border-radius:22px;
+    background:#0d1d31;
+    border:1px solid var(--line);
+    text-align:center;
+}
+
+.metric-value{
+    font-size:34px;
+    font-weight:900;
+    margin:10px 0;
+}
+
+.metric-label{
+    color:var(--muted);
+    font-size:14px;
+}
+
+/* BANDS */
+
+.band-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:20px;
+}
+
+.band{
+    padding:28px;
+    border-radius:25px;
+    position:relative;
+    overflow:hidden;
+    border:1px solid var(--line);
+}
+
+.band.b03{
+    background:
+        linear-gradient(
+            145deg,
+            rgba(45,142,255,.18),
+            rgba(45,142,255,.04)
+        );
+}
+
+.band.b04{
+    background:
+        linear-gradient(
+            145deg,
+            rgba(255,80,90,.16),
+            rgba(255,80,90,.03)
+        );
+}
+
+.band.b08{
+    background:
+        linear-gradient(
+            145deg,
+            rgba(53,217,255,.17),
+            rgba(53,217,255,.03)
+        );
+}
+
+.band-code{
+    font-family:Consolas,monospace;
+    font-size:38px;
+    font-weight:900;
+}
+
+/* AI SECTION */
+
+.ai-architecture{
+    display:grid;
+    grid-template-columns:1fr 1.4fr 1fr;
+    gap:20px;
+    align-items:center;
+    margin-top:45px;
+}
+
+.ai-side{
+    padding:28px;
+    border-radius:25px;
+    background:#0d1e31;
+    border:1px solid var(--line);
+}
+
+.ai-center{
+    padding:35px;
+    border-radius:30px;
+    background:
+        radial-gradient(
+            circle,
+            rgba(155,124,255,.16),
+            transparent 65%
+        ),
+        #0c1c30;
+    border:1px solid rgba(155,124,255,.3);
+    text-align:center;
+}
+
+.brain{
+    font-size:90px;
+    margin-bottom:10px;
+    filter:drop-shadow(0 0 25px rgba(155,124,255,.4));
+}
+
+/* NETWORK */
+
+.network{
+    margin-top:45px;
+    padding:35px;
+    border-radius:30px;
+    background:#081525;
+    border:1px solid var(--line);
+    overflow:hidden;
+}
+
+.network-row{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:35px;
+    margin:35px 0;
+    flex-wrap:wrap;
+}
+
+.layer{
+    min-width:150px;
+    padding:25px 15px;
+    border-radius:22px;
+    text-align:center;
+    border:1px solid rgba(255,255,255,.1);
+    background:
+        linear-gradient(
+            145deg,
+            rgba(255,255,255,.07),
+            rgba(255,255,255,.025)
+        );
+}
+
+.layer-number{
+    font-size:42px;
+    font-weight:900;
+}
+
+.layer-name{
+    color:var(--muted);
+}
+
+.network-arrow{
+    font-size:35px;
+    color:var(--cyan);
+}
+
+/* STATE */
+
+.state-grid{
+    display:grid;
+    grid-template-columns:repeat(5,1fr);
+    gap:12px;
+    margin-top:35px;
+}
+
+.state-item{
+    padding:18px 12px;
+    text-align:center;
+    border-radius:17px;
+    background:#0d1f33;
+    border:1px solid rgba(53,217,255,.12);
+}
+
+.state-index{
+    color:var(--cyan);
+    font-family:Consolas,monospace;
+    font-size:13px;
+}
+
+.state-name{
+    font-weight:800;
+    margin:8px 0;
+}
+
+.state-desc{
+    color:var(--muted);
+    font-size:12px;
+}
+
+/* Q VALUES */
+
+.q-values{
+    display:grid;
+    gap:16px;
+    margin-top:35px;
+}
+
+.q-row{
+    display:grid;
+    grid-template-columns:220px 1fr 100px;
+    align-items:center;
+    gap:15px;
+}
+
+.q-name{
+    font-weight:800;
+}
+
+.q-bar{
+    height:22px;
+    background:#07111f;
+    border-radius:20px;
+    overflow:hidden;
+    border:1px solid var(--line);
+}
+
+.q-fill{
+    height:100%;
+    border-radius:20px;
+    background:
+        linear-gradient(
+            90deg,
+            var(--blue),
+            var(--cyan)
+        );
+}
+
+.q-value{
+    direction:ltr;
+    text-align:left;
+    color:var(--green);
+    font-family:Consolas,monospace;
+}
+
+/* ACTIONS */
+
+.actions{
+    display:grid;
+    grid-template-columns:repeat(5,1fr);
+    gap:15px;
+    margin-top:35px;
+}
+
+.action{
+    min-height:190px;
+    padding:25px 18px;
+    border-radius:23px;
+    background:#0d1e31;
+    border:1px solid var(--line);
+    text-align:center;
+    transition:.3s;
+}
+
+.action:hover{
+    transform:translateY(-7px);
+    border-color:rgba(53,217,255,.35);
+}
+
+.action-icon{
+    font-size:40px;
+}
+
+.action-name{
+    margin:13px 0 7px;
+    font-weight:900;
+}
+
+.action-desc{
+    color:var(--muted);
+    font-size:13px;
+}
+
+/* RL LOOP */
+
+.rl-loop{
+    position:relative;
+    width:min(850px,100%);
+    height:600px;
+    margin:50px auto;
+}
+
+.rl-node{
+    position:absolute;
+    width:180px;
+    min-height:110px;
+    padding:18px;
+    border-radius:25px;
+    background:#0d1e31;
+    border:1px solid rgba(53,217,255,.25);
+    text-align:center;
+    box-shadow:var(--shadow);
+}
+
+.rl-node strong{
+    display:block;
+    font-size:20px;
+}
+
+.rl-node span{
+    color:var(--muted);
+    font-size:13px;
+}
+
+.rl-node.n-state{
+    top:20px;
+    right:50%;
+    transform:translateX(50%);
+}
+
+.rl-node.n-action{
+    top:210px;
+    right:70%;
+}
+
+.rl-node.n-env{
+    bottom:40px;
+    right:50%;
+    transform:translateX(50%);
+}
+
+.rl-node.n-reward{
+    top:210px;
+    left:70%;
+}
+
+.rl-center{
+    position:absolute;
+    top:250px;
+    left:50%;
+    transform:translate(-50%,-50%);
+    width:140px;
+    height:140px;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    background:
+        radial-gradient(
+            circle,
+            rgba(155,124,255,.4),
+            rgba(63,124,255,.15),
+            #0b192d
+        );
+    border:2px solid var(--purple);
+    font-weight:900;
+    box-shadow:0 0 50px rgba(155,124,255,.18);
+}
+
+.loop-line{
+    position:absolute;
+    background:linear-gradient(90deg,var(--cyan),var(--green));
+    height:3px;
+    transform-origin:left center;
+}
+
+.line1{
+    width:210px;
+    top:150px;
+    right:53%;
+    transform:rotate(60deg);
+}
+
+.line2{
+    width:210px;
+    top:150px;
+    left:53%;
+    transform:rotate(120deg);
+}
+
+.line3{
+    width:210px;
+    bottom:150px;
+    right:53%;
+    transform:rotate(-60deg);
+}
+
+.line4{
+    width:210px;
+    bottom:150px;
+    left:53%;
+    transform:rotate(-120deg);
+}
+
+/* REWARD */
+
+.reward-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:25px;
+}
+
+.reward-card{
+    padding:30px;
+    border-radius:25px;
+    background:#0d1e31;
+    border:1px solid var(--line);
+}
+
+.reward-line{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:15px 0;
+    border-bottom:1px solid var(--line);
+}
+
+.reward-positive{
+    color:var(--green);
+    font-weight:900;
+    font-size:22px;
+}
+
+.reward-negative{
+    color:var(--orange);
+    font-weight:900;
+    font-size:22px;
+}
+
+/* REPLAY */
+
+.memory{
+    display:flex;
+    gap:12px;
+    flex-wrap:wrap;
+    margin-top:30px;
+}
+
+.memory-block{
+    width:115px;
+    height:95px;
+    border-radius:17px;
+    background:
+        linear-gradient(
+            145deg,
+            #123252,
+            #0b1b2d
+        );
+    border:1px solid rgba(53,217,255,.18);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    color:#a9c3dd;
+    font-size:12px;
+    position:relative;
+}
+
+.memory-block.active{
+    border-color:var(--green);
+    box-shadow:0 0 20px rgba(52,230,165,.13);
+}
+
+.memory-block::after{
+    content:"Experience";
+    position:absolute;
+    bottom:5px;
+    font-size:9px;
+    color:#6f8ca9;
+}
+
+/* FUTURE */
+
+.future{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:20px;
+}
+
+.future-card{
+    padding:28px;
+    border-radius:25px;
+    background:
+        linear-gradient(
+            145deg,
+            rgba(52,230,165,.09),
+            rgba(63,124,255,.04)
+        );
+    border:1px solid rgba(52,230,165,.15);
+}
+
+/* FEASIBILITY */
+
+.feasibility{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:20px;
+}
+
+.feas-card{
+    padding:30px;
+    border-radius:25px;
+    background:#0d1e31;
+    border:1px solid var(--line);
+}
+
+.feas-icon{
+    font-size:42px;
+}
+
+/* SUMMARY */
+
+.summary{
+    padding:50px;
+    border-radius:35px;
+    background:
+        radial-gradient(
+            circle at 80% 20%,
+            rgba(53,217,255,.13),
+            transparent 30%
+        ),
+        radial-gradient(
+            circle at 20% 80%,
+            rgba(52,230,165,.10),
+            transparent 30%
+        ),
+        #0b1b2e;
+    border:1px solid rgba(53,217,255,.2);
+    box-shadow:var(--shadow);
+}
+
+.summary-flow{
+    display:grid;
+    grid-template-columns:repeat(7,1fr);
+    gap:8px;
+    align-items:center;
+    margin-top:35px;
+}
+
+.summary-box{
+    padding:18px 10px;
+    text-align:center;
+    border-radius:15px;
+    background:#10263d;
+    border:1px solid var(--line);
+    font-size:13px;
+}
+
+.footer{
+    padding:50px 0;
+    text-align:center;
+    color:#7890a9;
+    border-top:1px solid var(--line);
+}
+
+/* RESPONSIVE */
+
+@media(max-width:1100px){
+
+    .hero-grid{
+        grid-template-columns:1fr;
+    }
+
+    .cards{
+        grid-template-columns:1fr 1fr;
+    }
+
+    .satellite-pipeline{
+        grid-template-columns:1fr 1fr;
+    }
+
+    .actions{
+        grid-template-columns:1fr 1fr;
+    }
+
+    .state-grid{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+    .future{
+        grid-template-columns:1fr 1fr;
+    }
+
+    .feasibility{
+        grid-template-columns:1fr 1fr;
+    }
+
+    .summary-flow{
+        grid-template-columns:1fr 1fr;
+    }
+}
+
+@media(max-width:700px){
+
+    section{
+        padding:65px 0;
+    }
+
+    .cards,
+    .formula-grid,
+    .band-grid,
+    .reward-grid,
+    .future,
+    .feasibility{
+        grid-template-columns:1fr;
+    }
+
+    .metrics{
+        grid-template-columns:1fr 1fr;
+    }
+
+    .satellite-pipeline{
+        grid-template-columns:1fr;
+    }
+
+    .ai-architecture{
+        grid-template-columns:1fr;
+    }
+
+    .compare{
+        grid-template-columns:1fr;
+    }
+
+    .compare-arrow{
+        transform:rotate(90deg);
+    }
+
+    .hero-visual{
+        min-height:350px;
+    }
+
+    .orbit{
+        width:290px;
+        height:290px;
+    }
+
+    .satellite-core{
+        width:110px;
+        height:110px;
+        font-size:50px;
+    }
+
+    .node{
+        width:65px;
+        height:65px;
+        font-size:22px;
+    }
+
+    .node.n1{
+        left:112px;
+    }
+
+    .node.n3{
+        left:112px;
+    }
+
+    .q-row{
+        grid-template-columns:1fr;
+    }
+
+    .rl-loop{
+        transform:scale(.78);
+        transform-origin:top center;
+        margin-bottom:-100px;
+    }
+}
+
+</style>
+</head>
+
+
+<body>
+
+
+<!-- =========================================================
+     HERO
+========================================================= -->
+
+<section class="hero">
+
+<div class="container">
+
+<div class="hero-grid">
+
+<div>
+
+<div class="section-number">
+🧠 AI IRRIGATION INTELLIGENCE
+</div>
+
+<h1>
+من بيانات القمر الصناعي
+<br>
+إلى <span class="gradient-text">قرار ذكي</span>
+</h1>
+
+<p class="hero-sub">
+
+نظام ذكي لتحليل المصارف باستخدام
+البيانات الفضائية، الحسابات الهندسية،
+والتعلم المعزز لاتخاذ قرار تشغيلي
+مبني على الأدلة.
+
+</p>
+
+<div class="badges">
+
+<div class="badge">🛰️ Sentinel-2</div>
+<div class="badge">📐 GIS</div>
+<div class="badge">🌱 NDVI</div>
+<div class="badge">💧 NDWI</div>
+<div class="badge">🧠 DQN</div>
+<div class="badge">🔁 Reinforcement Learning</div>
+
+</div>
+
+</div>
+
+
+<div class="hero-visual">
+
+<div class="orbit">
+
+<div class="satellite-core">
+🛰️
+</div>
+
+<div class="node n1">🌱</div>
+<div class="node n2">💧</div>
+<div class="node n3">🧠</div>
+<div class="node n4">📐</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- =========================================================
+     SECTION 01
+========================================================= -->
+
+<section>
+
+<div class="container">
+
+<div class="section-number">01 · البداية</div>
+
+<h2>
+كل شيء يبدأ من <span class="gradient-text">المصرف</span>
+</h2>
+
+<p class="lead">
+
+الموضوع مش إننا نجيب صورة من القمر ونحاول نفسرها وخلاص.
+المنظومة تبدأ من جسم هندسي حقيقي موجود على الخريطة،
+ثم تبني حوله منطقة تحليل مكانية محددة،
+وبعدها تجمع الأدلة وتحولها إلى بيانات رقمية قابلة للحساب والقرار.
+
+</p>
+
+
+<div class="flow">
+
+<div class="flow-box">
+<strong>🗺️ الخريطة</strong>
+<span>المصارف الحقيقية</span>
+</div>
+
+<div class="arrow">←</div>
+
+<div class="flow-box">
+<strong>🚰 اختيار مصرف</strong>
+<span>Drain Selection</span>
+</div>
+
+<div class="arrow">←</div>
+
+<div class="flow-box">
+<strong>🎯 AOI</strong>
+<span>منطقة التحليل</span>
+</div>
+
+<div class="arrow">←</div>
+
+<div class="flow-box">
+<strong>🛰️ Satellite</strong>
+<span>جمع البيانات</span>
+</div>
+
+<div class="arrow">←</div>
+
+<div class="flow-box">
+<strong>🧠 AI</strong>
+<span>القرار الذكي</span>
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- =========================================================
+     SECTION 02 MAP
+========================================================= -->
+
+<section>
+
+<div class="container">
+
+<div class="section-number">02 · التطبيق العملي</div>
+
+<h2>
+الخطوة الأولى: <span class="cyan">اختيار المصرف</span>
+</h2>
+
+<p class="lead">
+
+المستخدم يرى شبكة المصارف على الخريطة.
+كل مصرف له Geometry حقيقية، وبالتالي النظام لا يبدأ من نقطة عشوائية،
+بل يبدأ من مسار المصرف نفسه.
+
+</p>
+
+
+<div class="map-scene">
+
+<div class="map-grid"></div>
+
+<div class="field f1"></div>
+<div class="field f2"></div>
+
+<div class="drain-line"></div>
+
+<div class="drain-label">
+🚰 DRAIN-131
+</div>
+
+<div class="map-pin">
+📍
+</div>
+
+</div>
+
+
+<div class="cards" style="margin-top:30px">
+
+<div class="card">
+
+<div class="card-icon">🗺️</div>
+
+<h3>المصرف يظهر على الخريطة</h3>
+
+<p>
+المصرف ممثل كـ LineString يحتوي على مجموعة من الإحداثيات
+التي تصف مساره الجغرافي.
+</p>
+
+</div>
+
+
+<div class="card">
+
+<div class="card-icon">🎯</div>
+
+<h3>تحديد AOI</h3>
+
+<p>
+بعد اختيار المصرف يتم بناء منطقة التحليل حول المسار الحقيقي
+للمصرف بدل تحليل مساحة عشوائية.
+</p>
+
+</div>
+
+
+<div class="card">
+
+<div class="card-icon">🔎</div>
+
+<h3>بدء التحليل</h3>
+
+<p>
+عند الضغط على زر التحليل تبدأ سلسلة متتابعة:
+Satellite → Processing → Spectral Analysis → AI Decision.
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- =========================================================
+     SECTION 03 AOI
+========================================================= -->
+
+<section>
+
+<div class="container">
+
+<div class="section-number">03 · الهندسة المكانية</div>
+
+<h2>
+من LineString إلى <span class="gradient-text">منطقة تحليل هندسية</span>
+</h2>
+
+<p class="lead">
+
+المصرف عبارة عن مسار.
+لكن القمر الصناعي يحتاج منطقة مكانية واضحة يتم تحليلها.
+لذلك يتم إنشاء Corridor حول المصرف باستخدام Buffer.
+
+</p>
+
+
+<div class="formula">
+
+<h3>الفكرة الهندسية</h3>
+
+<div class="formula-code">
+
+Drain Geometry
+&nbsp; + &nbsp;
+50 m Buffer
+&nbsp; → &nbsp;
+Drain Corridor / AOI
+
+</div>
+
+<p class="small">
+
+في التنفيذ الحالي يتم إنشاء Corridor بعرض Buffer مقداره 50 متر حول المصرف،
+ثم استخراج الـBounding Box الخاص بمنطقة التحليل.
+
+</p>
+
+</div>
+
+
+<div class="cards" style="margin-top:30px">
+
+<div class="card">
+
+<div class="card-icon">📍</div>
+
+<h3>Geometry</h3>
+
+<p>
+إحداثيات المصرف الأصلية تحدد مكانه ومساره على سطح الأرض.
+</p>
+
+</div>
+
+<div class="card">
+
+<div class="card-icon">📏</div>
+
+<h3>Buffer</h3>
+
+<p>
+يتم توسيع نطاق التحليل حول المصرف بحيث يشمل المنطقة المحيطة به.
+</p>
+
+</div>
+
+<div class="card">
+
+<div class="card-icon">▣</div>
+
+<h3>BBOX</h3>
+
+<p>
+يتم استخراج الحد الأدنى والأقصى لخطوط الطول والعرض لبناء
+منطقة الاستعلام والمعالجة.
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- =========================================================
+     SECTION 04 SATELLITE
+========================================================= -->
+
+<section>
+
+<div class="container">
+
+<div class="section-number">04 · الاتصال الفضائي</div>
+
+<h2>
+من الخريطة إلى <span class="cyan">Sentinel-2</span>
+</h2>
+
+<p class="lead">
+
+بعد تحديد المصرف والـAOI، تبدأ مرحلة جمع البيانات الفضائية.
+النظام يتصل بـCopernicus Data Space ويبحث عن صور Sentinel-2 المناسبة
+لنفس المنطقة.
+
+</p>
+
+
+<div class="satellite-pipeline">
+
+<div class="sat-box">
+<div class="icon">🔐</div>
+<strong>Authentication</strong>
+<span>الحصول على Access Token</span>
+</div>
+
+<div class="sat-box">
+<div class="icon">🔎</div>
+<strong>Catalog Search</strong>
+<span>البحث عن الصور</span>
+</div>
+
+<div class="sat-box">
+<div class="icon">☁️</div>
+<strong>Cloud Filtering</strong>
+<span>اختيار صور مناسبة</span>
+</div>
+
+<div class="sat-box">
+<div class="icon">📅</div>
+<strong>Date Selection</strong>
+<span>Baseline + Current</span>
+</div>
+
+</div>
+
+
+<div class="cards" style="margin-top:35px">
+
+<div class="card">
+
+<div class="card-icon">📅</div>
+
+<h3>Current Image</h3>
+
+<p>
+النظام يبحث عن أقرب صورة مناسبة قبل التاريخ الحالي.
+</p>
+
+</div>
+
+<div class="card">
+
+<div class="card-icon">⏪</div>
+
+<h3>Baseline Image</h3>
+
+<p>
+يتم إنشاء تاريخ مرجعي سابق، ثم البحث عن صورة Sentinel-2 مناسبة له.
+</p>
+
+</div>
+
+<div class="card">
+
+<div class="card-icon">☁️</div>
+
+<h3>Cloud Cover</h3>
+
+<p>
+اختيار الصور يدخل فيه عامل نسبة الغطاء السحابي،
+بحيث يتم تفضيل الصور الأقل غيومًا عند تقارب التواريخ.
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- =========================================================
+     SECTION 05 REAL EXAMPLE
+========================================================= -->
+
+<section>
+
+<div class="container">
+
+<div class="section-number">05 · مثال حقيقي</div>
+
+<h2>
+مصرف <span class="gradient-text">DRAIN-131</span>
+</h2>
+
+<p class="lead">
+
+نأخذ حالة تشغيل فعلية ونمشي معها من أول الصورة المرجعية
+لحد خروج القرار الذكي.
+
+</p>
+
+
+<div class="compare">
+
+<div class="image-card baseline">
+
+<div class="image-title">
+BASELINE · 2026-08-13
+</div>
+
+</div>
+
+<div class="compare-arrow">
+→
+</div>
+
+<div class="image-card current">
+
+<div class="image-title">
+CURRENT · 2026-09-12
+</div>
+
+</div>
+
+</div>
+
+
+<div class="metrics">
+
+<div class="metric">
+
+<div class="metric-label">
+Change Percentage
+</div>
+
+<div class="metric-value cyan">
+31.63%
+</div>
+
+</div>
+
+<div class="metric">
+
+<div class="metric-label">
+Changed Area
+</div>
+
+<div class="metric-value green">
+94,411.04
+</div>
+
+<div class="metric-label">
+m²
+</div>
+
+</div>
+
+<div class="metric">
+
+<div class="metric-label">
+Mean ΔNDVI
+</div>
+
+<div class="metric-value yellow">
+-0.0526
+</div>
+
+</div>
+
+<div class="metric">
+
+<div class="metric-label">
+Current Water Pixels
+</div>
+
+<div class="metric-value">
+76
+</div>
+
+</div>
+
+</div>
+
+
+<div class="card" style="margin-top:25px">
+
+<h3>ما الذي حدث؟</h3>
+
+<p>
+
+تم اختيار صورة Sentinel-2 بتاريخ 2026-09-12 كصورة حالية،
+وصورة 2026-08-13 كصورة مرجعية.
+بعد ذلك تمت معالجة الـAOI وحفظ البيانات الطيفية،
+ثم تشغيل تحليل NDVI وNDWI على المنطقة.
+
+</p>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- =========================================================
+     SECTION 06 BANDS
+========================================================= -->
+
+<section>
+
+<div class="container">
+
+<div class="section-number">06 · البيانات الطيفية</div>
+
+<h2>
+الصورة التي يراها النظام ليست مجرد <span class="gradient-text">صورة</span>
+</h2>
+
+<p class="lead">
+
+الذكاء الاصطناعي لا يتعامل مع الصورة كأنها صورة عادية فقط.
+النظام يحصل على قيم طيفية من نطاقات مختلفة،
+وكل Band يحمل معلومة مختلفة عن السطح.
+
+</p>
+
+
+<div class="band-grid">
+
+<div class="band b03">
+
+<div class="band-code">B03</div>
+
+<h3>Green</h3>
+
+<p>
+النطاق الأخضر، ويستخدم في حساب مؤشر المياه NDWI.
+</p>
+
+</div>
+
+
+<div class="band b04">
+
+<div class="band-code">B04</div>
+
+<h3>Red</h3>
+
+<p>
+النطاق الأحمر، ويستخدم مع NIR في حساب NDVI.
+</p>
+
+</div>
+
+
+<div class="band b08">
+
+<div class="band-code">B08</div>
+
+<h3>NIR</h3>
+
+<p>
+الأشعة تحت الحمراء القريبة،
+وهي شديدة الأهمية في تحليل الغطاء النباتي.
+</p>
+
+</div>
+
+</div>
+
+
+<div class="formula-grid" style="margin-top:35px">
+
+<div class="formula">
+
+<h3>NDVI</h3>
+
+<div class="formula-code">
+
+NDVI = (B08 − B04)
+       / (B08 + B04)
+
+</div>
+
+<div class="variable">
+<b>B08</b>
+<span>NIR</span>
+</div>
+
+<div class="variable">
+<b>B04</b>
+<span>Red</span>
+</div>
+
+<p class="small">
+القيمة تساعد في توصيف حالة الغطاء النباتي لكل Pixel.
+</p>
+
+</div>
+
+
+<div class="formula">
+
+<h3>NDWI</h3>
+
+<div class="formula-code">
+
+NDWI = (B03 − B08)
+       / (B03 + B08)
+
+</div>
+
+<div class="variable">
+<b>B03</b>
+<span>Green</span>
+</div>
+
+<div class="variable">
+<b>B08</b>
+<span>NIR</span>
+</div>
+
+<p class="small">
+القيمة تستخدم في تحليل المؤشرات المرتبطة بالمياه والغطاء النباتي المائي.
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- =========================================================
+     SECTION 07 PIXEL DIFFERENCE
+========================================================= -->
+
+<section>
+
+<div class="container">
+
+<div class="section-number">07 · الحساب الهندسي</div>
+
+<h2>
+كيف نحسب <span class="cyan">الفرق بين الصورتين؟</span>
+</h2>
+
+<p class="lead">
+
+هنا تبدأ القيمة الهندسية الحقيقية للنظام:
+نحن لا نقارن صورتين بصريًا فقط،
+بل نقارن Pixel مقابل Pixel ونحوّل الفرق إلى أرقام ومساحات.
+
+</p>
+
+
+<div class="formula">
+
+<h3>الخطوة الأولى: فرق NDVI</h3>
+
+<div class="formula-code">
+
+ΔNDVI = NDVI(current)
+        −
+        NDVI(baseline)
+
+</div>
+
+<p>
+
+لكل Pixel داخل منطقة التحليل يتم حساب التغير في NDVI.
+بعد ذلك يتم استخدام Threshold لتحديد الـPixels التي تمثل تغيرًا ملحوظًا.
+
+</p>
+
+</div>
+
+
+<div class="formula-grid" style="margin-top:25px">
+
+<div class="formula">
+
+<h3>عدد الـChanged Pixels</h3>
+
+<div class="formula-code">
+
+Changed Pixels
+=
+Pixels | ΔNDVI > Threshold
+
+</div>
+
+<p class="small">
+
+كلما زاد عدد الـPixels التي تتجاوز حد التغير،
+زادت المساحة التي تمثل تغيرًا مكانيًا.
+
+</p>
+
+</div>
+
+
+<div class="formula">
+
+<h3>نسبة التغير</h3>
+
+<div class="formula-code">
+
+Change %
+=
+Changed Pixels
+/
+Valid Pixels
+× 100
+
+</div>
+
+<p class="small">
+
+وهذه هي النسبة التي تظهر في نتيجة التحليل النهائي.
+
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- =========================================================
+     SECTION 08 AREA
+========================================================= -->
+
+<section>
+
+<div class="container">
+
+<div class="section-number">08 · تحويل Pixels إلى m²</div>
+
+<h2>
+من Pixel إلى <span class="gradient-text">مساحة هندسية</span>
+</h2>
+
+<p class="lead">
+
+الـPixel وحده لا يكفي.
+نحن نريد أن نعرف:
+"التغير ده مساحته كام متر مربع؟"
+
+لذلك النظام يحسب مساحة الـAOI الحقيقية ثم يوزعها على عدد الـPixels.
+
+</p>
+
+
+<div class="formula-grid">
+
+<div class="formula">
+
+<h3>أبعاد الـAOI</h3>
+
+<div class="formula-code">
+
+Width(m)
+=
+ΔLongitude × 111320 × cos(latitude)
+
+</div>
+
+<div class="formula-code">
+
+Height(m)
+=
+ΔLatitude × 111320
+
+</div>
+
+</div>
+
+
+<div class="formula">
+
+<h3>مساحة الـAOI</h3>
+
+<div class="formula-code">
+
+AOI Area
+=
+Width × Height
+
+</div>
+
+<div class="formula-code">
+
+Pixel Area
+=
+AOI Area / Total Pixels
+
+</div>
+
+</div>
+
+</div>
+
+
+<div class="formula" style="margin-top:25px">
+
+<h3>المساحة المتغيرة</h3>
+
+<div class="formula-code">
+
+Changed Area
+=
+Changed Pixels × Pixel Area
+
+</div>
+
+<p>
+
+وبذلك يتحول التغير من مجرد رقم في صورة إلى
+قيمة هندسية بالمتر المربع.
+
+</p>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- =========================================================
+     SECTION 09 ENCROACHMENT
+========================================================= -->
+
+<section>
+
+<div class="container">
+
+<div class="section-number">09 · التغيرات والتعديات</div>
+
+<h2>
+كيف يتحول التغير المكاني إلى <span class="cyan">معلومة هندسية؟</span>
+</h2>
+
+<p class="lead">
+
+عندما تظهر منطقة تغير داخل Corridor المصرف،
+النظام يحسب موقعها وعدد الـPixels ومساحتها.
+وبالتالي يمكن تحويل التغير المكاني إلى منطقة ذات قيمة هندسية
+يمكن متابعتها وفحصها.
+
+</p>
+
+
+<div class="flow">
+
+<div class="flow-box">
+<strong>Pixel</strong>
+<span>تغير طيفي</span>
+</div>
+
+<div class="arrow">→</div>
+
+<div class="flow-box">
+<strong>ΔNDVI</strong>
+<span>فرق بين التاريخين</span>
+</div>
+
+<div class="arrow">→</div>
+
+<div class="flow-box">
+<strong>Changed Pixels</strong>
+<span>Pixels المتغيرة</span>
+</div>
+
+<div class="arrow">→</div>
+
+<div class="flow-box">
+<strong>Area m²</strong>
+<span>مساحة التغير</span>
+</div>
+
+<div class="arrow">→</div>
+
+<div class="flow-box">
+<strong>Spatial Evidence</strong>
+<span>دليل مكاني</span>
+</div>
+
+</div>
+
+
+<div class="cards">
+
+<div class="card">
+
+<div class="card-icon">📐</div>
+
+<h3>قياس مكاني</h3>
+
+<p>
+النظام لا يكتفي بقول "فيه تغير".
+بل يحسب كم Pixel تغيرت وكم تبلغ مساحتها.
+</p>
+
+</div>
+
+
+<div class="card">
+
+<div class="card-icon">🎯</div>
+
+<h3>ارتباط بالمصرف</h3>
+
+<p>
+التغير تتم دراسته داخل نطاق المصرف المحدد،
+وبالتالي يصبح مرتبطًا مكانيًا بالممر الهندسي للمصرف.
+</p>
+
+</div>
+
+
+<div class="card">
+
+<div class="card-icon">🧾</div>
+
+<h3>Evidence</h3>
+
+<p>
+المخرجات الرقمية تصبح جزءًا من الحالة التي يقرأها
+نظام الذكاء الاصطناعي لاتخاذ الخطوة التالية.
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- =========================================================
+     SECTION 10 WATER
+========================================================= -->
+
+<section>
+
+<div class="container">
+
+<div class="section-number">10 · المياه والنباتات المائية</div>
+
+<h2>
+تحليل <span class="cyan">المياه والنباتات المائية</span>
+</h2>
+
+<p class="lead">
+
+نفس البيانات الطيفية يمكن استخدامها لبناء طبقة إضافية
+تتعامل مع المياه والغطاء النباتي المرتبط بالمياه.
+
+النظام يستخدم NDWI مع NDVI لتكوين Water-Vegetation Candidate Detection.
+
+</p>
+
+
+<div class="formula-grid">
+
+<div class="formula">
+
+<h3>Water Candidate</h3>
+
+<div class="formula-code">
+
+NDWI > Water Threshold
+
+</div>
+
+<p>
+يتم البحث عن Pixels تحمل خصائص مائية.
+</p>
+
+</div>
+
+
+<div class="formula">
+
+<h3>Vegetation Candidate</h3>
+
+<div class="formula-code">
+
+NDVI > Vegetation Threshold
+
+</div>
+
+<p>
+يتم البحث عن Pixels تحمل خصائص نباتية.
+</p>
+
+</div>
+
+</div>
+
+
+<div class="formula" style="margin-top:25px">
+
+<h3>Water + Vegetation</h3>
+
+<div class="formula-code">
+
+Water Vegetation
+=
+Water Mask
+∩
+Vegetation Mask
+
+</div>
+
+<p>
+
+عندما تتقاطع خصائص المياه مع خصائص الغطاء النباتي
+تظهر منطقة مرشحة للغطاء النباتي المائي.
+
+</p>
+
+</div>
+
+
+<div class="cards" style="margin-top:30px">
+
+<div class="card">
+
+<div class="card-icon">💧</div>
+
+<h3>Water Pixels</h3>
+
+<p>
+النظام يحصي عدد الـPixels التي تظهر لها خصائص مائية.
+</p>
+
+</div>
+
+
+<div class="card">
+
+<div class="card-icon">🌿</div>
+
+<h3>Vegetation Pixels</h3>
+
+<p>
+يتم حساب الـPixels التي تحقق شروط الغطاء النباتي.
+</p>
+
+</div>
+
+
+<div class="card">
+
+<div class="card-icon">🔗</div>
+
+<h3>Interaction</h3>
+
+<p>
+يتم حساب العلاقة بين الماء والغطاء النباتي داخل منطقة التحليل.
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- =========================================================
+     SECTION 11 CLUSTERING
+========================================================= -->
+
+<section>
+
+<div class="container">
+
+<div class="section-number">11 · التحليل المكاني</div>
+
+<h2>
+لماذا لا ننظر للـPixels <span class="gradient-text">منفردة؟</span>
+</h2>
+
+<p class="lead">
+
+النظام يستطيع أيضًا النظر إلى تجمعات الـPixels المتجاورة.
+ويستخدم اتصال الجيران 8-direction connectivity لبناء Clusters
+للمناطق المرشحة.
+
+</p>
+
+
+<div class="flow">
+
+<div class="flow-box">
+<strong>Pixel</strong>
+<span>مرشح</span>
+</div>
+
+<div class="arrow">→</div>
+
+<div class="flow-box">
+<strong>Neighbors</strong>
+<span>8 اتجاهات</span>
+</div>
+
+<div class="arrow">→</div>
+
+<div class="flow-box">
+<strong>Cluster</strong>
+<span>مجموعة متصلة</span>
+</div>
+
+<div class="arrow">→</div>
+
+<div class="flow-box">
+<strong>Cluster Size</strong>
+<span>حجم المنطقة</span>
+</div>
+
+</div>
+
+
+<div class="cards">
+
+<div class="card">
+
+<div class="card-icon">🧩</div>
+
+<h3>Cluster Count</h3>
+
+<p>
+عدد التجمعات المكانية الموجودة في المنطقة.
+</p>
+
+</div>
+
+<div class="card">
+
+<div class="card-icon">📊</div>
+
+<h3>Largest Cluster</h3>
+
+<p>
+أكبر تجمع من الـPixels المرشحة.
+</p>
+
+</div>
+
+<div class="card">
+
+<div class="card-icon">📍</div>
+
+<h3>Spatial Pattern</h3>
+
+<p>
+المعلومة المكانية تصبح جزءًا من وصف الحالة.
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- =========================================================
+     SECTION 12 WATER AREA
+========================================================= -->
+
+<section>
+
+<div class="container">
+
+<div class="section-number">12 · قياس النباتات المائية</div>
+
+<h2>
+من Pixels إلى <span class="cyan">مساحة نباتية</span>
+</h2>
+
+<p class="lead">
+
+بعد تحديد الـPixels المرشحة،
+يمكن تحويلها إلى مساحة بالمتر المربع بنفس منطق حساب مساحة التغير.
+
+</p>
+
+
+<div class="formula-grid">
+
+<div class="formula">
+
+<h3>Current Area</h3>
+
+<div class="formula-code">
+
+Current Water-Vegetation Area
+=
+Current Pixels
+×
+Pixel Area
+
+</div>
+
+</div>
+
+
+<div class="formula">
+
+<h3>Coverage</h3>
+
+<div class="formula-code">
+
+Coverage %
+=
+Current Area Pixels
+/
+Total Pixels
+× 100
+
+</div>
+
+</div>
+
+</div>
+
+
+<div class="formula" style="margin-top:25px">
+
+<h3>Growth</h3>
+
+<div class="formula-code">
+
+Growth %
+=
+(Current Area − Baseline Area)
+/
+Baseline Area
+× 100
+
+</div>
+
+<p>
+
+وبذلك يستطيع النظام متابعة:
+Baseline Area → Current Area → New Area → Lost Area → Trend.
+
+</p>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- =========================================================
+     SECTION 13 AI TRANSITION
+========================================================= -->
+
+<section>
+
+<div class="container">
+
+<div class="section-number">13 · بداية الذكاء الاصطناعي</div>
+
+<h2>
+هنا تتحول البيانات إلى <span class="gradient-text">ذكاء اصطناعي</span>
+</h2>
+
+<p class="lead">
+
+حتى هذه اللحظة كنا بنعمل Satellite Processing وتحليل هندسي.
+لكن الآن يحدث شيء مختلف:
+النظام يأخذ النتائج الرقمية ويحوّلها إلى حالة رقمية State.
+
+وهنا يبدأ الـAI Agent.
+
+</p>
+
+
+<div class="ai-architecture">
+
+<div class="ai-side">
+
+<h3>🛰️ Evidence</h3>
+
+<p>
+NDVI
+<br>
+NDWI
+<br>
+Changed Area
+<br>
+Water Pixels
+<br>
+Vegetation
+</p>
+
+</div>
+
+
+<div class="ai-center">
+
+<div class="brain">🧠</div>
+
+<h3>IRRIGATION AI AGENT</h3>
+
+<p>
+State → Neural Network → Q Values → Action
+</p>
+
+</div>
+
+
+<div class="ai-side">
+
+<h3>🎯 Decision</h3>
+
+<p>
+Monitor
+<br>
+Satellite Analysis
+<br>
+Measurement
+<br>
+Field Inspection
+<br>
+Escalate
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- =========================================================
+     SECTION 14 STATE
+========================================================= -->
+
+<section>
+
+<div class="container">
+
+<div class="section-number">14 · State Representation</div>
+
+<h2>
+كيف يفهم الـAI حالة <span class="cyan">المصرف؟</span>
+</h2>
+
+<p class="lead">
+
+الشبكة العصبية لا تستقبل الكلام.
+هي تستقبل أرقامًا.
+لذلك يتم تحويل حالة المصرف إلى Vector مكون من 10 Features.
+
+</p>
+
+
+<div class="state-grid">
+
+<div class="state-item">
+<div class="state-index">S[0]</div>
+<div class="state-name">NDVI Change</div>
+<div class="state-desc">تغير الغطاء النباتي</div>
+</div>
+
+<div class="state-item">
+<div class="state-index">S[1]</div>
+<div class="state-name">NDWI</div>
+<div class="state-desc">المؤشر المائي</div>
+</div>
+
+<div class="state-item">
+<div class="state-index">S[2]</div>
+<div class="state-name">Changed Area</div>
+<div class="state-desc">مساحة التغير</div>
+</div>
+
+<div class="state-item">
+<div class="state-index">S[3]</div>
+<div class="state-name">Distance</div>
+<div class="state-desc">المسافة عن المصرف</div>
+</div>
+
+<div class="state-item">
+<div class="state-index">S[4]</div>
+<div class="state-name">Water Evidence</div>
+<div class="state-desc">دليل المياه</div>
+</div>
+
+<div class="state-item">
+<div class="state-index">S[5]</div>
+<div class="state-name">Interaction</div>
+<div class="state-desc">Water × Vegetation</div>
+</div>
+
+<div class="state-item">
+<div class="state-index">S[6]</div>
+<div class="state-name">Confidence</div>
+<div class="state-desc">ثقة البيانات</div>
+</div>
+
+<div class="state-item">
+<div class="state-index">S[7]</div>
+<div class="state-name">Historical Risk</div>
+<div class="state-desc">الخطر التاريخي</div>
+</div>
+
+<div class="state-item">
+<div class="state-index">S[8]</div>
+<div class="state-name">Field Verification</div>
+<div class="state-desc">التحقق الميداني</div>
+</div>
+
+<div class="state-item">
+<div class="state-index">S[9]</div>
+<div class="state-name">Evidence Completeness</div>
+<div class="state-desc">اكتمال الأدلة</div>
+</div>
+
+</div>
+
+
+<div class="formula" style="margin-top:35px">
+
+<h3>النقطة المهمة</h3>
+
+<div class="formula-code">
+
+Real World
+→
+Measurements
+→
+Normalized State
+→
+Neural Network
+
+</div>
+
+<p>
+
+يعني الذكاء الاصطناعي لا يتعامل مع القمر الصناعي كصورة فقط،
+بل يتعامل مع الصورة بعد تحويلها إلى حالة رقمية منظمة.
+
+</p>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- =========================================================
+     SECTION 15 NEURAL NETWORK
+========================================================= -->
+
+<section>
+
+<div class="container">
+
+<div class="section-number">15 · الشبكة العصبية</div>
+
+<h2>
+داخل الشبكة العصبية <span class="gradient-text">بيحصل إيه؟</span>
+</h2>
+
+<p class="lead">
+
+الـState المكون من 10 أرقام يدخل إلى Neural Network.
+الشبكة تتكون من طبقتين مخفيتين،
+ثم تنتج 5 قيم تمثل تقييمها لكل Action.
+
+</p>
+
+
+<div class="network">
+
+<div class="network-row">
+
+<div class="layer">
+
+<div class="layer-number cyan">10</div>
+
+<div class="layer-name">
+Input Features
+</div>
+
+</div>
+
+<div class="network-arrow">→</div>
+
+<div class="layer">
+
+<div class="layer-number purple">64</div>
+
+<div class="layer-name">
+Dense + ReLU
+</div>
+
+</div>
+
+<div class="network-arrow">→</div>
+
+<div class="layer">
+
+<div class="layer-number purple">64</div>
+
+<div class="layer-name">
+Dense + ReLU
+</div>
+
+</div>
+
+<div class="network-arrow">→</div>
+
+<div class="layer">
+
+<div class="layer-number green">5</div>
+
+<div class="layer-name">
+Q Outputs
+</div>
+
+</div>
+
+</div>
+
+
+<div class="formula-code">
+
+10 → 64 → 64 → 5
+
+</div>
+
+</div>
+
+
+<div class="cards" style="margin-top:30px">
+
+<div class="card">
+
+<div class="card-icon">⚡</div>
+
+<h3>ReLU</h3>
+
+<p>
+تسمح للشبكة ببناء علاقات غير خطية بين خصائص الحالة.
+</p>
+
+</div>
+
+<div class="card">
+
+<div class="card-icon">🧮</div>
+
+<h3>Weights</h3>
+
+<p>
+كل اتصال داخل الشبكة له وزن يتغير أثناء التدريب.
+</p>
+
+</div>
+
+<div class="card">
+
+<div class="card-icon">🎯</div>
+
+<h3>Q Outputs</h3>
+
+<p>
+الخرج النهائي عبارة عن قيمة لكل Action ممكن.
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- =========================================================
+     SECTION 16 Q VALUES
+========================================================= -->
+
+<section>
+
+<div class="container">
+
+<div class="section-number">16 · Q Values</div>
+
+<h2>
+كيف يختار الـAI <span class="cyan">القرار؟</span>
+</h2>
+
+<p class="lead">
+
+الشبكة لا تقول فقط "نعم أو لا".
+هي تعطي Q-Value لكل تصرف ممكن.
+
+كلما كانت القيمة أعلى،
+كان الـAction أكثر جاذبية وفقًا لما تعلمه النموذج.
+
+</p>
+
+
+<div class="q-values">
+
+<div class="q-row">
+
+<div class="q-name">monitor</div>
+
+<div class="q-bar">
+<div class="q-fill" style="width:35%"></div>
+</div>
+
+<div class="q-value">0.0165</div>
+
+</div>
+
+
+<div class="q-row">
+
+<div class="q-name">request_satellite_analysis</div>
+
+<div class="q-bar">
+<div class="q-fill" style="width:22%"></div>
+</div>
+
+<div class="q-value">-0.0162</div>
+
+</div>
+
+
+<div class="q-row">
+
+<div class="q-name">request_measurement</div>
+
+<div class="q-bar">
+<div class="q-fill" style="width:82%"></div>
+</div>
+
+<div class="q-value">0.0821</div>
+
+</div>
+
+
+<div class="q-row">
+
+<div class="q-name">request_field_inspection</div>
+
+<div class="q-bar">
+<div class="q-fill" style="width:30%"></div>
+</div>
+
+<div class="q-value">0.0298</div>
+
+</div>
+
+
+<div class="q-row">
+
+<div class="q-name">escalate</div>
+
+<div class="q-bar">
+<div class="q-fill" style="width:28%"></div>
+</div>
+
+<div class="q-value">0.0138</div>
+
+</div>
+
+</div>
+
+
+<div class="card" style="margin-top:30px">
+
+<h3>
+الفكرة الأساسية
+</h3>
+
+<p>
+
+الـQ-Values هي الطريقة التي تمثل بها الشبكة العصبية
+تقييمها المتوقع لكل Action.
+ثم يتم استخدام هذه القيم في اختيار التصرف المناسب.
+
+</p>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- =========================================================
+     SECTION 17 ACTIONS
+========================================================= -->
+
+<section>
+
+<div class="container">
+
+<div class="section-number">17 · Actions</div>
+
+<h2>
+الـAI عنده <span class="gradient-text">5 تصرفات</span>
+</h2>
+
+<p class="lead">
+
+بدل أن يكون النظام مجرد Detector،
+تم تصميمه كـDecision Agent يستطيع اختيار الخطوة التالية.
+
+</p>
+
+
+<div class="actions">
+
+<div class="action">
+
+<div class="action-icon">👁️</div>
+
+<div class="action-name">Monitor</div>
+
+<div class="action-desc">
+متابعة الحالة بدون تصعيد إضافي.
+</div>
+
+</div>
+
+
+<div class="action">
+
+<div class="action-icon">🛰️</div>
+
+<div class="action-name">Satellite Analysis</div>
+
+<div class="action-desc">
+طلب أو إعادة تحليل البيانات الفضائية.
+</div>
+
+</div>
+
+
+<div class="action">
+
+<div class="action-icon">📏</div>
+
+<div class="action-name">Measurement</div>
+
+<div class="action-desc">
+طلب قياس هندسي إضافي.
+</div>
+
+</div>
+
+
+<div class="action">
+
+<div class="action-icon">👷</div>
+
+<div class="action-name">Field Inspection</div>
+
+<div class="action-desc">
+الانتقال إلى فحص ميداني.
+</div>
+
+</div>
+
+
+<div class="action">
+
+<div class="action-icon">🚨</div>
+
+<div class="action-name">Escalate</div>
+
+<div class="action-desc">
+رفع الحالة لمستوى أعلى من المتابعة.
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- =========================================================
+     SECTION 18 EPSILON
+========================================================= -->
+
+<section>
+
+<div class="container">
+
+<div class="section-number">18 · Exploration</div>
+
+<h2>
+الـAI لا يتعلم فقط من الاختيار...
+بل <span class="cyan">يستكشف</span>
+</h2>
+
+<p class="lead">
+
+واحدة من أهم أفكار Reinforcement Learning هي أن الـAgent
+لا يختار دائمًا التصرف الذي يعتقد أنه الأفضل.
+أحيانًا يجرب Action آخر حتى يجمع خبرة جديدة.
+
+هذه هي فكرة Epsilon-Greedy.
+
+</p>
+
+
+<div class="formula">
+
+<div class="formula-code">
+
+Probability ε
+→ Explore
+
+Probability 1 − ε
+→ Exploit
+
+</div>
+
+<p>
+
+في بداية التعلم تكون قيمة Epsilon مرتفعة،
+ومع تراكم الخبرة تقل تدريجيًا،
+فيصبح النظام أكثر اعتمادًا على المعرفة التي اكتسبها.
+
+</p>
+
+</div>
+
+
+<div class="flow">
+
+<div class="flow-box">
+<strong>Explore</strong>
+<span>تجربة Actions مختلفة</span>
+</div>
+
+<div class="arrow">↔</div>
+
+<div class="flow-box">
+<strong>Experience</strong>
+<span>جمع خبرة</span>
+</div>
+
+<div class="arrow">↔</div>
+
+<div class="flow-box">
+<strong>Learn</strong>
+<span>تحديث النموذج</span>
+</div>
+
+<div class="arrow">↔</div>
+
+<div class="flow-box">
+<strong>Exploit</strong>
+<span>استغلال المعرفة</span>
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- =========================================================
+     SECTION 19 RL
+========================================================= -->
+
+<section>
+
+<div class="container">
+
+<div class="section-number">19 · Reinforcement Learning</div>
+
+<h2>
+هنا يبدأ <span class="gradient-text">التعلم المعزز</span>
+</h2>
+
+<p class="lead">
+
+الفرق الأساسي أن النظام لا يتعلم فقط من Dataset ثابتة.
+بل يتعلم من علاقة مستمرة:
+
+State → Action → Result → Reward → Next State.
+
+</p>
+
+
+<div class="rl-loop">
+
+<div class="rl-node n-state">
+
+<strong>🧩 STATE</strong>
+<span>حالة المصرف</span>
+
+</div>
+
+
+<div class="rl-node n-action">
+
+<strong>🎯 ACTION</strong>
+<span>التصرف المختار</span>
+
+</div>
+
+
+<div class="rl-node n-env">
+
+<strong>🌍 ENVIRONMENT</strong>
+<span>العالم الحقيقي + البيانات</span>
+
+</div>
+
+
+<div class="rl-node n-reward">
+
+<strong>🏆 REWARD</strong>
+<span>مكافأة أو عقوبة</span>
+
+</div>
+
+
+<div class="rl-center">
+REINFORCEMENT<br>
+LEARNING
+</div>
+
+<div class="loop-line line1"></div>
+<div class="loop-line line2"></div>
+<div class="loop-line line3"></div>
+<div class="loop-line line4"></div>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- =========================================================
+     SECTION 20 REWARD
+========================================================= -->
+
+<section>
+
+<div class="container">
+
+<div class="section-number">20 · Reward</div>
+
+<h2>
+كيف يعرف الـAI أن قراره <span class="cyan">جيد؟</span>
+</h2>
+
+<p class="lead">
+
+الـReward هو اللغة التي يتعلم بها الـAgent.
+بدل أن نقول له:
+"التصرف ده صح أو غلط"
+نحول النتيجة إلى قيمة رقمية.
+
+</p>
+
+
+<div class="reward-grid">
+
+<div class="reward-card">
+
+<h3 class="green">
+⬆️ Positive Reward
+</h3>
+
+<div class="reward-line">
+<span>إجراء مناسب مع نقص الأدلة</span>
+<strong class="reward-positive">+2</strong>
+</div>
+
+<div class="reward-line">
+<span>طلب Satellite عندما تكون الأدلة ناقصة</span>
+<strong class="reward-positive">+1.5</strong>
+</div>
+
+<div class="reward-line">
+<span>طلب Measurement عند الحاجة</span>
+<strong class="reward-positive">+1</strong>
+</div>
+
+<div class="reward-line">
+<span>Escalate في حالة الخطر</span>
+<strong class="reward-positive">+2</strong>
+</div>
+
+</div>
+
+
+<div class="reward-card">
+
+<h3 class="orange">
+⬇️ Negative Reward
+</h3>
+
+<div class="reward-line">
+<span>Field Inspection بدون حاجة كافية</span>
+<strong class="reward-negative">−0.5</strong>
+</div>
+
+<div class="reward-line">
+<span>Satellite Analysis والأدلة كافية</span>
+<strong class="reward-negative">−0.25</strong>
+</div>
+
+<div class="reward-line">
+<span>Measurement والأدلة كافية</span>
+<strong class="reward-negative">−0.25</strong>
+</div>
+
+<div class="reward-line">
+<span>Escalate بدون مبرر كافٍ</span>
+<strong class="reward-negative">−1</strong>
+</div>
+
+</div>
+
+</div>
+
+
+<div class="formula" style="margin-top:30px">
+
+<h3>الفكرة</h3>
+
+<div class="formula-code">
+
+Better Decision
+→ Higher Reward
+→ Stronger Learning Signal
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- =========================================================
+     SECTION 21 EXPERIENCE
+========================================================= -->
+
+<section>
+
+<div class="container">
+
+<div class="section-number">21 · Experience</div>
+
+<h2>
+كل تجربة تتحول إلى <span class="gradient-text">خبرة تعليمية</span>
+</h2>
+
+<p class="lead">
+
+بعد اختيار Action وحساب الـReward،
+يتم تخزين التجربة في Replay Memory.
+
+وهذه الذاكرة هي التي تسمح للنظام بالتعلم من مجموعة تجارب
+بدل الاعتماد فقط على آخر قرار.
+
+</p>
+
+
+<div class="memory">
+
+<div class="memory-block active">
+State
+<br>
+Action
+</div>
+
+<div class="memory-block active">
+Reward
+<br>
+Next State
+</div>
+
+<div class="memory-block">
+State
+<br>
+Action
+</div>
+
+<div class="memory-block">
+Reward
+<br>
+Next State
+</div>
+
+<div class="memory-block">
+State
+<br>
+Action
+</div>
+
+<div class="memory-block">
+Reward
+<br>
+Next State
+</div>
+
+<div class="memory-block">
+State
+<br>
+Action
+</div>
+
+<div class="memory-block">
+Reward
+<br>
+Next State
+</div>
+
+</div>
+
+
+<div class="flow">
+
+<div class="flow-box">
+<strong>Experience</strong>
+<span>تجربة واحدة</span>
+</div>
+
+<div class="arrow">→</div>
+
+<div class="flow-box">
+<strong>Replay Memory</strong>
+<span>تخزين الخبرة</span>
+</div>
+
+<div class="arrow">→</div>
+
+<div class="flow-box">
+<strong>Mini Batch</strong>
+<span>عينة تدريب</span>
+</div>
+
+<div class="arrow">→</div>
+
+<div class="flow-box">
+<strong>Neural Network</strong>
+<span>تحديث الأوزان</span>
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- =========================================================
+     SECTION 22 TRAINING
+========================================================= -->
+
+<section>
+
+<div class="container">
+
+<div class="section-number">22 · Training</div>
+
+<h2>
+كيف يتم <span class="cyan">تدريب الشبكة؟</span>
+</h2>
+
+<p class="lead">
+
+أثناء التدريب يتم أخذ مجموعة من التجارب من Replay Memory.
+ثم يتم حساب الهدف التعليمي لكل تجربة،
+ومقارنة الهدف بالـQ-Value الحالية،
+وبعدها يتم تحديث أوزان الشبكة.
+
+</p>
+
+
+<div class="formula">
+
+<h3>الفكرة الرياضية الأساسية في DQN</h3>
+
+<div class="formula-code">
+
+Q Target
+=
+Reward
++
+γ × max Q(Next State)
+
+</div>
+
+<p>
+
+حيث γ يمثل أهمية المستقبل.
+في النموذج الحالي قيمة Gamma مضبوطة على 0.95.
+
+</p>
+
+</div>
+
+
+<div class="cards" style="margin-top:30px">
+
+<div class="card">
+
+<div class="card-icon">1️⃣</div>
+
+<h3>Sample</h3>
+
+<p>
+اختيار مجموعة تجارب من Replay Memory.
+</p>
+
+</div>
+
+<div class="card">
+
+<div class="card-icon">2️⃣</div>
+
+<h3>Target</h3>
+
+<p>
+حساب القيمة التعليمية المتوقعة لكل تجربة.
+</p>
+
+</div>
+
+<div class="card">
+
+<div class="card-icon">3️⃣</div>
+
+<h3>Backpropagation</h3>
+
+<p>
+تقليل الخطأ وتحديث Weights الخاصة بالشبكة.
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- =========================================================
+     SECTION 23 AI FULL LOOP
+========================================================= -->
+
+<section>
+
+<div class="container">
+
+<div class="section-number">23 · الدورة الكاملة</div>
+
+<h2>
+من أول الضغط على الزر إلى <span class="gradient-text">التعلم</span>
+</h2>
+
+
+<div class="timeline">
+
+
+<div class="step">
+
+<div class="step-number">1</div>
+
+<div class="step-content">
+
+<h3>اختيار المصرف</h3>
+
+<p>
+المستخدم يحدد المصرف الحقيقي على الخريطة.
+</p>
+
+</div>
+
+</div>
+
+
+<div class="step">
+
+<div class="step-number">2</div>
+
+<div class="step-content">
+
+<h3>تحديد AOI</h3>
+
+<p>
+النظام يقرأ Geometry المصرف ويبني Corridor حوله.
+</p>
+
+</div>
+
+</div>
+
+
+<div class="step">
+
+<div class="step-number">3</div>
+
+<div class="step-content">
+
+<h3>Satellite Authentication</h3>
+
+<p>
+الحصول على Copernicus Access Token.
+</p>
+
+</div>
+
+</div>
+
+
+<div class="step">
+
+<div class="step-number">4</div>
+
+<div class="step-content">
+
+<h3>اختيار الصور</h3>
+
+<p>
+اختيار Current وBaseline من Sentinel-2 وفق التاريخ ونسبة الغيوم.
+</p>
+
+</div>
+
+</div>
+
+
+<div class="step">
+
+<div class="step-number">5</div>
+
+<div class="step-content">
+
+<h3>Spectral Processing</h3>
+
+<p>
+تحميل B03 وB04 وB08 للـAOI وتحويلها إلى Spectral Data.
+</p>
+
+</div>
+
+</div>
+
+
+<div class="step">
+
+<div class="step-number">6</div>
+
+<div class="step-content">
+
+<h3>NDVI + NDWI</h3>
+
+<p>
+حساب المؤشرات لكل Pixel داخل منطقة التحليل.
+</p>
+
+</div>
+
+</div>
+
+
+<div class="step">
+
+<div class="step-number">7</div>
+
+<div class="step-content">
+
+<h3>Change Detection</h3>
+
+<p>
+حساب ΔNDVI ثم تحديد الـChanged Pixels ونسبة التغير.
+</p>
+
+</div>
+
+</div>
+
+
+<div class="step">
+
+<div class="step-number">8</div>
+
+<div class="step-content">
+
+<h3>Engineering Area</h3>
+
+<p>
+تحويل عدد الـPixels المتغيرة إلى مساحة بالمتر المربع.
+</p>
+
+</div>
+
+</div>
+
+
+<div class="step">
+
+<div class="step-number">9</div>
+
+<div class="step-content">
+
+<h3>Water & Vegetation</h3>
+
+<p>
+تحليل Water Pixels وVegetation Pixels والتداخل بينهما والتجمعات المكانية.
+</p>
+
+</div>
+
+</div>
+
+
+<div class="step">
+
+<div class="step-number">10</div>
+
+<div class="step-content">
+
+<h3>State Encoding</h3>
+
+<p>
+تحويل كل النتائج إلى Vector من 10 Features.
+</p>
+
+</div>
+
+</div>
+
+
+<div class="step">
+
+<div class="step-number">11</div>
+
+<div class="step-content">
+
+<h3>Neural Network</h3>
+
+<p>
+State يدخل إلى الشبكة: 10 → 64 → 64 → 5.
+</p>
+
+</div>
+
+</div>
+
+
+<div class="step">
+
+<div class="step-number">12</div>
+
+<div class="step-content">
+
+<h3>Q Values</h3>
+
+<p>
+الشبكة تعطي قيمة لكل Action.
+</p>
+
+</div>
+
+</div>
+
+
+<div class="step">
+
+<div class="step-number">13</div>
+
+<div class="step-content">
+
+<h3>Action Selection</h3>
+
+<p>
+الـAgent يختار التصرف وفق Q-Values مع آلية Exploration.
+</p>
+
+</div>
+
+</div>
+
+
+<div class="step">
+
+<div class="step-number">14</div>
+
+<div class="step-content">
+
+<h3>Reward</h3>
+
+<p>
+القرار يتحول إلى Reward يوجه عملية التعلم.
+</p>
+
+</div>
+
+</div>
+
+
+<div class="step">
+
+<div class="step-number">15</div>
+
+<div class="step-content">
+
+<h3>Replay</h3>
+
+<p>
+التجربة تحفظ في Replay Memory وتدخل في دورة التدريب.
+</p>
+
+</div>
+
+</div>
+
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- =========================================================
+     SECTION 24 ACTUAL AI EXAMPLE
+========================================================= -->
+
+<section>
+
+<div class="container">
+
+<div class="section-number">24 · AI Decision Example</div>
+
+<h2>
+ماذا حدث فعليًا بعد التحليل؟
+</h2>
+
+<p class="lead">
+
+في التشغيل الفعلي لـDRAIN-131،
+بعد اكتمال تحليل الأقمار الصناعية،
+تم بناء State وتم تمريره إلى Irrigation AI Agent.
+
+</p>
+
+
+<div class="cards">
+
+<div class="card">
+
+<div class="card-icon">🧩</div>
+
+<h3>Evidence Completeness</h3>
+
+<p>
+
+قيمة اكتمال الأدلة في الحالة كانت:
+
+</p>
+
+<div class="metric-value cyan">
+0.8571
+</div>
+
+</div>
+
+
+<div class="card">
+
+<div class="card-icon">🧠</div>
+
+<h3>DQN Decision</h3>
+
+<p>
+
+النظام أعاد:
+
+</p>
+
+<div class="metric-value green">
+request_satellite_analysis
+</div>
+
+</div>
+
+
+<div class="card">
+
+<div class="card-icon">🔁</div>
+
+<h3>Learning</h3>
+
+<p>
+
+تم حساب Reward وتخزين التجربة في Replay Memory.
+
+</p>
+
+<div class="metric-value yellow">
+−0.25
+</div>
+
+</div>
+
+</div>
+
+
+<div class="formula" style="margin-top:30px">
+
+<h3>المعنى</h3>
+
+<div class="formula-code">
+
+Satellite Evidence
+→
+State
+→
+DQN
+→
+Q Values
+→
+Action
+→
+Reward
+→
+Replay
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- =========================================================
+     SECTION 25 WHAT MAKES IT AI
+========================================================= -->
+
+<section>
+
+<div class="container">
+
+<div class="section-number">25 · جوهر الذكاء الاصطناعي</div>
+
+<h2>
+إيه اللي يخلي ده <span class="gradient-text">AI فعلًا؟</span>
+</h2>
+
+
+<div class="cards">
+
+<div class="card">
+
+<div class="card-icon">🧠</div>
+
+<h3>Neural Network</h3>
+
+<p>
+هناك شبكة عصبية تتعلم العلاقة بين State والـActions.
+</p>
+
+</div>
+
+
+<div class="card">
+
+<div class="card-icon">🎯</div>
+
+<h3>Decision Policy</h3>
+
+<p>
+النظام لا يعرض أرقامًا فقط،
+بل يختار Action من مجموعة Actions.
+</p>
+
+</div>
+
+
+<div class="card">
+
+<div class="card-icon">🏆</div>
+
+<h3>Reward</h3>
+
+<p>
+القرار ينتج عنه إشارة تعليمية رقمية.
+</p>
+
+</div>
+
+
+<div class="card">
+
+<div class="card-icon">🔁</div>
+
+<h3>Reinforcement</h3>
+
+<p>
+التجارب تتخزن وتستخدم في التدريب المستمر.
+</p>
+
+</div>
+
+
+<div class="card">
+
+<div class="card-icon">🎲</div>
+
+<h3>Exploration</h3>
+
+<p>
+النظام يستطيع استكشاف Actions مختلفة بدل الالتزام دائمًا بخيار واحد.
+</p>
+
+</div>
+
+
+<div class="card">
+
+<div class="card-icon">📈</div>
+
+<h3>Learning</h3>
+
+<p>
+الأوزان تتحدث مع التدريب،
+فتتطور السياسة بمرور الخبرات.
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- =========================================================
+     SECTION 26 FUTURE
+========================================================= -->
+
+<section>
+
+<div class="container">
+
+<div class="section-number">26 · التطور المستقبلي</div>
+
+<h2>
+كيف يتحول النظام إلى <span class="cyan">منظومة ذكاء مستمرة؟</span>
+</h2>
+
+<p class="lead">
+
+الهدف المستقبلي ليس مجرد تشغيل نموذج مرة واحدة.
+الهدف هو بناء دورة تعلم مستمرة تربط البيانات،
+والقرارات، والنتائج، والخبرات السابقة.
+
+</p>
+
+
+<div class="future">
+
+<div class="future-card">
+
+<div class="card-icon">📚</div>
+
+<h3>Experience Growth</h3>
+
+<p>
+كل حالة جديدة تضيف Experience جديدة إلى قاعدة المعرفة.
+</p>
+
+</div>
+
+
+<div class="future-card">
+
+<div class="card-icon">🧠</div>
+
+<h3>Better Policy</h3>
+
+<p>
+زيادة عدد التجارب تسمح للـAgent ببناء Policy أكثر نضجًا.
+</p>
+
+</div>
+
+
+<div class="future-card">
+
+<div class="card-icon">🌍</div>
+
+<h3>More Environments</h3>
+
+<p>
+نفس AI Core يمكن تطبيقه على بيئات هندسية مختلفة.
+</p>
+
+</div>
+
+
+<div class="future-card">
+
+<div class="card-icon">📊</div>
+
+<h3>Continuous Evaluation</h3>
+
+<p>
+يمكن متابعة أداء القرارات والـRewards بمرور الوقت.
+</p>
+
+</div>
+
+</div>
+
+
+<div class="formula" style="margin-top:35px">
+
+<h3>الرؤية</h3>
+
+<div class="formula-code">
+
+Data
+→
+Experience
+→
+Learning
+→
+Better Policy
+→
+Better Decisions
+→
+More Experience
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- =========================================================
+     SECTION 27 ECONOMIC FEASIBILITY
+========================================================= -->
+
+<section>
+
+<div class="container">
+
+<div class="section-number">27 · جدوى الاستخدام</div>
+
+<h2>
+ليه استخدام النظام <span class="gradient-text">مفيد عمليًا؟</span>
+</h2>
+
+<p class="lead">
+
+القيمة الأساسية للنظام ليست في استبدال المهندس،
+ولكن في تحويل كمية كبيرة من البيانات المكانية والطيفية
+إلى معلومات منظمة تساعد على ترتيب المتابعة واتخاذ الخطوة التالية.
+
+</p>
+
+
+<div class="feasibility">
+
+<div class="feas-card">
+
+<div class="feas-icon">⏱️</div>
+
+<h3>توفير الوقت</h3>
+
+<p>
+
+بدل التعامل مع صور وخرائط وبيانات متعددة بشكل منفصل،
+يتم تجميعها داخل Pipeline واحدة.
+
+</p>
+
+</div>
+
+
+<div class="feas-card">
+
+<div class="feas-icon">🛰️</div>
+
+<h3>متابعة واسعة النطاق</h3>
+
+<p>
+
+البيانات الفضائية تسمح بمراقبة مساحات كبيرة
+دون الحاجة إلى البدء بزيارة ميدانية لكل موقع.
+
+</p>
+
+</div>
+
+
+<div class="feas-card">
+
+<div class="feas-icon">📐</div>
+
+<h3>قياس كمي</h3>
+
+<p>
+
+النظام يحول التغيرات المكانية إلى
+Pixels ونسب ومساحات بالمتر المربع.
+
+</p>
+
+</div>
+
+
+<div class="feas-card">
+
+<div class="feas-icon">🎯</div>
+
+<h3>تحديد الأولويات</h3>
+
+<p>
+
+الـAI يستطيع اختيار نوع الإجراء التالي،
+مثل المتابعة أو طلب قياس أو فحص ميداني.
+
+</p>
+
+</div>
+
+
+<div class="feas-card">
+
+<div class="feas-icon">📊</div>
+
+<h3>Decision Support</h3>
+
+<p>
+
+النتيجة النهائية ليست مجرد صورة،
+بل Case تحتوي على أدلة وقياسات وقرار.
+
+</p>
+
+</div>
+
+
+<div class="feas-card">
+
+<div class="feas-icon">🔁</div>
+
+<h3>قابلية التطور</h3>
+
+<p>
+
+مع تراكم الخبرات يمكن تطوير الـAgent
+والـPolicy وإضافة بيئات وبيانات جديدة.
+
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- =========================================================
+     SECTION 28 FINAL
+========================================================= -->
+
+<section>
+
+<div class="container">
+
+<div class="summary">
+
+<div class="section-number">
+AI IRRIGATION PIPELINE
+</div>
+
+<h2>
+القصة كلها في خط واحد
+</h2>
+
+<p class="lead">
+
+من لحظة اختيار المصرف،
+النظام يبدأ رحلة كاملة من البيانات الخام
+إلى القرار الذكي.
+
+</p>
+
+
+<div class="summary-flow">
+
+<div class="summary-box">
+🗺️
+<br>
+Drain
+</div>
+
+<div class="arrow">→</div>
+
+<div class="summary-box">
+🎯
+<br>
+AOI
+</div>
+
+<div class="arrow">→</div>
+
+<div class="summary-box">
+🛰️
+<br>
+Sentinel-2
+</div>
+
+<div class="arrow">→</div>
+
+<div class="summary-box">
+📐
+<br>
+NDVI / NDWI
+</div>
+
+<div class="arrow">→</div>
+
+<div class="summary-box">
+📊
+<br>
+State
+</div>
+
+<div class="arrow">→</div>
+
+<div class="summary-box">
+🧠
+<br>
+DQN
+</div>
+
+</div>
+
+
+<div class="summary-flow">
+
+<div class="summary-box">
+🎯
+<br>
+Action
+</div>
+
+<div class="arrow">→</div>
+
+<div class="summary-box">
+🏆
+<br>
+Reward
+</div>
+
+<div class="arrow">→</div>
+
+<div class="summary-box">
+🧠
+<br>
+Learning
+</div>
+
+<div class="arrow">→</div>
+
+<div class="summary-box">
+💾
+<br>
+Replay
+</div>
+
+<div class="arrow">→</div>
+
+<div class="summary-box">
+📈
+<br>
+Policy
+</div>
+
+<div class="arrow">→</div>
+
+<div class="summary-box">
+🔁
+<br>
+Next Case
+</div>
+
+</div>
+
+
+<div class="formula" style="margin-top:45px">
+
+<div class="formula-code">
+
+REAL WORLD
+↓
+SATELLITE EVIDENCE
+↓
+ENGINEERING MEASUREMENTS
+↓
+STATE REPRESENTATION
+↓
+NEURAL NETWORK
+↓
+Q VALUES
+↓
+ACTION
+↓
+REWARD
+↓
+REINFORCEMENT LEARNING
+↓
+EXPERIENCE
+↓
+IMPROVED DECISION POLICY
+
+</div>
+
+</div>
+
+
+<h2 style="text-align:center;margin-top:55px">
+
+<span class="gradient-text">
+من مراقبة المصرف...
+إلى نظام يتعلم كيف يتخذ القرار.
+</span>
+
+</h2>
+
+</div>
+
+</div>
+
+</section>
+
+
+<footer class="footer">
+
+<div class="container">
+
+🛰️ AI Irrigation & Drainage Intelligence
+
+<br>
+
+<span class="small">
+Satellite Intelligence · GIS · Computer Vision · Neural Networks · Reinforcement Learning
+</span>
+
+</div>
+
+</footer>
+
+
+<script>
+
+/* =========================================================
+   SIMPLE PRESENTATION EFFECTS
+   لا يعتمد على أي مكتبات خارجية
+========================================================= */
+
+const observer =
+new IntersectionObserver(
+    entries => {
+
+        entries.forEach(entry => {
+
+            if(entry.isIntersecting){
+
+                entry.target.style.opacity = "1";
+                entry.target.style.transform =
+                    "translateY(0)";
+
+            }
+
+        });
+
+    },
+    {
+        threshold:.08
+    }
+);
+
+
+document
+.querySelectorAll(
+    ".card, .step, .formula, .metric, .future-card, .feas-card"
+)
+.forEach(el => {
+
+    el.style.opacity = "0";
+    el.style.transform = "translateY(25px)";
+    el.style.transition =
+        "opacity .7s ease, transform .7s ease";
+
+    observer.observe(el);
+
+});
+
+
+/* =========================================================
+   Q VALUE ANIMATION
+========================================================= */
+
+window.addEventListener(
+    "load",
+    () => {
+
+        document
+        .querySelectorAll(".q-fill")
+        .forEach((bar,index) => {
+
+            const width =
+                bar.style.width;
+
+            bar.style.width = "0";
+
+            setTimeout(
+                () => {
+
+                    bar.style.transition =
+                        "width 1.2s ease";
+
+                    bar.style.width =
+                        width;
+
+                },
+                500 + index * 180
+            );
+
+        });
+
+    }
+);
+
+
+document.addEventListener("click", async () => {
+  try {
+    if (!document.fullscreenElement) {
+      await document.documentElement.requestFullscreen();
+    }
+  } catch (err) {
+    console.log("Fullscreen error:", err);
+  }
+});
+
+</script>
+
+
+</body>
+</html>
