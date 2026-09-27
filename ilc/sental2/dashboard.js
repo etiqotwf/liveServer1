@@ -8747,6 +8747,1328 @@ window.openSatelliteImagesForCase = function (caseRef) {
     );
 
 };
+
+
+/* ===== PROFESSIONAL ENGINEERING OVERLAY ===== */
+function getSatelliteOverlayContext() {
+
+    /*
+     * ==========================================
+     * SATELLITE CHANGE DATA
+     * ==========================================
+     */
+
+    const satellite =
+        window.latestSatelliteChangeDetection ||
+        window.latestSatelliteChange ||
+        window.satelliteChangeDetection ||
+        window.currentSatelliteChangeDetection ||
+        {};
+
+    const aoi =
+        window.selectedDrainAOI ||
+        window.selectedAOI ||
+        satellite.aoi ||
+        {};
+
+    const drain =
+        window.selectedRealDrain ||
+        window.selectedDrainFeature ||
+        window.selectedDrain ||
+        null;
+
+
+    /*
+     * ==========================================
+     * CHANGE GEOMETRY
+     * ==========================================
+     */
+
+    let changeGeometry =
+        satellite.changeGeometry ||
+        satellite.changedGeometry ||
+        satellite.changePolygon ||
+        satellite.changedPolygon ||
+        satellite.changeMaskGeometry ||
+        satellite.changeMask ||
+        satellite.changeAreaGeometry ||
+        satellite.detectedGeometry ||
+        satellite.detectedChangeGeometry ||
+        satellite.geometry ||
+        null;
+
+
+    /*
+     * ==========================================
+     * CHANGE AREA
+     * ==========================================
+     */
+
+    const changedAreaM2 =
+        Number(
+            satellite.changedAreaM2 ??
+            satellite.changeAreaM2 ??
+            satellite.changedArea ??
+            satellite.areaChangedM2 ??
+            satellite.changeArea ??
+            0
+        ) || 0;
+
+
+    /*
+     * ==========================================
+     * CHANGE %
+     * ==========================================
+     */
+
+    const changePercentage =
+        Number(
+            satellite.changePercentage ??
+            satellite.changePercent ??
+            satellite.percentage ??
+            satellite.changeRate ??
+            0
+        ) || 0;
+
+
+    /*
+     * ==========================================
+     * ANALYSIS POINT
+     * ==========================================
+     */
+
+    let rawPoint =
+        satellite.analysisPoint ||
+        satellite.point ||
+        aoi.analysisPoint ||
+        window.selectedSatellitePoint ||
+        null;
+
+
+    let pointLng = null;
+    let pointLat = null;
+
+
+    /*
+     * GeoJSON Point
+     */
+
+    if (
+        rawPoint &&
+        Array.isArray(rawPoint.coordinates)
+    ) {
+
+        pointLng =
+            Number(
+                rawPoint.coordinates[0]
+            );
+
+        pointLat =
+            Number(
+                rawPoint.coordinates[1]
+            );
+    }
+
+
+    /*
+     * {lat,lng}
+     */
+
+    else if (rawPoint) {
+
+        pointLat =
+            Number(
+                rawPoint.lat ??
+                rawPoint.latitude
+            );
+
+        pointLng =
+            Number(
+                rawPoint.lng ??
+                rawPoint.lon ??
+                rawPoint.longitude
+            );
+    }
+
+
+    /*
+     * ==========================================
+     * لو مفيش نقطة تحليل
+     * نجيب مركز الـ AOI
+     * ==========================================
+     */
+
+    if (
+        !Number.isFinite(pointLat) ||
+        !Number.isFinite(pointLng)
+    ) {
+
+        const minLat =
+            Number(
+                aoi.minLat ??
+                aoi.bounds?.minLat
+            );
+
+        const maxLat =
+            Number(
+                aoi.maxLat ??
+                aoi.bounds?.maxLat
+            );
+
+        const minLng =
+            Number(
+                aoi.minLng ??
+                aoi.bounds?.minLng
+            );
+
+        const maxLng =
+            Number(
+                aoi.maxLng ??
+                aoi.bounds?.maxLng
+            );
+
+
+        if (
+            Number.isFinite(minLat) &&
+            Number.isFinite(maxLat) &&
+            Number.isFinite(minLng) &&
+            Number.isFinite(maxLng)
+        ) {
+
+            pointLat =
+                (minLat + maxLat) / 2;
+
+            pointLng =
+                (minLng + maxLng) / 2;
+        }
+    }
+
+
+    /*
+     * ==========================================
+     * FALLBACK CHANGE GEOMETRY
+     *
+     * لو الـ Backend مش بيرجع Polygon
+     * نعمل منطقة حمراء من changedAreaM2
+     * ==========================================
+     */
+
+    if (
+        !changeGeometry &&
+        changedAreaM2 > 0 &&
+        Number.isFinite(pointLat) &&
+        Number.isFinite(pointLng) &&
+        typeof turf !== "undefined"
+    ) {
+
+        try {
+
+            const radiusKm =
+                Math.sqrt(
+                    changedAreaM2 /
+                    Math.PI
+                ) / 1000;
+
+
+            changeGeometry =
+                turf.circle(
+                    [
+                        pointLng,
+                        pointLat
+                    ],
+                    radiusKm,
+                    {
+                        steps: 96,
+                        units: "kilometers"
+                    }
+                ).geometry;
+
+
+        } catch (error) {
+
+            console.warn(
+                "Satellite change geometry error:",
+                error
+            );
+        }
+    }
+
+
+    /*
+     * ==========================================
+     * NORMALIZED ANALYSIS POINT
+     * ==========================================
+     */
+
+    const analysisPoint =
+        Number.isFinite(pointLng) &&
+        Number.isFinite(pointLat)
+            ? {
+                type: "Point",
+                coordinates: [
+                    pointLng,
+                    pointLat
+                ],
+
+                lng: pointLng,
+                lat: pointLat
+            }
+            : null;
+
+
+    /*
+     * ==========================================
+     * AOI GEOMETRY
+     * ==========================================
+     */
+
+    const aoiGeometry =
+        aoi.geometry ||
+        satellite.aoiGeometry ||
+        satellite.aoi?.geometry ||
+        null;
+
+
+    /*
+     * ==========================================
+     * DRAIN GEOMETRY
+     * ==========================================
+     */
+
+    const drainGeometry =
+        drain?.geometry ||
+        drain?.geojson?.geometry ||
+        satellite.drainGeometry ||
+        satellite.drain?.geometry ||
+        null;
+
+
+    /*
+     * ==========================================
+     * DEBUG
+     * ==========================================
+     */
+
+    console.log(
+        "🛰️ ENGINEERING OVERLAY DATA",
+        {
+            satellite,
+            aoiGeometry,
+            drainGeometry,
+            changeGeometry,
+            analysisPoint,
+            changedAreaM2,
+            changePercentage
+        }
+    );
+
+
+    /*
+     * ==========================================
+     * RETURN
+     * ==========================================
+     */
+
+    return {
+
+        aoiGeometry,
+
+        drainGeometry,
+
+        changeGeometry,
+
+        analysisPoint,
+
+        changedAreaM2,
+
+        changePercentage
+    };
+}
+
+function collectSatelliteCoordinates(geometry, out = []) {
+    if (!geometry) return out;
+
+    if (geometry.type === "Feature") {
+        return collectSatelliteCoordinates(geometry.geometry, out);
+    }
+
+    if (geometry.type === "FeatureCollection") {
+        (geometry.features || []).forEach(f =>
+            collectSatelliteCoordinates(f, out)
+        );
+        return out;
+    }
+
+    if (Array.isArray(geometry.coordinates)) {
+        if (
+            geometry.coordinates.length >= 2 &&
+            typeof geometry.coordinates[0] === "number"
+        ) {
+            out.push(geometry.coordinates);
+        } else {
+            geometry.coordinates.forEach(c =>
+                collectSatelliteCoordinates({ coordinates: c }, out)
+            );
+        }
+    }
+
+    return out;
+}
+
+function satelliteGeometryToSvgPoints(geometry, project) {
+    if (!geometry) return "";
+
+    const paths = [];
+
+    function draw(g) {
+        if (!g) return;
+
+        if (g.type === "Feature") {
+            draw(g.geometry);
+            return;
+        }
+
+        if (g.type === "FeatureCollection") {
+            (g.features || []).forEach(draw);
+            return;
+        }
+
+        if (g.type === "LineString" || g.type === "MultiPoint") {
+            const pts = g.coordinates
+                .map(c => project(c))
+                .map(p => `${p.x},${p.y}`)
+                .join(" ");
+
+            paths.push(`<polyline points="${pts}" />`);
+            return;
+        }
+
+        if (g.type === "MultiLineString") {
+            g.coordinates.forEach(line => {
+                const pts = line
+                    .map(c => project(c))
+                    .map(p => `${p.x},${p.y}`)
+                    .join(" ");
+
+                paths.push(`<polyline points="${pts}" />`);
+            });
+            return;
+        }
+
+        if (g.type === "Polygon") {
+            g.coordinates.forEach(ring => {
+                const pts = ring
+                    .map(c => project(c))
+                    .map(p => `${p.x},${p.y}`)
+                    .join(" ");
+
+                paths.push(`<polygon points="${pts}" />`);
+            });
+            return;
+        }
+
+        if (g.type === "MultiPolygon") {
+            g.coordinates.forEach(poly => {
+                poly.forEach(ring => {
+                    const pts = ring
+                        .map(c => project(c))
+                        .map(p => `${p.x},${p.y}`)
+                        .join(" ");
+
+                    paths.push(`<polygon points="${pts}" />`);
+                });
+            });
+        }
+    }
+
+    draw(geometry);
+    return paths.join("");
+}
+
+function createSatelliteEngineeringOverlay(viewport, context, mode) {
+
+    const img = viewport.querySelector("img");
+
+    if (!img) return;
+
+    const oldOverlay =
+        viewport.querySelector(
+            ".satellite-engineering-overlay"
+        );
+
+    if (oldOverlay) {
+        oldOverlay.remove();
+    }
+
+    viewport.style.position = "relative";
+
+    const W =
+        img.clientWidth ||
+        viewport.clientWidth;
+
+    const H =
+        img.clientHeight ||
+        viewport.clientHeight;
+
+    if (!W || !H) return;
+
+    const svgNS =
+        "http://www.w3.org/2000/svg";
+
+    const svg =
+        document.createElementNS(
+            svgNS,
+            "svg"
+        );
+
+    svg.classList.add(
+        "satellite-engineering-overlay"
+    );
+
+    svg.setAttribute(
+        "viewBox",
+        `0 0 ${W} ${H}`
+    );
+
+    svg.setAttribute(
+        "preserveAspectRatio",
+        "none"
+    );
+
+    Object.assign(svg.style, {
+
+        position: "absolute",
+
+        left: "0",
+        top: "0",
+
+        width: "100%",
+        height: "100%",
+
+        pointerEvents: "none",
+
+        zIndex: "20",
+
+        overflow: "visible",
+
+        display: "block"
+    });
+
+    /*
+     * ==========================================
+     * تحديد الـ Spatial Extent
+     * نعتمد على AOI أولاً
+     * ==========================================
+     */
+
+    const referenceGeometry =
+        context.aoiGeometry ||
+        context.changeGeometry ||
+        context.drainGeometry;
+
+    const allCoords =
+        collectSatelliteCoordinates(
+            referenceGeometry
+        );
+
+    if (!allCoords.length) {
+
+        console.warn(
+            "⚠️ No geometry available for satellite overlay"
+        );
+
+        return;
+    }
+
+    const xs =
+        allCoords.map(
+            c => Number(c[0])
+        );
+
+    const ys =
+        allCoords.map(
+            c => Number(c[1])
+        );
+
+    const minX =
+        Math.min(...xs);
+
+    const maxX =
+        Math.max(...xs);
+
+    const minY =
+        Math.min(...ys);
+
+    const maxY =
+        Math.max(...ys);
+
+    const dx =
+        (maxX - minX) || 1;
+
+    const dy =
+        (maxY - minY) || 1;
+
+    /*
+     * ==========================================
+     * تحويل Lon/Lat إلى SVG Pixel
+     * ==========================================
+     */
+
+    function project(coord) {
+
+        if (
+            !Array.isArray(coord) ||
+            coord.length < 2
+        ) {
+            return {
+                x: 0,
+                y: 0
+            };
+        }
+
+        const lng =
+            Number(coord[0]);
+
+        const lat =
+            Number(coord[1]);
+
+        return {
+
+            x:
+                ((lng - minX) / dx) *
+                W,
+
+            y:
+                ((maxY - lat) / dy) *
+                H
+        };
+    }
+
+    /*
+     * ==========================================
+     * SVG DEFINITIONS
+     * ==========================================
+     */
+
+    const defs =
+        document.createElementNS(
+            svgNS,
+            "defs"
+        );
+
+    defs.innerHTML = `
+
+        <!-- Glow للتغير -->
+        <filter
+            id="engineeringChangeGlow"
+            x="-50%"
+            y="-50%"
+            width="200%"
+            height="200%"
+        >
+            <feGaussianBlur
+                stdDeviation="4"
+                result="blur"
+            />
+
+            <feMerge>
+
+                <feMergeNode
+                    in="blur"
+                />
+
+                <feMergeNode
+                    in="SourceGraphic"
+                />
+
+            </feMerge>
+        </filter>
+
+
+        <!-- Shadow للمصرف -->
+        <filter
+            id="engineeringDrainShadow"
+            x="-50%"
+            y="-50%"
+            width="200%"
+            height="200%"
+        >
+
+            <feGaussianBlur
+                in="SourceAlpha"
+                stdDeviation="3"
+                result="blur"
+            />
+
+            <feOffset
+                dy="2"
+            />
+
+            <feComponentTransfer>
+
+                <feFuncA
+                    type="linear"
+                    slope=".7"
+                />
+
+            </feComponentTransfer>
+
+            <feMerge>
+
+                <feMergeNode />
+
+                <feMergeNode
+                    in="SourceGraphic"
+                />
+
+            </feMerge>
+
+        </filter>
+
+
+        <!-- Glow لنقطة التغير -->
+        <filter
+            id="engineeringPointGlow"
+            x="-100%"
+            y="-100%"
+            width="300%"
+            height="300%"
+        >
+
+            <feGaussianBlur
+                stdDeviation="3"
+                result="blur"
+            />
+
+            <feMerge>
+
+                <feMergeNode
+                    in="blur"
+                />
+
+                <feMergeNode
+                    in="SourceGraphic"
+                />
+
+            </feMerge>
+
+        </filter>
+
+    `;
+
+    svg.appendChild(defs);
+
+
+    /*
+     * ==========================================
+     * AOI
+     * Cyan Dashed Boundary
+     * ==========================================
+     */
+
+    if (context.aoiGeometry) {
+
+        const aoiGroup =
+            document.createElementNS(
+                svgNS,
+                "g"
+            );
+
+        aoiGroup.innerHTML =
+            satelliteGeometryToSvgPoints(
+                context.aoiGeometry,
+                project
+            );
+
+        aoiGroup
+            .querySelectorAll(
+                "polygon, polyline"
+            )
+            .forEach(el => {
+
+                el.setAttribute(
+                    "fill",
+                    "rgba(0,229,255,.07)"
+                );
+
+                el.setAttribute(
+                    "stroke",
+                    "#00e5ff"
+                );
+
+                el.setAttribute(
+                    "stroke-width",
+                    "2.5"
+                );
+
+                el.setAttribute(
+                    "stroke-dasharray",
+                    "10 7"
+                );
+
+                el.setAttribute(
+                    "stroke-linecap",
+                    "round"
+                );
+
+                el.setAttribute(
+                    "stroke-linejoin",
+                    "round"
+                );
+
+                el.setAttribute(
+                    "vector-effect",
+                    "non-scaling-stroke"
+                );
+            });
+
+        svg.appendChild(
+            aoiGroup
+        );
+    }
+
+
+    /*
+     * ==========================================
+     * CHANGE AREA
+     * الأحمر = التغير الهندسي
+     * ==========================================
+     */
+
+    if (context.changeGeometry) {
+
+        const changeGroup =
+            document.createElementNS(
+                svgNS,
+                "g"
+            );
+
+        changeGroup.innerHTML =
+            satelliteGeometryToSvgPoints(
+                context.changeGeometry,
+                project
+            );
+
+        /*
+         * Glow خلفي
+         */
+
+        changeGroup
+            .querySelectorAll(
+                "polygon"
+            )
+            .forEach(polygon => {
+
+                polygon.setAttribute(
+                    "fill",
+                    "rgba(255,59,48,.38)"
+                );
+
+                polygon.setAttribute(
+                    "stroke",
+                    "#ff2d20"
+                );
+
+                polygon.setAttribute(
+                    "stroke-width",
+                    "4"
+                );
+
+                polygon.setAttribute(
+                    "stroke-linejoin",
+                    "round"
+                );
+
+                polygon.setAttribute(
+                    "filter",
+                    "url(#engineeringChangeGlow)"
+                );
+
+                polygon.setAttribute(
+                    "vector-effect",
+                    "non-scaling-stroke"
+                );
+
+                polygon.style.animation =
+                    "engineeringChangePulse 2s ease-in-out infinite";
+            });
+
+        svg.appendChild(
+            changeGroup
+        );
+
+
+        /*
+         * حدود إضافية أوضح
+         */
+
+        const changeBorder =
+            document.createElementNS(
+                svgNS,
+                "g"
+            );
+
+        changeBorder.innerHTML =
+            satelliteGeometryToSvgPoints(
+                context.changeGeometry,
+                project
+            );
+
+        changeBorder
+            .querySelectorAll(
+                "polygon"
+            )
+            .forEach(polygon => {
+
+                polygon.setAttribute(
+                    "fill",
+                    "none"
+                );
+
+                polygon.setAttribute(
+                    "stroke",
+                    "#ff6258"
+                );
+
+                polygon.setAttribute(
+                    "stroke-width",
+                    "2"
+                );
+
+                polygon.setAttribute(
+                    "stroke-dasharray",
+                    "6 4"
+                );
+
+                polygon.setAttribute(
+                    "vector-effect",
+                    "non-scaling-stroke"
+                );
+            });
+
+        svg.appendChild(
+            changeBorder
+        );
+    }
+
+
+    /*
+     * ==========================================
+     * DRAIN
+     * Black Shadow + White Main Line
+     * ==========================================
+     */
+
+    if (context.drainGeometry) {
+
+        /*
+         * Shadow
+         */
+
+        const drainShadow =
+            document.createElementNS(
+                svgNS,
+                "g"
+            );
+
+        drainShadow.innerHTML =
+            satelliteGeometryToSvgPoints(
+                context.drainGeometry,
+                project
+            );
+
+        drainShadow
+            .querySelectorAll(
+                "polyline"
+            )
+            .forEach(line => {
+
+                line.setAttribute(
+                    "fill",
+                    "none"
+                );
+
+                line.setAttribute(
+                    "stroke",
+                    "#000000"
+                );
+
+                line.setAttribute(
+                    "stroke-width",
+                    "9"
+                );
+
+                line.setAttribute(
+                    "stroke-linecap",
+                    "round"
+                );
+
+                line.setAttribute(
+                    "stroke-linejoin",
+                    "round"
+                );
+
+                line.setAttribute(
+                    "filter",
+                    "url(#engineeringDrainShadow)"
+                );
+
+                line.setAttribute(
+                    "vector-effect",
+                    "non-scaling-stroke"
+                );
+            });
+
+        svg.appendChild(
+            drainShadow
+        );
+
+
+        /*
+         * White Main Line
+         */
+
+        const drainMain =
+            document.createElementNS(
+                svgNS,
+                "g"
+            );
+
+        drainMain.innerHTML =
+            satelliteGeometryToSvgPoints(
+                context.drainGeometry,
+                project
+            );
+
+        drainMain
+            .querySelectorAll(
+                "polyline"
+            )
+            .forEach(line => {
+
+                line.setAttribute(
+                    "fill",
+                    "none"
+                );
+
+                line.setAttribute(
+                    "stroke",
+                    "#ffffff"
+                );
+
+                line.setAttribute(
+                    "stroke-width",
+                    "3"
+                );
+
+                line.setAttribute(
+                    "stroke-linecap",
+                    "round"
+                );
+
+                line.setAttribute(
+                    "stroke-linejoin",
+                    "round"
+                );
+
+                line.setAttribute(
+                    "vector-effect",
+                    "non-scaling-stroke"
+                );
+            });
+
+        svg.appendChild(
+            drainMain
+        );
+    }
+
+
+    /*
+     * ==========================================
+     * ANALYSIS POINT
+     * ==========================================
+     */
+
+    if (
+        context.analysisPoint &&
+        Array.isArray(
+            context.analysisPoint.coordinates
+        )
+    ) {
+
+        const coordinates =
+            context.analysisPoint.coordinates;
+
+        const p =
+            project(coordinates);
+
+
+        /*
+         * Outer Pulse Ring
+         */
+
+        const outer =
+            document.createElementNS(
+                svgNS,
+                "circle"
+            );
+
+        outer.setAttribute(
+            "cx",
+            p.x
+        );
+
+        outer.setAttribute(
+            "cy",
+            p.y
+        );
+
+        outer.setAttribute(
+            "r",
+            "14"
+        );
+
+        outer.setAttribute(
+            "fill",
+            "rgba(255,59,48,.15)"
+        );
+
+        outer.setAttribute(
+            "stroke",
+            "#ff3b30"
+        );
+
+        outer.setAttribute(
+            "stroke-width",
+            "3"
+        );
+
+        outer.setAttribute(
+            "filter",
+            "url(#engineeringPointGlow)"
+        );
+
+        outer.style.transformBox =
+            "fill-box";
+
+        outer.style.transformOrigin =
+            "center";
+
+        outer.style.animation =
+            "engineeringPointPulse 1.6s infinite";
+
+        svg.appendChild(
+            outer
+        );
+
+
+        /*
+         * Inner Point
+         */
+
+        const inner =
+            document.createElementNS(
+                svgNS,
+                "circle"
+            );
+
+        inner.setAttribute(
+            "cx",
+            p.x
+        );
+
+        inner.setAttribute(
+            "cy",
+            p.y
+        );
+
+        inner.setAttribute(
+            "r",
+            "5"
+        );
+
+        inner.setAttribute(
+            "fill",
+            "#ffffff"
+        );
+
+        inner.setAttribute(
+            "stroke",
+            "#ff3b30"
+        );
+
+        inner.setAttribute(
+            "stroke-width",
+            "3"
+        );
+
+        svg.appendChild(
+            inner
+        );
+    }
+
+
+    /*
+     * ==========================================
+     * SVG على الصورة
+     * ==========================================
+     */
+
+    viewport.appendChild(
+        svg
+    );
+
+
+    /*
+     * ==========================================
+     * LEGEND
+     * ==========================================
+     */
+
+    const legend =
+        document.createElement(
+            "div"
+        );
+
+    legend.className =
+        "satellite-engineering-legend";
+
+    legend.innerHTML = `
+
+        <div class="legend-title">
+            الهندسيات المكتشفة
+        </div>
+
+        <div class="legend-row">
+
+            <span
+                class="legend-symbol change"
+            ></span>
+
+            <span>
+                التغير الهندسي
+            </span>
+
+        </div>
+
+        <div class="legend-row">
+
+            <span
+                class="legend-symbol aoi"
+            ></span>
+
+            <span>
+                نطاق التحليل
+            </span>
+
+        </div>
+
+        <div class="legend-row">
+
+            <span
+                class="legend-symbol drain"
+            ></span>
+
+            <span>
+                المصرف
+            </span>
+
+        </div>
+
+        <div class="legend-row">
+
+            <span
+                class="legend-symbol point"
+            ></span>
+
+            <span>
+                نقطة التحليل
+            </span>
+
+        </div>
+
+    `;
+
+    viewport.appendChild(
+        legend
+    );
+
+
+    /*
+     * ==========================================
+     * AFTER STATISTICS
+     * ==========================================
+     */
+
+    if (
+        mode === "after" &&
+        (
+            context.changedAreaM2 > 0 ||
+            context.changePercentage > 0
+        )
+    ) {
+
+        const stats =
+            document.createElement(
+                "div"
+            );
+
+        stats.className =
+            "satellite-engineering-stats";
+
+        stats.innerHTML = `
+
+            <div class="stats-title">
+                CHANGE DETECTION
+            </div>
+
+            <div class="stats-item">
+
+                <span>
+                    نسبة التغير
+                </span>
+
+                <b>
+                    ${
+                        Number(
+                            context.changePercentage
+                        ).toFixed(1)
+                    }%
+                </b>
+
+            </div>
+
+            <div class="stats-item">
+
+                <span>
+                    المساحة المتغيرة
+                </span>
+
+                <b>
+                    ${
+                        Number(
+                            context.changedAreaM2
+                        ).toLocaleString(
+                            "en-US",
+                            {
+                                maximumFractionDigits: 1
+                            }
+                        )
+                    }
+                    m²
+                </b>
+
+            </div>
+
+        `;
+
+        viewport.appendChild(
+            stats
+        );
+    }
+}
+
+
 // ==================================================
 // 🎨 SATELLITE TRUE COLOR VIEWER
 // Before / After
@@ -9071,6 +10393,252 @@ function showSatelliteTrueColorImages(
 
 
     document.body.appendChild(viewer);
+
+
+    /* ===== ENGINEERING OVERLAYS ===== */
+
+const engineeringStyle = document.createElement("style");
+
+engineeringStyle.textContent = `
+@keyframes engineeringChangePulse {
+    0%,100% {
+        opacity: .65;
+    }
+    50% {
+        opacity: 1;
+    }
+}
+
+@keyframes engineeringPointPulse {
+    0%,100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    50% {
+        transform: scale(1.35);
+        opacity: .65;
+    }
+}
+
+.satellite-engineering-overlay {
+    animation: engineeringOverlayIn .5s ease-out;
+}
+
+@keyframes engineeringOverlayIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+.satellite-engineering-legend {
+    position: absolute;
+    top: 16px;
+    left: 16px;
+    z-index: 30;
+
+    padding: 12px 15px;
+
+    min-width: 175px;
+
+    color: #fff;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(8,15,25,.94),
+            rgba(20,30,45,.86)
+        );
+
+    border: 1px solid rgba(255,255,255,.18);
+
+    border-radius: 12px;
+
+    box-shadow:
+        0 10px 30px rgba(0,0,0,.35),
+        inset 0 1px 0 rgba(255,255,255,.08);
+
+    backdrop-filter: blur(12px);
+
+    font-family:
+        Arial,
+        "Segoe UI",
+        sans-serif;
+
+    font-size: 12px;
+}
+
+.legend-title {
+    font-weight: 800;
+    font-size: 13px;
+    margin-bottom: 9px;
+
+    color: #fff;
+
+    letter-spacing: .3px;
+}
+
+.legend-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 7px 0;
+}
+
+.legend-symbol {
+    width: 13px;
+    height: 13px;
+    display: inline-block;
+    flex: 0 0 13px;
+}
+
+.legend-symbol.change {
+    background: #ff3b30;
+    border-radius: 50%;
+    box-shadow: 0 0 9px rgba(255,59,48,.8);
+}
+
+.legend-symbol.aoi {
+    border: 2px dashed #00e5ff;
+    border-radius: 3px;
+}
+
+.legend-symbol.drain {
+    width: 20px;
+    height: 3px;
+    background: #fff;
+    border-radius: 4px;
+}
+
+.satellite-engineering-stats {
+    position: absolute;
+    right: 16px;
+    bottom: 16px;
+    z-index: 30;
+
+    min-width: 185px;
+
+    padding: 13px 15px;
+
+    color: #fff;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(10,16,25,.96),
+            rgba(25,35,50,.9)
+        );
+
+    border: 1px solid rgba(255,255,255,.16);
+
+    border-radius: 14px;
+
+    box-shadow:
+        0 12px 35px rgba(0,0,0,.4);
+
+    backdrop-filter: blur(14px);
+
+    font-family:
+        Arial,
+        "Segoe UI",
+        sans-serif;
+}
+
+.stats-title {
+    font-size: 10px;
+    font-weight: 900;
+    letter-spacing: 1.4px;
+    color: #00e5ff;
+    margin-bottom: 10px;
+}
+
+.stats-item {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    padding: 5px 0;
+
+    font-size: 11px;
+
+    border-bottom: 1px solid rgba(255,255,255,.08);
+}
+
+.stats-item:last-child {
+    border-bottom: 0;
+}
+
+.stats-item b {
+    color: #ff5b52;
+    font-size: 12px;
+}
+`;
+
+document.head.appendChild(engineeringStyle);
+
+const engineeringContext =
+    getSatelliteOverlayContext();
+
+function renderEngineeringOverlays() {
+
+    const beforeViewport =
+        viewer.querySelector(
+            '[data-satellite-viewport="before"]'
+        );
+
+    const afterViewport =
+        viewer.querySelector(
+            '[data-satellite-viewport="after"]'
+        );
+
+    if (beforeViewport) {
+        createSatelliteEngineeringOverlay(
+            beforeViewport,
+            engineeringContext,
+            "before"
+        );
+    }
+
+    if (afterViewport) {
+        createSatelliteEngineeringOverlay(
+            afterViewport,
+            engineeringContext,
+            "after"
+        );
+    }
+}
+
+const engineeringImages =
+    viewer.querySelectorAll(
+        '[data-satellite-viewport] img'
+    );
+
+engineeringImages.forEach(img => {
+
+    if (img.complete) {
+        setTimeout(
+            renderEngineeringOverlays,
+            100
+        );
+    } else {
+        img.addEventListener(
+            "load",
+            renderEngineeringOverlays,
+            { once: true }
+        );
+    }
+});
+
+window.addEventListener(
+    "resize",
+    renderEngineeringOverlays
+);
+
+setTimeout(
+    renderEngineeringOverlays,
+    500
+);
 
 
     /* =====================================================
