@@ -185,6 +185,8 @@ async function analyzeSatelliteChange(
         baseline.width *
         baseline.height;
 
+        
+
 
 // ======================================================
 // REAL BUFFER MASK
@@ -240,13 +242,18 @@ function pixelIsInsideBuffer(index) {
 
         const waterVegetationMask = new Uint8Array(totalPixels);
 
+        // ======================================================
+// REAL PIXEL-LEVEL CHANGE MASK
+// كل Pixel متغير يحتفظ بموقعه الحقيقي داخل الـ AOI
+// ======================================================
+const changedPixelMask = new Uint8Array(totalPixels);
+
     // ======================================================
     // NDVI CHANGE
     // ======================================================
 
     const changeThreshold =
-        -0.10;
-
+    -0.18;
     let validPixels = 0;
     let changedPixels = 0;
 
@@ -443,14 +450,34 @@ let currentNdwiAbove02 = 0;
                 deltaNdvi
             );
 
-        if (
-            deltaNdvi <=
-            changeThreshold
-        ) {
-            changedPixels++;
-        }
+    // ======================================================
+// PROFESSIONAL CHANGE DETECTION
+// ======================================================
 
-        // ==================================================
+// التغير الحقيقي لازم يكون:
+// 1. انخفاض NDVI واضح
+// 2. قيمة NDVI الحالية أقل من السابقة
+// 3. التغير ليس مجرد اختلاف بسيط
+// 4. المنطقة داخل نطاق التحليل الحقيقي
+
+const significantNdviDrop =
+    deltaNdvi <= changeThreshold;
+
+const strongVegetationLoss =
+    baselineNdvi >= 0.25 &&
+    currentNdvi <= baselineNdvi - 0.18;
+
+const realChangePixel =
+    significantNdviDrop &&
+    strongVegetationLoss;
+
+if (realChangePixel) {
+
+    changedPixels++;
+
+    changedPixelMask[i] = 1;
+}
+       // ==================================================
         // NDWI
         // ==================================================
 
@@ -623,11 +650,335 @@ if (currentVegetatedWater) {
 
 
 
-    // ==========================================
-// SPATIAL CLUSTERING
-// ==========================================
+  // ======================================================
+// REAL CHANGE GEOMETRY FROM PIXEL MASK
+// ======================================================
+// تحويل الـ changed pixels إلى GeoJSON حقيقي
+// بنفس إحداثيات Sentinel-2.
+// لا يوجد Circle صناعي.
+// ======================================================
 
-const visited = new Uint8Array(totalPixels);
+function buildChangeGeometryFromMask(
+    mask,
+    width,
+    height,
+    rasterBbox
+) {
+
+    const [
+        rasterMinLng,
+        rasterMinLat,
+        rasterMaxLng,
+        rasterMaxLat
+    ] = rasterBbox;
+
+    const rectangles = [];
+    const rowRuns = [];
+
+    // ==================================================
+    // استخراج الـ changed runs لكل Row
+    // ==================================================
+
+    for (let y = 0; y < height; y++) {
+
+        const runs = [];
+        let runStart = -1;
+
+        for (let x = 0; x < width; x++) {
+
+            const changed =
+                mask[y * width + x] === 1;
+
+            if (
+                changed &&
+                runStart < 0
+            ) {
+                runStart = x;
+            }
+
+            if (
+                (!changed || x === width - 1) &&
+                runStart >= 0
+            ) {
+
+                const runEnd =
+                    changed && x === width - 1
+                        ? x + 1
+                        : x;
+
+                runs.push({
+                    x1: runStart,
+                    x2: runEnd
+                });
+
+                runStart = -1;
+            }
+        }
+
+        rowRuns.push(runs);
+    }
+
+    // ==================================================
+    // دمج الـ Runs المتطابقة رأسيًا
+    // ==================================================
+
+    const active = new Map();
+
+    for (let y = 0; y < height; y++) {
+
+        const currentKeys = new Set();
+
+        for (const run of rowRuns[y]) {
+
+            const key =
+                `${run.x1}:${run.x2}`;
+
+            currentKeys.add(key);
+
+            const existing =
+                active.get(key);
+
+            if (existing) {
+
+                existing.y2 =
+                    y + 1;
+
+            } else {
+
+                active.set(
+                    key,
+                    {
+                        x1: run.x1,
+                        x2: run.x2,
+                        y1: y,
+                        y2: y + 1
+                    }
+                );
+
+            }
+        }
+
+        // أي منطقة انتهت
+        for (const [key, rect] of active) {
+
+            if (!currentKeys.has(key)) {
+
+                rectangles.push(rect);
+
+                active.delete(key);
+            }
+        }
+    }
+
+    // Flush
+    for (const rect of active.values()) {
+        rectangles.push(rect);
+    }
+
+    // ==================================================
+    // تحويل الـ Pixels إلى GeoJSON
+    // ==================================================
+
+    const features =
+        rectangles.map(
+            rect => {
+
+                const lng1 =
+                    rasterMinLng +
+                    (rect.x1 / width) *
+                    (
+                        rasterMaxLng -
+                        rasterMinLng
+                    );
+
+                const lng2 =
+                    rasterMinLng +
+                    (rect.x2 / width) *
+                    (
+                        rasterMaxLng -
+                        rasterMinLng
+                    );
+
+                const latTop =
+                    rasterMaxLat -
+                    (rect.y1 / height) *
+                    (
+                        rasterMaxLat -
+                        rasterMinLat
+                    );
+
+                const latBottom =
+                    rasterMaxLat -
+                    (rect.y2 / height) *
+                    (
+                        rasterMaxLat -
+                        rasterMinLat
+                    );
+
+                return turf.polygon([
+                    [
+                        [lng1, latTop],
+                        [lng2, latTop],
+                        [lng2, latBottom],
+                        [lng1, latBottom],
+                        [lng1, latTop]
+                    ]
+                ]);
+
+            }
+        );
+
+    return turf.featureCollection(
+        features
+    );
+}
+
+
+// ======================================================
+// REAL CHANGE GEOMETRY
+// ======================================================
+
+const changeGeometry =
+    buildChangeGeometryFromMask(
+        changedPixelMask,
+        baseline.width,
+        baseline.height,
+        bbox
+    );
+
+// ======================================================
+// REMOVE SMALL CHANGE NOISE
+// ======================================================
+
+const cleanedChangeMask =
+    new Uint8Array(totalPixels);
+
+const visitedChange =
+    new Uint8Array(totalPixels);
+
+const MIN_CHANGE_CLUSTER_PIXELS = 12;
+
+for (
+    let start = 0;
+    start < totalPixels;
+    start++
+) {
+
+    if (
+        changedPixelMask[start] !== 1 ||
+        visitedChange[start] === 1
+    ) {
+        continue;
+    }
+
+    const queue = [start];
+
+    visitedChange[start] = 1;
+
+    const cluster = [];
+
+    while (queue.length > 0) {
+
+        const current =
+            queue.pop();
+
+        cluster.push(current);
+
+        const x =
+            current % baseline.width;
+
+        const y =
+            Math.floor(
+                current / baseline.width
+            );
+
+        for (
+            let dy = -1;
+            dy <= 1;
+            dy++
+        ) {
+
+            for (
+                let dx = -1;
+                dx <= 1;
+                dx++
+            ) {
+
+                if (
+                    dx === 0 &&
+                    dy === 0
+                ) {
+                    continue;
+                }
+
+                const nx =
+                    x + dx;
+
+                const ny =
+                    y + dy;
+
+                if (
+                    nx < 0 ||
+                    nx >= baseline.width ||
+                    ny < 0 ||
+                    ny >= baseline.height
+                ) {
+                    continue;
+                }
+
+                const ni =
+                    ny *
+                    baseline.width +
+                    nx;
+
+                if (
+                    changedPixelMask[ni] === 1 &&
+                    visitedChange[ni] === 0
+                ) {
+
+                    visitedChange[ni] = 1;
+
+                    queue.push(ni);
+                }
+            }
+        }
+    }
+
+    // نحتفظ فقط بالتغيرات الحقيقية المتصلة
+    if (
+        cluster.length >=
+        MIN_CHANGE_CLUSTER_PIXELS
+    ) {
+
+        for (
+            const pixelIndex of cluster
+        ) {
+
+            cleanedChangeMask[
+                pixelIndex
+            ] = 1;
+        }
+    }
+}
+
+// استبدال الـmask الأصلي بالـclean mask
+
+for (
+    let i = 0;
+    i < totalPixels;
+    i++
+) {
+
+    changedPixelMask[i] =
+        cleanedChangeMask[i];
+}
+
+// ======================================================
+// SPATIAL CLUSTERING
+// ======================================================
+
+const visited =
+    new Uint8Array(totalPixels);
 
 let clusterCount = 0;
 let largestClusterPixels = 0;
@@ -635,7 +986,11 @@ let clusteredCandidatePixels = 0;
 
 const clusterSizes = [];
 
-for (let start = 0; start < totalPixels; start++) {
+for (
+    let start = 0;
+    start < totalPixels;
+    start++
+) {
 
     if (
         waterVegetationMask[start] === 0 ||
@@ -647,32 +1002,53 @@ for (let start = 0; start < totalPixels; start++) {
     clusterCount++;
 
     const queue = [start];
+
     visited[start] = 1;
 
     let clusterSize = 0;
 
     while (queue.length > 0) {
 
-        const currentIndex = queue.pop();
+        const currentIndex =
+            queue.pop();
 
         clusterSize++;
 
-        const x = currentIndex % baseline.width;
-        const y = Math.floor(
-            currentIndex / baseline.width
-        );
+        const x =
+            currentIndex %
+            baseline.width;
+
+        const y =
+            Math.floor(
+                currentIndex /
+                baseline.width
+            );
 
         // 8-neighbor connectivity
-        for (let dy = -1; dy <= 1; dy++) {
+        for (
+            let dy = -1;
+            dy <= 1;
+            dy++
+        ) {
 
-            for (let dx = -1; dx <= 1; dx++) {
+            for (
+                let dx = -1;
+                dx <= 1;
+                dx++
+            ) {
 
-                if (dx === 0 && dy === 0) {
+                if (
+                    dx === 0 &&
+                    dy === 0
+                ) {
                     continue;
                 }
 
-                const nx = x + dx;
-                const ny = y + dy;
+                const nx =
+                    x + dx;
+
+                const ny =
+                    y + dy;
 
                 if (
                     nx < 0 ||
@@ -684,20 +1060,34 @@ for (let start = 0; start < totalPixels; start++) {
                 }
 
                 const neighborIndex =
-                    ny * baseline.width + nx;
+                    ny *
+                    baseline.width +
+                    nx;
 
                 if (
-                    waterVegetationMask[neighborIndex] === 1 &&
-                    visited[neighborIndex] === 0
+                    waterVegetationMask[
+                        neighborIndex
+                    ] === 1 &&
+                    visited[
+                        neighborIndex
+                    ] === 0
                 ) {
-                    visited[neighborIndex] = 1;
-                    queue.push(neighborIndex);
+
+                    visited[
+                        neighborIndex
+                    ] = 1;
+
+                    queue.push(
+                        neighborIndex
+                    );
                 }
             }
         }
     }
 
-    clusterSizes.push(clusterSize);
+    clusterSizes.push(
+        clusterSize
+    );
 
     largestClusterPixels =
         Math.max(
@@ -705,11 +1095,9 @@ for (let start = 0; start < totalPixels; start++) {
             clusterSize
         );
 
-    clusteredCandidatePixels += clusterSize;
+    clusteredCandidatePixels +=
+        clusterSize;
 }
-
-
-
 
     // ======================================================
     // General NDVI results
@@ -784,11 +1172,29 @@ const pixelAreaM2 =
         ? aoiAreaM2 / totalPixels
         : 0;
 
+// ======================================================
+// FINAL REAL CHANGE AREA
+// ======================================================
+
+let finalChangedPixels = 0;
+
+for (
+    let i = 0;
+    i < totalPixels;
+    i++
+) {
+
+    if (
+        changedPixelMask[i] === 1
+    ) {
+
+        finalChangedPixels++;
+    }
+}
+
 const changedAreaM2 =
-    changedPixels *
+    finalChangedPixels *
     pixelAreaM2;
-
-
     // ======================================================
     // Water Hyacinth Results
     // ======================================================
@@ -927,10 +1333,20 @@ return {
                 pixelAreaM2.toFixed(2)
             ),
 
-        changedAreaM2:
-            Number(
-                changedAreaM2.toFixed(2)
-            ),
+       changedAreaM2:
+    Number(
+        changedAreaM2.toFixed(2)
+    ),
+
+// ==================================================
+// REAL PIXEL CHANGE GEOMETRY
+// ==================================================
+
+changeGeometry,
+
+changeGeometryType:
+    'RASTER_PIXEL_RUNS',
+
 
         minDeltaNDVI:
             Number(
@@ -5081,12 +5497,22 @@ currentCloudCover:
                 changedPixels:
                     ndviChange.changedPixels,
 
-                changedAreaM2:
-                    ndviChange.changedAreaM2,
+              changedAreaM2:
+    ndviChange.changedAreaM2,
 
-                threshold:
-                    ndviChange.changeThreshold,
+// ==================================================
+// REAL SPATIAL CHANGE GEOMETRY
+// ==================================================
 
+changeGeometry:
+    ndviChange.changeGeometry,
+
+changeGeometryType:
+    ndviChange.changeGeometryType,
+
+threshold:
+    ndviChange.changeThreshold,
+    
                 waterHyacinth:
                     ndviChange.waterHyacinth
 

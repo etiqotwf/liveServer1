@@ -5683,233 +5683,147 @@ if (realGISMode) {
 
 
 // ==================================================
-    // CHANGE ZONE
-    // ==================================================
+// REAL SATELLITE CHANGE GEOMETRY
+// ==================================================
 
-    const changeArea =
-        Math.max(
-            0,
-            Number(
-                detection.changeArea
-            ) || 0
-        );
+if (changeZone) {
 
-    if (changeArea > 0) {
+    gisMap.removeLayer(
+        changeZone
+    );
 
-        const estimatedRadius =
-            Math.sqrt(
-                changeArea /
-                Math.PI
-            );
+    changeZone = null;
+}
 
-        const displayRadius =
-            Math.max(
-                estimatedRadius,
-                35
-            );
+const satelliteChange =
+    currentCase.satelliteChangeDetection ||
+    {};
 
-        changeZone =
-            L.circle(
-                [lat, lng],
-                {
+const realChangeGeometry =
+    satelliteChange.changeGeometry ||
+    satelliteChange.changedGeometry ||
+    null;
 
-                    radius:
-                        displayRadius,
+if (
+    realChangeGeometry &&
+    gisMap
+) {
+
+    changeZone =
+        L.geoJSON(
+            realChangeGeometry,
+            {
+
+                style: {
 
                     color:
-                        risk.color,
+                        '#ff1f1f',
 
                     weight:
                         2,
 
+                    opacity:
+                        0.95,
+
                     fillColor:
-                        risk.fillColor,
+                        '#ff1f1f',
 
                     fillOpacity:
-                        0.20,
+                        0.35,
 
-                    interactive:
-                        true
+                    lineJoin:
+                        'round',
 
-                }
-            ).addTo(
-                gisMap
-            );
+                    lineCap:
+                        'round'
+                },
 
-        changeZone.bindPopup(`
+                onEachFeature:
+                    function (
+                        feature,
+                        layer
+                    ) {
 
-            <div style="
-                direction: rtl;
-                text-align: right;
-                min-width: 230px;
-                font-family: Arial, sans-serif;
-                line-height: 1.8;
-            ">
+                        layer.bindPopup(`
 
-                <div style="
-                    font-size: 16px;
-                    font-weight: bold;
-                    margin-bottom: 6px;
-                ">
-                    🛰️ منطقة التغير الهندسي
-                </div>
+                            <div
+                                dir="rtl"
+                                style="
+                                    min-width:240px;
+                                    line-height:1.8;
+                                    text-align:right;
+                                    font-family:Arial;
+                                "
+                            >
 
-                <hr>
+                                <strong>
+                                    🛰️ تغير مرصود بالأقمار الصناعية
+                                </strong>
 
-                <div>
-                    <strong>CASE ID:</strong>
-                    ${currentCase.caseId || '-'}
-                </div>
+                                <hr>
 
-                <div>
-                    <strong>المصرف:</strong>
-                    ${currentCase.drainId || '-'}
-                </div>
+                                <div>
 
-                <div>
-                    <strong>مساحة التغير:</strong>
-                    ${changeArea} m²
-                </div>
+                                    <strong>
+                                        المصرف:
+                                    </strong>
 
-                <div>
-                    <strong>نسبة التغير:</strong>
-                    ${detection.changePercentage ?? 0}%
-                </div>
+                                    ${
+                                        currentCase.drainId ||
+                                        '-'
+                                    }
 
-                <div>
-                    <strong>مستوى الخطورة:</strong>
+                                </div>
 
-                    <span style="
-                        color: ${risk.color};
-                        font-weight: bold;
-                    ">
-                        ${risk.label}
-                    </span>
+                                <div>
 
-                </div>
+                                    <strong>
+                                        مساحة التغير:
+                                    </strong>
 
-                <div>
-                    <strong>Risk:</strong>
-                    ${riskScore}/100
-                </div>
+                                    ${
+                                        satelliteChange.changedAreaM2 ??
+                                        0
+                                    }
+                                    m²
 
-                <div>
-                    <strong>AI Confidence:</strong>
-                    ${ai.confidence ?? 0}%
-                </div>
+                                </div>
 
+                                <div>
 
-           ${spatialAnalysis ? `
+                                    <strong>
+                                        نسبة التغير:
+                                    </strong>
 
-    <div style="
-        margin-top: 10px;
-        padding-top: 8px;
-        border-top: 1px solid #ddd;
-    ">
+                                    ${
+                                        satelliteChange.changePercentage ??
+                                        0
+                                    }%
 
-        <strong>
-            🧠 العلاقة المكانية
-        </strong>
+                                </div>
 
-    </div>
+                                <div>
 
+                                    <strong>
+                                        الموقع:
+                                    </strong>
 
-    <div>
-        <strong>
-            📏 المسافة الفعلية:
-        </strong>
+                                    تغير مكاني حقيقي
 
-        ${spatialAnalysis.distanceToDrain} m
-    </div>
+                                </div>
 
+                            </div>
 
-    <div>
-        <strong>
-            التصنيف:
-        </strong>
+                        `);
 
-        <span style="
-            color: ${spatialInfo.color};
-            font-weight: bold;
-        ">
-            ${spatialInfo.icon}
-            ${spatialInfo.label}
-        </span>
-    </div>
+                    }
 
-
-    <div style="
-        margin-top: 6px;
-        font-size: 12px;
-        opacity: 0.85;
-    ">
-
-        <strong>
-            📍 أقرب نقطة على المصرف:
-        </strong>
-
-        <br>
-
-        ${spatialAnalysis.nearestPoint
-            ? `
-                ${spatialAnalysis.nearestPoint.lat},
-                ${spatialAnalysis.nearestPoint.lng}
-              `
-            : 'غير متاح'
-        }
-
-    </div>
-
-
-    <div style="
-        margin-top: 10px;
-        padding: 8px;
-        background: #f5f5f5;
-        border-radius: 6px;
-        font-size: 12px;
-        line-height: 1.7;
-    ">
-
-        <strong>
-            🏗️ Engineering Interpretation
-        </strong>
-
-        <div style="margin-top: 4px;">
-
-            ${
-                spatialAnalysis.proximity === 'near'
-
-                ? 'الحالة تقع بالقرب من محور المصرف، ويُنصح بمراجعة التغير المكتشف ميدانيًا.'
-
-                : spatialAnalysis.proximity === 'moderate'
-
-                ? 'الحالة تقع ضمن نطاق متوسط القرب من المصرف، ويُفضل مراجعة علاقتها بالمصرف قبل اتخاذ إجراء.'
-
-                : 'الحالة تقع على مسافة بعيدة نسبيًا عن محور المصرف، ولا تظهر حاليًا علاقة مكانية مباشرة قوية مع المصرف وفق التصنيف الحالي.'
             }
+        ).addTo(
+            gisMap
+        );
 
-        </div>
-
-    </div>
-
-` : ''}
-                <div style="
-                    margin-top: 8px;
-                    padding-top: 6px;
-                    border-top: 1px solid #ddd;
-                    font-size: 12px;
-                    color: #666;
-                ">
-                    ⚠️ منطقة تقديرية مبنية على
-                    مساحة التغير المسجلة.
-                </div>
-
-            </div>
-
-        `);
-
-    }
-
+}
     // ==================================================
     // CASE MARKER
     // ==================================================
@@ -8944,56 +8858,44 @@ function getSatelliteOverlayContext() {
     }
 
 
-    /*
-     * ==========================================
-     * FALLBACK CHANGE GEOMETRY
-     *
-     * لو الـ Backend مش بيرجع Polygon
-     * نعمل منطقة حمراء من changedAreaM2
-     * ==========================================
-     */
+   /*
+ * ==========================================
+ * NO SYNTHETIC CHANGE CIRCLE
+ * ==========================================
+ *
+ * الـ Backend لازم يرجع Geometry حقيقية
+ * مبنية من الـ changed pixels.
+ *
+ * ممنوع إنشاء دائرة من changedAreaM2.
+ */
 
-    if (
-        !changeGeometry &&
-        changedAreaM2 > 0 &&
-        Number.isFinite(pointLat) &&
-        Number.isFinite(pointLng) &&
-        typeof turf !== "undefined"
-    ) {
+if (!changeGeometry) {
 
-        try {
+    console.warn(
+        "⚠️ No real change geometry returned by backend."
+    );
 
-            const radiusKm =
-                Math.sqrt(
-                    changedAreaM2 /
-                    Math.PI
-                ) / 1000;
+}
 
 
-            changeGeometry =
-                turf.circle(
-                    [
-                        pointLng,
-                        pointLat
-                    ],
-                    radiusKm,
-                    {
-                        steps: 96,
-                        units: "kilometers"
-                    }
-                ).geometry;
+/*
+ * ==========================================
+ * NO SYNTHETIC CHANGE CIRCLE
+ * ==========================================
+ *
+ * الـ Backend لازم يرجع Geometry حقيقية
+ * مبنية من الـ changed pixels.
+ *
+ * ممنوع إنشاء دائرة من changedAreaM2.
+ */
 
+if (!changeGeometry) {
 
-        } catch (error) {
+    console.warn(
+        "⚠️ No real change geometry returned by backend."
+    );
 
-            console.warn(
-                "Satellite change geometry error:",
-                error
-            );
-        }
-    }
-
-
+}
     /*
      * ==========================================
      * NORMALIZED ANALYSIS POINT
