@@ -8447,44 +8447,253 @@ window.openSatelliteImagesForCase = function (caseRef) {
 
     }
 
+/* =========================================
+   2. البحث في allCases
+========================================= */
 
-    /* =========================================
-       2. البحث في allCases
-    ========================================= */
+const requestedCaseId =
+    String(caseRef || '').trim();
+
+let requestedDrainId = '';
+
+const drainMatch =
+    requestedCaseId.match(
+        /^DRAIN-(.+)-\d+$/
+    );
+
+if (drainMatch) {
+
+    requestedDrainId =
+        String(
+            drainMatch[1]
+        ).trim();
+
+}
+
+
+/* =========================================
+   البحث المباشر بالـ caseId
+========================================= */
+
+if (
+    !c &&
+    Array.isArray(allCases)
+) {
+
+    c =
+        allCases.find(
+            item => {
+
+                const ids = [
+                    item?.caseId,
+                    item?.caseID,
+                    item?.case_id,
+                    item?.id
+                ];
+
+                return ids.some(
+                    id =>
+                        String(id || '').trim() ===
+                        requestedCaseId
+                );
+
+            }
+        );
+
+}
+
+
+/* =========================================
+   fallback:
+   البحث بالمصرف نفسه
+========================================= */
+
+if (
+    !c &&
+    requestedDrainId &&
+    Array.isArray(allCases)
+) {
+
+    const drainCandidates =
+        allCases.filter(
+            item => {
+
+                const itemDrainId =
+                    String(
+                        item?.drainId ||
+                        item?.drain?.id ||
+                        item?.drain?.drainId ||
+                        item?.satelliteChangeDetection?.drainId ||
+                        ''
+                    ).trim();
+
+                return (
+                    itemDrainId ===
+                    requestedDrainId
+                );
+
+            }
+        );
 
     if (
-        !c &&
-        Array.isArray(allCases)
+        drainCandidates.length > 0
     ) {
 
+        drainCandidates.sort(
+            (
+                a,
+                b
+            ) => {
+
+                const dateA =
+                    new Date(
+                        a?.satelliteChangeDetection?.currentDate ||
+                        a?.createdAt ||
+                        0
+                    ).getTime();
+
+                const dateB =
+                    new Date(
+                        b?.satelliteChangeDetection?.currentDate ||
+                        b?.createdAt ||
+                        0
+                    ).getTime();
+
+                return dateB - dateA;
+
+            }
+        );
+
         c =
-            allCases.find(
-                item =>
-                    String(item?.caseId) ===
-                    String(caseRef)
-            );
+            drainCandidates[0];
 
     }
 
+}
 
-    /* =========================================
-       3. البحث في latest cases
-    ========================================= */
+
+/* =========================================
+   3. البحث في latest cases
+========================================= */
+
+if (
+    !c &&
+    Array.isArray(window.latestCases)
+) {
+
+    c =
+        window.latestCases.find(
+            item => {
+
+                const ids = [
+                    item?.caseId,
+                    item?.caseID,
+                    item?.case_id,
+                    item?.id
+                ];
+
+                return ids.some(
+                    id =>
+                        String(id || '').trim() ===
+                        requestedCaseId
+                );
+
+            }
+        );
+
+}
+
+
+/* =========================================
+   fallback في latestCases
+========================================= */
+
+if (
+    !c &&
+    requestedDrainId &&
+    Array.isArray(window.latestCases)
+) {
+
+    c =
+        window.latestCases.find(
+            item => {
+
+                const itemDrainId =
+                    String(
+                        item?.drainId ||
+                        item?.drain?.id ||
+                        item?.drain?.drainId ||
+                        item?.satelliteChangeDetection?.drainId ||
+                        ''
+                    ).trim();
+
+                return (
+                    itemDrainId ===
+                    requestedDrainId
+                );
+
+            }
+        );
+
+}
+
+
+/* =========================================
+   4. GIS CURRENT CASE
+========================================= */
+
+if (
+    !c &&
+    typeof window.currentGISCase !==
+    'undefined' &&
+    window.currentGISCase
+) {
+
+    const gisCase =
+        window.currentGISCase;
+
+    const gisCaseIds = [
+        gisCase?.caseId,
+        gisCase?.caseID,
+        gisCase?.case_id,
+        gisCase?.id
+    ];
 
     if (
-        !c &&
-        Array.isArray(window.latestCases)
+        gisCaseIds.some(
+            id =>
+                String(id || '').trim() ===
+                requestedCaseId
+        )
     ) {
 
         c =
-            window.latestCases.find(
-                item =>
-                    String(item?.caseId) ===
-                    String(caseRef)
-            );
+            gisCase;
 
     }
 
+}
+
+
+/* =========================================
+   DEBUG
+========================================= */
+
+console.log(
+    '🛰️ CASE LOOKUP RESULT:',
+    {
+        requestedCaseId,
+        requestedDrainId,
+        found:
+            !!c,
+        foundCaseId:
+            c?.caseId,
+        foundDrainId:
+            c?.drainId ||
+            c?.drain?.id ||
+            c?.satelliteChangeDetection?.drainId
+    }
+);
 
     /* =========================================
        4. البحث في الحالات الموجودة
@@ -8560,6 +8769,42 @@ window.openSatelliteImagesForCase = function (caseRef) {
         c?.satellite ||
         {};
 
+
+        // ==========================================
+// SYNC SATELLITE DATA WITH ENGINEERING OVERLAY
+// ==========================================
+
+if (satellite && typeof satellite === 'object') {
+
+    window.latestSatelliteChangeDetection =
+        satellite;
+
+    window.latestSatelliteChange =
+        satellite;
+
+    window.satelliteChangeDetection =
+        satellite;
+
+    window.currentSatelliteChangeDetection =
+        satellite;
+
+    console.log(
+        '🛰️ SATELLITE OVERLAY SYNC:',
+        {
+            changeGeometry:
+                satellite.changeGeometry,
+
+            beforeLandCoverGeometry:
+                satellite.beforeLandCoverGeometry,
+
+            afterLandCoverGeometry:
+                satellite.afterLandCoverGeometry,
+
+            landCoverClassification:
+                satellite.landCoverClassification
+        }
+    );
+}
 
     console.log(
         '🛰️ DRAIN:',
@@ -8710,227 +8955,6 @@ function getSatelliteOverlayContext() {
         satellite.detectedChangeGeometry ||
         satellite.geometry ||
         null;
-
-
-    /*
-     * ==========================================
-     * CHANGE AREA
-     * ==========================================
-     */
-
-    const changedAreaM2 =
-        Number(
-            satellite.changedAreaM2 ??
-            satellite.changeAreaM2 ??
-            satellite.changedArea ??
-            satellite.areaChangedM2 ??
-            satellite.changeArea ??
-            0
-        ) || 0;
-
-
-    /*
-     * ==========================================
-     * CHANGE %
-     * ==========================================
-     */
-
-    const changePercentage =
-        Number(
-            satellite.changePercentage ??
-            satellite.changePercent ??
-            satellite.percentage ??
-            satellite.changeRate ??
-            0
-        ) || 0;
-
-
-    /*
-     * ==========================================
-     * ANALYSIS POINT
-     * ==========================================
-     */
-
-    let rawPoint =
-        satellite.analysisPoint ||
-        satellite.point ||
-        aoi.analysisPoint ||
-        window.selectedSatellitePoint ||
-        null;
-
-
-    let pointLng = null;
-    let pointLat = null;
-
-
-    /*
-     * GeoJSON Point
-     */
-
-    if (
-        rawPoint &&
-        Array.isArray(rawPoint.coordinates)
-    ) {
-
-        pointLng =
-            Number(
-                rawPoint.coordinates[0]
-            );
-
-        pointLat =
-            Number(
-                rawPoint.coordinates[1]
-            );
-    }
-
-
-    /*
-     * {lat,lng}
-     */
-
-    else if (rawPoint) {
-
-        pointLat =
-            Number(
-                rawPoint.lat ??
-                rawPoint.latitude
-            );
-
-        pointLng =
-            Number(
-                rawPoint.lng ??
-                rawPoint.lon ??
-                rawPoint.longitude
-            );
-    }
-
-
-    /*
-     * ==========================================
-     * لو مفيش نقطة تحليل
-     * نجيب مركز الـ AOI
-     * ==========================================
-     */
-
-    if (
-        !Number.isFinite(pointLat) ||
-        !Number.isFinite(pointLng)
-    ) {
-
-        const minLat =
-            Number(
-                aoi.minLat ??
-                aoi.bounds?.minLat
-            );
-
-        const maxLat =
-            Number(
-                aoi.maxLat ??
-                aoi.bounds?.maxLat
-            );
-
-        const minLng =
-            Number(
-                aoi.minLng ??
-                aoi.bounds?.minLng
-            );
-
-        const maxLng =
-            Number(
-                aoi.maxLng ??
-                aoi.bounds?.maxLng
-            );
-
-
-        if (
-            Number.isFinite(minLat) &&
-            Number.isFinite(maxLat) &&
-            Number.isFinite(minLng) &&
-            Number.isFinite(maxLng)
-        ) {
-
-            pointLat =
-                (minLat + maxLat) / 2;
-
-            pointLng =
-                (minLng + maxLng) / 2;
-        }
-    }
-
-
-   /*
- * ==========================================
- * NO SYNTHETIC CHANGE CIRCLE
- * ==========================================
- *
- * الـ Backend لازم يرجع Geometry حقيقية
- * مبنية من الـ changed pixels.
- *
- * ممنوع إنشاء دائرة من changedAreaM2.
- */
-
-if (!changeGeometry) {
-
-    console.warn(
-        "⚠️ No real change geometry returned by backend."
-    );
-
-}
-
-
-/*
- * ==========================================
- * NO SYNTHETIC CHANGE CIRCLE
- * ==========================================
- *
- * الـ Backend لازم يرجع Geometry حقيقية
- * مبنية من الـ changed pixels.
- *
- * ممنوع إنشاء دائرة من changedAreaM2.
- */
-
-if (!changeGeometry) {
-
-    console.warn(
-        "⚠️ No real change geometry returned by backend."
-    );
-
-}
-    /*
-     * ==========================================
-     * NORMALIZED ANALYSIS POINT
-     * ==========================================
-     */
-
-    const analysisPoint =
-        Number.isFinite(pointLng) &&
-        Number.isFinite(pointLat)
-            ? {
-                type: "Point",
-                coordinates: [
-                    pointLng,
-                    pointLat
-                ],
-
-                lng: pointLng,
-                lat: pointLat
-            }
-            : null;
-
-
-    /*
-     * ==========================================
-     * AOI GEOMETRY
-     * ==========================================
-     */
-
-    const aoiGeometry =
-        aoi.geometry ||
-        satellite.aoiGeometry ||
-        satellite.aoi?.geometry ||
-        null;
-
-
     /*
      * ==========================================
      * DRAIN GEOMETRY
@@ -8945,25 +8969,59 @@ if (!changeGeometry) {
         null;
 
 
-    /*
-     * ==========================================
-     * DEBUG
-     * ==========================================
-     */
+   /*
+ * ==========================================
+ * DERIVED OVERLAY DATA
+ * ==========================================
+ */
 
-    console.log(
-        "🛰️ ENGINEERING OVERLAY DATA",
-        {
-            satellite,
-            aoiGeometry,
-            drainGeometry,
-            changeGeometry,
-            analysisPoint,
-            changedAreaM2,
-            changePercentage
-        }
-    );
+const aoiGeometry =
+    aoi?.geometry ||
+    satellite?.aoiGeometry ||
+    satellite?.aoi?.geometry ||
+    null;
 
+const analysisPoint =
+    satellite?.analysisPoint ||
+    null;
+
+const changedAreaM2 =
+    Number(
+        satellite?.changedAreaM2
+    ) || 0;
+
+const changePercentage =
+    Number(
+        satellite?.changePercentage
+    ) || 0;
+
+
+/*
+ * ==========================================
+ * DEBUG
+ * ==========================================
+ */
+
+console.log(
+    "🛰️ ENGINEERING OVERLAY DATA",
+    {
+        satellite,
+        aoiGeometry,
+        drainGeometry,
+        changeGeometry,
+        analysisPoint,
+        changedAreaM2,
+        changePercentage,
+
+        beforeLandCoverGeometry:
+            satellite?.beforeLandCoverGeometry ||
+            null,
+
+        afterLandCoverGeometry:
+            satellite?.afterLandCoverGeometry ||
+            null
+    }
+);
 
     /*
      * ==========================================
@@ -8978,6 +9036,14 @@ if (!changeGeometry) {
         drainGeometry,
 
         changeGeometry,
+
+        beforeLandCoverGeometry:
+    satellite.beforeLandCoverGeometry ||
+    null,
+
+afterLandCoverGeometry:
+    satellite.afterLandCoverGeometry ||
+    null,
 
         analysisPoint,
 
@@ -9087,6 +9153,187 @@ function satelliteGeometryToSvgPoints(geometry, project) {
     return paths.join("");
 }
 
+
+
+
+
+function satelliteLandCoverToSvg(
+    geometry,
+    project
+) {
+
+    if (!geometry) {
+        return "";
+    }
+
+    const paths = [];
+
+    function drawFeature(feature) {
+
+        if (!feature) return;
+
+        if (
+            feature.type === "FeatureCollection"
+        ) {
+
+            (
+                feature.features || []
+            ).forEach(drawFeature);
+
+            return;
+        }
+
+        if (
+            feature.type !== "Feature"
+        ) {
+
+            return;
+        }
+
+        const geometry =
+            feature.geometry;
+
+        const props =
+            feature.properties || {};
+
+        if (!geometry) {
+            return;
+        }
+
+        if (
+            geometry.type === "Polygon"
+        ) {
+
+            (
+                geometry.coordinates || []
+            ).forEach(ring => {
+
+                const pts =
+                    ring
+                        .map(c => project(c))
+                        .map(
+                            p =>
+                                `${p.x},${p.y}`
+                        )
+                        .join(" ");
+
+                paths.push(
+                    `<polygon
+                        points="${pts}"
+                        data-land-cover="${props.landCover || "other"}"
+                        data-intensity="${Number(props.intensity || 0.5)}"
+                    />`
+                );
+            });
+
+            return;
+        }
+
+        if (
+            geometry.type === "MultiPolygon"
+        ) {
+
+            (
+                geometry.coordinates || []
+            ).forEach(polygon => {
+
+                polygon.forEach(ring => {
+
+                    const pts =
+                        ring
+                            .map(c => project(c))
+                            .map(
+                                p =>
+                                    `${p.x},${p.y}`
+                            )
+                            .join(" ");
+
+                    paths.push(
+                        `<polygon
+                            points="${pts}"
+                            data-land-cover="${props.landCover || "other"}"
+                            data-intensity="${Number(props.intensity || 0.5)}"
+                        />`
+                    );
+                });
+            });
+        }
+    }
+
+    drawFeature(
+        geometry
+    );
+
+    return paths.join("");
+}
+
+function getLandCoverStyle(
+    type,
+    intensity
+) {
+
+    const i =
+        Math.max(
+            0,
+            Math.min(
+                1,
+                Number(intensity) || 0.5
+            )
+        );
+
+    switch (type) {
+
+        case "vegetation":
+
+            return {
+                fill:
+                    `hsl(125, 82%, ${58 - i * 28}%)`,
+                stroke:
+                    "#064e3b"
+            };
+
+
+        case "built-up":
+
+            return {
+                fill:
+                    `hsl(48, 96%, ${62 - i * 22}%)`,
+                stroke:
+                    "#92400e"
+            };
+
+
+        case "water":
+
+            return {
+                fill:
+                    `hsl(198, 92%, ${58 - i * 25}%)`,
+                stroke:
+                    "#075985"
+            };
+
+
+        case "bare-soil":
+
+            return {
+                fill:
+                    `hsl(25, 88%, ${58 - i * 22}%)`,
+                stroke:
+                    "#78350f"
+            };
+
+
+        default:
+
+            return {
+                fill:
+                    `hsl(285, 78%, ${58 - i * 20}%)`,
+                stroke:
+                    "#581c87"
+            };
+    }
+}
+
 function createSatelliteEngineeringOverlay(viewport, context, mode) {
 
     const img = viewport.querySelector("img");
@@ -9163,11 +9410,10 @@ function createSatelliteEngineeringOverlay(viewport, context, mode) {
      * ==========================================
      */
 
-    const referenceGeometry =
-        context.aoiGeometry ||
-        context.changeGeometry ||
-        context.drainGeometry;
-
+   const referenceGeometry =
+    context.changeGeometry ||
+    context.aoiGeometry ||
+    context.drainGeometry;
     const allCoords =
         collectSatelliteCoordinates(
             referenceGeometry
@@ -9429,41 +9675,217 @@ function createSatelliteEngineeringOverlay(viewport, context, mode) {
         );
     }
 
+/* =====================================================
+   CHANGE AREA + LAND-COVER INTELLIGENCE
 
-    /*
-     * ==========================================
-     * CHANGE AREA
-     * الأحمر = التغير الهندسي
-     * ==========================================
-     */
+   BEFORE:
+   محتوى منطقة التغير قبل التغيير
 
-    if (context.changeGeometry) {
+   AFTER:
+   محتوى منطقة التغير بعد التغيير
 
-        const changeGroup =
+   الأحمر:
+   حدود منطقة التغير فقط
+===================================================== */
+
+if (context.changeGeometry) {
+
+
+    // ==========================================
+    // 1. منطقة التغير — شفافة
+    // ==========================================
+
+    const changeGroup =
+        document.createElementNS(
+            svgNS,
+            "g"
+        );
+
+
+    changeGroup.innerHTML =
+        satelliteGeometryToSvgPoints(
+            context.changeGeometry,
+            project
+        );
+
+
+    changeGroup
+        .querySelectorAll(
+            "polygon"
+        )
+        .forEach(
+            polygon => {
+
+                polygon.setAttribute(
+                    "fill",
+                    "rgba(255,255,255,.05)"
+                );
+
+                polygon.setAttribute(
+                    "stroke",
+                    "none"
+                );
+            }
+        );
+
+
+    svg.appendChild(
+        changeGroup
+    );
+
+
+    // ==========================================
+    // 2. LAND COVER CLASSIFICATION
+    // ==========================================
+
+    const landCoverGeometry =
+        mode === "before"
+
+            ? context.beforeLandCoverGeometry
+
+            : context.afterLandCoverGeometry;
+
+
+    if (
+        landCoverGeometry
+    ) {
+
+        const landCoverGroup =
             document.createElementNS(
                 svgNS,
                 "g"
             );
 
-        changeGroup.innerHTML =
-            satelliteGeometryToSvgPoints(
-                context.changeGeometry,
+
+        landCoverGroup.innerHTML =
+            satelliteLandCoverToSvg(
+                landCoverGeometry,
                 project
             );
 
-        /*
-         * Glow خلفي
-         */
+            console.log(
+    "🎨 LAND COVER DRAW TEST",
+    {
+        mode: mode,
 
-        changeGroup
-            .querySelectorAll(
+        features:
+            landCoverGeometry?.features?.length || 0,
+
+        polygons:
+            landCoverGroup.querySelectorAll(
+                "polygon"
+            ).length,
+
+        firstFeature:
+            landCoverGeometry?.features?.[0],
+
+        firstPolygon:
+            landCoverGroup.querySelector(
                 "polygon"
             )
-            .forEach(polygon => {
+    }
+);
+
+
+       landCoverGroup
+    .querySelectorAll(
+        "polygon"
+    )
+    .forEach(
+        polygon => {
+
+            const type =
+                polygon.dataset.landCover ||
+                "other";
+
+            const intensity =
+                Number(
+                    polygon.dataset.intensity ||
+                    0.5
+                );
+
+            const style =
+                getLandCoverStyle(
+                    type,
+                    intensity
+                );
+
+            polygon.style.setProperty(
+                "fill",
+                style.fill,
+                "important"
+            );
+
+            polygon.style.setProperty(
+                "fill-opacity",
+                "0.78",
+                "important"
+            );
+
+            polygon.style.setProperty(
+                "stroke",
+                style.stroke,
+                "important"
+            );
+
+            polygon.style.setProperty(
+                "stroke-width",
+                "0.7",
+                "important"
+            );
+
+            polygon.style.setProperty(
+                "stroke-opacity",
+                "0.9",
+                "important"
+            );
+
+            polygon.style.setProperty(
+                "vector-effect",
+                "non-scaling-stroke"
+            );
+
+            polygon.style.setProperty(
+                "shape-rendering",
+                "crispEdges"
+            );
+        }
+    );
+
+        svg.appendChild(
+            landCoverGroup
+        );
+    }
+
+
+    // ==========================================
+    // 3. RED CHANGE PERIMETER
+    // ==========================================
+
+    const changeBorder =
+        document.createElementNS(
+            svgNS,
+            "g"
+        );
+
+
+    changeBorder.innerHTML =
+        satelliteGeometryToSvgPoints(
+            context.changeGeometry,
+            project
+        );
+
+
+    changeBorder
+        .querySelectorAll(
+            "polygon"
+        )
+        .forEach(
+            polygon => {
 
                 polygon.setAttribute(
                     "fill",
-                    "rgba(255,59,48,.38)"
+                    "none"
                 );
 
                 polygon.setAttribute(
@@ -9473,7 +9895,12 @@ function createSatelliteEngineeringOverlay(viewport, context, mode) {
 
                 polygon.setAttribute(
                     "stroke-width",
-                    "4"
+                    "2.5"
+                );
+
+                polygon.setAttribute(
+                    "stroke-dasharray",
+                    "7 4"
                 );
 
                 polygon.setAttribute(
@@ -9482,78 +9909,17 @@ function createSatelliteEngineeringOverlay(viewport, context, mode) {
                 );
 
                 polygon.setAttribute(
-                    "filter",
-                    "url(#engineeringChangeGlow)"
-                );
-
-                polygon.setAttribute(
                     "vector-effect",
                     "non-scaling-stroke"
                 );
-
-                polygon.style.animation =
-                    "engineeringChangePulse 2s ease-in-out infinite";
-            });
-
-        svg.appendChild(
-            changeGroup
+            }
         );
 
 
-        /*
-         * حدود إضافية أوضح
-         */
-
-        const changeBorder =
-            document.createElementNS(
-                svgNS,
-                "g"
-            );
-
-        changeBorder.innerHTML =
-            satelliteGeometryToSvgPoints(
-                context.changeGeometry,
-                project
-            );
-
+    svg.appendChild(
         changeBorder
-            .querySelectorAll(
-                "polygon"
-            )
-            .forEach(polygon => {
-
-                polygon.setAttribute(
-                    "fill",
-                    "none"
-                );
-
-                polygon.setAttribute(
-                    "stroke",
-                    "#ff6258"
-                );
-
-                polygon.setAttribute(
-                    "stroke-width",
-                    "2"
-                );
-
-                polygon.setAttribute(
-                    "stroke-dasharray",
-                    "6 4"
-                );
-
-                polygon.setAttribute(
-                    "vector-effect",
-                    "non-scaling-stroke"
-                );
-            });
-
-        svg.appendChild(
-            changeBorder
-        );
-    }
-
-
+    );
+}
     /*
      * ==========================================
      * DRAIN

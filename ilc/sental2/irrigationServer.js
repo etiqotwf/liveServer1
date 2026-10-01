@@ -133,34 +133,41 @@ async function analyzeSatelliteChange(
 
     const { fromFile } = await import('geotiff');
 
-    async function readRaster(filePath) {
 
-        const tiff =
-            await fromFile(filePath);
+async function readRaster(filePath) {
 
-        const image =
-            await tiff.getImage();
+    const tiff =
+        await fromFile(filePath);
 
-        const rasters =
-            await image.readRasters();
+    const image =
+        await tiff.getImage();
 
-        return {
-            width:
-                image.getWidth(),
+    const rasters =
+        await image.readRasters();
 
-            height:
-                image.getHeight(),
+    return {
+        width:
+            image.getWidth(),
 
-            green:
-                rasters[0],
+        height:
+            image.getHeight(),
 
-            red:
-                rasters[1],
+        blue:
+            rasters[0],
 
-            nir:
-                rasters[2]
-        };
-    }
+        green:
+            rasters[1],
+
+        red:
+            rasters[2],
+
+        nir:
+            rasters[3],
+
+        swir1:
+            rasters[4]
+    };
+}
 
     const baseline =
         await readRaster(
@@ -1195,6 +1202,10 @@ for (
 const changedAreaM2 =
     finalChangedPixels *
     pixelAreaM2;
+
+
+
+    
     // ======================================================
     // Water Hyacinth Results
     // ======================================================
@@ -1293,6 +1304,523 @@ const currentWaterMeanNDVI =
         ? currentWaterNdviSum / currentWaterPixels
         : 0;
 
+
+
+// ==================================================
+// PROFESSIONAL LAND-COVER CLASSIFICATION
+// Applied only inside the detected change mask.
+// ==================================================
+
+function clamp01(value) {
+    return Math.max(
+        0,
+        Math.min(
+            1,
+            Number(value) || 0
+        )
+    );
+}
+
+function classifyLandCover(
+    green,
+    red,
+    nir,
+    swir1
+) {
+
+    const ndviDen =
+        nir + red;
+
+    const ndwiDen =
+        green + nir;
+
+    const ndbiDen =
+        swir1 + nir;
+
+    if (
+        !Number.isFinite(ndviDen) ||
+        !Number.isFinite(ndwiDen) ||
+        !Number.isFinite(ndbiDen) ||
+        ndviDen === 0 ||
+        ndwiDen === 0 ||
+        ndbiDen === 0
+    ) {
+
+        return {
+            type: 'other',
+            intensity: 0.5
+        };
+
+    }
+
+    const ndvi =
+        (nir - red) /
+        ndviDen;
+
+    const ndwi =
+        (green - nir) /
+        ndwiDen;
+
+    const ndbi =
+        (swir1 - nir) /
+        ndbiDen;
+
+
+    // WATER
+    if (
+        ndwi > 0.15 &&
+        ndvi < 0.25
+    ) {
+
+        return {
+            type: 'water',
+
+            intensity:
+                clamp01(
+                    (ndwi - 0.15) /
+                    0.45
+                )
+        };
+
+    }
+
+
+    // VEGETATION
+    if (
+        ndvi >= 0.20
+    ) {
+
+        return {
+            type: 'vegetation',
+
+            intensity:
+                clamp01(
+                    (ndvi - 0.20) /
+                    0.60
+                )
+        };
+
+    }
+
+
+    // BUILT-UP CANDIDATE
+    if (
+        ndbi > 0.05 &&
+        ndvi < 0.30
+    ) {
+
+        return {
+            type: 'built-up',
+
+            intensity:
+                clamp01(
+                    (ndbi - 0.05) /
+                    0.30
+                )
+        };
+
+    }
+
+
+    // BARE / EXPOSED SOIL
+    if (
+        ndvi < 0.20 &&
+        ndwi < 0.15
+    ) {
+
+        return {
+            type: 'bare-soil',
+
+            intensity:
+                clamp01(
+                    (0.20 - ndvi) /
+                    0.40
+                )
+        };
+
+    }
+
+
+    return {
+        type: 'other',
+        intensity: 0.5
+    };
+}
+
+
+function buildLandCoverGeometry(
+    changedMask,
+    raster,
+    rasterBbox
+) {
+
+    const {
+        width,
+        height,
+        green,
+        red,
+        nir,
+        swir1
+    } = raster;
+
+    const labels =
+        new Array(
+            width * height
+        ).fill(null);
+
+    const intensities =
+        new Float32Array(
+            width * height
+        );
+
+
+    for (
+        let i = 0;
+        i < width * height;
+        i++
+    ) {
+
+        if (
+            changedMask[i] !== 1
+        ) {
+            continue;
+        }
+
+        const classification =
+            classifyLandCover(
+                Number(green[i]),
+                Number(red[i]),
+                Number(nir[i]),
+                Number(swir1[i])
+            );
+
+        labels[i] =
+            classification.type;
+
+        intensities[i] =
+            classification.intensity;
+    }
+
+
+    const rectangles = [];
+    const active = new Map();
+
+
+    for (
+        let y = 0;
+        y < height;
+        y++
+    ) {
+
+        const runs = [];
+
+        let start = -1;
+        let type = null;
+
+        let intensitySum = 0;
+        let count = 0;
+
+
+        const flush = (
+            endX
+        ) => {
+
+            if (
+                start < 0 ||
+                !type
+            ) {
+                return;
+            }
+
+            runs.push({
+
+                x1: start,
+                x2: endX,
+
+                type,
+
+                intensity:
+                    count
+                        ? intensitySum / count
+                        : 0.5
+            });
+
+            start = -1;
+            type = null;
+
+            intensitySum = 0;
+            count = 0;
+        };
+
+
+        for (
+            let x = 0;
+            x <= width;
+            x++
+        ) {
+
+            const i =
+                y * width + x;
+
+            const nextType =
+                x < width
+                    ? labels[i]
+                    : null;
+
+
+            if (
+                nextType &&
+                (
+                    start < 0 ||
+                    nextType === type
+                )
+            ) {
+
+                if (
+                    start < 0
+                ) {
+
+                    start = x;
+                    type = nextType;
+                }
+
+                intensitySum +=
+                    intensities[i];
+
+                count++;
+
+            }
+
+            else {
+
+                flush(x);
+
+                if (nextType) {
+
+                    start = x;
+                    type = nextType;
+
+                    intensitySum =
+                        intensities[i];
+
+                    count = 1;
+                }
+            }
+        }
+
+
+        const currentKeys =
+            new Set();
+
+
+        for (
+            const run of runs
+        ) {
+
+            const key =
+                `${run.x1}:${run.x2}:${run.type}`;
+
+            currentKeys.add(key);
+
+            const existing =
+                active.get(key);
+
+
+            if (existing) {
+
+                existing.y2 =
+                    y + 1;
+
+                existing.intensitySum +=
+                    run.intensity;
+
+                existing.rowCount++;
+
+            }
+
+            else {
+
+                active.set(
+                    key,
+                    {
+
+                        x1: run.x1,
+                        x2: run.x2,
+
+                        y1: y,
+                        y2: y + 1,
+
+                        type:
+                            run.type,
+
+                        intensitySum:
+                            run.intensity,
+
+                        rowCount: 1
+                    }
+                );
+            }
+        }
+
+
+        for (
+            const [
+                key,
+                rect
+            ] of active
+        ) {
+
+            if (
+                !currentKeys.has(key)
+            ) {
+
+                rectangles.push(
+                    rect
+                );
+
+                active.delete(key);
+            }
+        }
+    }
+
+
+    for (
+        const rect of
+        active.values()
+    ) {
+
+        rectangles.push(
+            rect
+        );
+    }
+
+
+    const [
+        minLng,
+        minLat,
+        maxLng,
+        maxLat
+    ] = rasterBbox;
+
+
+    const features =
+        rectangles.map(
+            rect => {
+
+                const lng1 =
+                    minLng +
+                    (
+                        rect.x1 /
+                        width
+                    ) *
+                    (
+                        maxLng -
+                        minLng
+                    );
+
+                const lng2 =
+                    minLng +
+                    (
+                        rect.x2 /
+                        width
+                    ) *
+                    (
+                        maxLng -
+                        minLng
+                    );
+
+                const latTop =
+                    maxLat -
+                    (
+                        rect.y1 /
+                        height
+                    ) *
+                    (
+                        maxLat -
+                        minLat
+                    );
+
+                const latBottom =
+                    maxLat -
+                    (
+                        rect.y2 /
+                        height
+                    ) *
+                    (
+                        maxLat -
+                        minLat
+                    );
+
+
+            return turf.polygon(
+
+    [
+        [
+            [
+                lng1,
+                latTop
+            ],
+            [
+                lng2,
+                latTop
+            ],
+            [
+                lng2,
+                latBottom
+            ],
+            [
+                lng1,
+                latBottom
+            ],
+            [
+                lng1,
+                latTop
+            ]
+        ]
+    ],
+
+    {
+        landCover:
+            rect.type,
+
+        intensity:
+            Number(
+                clamp01(
+                    rect.intensitySum /
+                    rect.rowCount
+                ).toFixed(3)
+            )
+    }
+);
+            }
+        );
+
+
+    return turf.featureCollection(
+        features
+    );
+}
+
+
+const beforeLandCoverGeometry =
+    buildLandCoverGeometry(
+        changedPixelMask,
+        baseline,
+        bbox
+    );
+
+
+const afterLandCoverGeometry =
+    buildLandCoverGeometry(
+        changedPixelMask,
+        current,
+        bbox
+    );
+
+        
+
+
+    
 return {
         width:
             baseline.width,
@@ -1347,6 +1875,29 @@ changeGeometry,
 changeGeometryType:
     'RASTER_PIXEL_RUNS',
 
+
+    beforeLandCoverGeometry,
+
+afterLandCoverGeometry,
+
+landCoverClassification: {
+
+    method:
+        'Sentinel-2 NDVI + NDWI + NDBI',
+
+    classes: [
+
+        'vegetation',
+        'built-up',
+        'water',
+        'bare-soil',
+        'other'
+
+    ],
+
+    note:
+        'Built-up is a spectral candidate class, not building-level object detection.'
+},
 
         minDeltaNDVI:
             Number(
@@ -4637,7 +5188,7 @@ console.log(
                 );
 
 
-              const evalscript = `
+      const evalscript = `
 //VERSION=3
 
 function setup() {
@@ -4645,14 +5196,16 @@ function setup() {
     return {
 
         input: [
+            "B02",
             "B03",
             "B04",
             "B08",
+            "B11",
             "SCL"
         ],
 
         output: {
-            bands: 3,
+            bands: 5,
             sampleType: "FLOAT32"
         }
 
@@ -4662,20 +5215,17 @@ function setup() {
 
 function evaluatePixel(sample) {
 
-    // ==========================================
-    // ☁️ CLOUD / SHADOW MASK
-    // Sentinel-2 SCL
-    // ==========================================
-
     const invalid =
-        sample.SCL === 3  ||   // Cloud shadow
-        sample.SCL === 8  ||   // Cloud medium probability
-        sample.SCL === 9  ||   // Cloud high probability
-        sample.SCL === 10;     // Cirrus
+        sample.SCL === 3 ||
+        sample.SCL === 8 ||
+        sample.SCL === 9 ||
+        sample.SCL === 10;
 
     if (invalid) {
 
         return [
+            NaN,
+            NaN,
             NaN,
             NaN,
             NaN
@@ -4685,9 +5235,11 @@ function evaluatePixel(sample) {
 
     return [
 
+        sample.B02,
         sample.B03,
         sample.B04,
-        sample.B08
+        sample.B08,
+        sample.B11
 
     ];
 
@@ -5228,14 +5780,13 @@ return {
     sizeBytes:
         imageBuffer.length,
 
-    bands: [
-
-        'B03',
-        'B04',
-        'B08'
-
-    ],
-
+   bands: [
+    'B02',
+    'B03',
+    'B04',
+    'B08',
+    'B11'
+],
     format:
         'image/tiff',
 
@@ -5374,8 +5925,8 @@ const ndviChange =
     type:
         'NDVI_AND_WATER_VEGETATION_CHANGE',
 
-    method:
-        'Sentinel-2 B03/B04/B08 NDVI + NDWI candidate detection',
+  method:
+    'Sentinel-2 B02/B03/B04/B08/B11 + NDVI + NDWI + NDBI land-cover classification',
 
     drainId:
         requestedAOI.drainId ||
@@ -5506,6 +6057,15 @@ currentCloudCover:
 
 changeGeometry:
     ndviChange.changeGeometry,
+
+    beforeLandCoverGeometry:
+    ndviChange.beforeLandCoverGeometry,
+
+afterLandCoverGeometry:
+    ndviChange.afterLandCoverGeometry,
+
+landCoverClassification:
+    ndviChange.landCoverClassification,
 
 changeGeometryType:
     ndviChange.changeGeometryType,
@@ -5727,14 +6287,15 @@ console.log('==========================================');
 
                     current,
 
-                    bands: [
+                bands: [
 
-                        'B03',
-                        'B04',
-                        'B08'
+    'B02',
+    'B03',
+    'B04',
+    'B08',
+    'B11'
 
-                    ],
-
+],
                    ndviChange,
 
     satelliteChangeDetection,
