@@ -716,8 +716,12 @@ function renderSelectedCase() {
         detailValues[3].textContent =
             `${detection.changeArea ?? 0} m²`;
 
-        detailValues[4].textContent =
-            `${detection.changePercentage ?? 0}%`;
+    detailValues[4].textContent =
+    `${Number(
+        detection.engineeringChangePercentage ??
+        detection.changePercentage ??
+        0
+    ).toFixed(2)}%`;
 
         detailValues[5].textContent =
             `${ai.confidence ?? 0}%`;
@@ -2765,36 +2769,19 @@ function createRealDrainAOI(feature) {
     // 8️⃣ حفظ AOI الحقيقي
     // ==================================================
 
-    const aoiData = {
-
-        drainId:
-            feature.properties?.drainId,
-
-        minLat,
-
-        maxLat,
-
-        minLng,
-
-        maxLng,
-
-        bounds:
-            leafletBounds,
-
-        // هذه أهم قيمة
-        // لأنها تمثل أملاك المصرف + 50m
-
-        geometry:
-            bufferedProperty,
-
-        bufferMeters:
-            50,
-
-        basedOn:
-            'drain-property'
-
-    };
-
+   
+const aoiData = {
+drainId: feature.properties?.drainId,
+minLat,
+maxLat,
+minLng,
+maxLng,
+bounds: leafletBounds,
+geometry: bufferedProperty,
+propertyGeometry: turf.featureCollection(propertyFeatures),
+bufferMeters: 50,
+basedOn: 'drain-property'
+};
     window.selectedDrainAOI =
         aoiData;
 
@@ -2996,179 +2983,99 @@ function getNearestPointOnSegment(
 // CASE → DRAIN SPATIAL RELATION
 // ==================================================
 
-function analyzeCaseDrainSpatialRelation(
-    currentCase,
-    drainFeature
-) {
+function getBackendSpatialAnalysis(currentCase) {
 
-    if (
-        !currentCase ||
-        !currentCase.coordinates ||
-        !drainFeature ||
-        !drainFeature.geometry
-    ) {
-        return null;
-    }
-
-    const caseLat =
-        Number(
-            currentCase.coordinates.lat
-        );
-
-    const caseLng =
-        Number(
-            currentCase.coordinates.lng
-        );
-
-    if (
-        !Number.isFinite(caseLat) ||
-        !Number.isFinite(caseLng)
-    ) {
-        return null;
-    }
-
-    const geometry =
-        drainFeature.geometry;
-
-    let lines = [];
-
-    if (
-        geometry.type === 'LineString'
-    ) {
-
-        lines = [
-            geometry.coordinates
-        ];
-
-    } else if (
-        geometry.type === 'MultiLineString'
-    ) {
-
-        lines =
-            geometry.coordinates;
-
-    } else {
-
-        console.warn(
-            '⚠️ Unsupported drain geometry:',
-            geometry.type
-        );
-
-        return null;
-    }
-
-    let bestDistance =
-        Infinity;
-
-    let bestPoint =
+    const satellite =
+    currentCase?.satelliteChangeDetection ||
+    window.latestSatelliteChangeDetection ||
+    currentCase?.satellite ||
+    {};
+    const backend =
+        satellite?.engineeringAnalysis ||
+        satellite?.spatialAnalysis ||
+        satellite?.changeDrainAnalysis ||
+        satellite?.drainAnalysis ||
+        satellite?.engineering ||
+        currentCase?.engineeringAnalysis ||
+        currentCase?.spatialAnalysis ||
+        currentCase?.changeDrainAnalysis ||
         null;
 
-    const casePoint = {
-        lat: caseLat,
-        lng: caseLng
-    };
-
-    for (
-        const line of lines
-    ) {
-
-        if (
-            !Array.isArray(line) ||
-            line.length < 2
-        ) {
-            continue;
-        }
-
-        for (
-            let i = 0;
-            i < line.length - 1;
-            i++
-        ) {
-
-            const start = {
-                lng: Number(line[i][0]),
-                lat: Number(line[i][1])
-            };
-
-            const end = {
-                lng: Number(line[i + 1][0]),
-                lat: Number(line[i + 1][1])
-            };
-
-            const nearest =
-                getNearestPointOnSegment(
-                    casePoint,
-                    start,
-                    end
-                );
-
-            const distance =
-                getDistanceMeters(
-                    caseLat,
-                    caseLng,
-                    nearest.lat,
-                    nearest.lng
-                );
-
-            if (
-                distance < bestDistance
-            ) {
-
-                bestDistance =
-                    distance;
-
-                bestPoint =
-                    nearest;
-            }
-        }
-    }
-
-    if (
-        !bestPoint ||
-        !Number.isFinite(bestDistance)
-    ) {
+    if (!backend) {
         return null;
-    }
-
-    let proximity;
-
-    if (bestDistance <= 25) {
-
-        proximity = 'near';
-
-    } else if (bestDistance <= 75) {
-
-        proximity = 'moderate';
-
-    } else {
-
-        proximity = 'far';
     }
 
     return {
-
         distanceToDrain:
             Number(
-                bestDistance.toFixed(1)
+                backend.distanceToDrain ??
+                backend.measurements?.distanceToDrain ??
+                currentCase?.measurements?.distanceToDrain
+            ) || 0,
+
+        proximity:
+            backend.proximity ||
+            backend.spatialRelation ||
+            backend.relation ||
+            'unknown',
+
+        nearestPoint:
+            backend.nearestPoint ||
+            null,
+
+        bufferMeters:
+            Number(
+                backend.bufferMeters ??
+                satellite.bufferMeters ??
+                50
             ),
 
-        proximity,
+        overlapArea:
+            Number(
+                backend.overlapArea ??
+                backend.intersectionArea ??
+                backend.encroachmentArea ??
+                0
+            ),
 
-        nearestPoint: {
+        overlapPercentage:
+            Number(
+                backend.overlapPercentage ??
+                backend.overlapPercent ??
+                backend.encroachmentPercentage ??
+                0
+            ),
 
-            lat:
-                Number(
-                    bestPoint.lat.toFixed(6)
-                ),
+        relation:
+            backend.relation ||
+            backend.spatialRelation ||
+            'outside',
 
-            lng:
-                Number(
-                    bestPoint.lng.toFixed(6)
-                )
-        }
+        basedOn:
+            backend.basedOn ||
+            satellite.aoiMode ||
+            'drain-property',
+
+        changeGeometry:
+            backend.changeGeometry ||
+            satellite.changeGeometry ||
+            null,
+
+        intersectionGeometry:
+            backend.intersectionGeometry ||
+            backend.overlapGeometry ||
+            null,
+
+        analysisGeometry:
+            backend.analysisGeometry ||
+            backend.aoiGeometry ||
+            satellite.aoi?.geometry ||
+            null,
+
+        backendEngineering:
+            backend
     };
 }
-
 
 // ==================================================
 // SPATIAL PROXIMITY INFO
@@ -3276,317 +3183,236 @@ function createDrainBufferAnalysis(
 // ==================================================
 // CHANGE ↔ REAL DRAIN PROPERTY AOI + 50m
 // ==================================================
-
+// ==================================================
+// CHANGE ↔ REAL DRAIN PROPERTY AOI
+// BACKEND-ONLY ENGINEERING ANALYSIS
+// ==================================================
 function analyzeChangeAgainstDrainBuffer(
-    currentCase,
-    drainFeature,
-    bufferMeters = 50
+    currentCase
 ) {
 
-    if (
-        !currentCase ||
-        typeof turf === 'undefined'
-    ) {
-        return null;
-    }
+    const satellite =
+        currentCase?.satelliteChangeDetection ||
+        currentCase?.satellite ||
+        window.latestSatelliteChangeDetection ||
+        {};
 
-    const lat =
+    // ==================================================
+    // REAL AOI SOURCE
+    // الـ AOI الحقيقي موجود داخل satellite.aoi
+    // ==================================================
+
+    const aoi =
+        satellite?.aoi ||
+        {};
+
+    // ==================================================
+    // OPTIONAL BACKEND ENGINEERING ANALYSIS
+    // لو موجود نستخدمه، لكن عدم وجوده لا يلغي الـ AOI
+    // ==================================================
+
+    const backend =
+        satellite?.engineeringAnalysis ||
+        satellite?.spatialAnalysis ||
+        satellite?.changeDrainAnalysis ||
+        satellite?.drainAnalysis ||
+        satellite?.engineering ||
+        currentCase?.engineeringAnalysis ||
+        currentCase?.changeDrainAnalysis ||
+        null;
+
+    // ==================================================
+    // DRAIN ID
+    // ==================================================
+
+    const drainId =
+        backend?.drainId ||
+        satellite?.drainId ||
+        currentCase?.drainId ||
+        window.selectedRealDrain
+            ?.properties
+            ?.drainId ||
+        null;
+
+    // ==================================================
+    // AOI MODE
+    // ==================================================
+
+    const basedOn =
+        backend?.basedOn ||
+        aoi?.mode ||
+        satellite?.aoiMode ||
+        null;
+
+    // ==================================================
+    // BUFFER
+    // ==================================================
+
+    const bufferMeters =
         Number(
-            currentCase.coordinates?.lat
+            backend?.bufferMeters ??
+            aoi?.bufferMeters ??
+            satellite?.bufferMeters ??
+            50
         );
 
-    const lng =
-        Number(
-            currentCase.coordinates?.lng
-        );
+    // ==================================================
+    // CHANGE DATA
+    // ==================================================
 
     const changeArea =
-        Math.max(
-            0,
-            Number(
-                currentCase.detection?.changeArea
-            ) || 0
+        Number(
+            backend?.changeArea ??
+            backend?.changedAreaM2 ??
+            satellite?.changedAreaM2 ??
+            0
         );
 
-    if (
-        !Number.isFinite(lat) ||
-        !Number.isFinite(lng)
-    ) {
-        return null;
-    }
-
-    if (changeArea <= 0) {
-        return null;
-    }
-
-    try {
-
-        // ==========================================
-        // 1. Case Point
-        // ==========================================
-
-        const casePoint =
-            turf.point([
-                lng,
-                lat
-            ]);
-
-
-        // ==========================================
-        // 2. REAL PROPERTY AOI
-        //    الأولوية للـ AOI الحقيقي المختار
-        // ==========================================
-
-        let analysisAOI =
-            window.selectedDrainAOI?.geometry ||
-            null;
-
-
-        // ==========================================
-        // 3. Fallback فقط للحالات التجريبية
-        // ==========================================
-
-        if (
-            !analysisAOI &&
-            drainFeature &&
-            !realGISMode
-        ) {
-
-            analysisAOI =
-                turf.buffer(
-                    drainFeature,
-                    bufferMeters,
-                    {
-                        units: 'meters'
-                    }
-                );
-        }
-
-
-        if (!analysisAOI) {
-
-            console.warn(
-                '⚠️ No real property AOI available for Change ↔ Drain analysis'
-            );
-
-            return null;
-        }
-
-
-        // ==========================================
-        // 4. التأكد من أن AOI قابلة للاستخدام
-        // ==========================================
-
-        let analysisFeature =
-            analysisAOI;
-
-
-        if (
-            analysisAOI.type ===
-            'FeatureCollection'
-        ) {
-
-            if (
-                !Array.isArray(
-                    analysisAOI.features
-                ) ||
-                analysisAOI.features.length === 0
-            ) {
-                return null;
-            }
-
-            /*
-             * دمج قطع أملاك المصرف في هندسة واحدة
-             * حتى يعمل intersection / point-in-polygon
-             */
-
-            analysisFeature =
-                turf.union(
-                    analysisAOI
-                );
-
-        }
-
-
-        if (
-            !analysisFeature ||
-            !analysisFeature.geometry
-        ) {
-
-            console.warn(
-                '⚠️ Failed to build real property analysis AOI'
-            );
-
-            return null;
-        }
-
-
-        // ==========================================
-        // 5. هل مركز الحالة داخل أملاك المصرف +50م؟
-        // ==========================================
-
-        const centerInside =
-            turf.booleanPointInPolygon(
-                casePoint,
-                analysisFeature
-            );
-
-
-        // ==========================================
-        // 6. إنشاء Change Polygon مؤقت
-        // ==========================================
-
-        const estimatedRadius =
-            Math.sqrt(
-                changeArea /
-                Math.PI
-            );
-
-
-        const changePolygon =
-            turf.circle(
-                [
-                    lng,
-                    lat
-                ],
-                estimatedRadius / 1000,
-                {
-                    steps: 64,
-                    units: 'kilometers'
-                }
-            );
-
-
-        // ==========================================
-        // 7. Intersection
-        // ==========================================
-
-        let overlapArea = 0;
-
-        try {
-
-            const intersection =
-                turf.intersect(
-                    turf.featureCollection([
-                        changePolygon,
-                        analysisFeature
-                    ])
-                );
-
-            if (intersection) {
-
-                overlapArea =
-                    turf.area(
-                        intersection
-                    );
-
-            }
-
-        } catch (error) {
-
-            console.warn(
-                '⚠️ Change/Property AOI intersection failed:',
-                error
-            );
-
-        }
-
-
-        // ==========================================
-        // 8. نسبة التداخل
-        // ==========================================
-
-        const overlapPercentage =
-            changeArea > 0
-                ? (
-                    overlapArea /
-                    changeArea
-                ) * 100
-                : 0;
-
-
-        // ==========================================
-        // 9. Classification
-        // ==========================================
-
-        let relation =
-            'outside';
-
-
-        if (
-            overlapPercentage >= 50
-        ) {
-
-            relation =
-                'high_overlap';
-
-        }
-        else if (
-            overlapPercentage > 0
-        ) {
-
-            relation =
-                'partial_overlap';
-
-        }
-        else if (
-            centerInside
-        ) {
-
-            relation =
-                'inside';
-        }
-
-
-        // ==========================================
-        // 10. Return
-        // ==========================================
-
-        return {
-
-            drainId:
-                currentCase.drainId ||
-                window.selectedDrainAOI?.drainId ||
-                null,
-
-            bufferMeters:
-                window.selectedDrainAOI?.bufferMeters ||
-                bufferMeters,
-
-            basedOn:
-                window.selectedDrainAOI?.basedOn ||
-                'drain-property',
-
-            changeArea,
-
-            overlapArea:
-                Number(
-                    overlapArea.toFixed(2)
-                ),
-
-            overlapPercentage:
-                Number(
-                    overlapPercentage.toFixed(2)
-                ),
-
-            relation,
-
-            centerInside,
-
-            aoiType:
-                analysisFeature.geometry.type
-        };
-
-
-    } catch (error) {
-
-        console.error(
-            '❌ Real property Change ↔ Drain analysis failed:',
-            error
+    const changePercentage =
+    Number(
+        backend?.engineeringChangePercentage ??
+        backend?.changePercentage ??
+        satellite?.engineeringChangePercentage ??
+        satellite?.changePercentage ??
+        0
+    );
+    // ==================================================
+    // RELATION / OVERLAP
+    // لا نخترع قيم لو الـ backend لم يرجعها
+    // ==================================================
+
+    const overlapArea =
+        Number(
+            backend?.overlapArea ??
+            backend?.intersectionArea ??
+            backend?.encroachmentArea ??
+            0
+        );
+
+    const overlapPercentage =
+        Number(
+            backend?.overlapPercentage ??
+            backend?.overlapPercent ??
+            backend?.encroachmentPercentage ??
+            0
+        );
+
+    const relation =
+        backend?.relation ||
+        backend?.spatialRelation ||
+        null;
+
+    const centerInside =
+        Boolean(
+            backend?.centerInside ??
+            backend?.inside ??
+            backend?.isInside ??
+            false
+        );
+
+    // ==================================================
+    // AOI TYPE
+    // ==================================================
+
+    const aoiType =
+        backend?.aoiType ||
+        aoi?.type ||
+        satellite?.aoiType ||
+        null;
+
+    // ==================================================
+    // GEOMETRY
+    // ==================================================
+
+    const changeGeometry =
+        backend?.changeGeometry ||
+        satellite?.changeGeometry ||
+        null;
+
+    const intersectionGeometry =
+        backend?.intersectionGeometry ||
+        backend?.overlapGeometry ||
+        backend?.encroachmentGeometry ||
+        null;
+
+    const analysisGeometry =
+        backend?.analysisGeometry ||
+        backend?.aoiGeometry ||
+        aoi?.geometry ||
+        null;
+
+    // ==================================================
+    // IMPORTANT:
+    // لو مفيش Backend Engineering Analysis
+    // ما نعتبرش ده فشل في الـ AOI
+    // ==================================================
+
+    if (!aoi && !backend) {
+
+        console.warn(
+            '⚠️ No AOI or backend engineering analysis found.'
         );
 
         return null;
     }
+
+    const result = {
+
+        drainId,
+
+        bufferMeters,
+
+        basedOn,
+
+        aoiType,
+
+        changeArea,
+
+        changePercentage,
+
+        overlapArea,
+
+        overlapPercentage,
+
+        relation,
+
+        centerInside,
+
+        changeGeometry,
+
+        intersectionGeometry,
+
+        analysisGeometry,
+
+        backendEngineering:
+            backend || null,
+
+        // AOI الأصلي كما رجعه Satellite Analysis
+        aoi
+
+    };
+
+    console.log(
+        '🟢 REAL AOI READ BY CHANGE ANALYSIS:',
+        {
+            drainId,
+            basedOn,
+            bufferMeters,
+            aoiType,
+            aoiMode:
+                aoi?.mode || null,
+            analysisPoint:
+                aoi?.analysisPoint || null,
+            chainageKm:
+                aoi?.chainageKm || null,
+            hasGeometry:
+                !!analysisGeometry,
+            geometryType:
+                analysisGeometry?.type || null
+        }
+    );
+
+    return result;
 }
 
 function calculateEngineeringRisk(
@@ -3618,42 +3444,62 @@ function calculateEngineeringRisk(
     0;
 
 
-    const changePercentage =
-        Number(
-            currentCase.detection?.changePercentage
-        ) || 0;
+    
 
-    const changeArea =
-        Number(
-            currentCase.detection?.changeArea
-        ) || 0;
+const changePercentage = Number(
+    satelliteChangeDetection?.engineeringChangePercentage ??
+    satelliteChangeDetection?.changePercentage ??
+    window.latestSatelliteChangeDetection?.engineeringChangePercentage ??
+    window.latestSatelliteChangeDetection?.changePercentage ??
+    currentCase.detection?.engineeringChangePercentage ??
+    currentCase.detection?.changePercentage ??
+    0
+);
+
+const changeArea = Number(
+    satelliteChangeDetection?.changedAreaM2 ??
+    currentCase.detection?.changedArea ??
+    0
+);
+
+// ==================================================
+// 2. GIS EVIDENCE
+// ==================================================
+
+const distanceToDrain = Number(
+    spatialAnalysis?.distanceToDrain
+);
+
+const overlapValue =
+    changeDrainAnalysis?.overlapPercentage ??
+    currentCase?.changeDrainAnalysis?.overlapPercentage ??
+    currentCase?.satelliteChangeDetection?.changeDrainAnalysis?.overlapPercentage ??
+    null;
+
+const overlapPercentage =
+    overlapValue === null ||
+    overlapValue === undefined ||
+    overlapValue === ''
+        ? null
+        : Number(overlapValue);
+
+const relation =
+    changeDrainAnalysis?.relation ??
+    currentCase?.changeDrainAnalysis?.relation ??
+    currentCase?.satelliteChangeDetection?.changeDrainAnalysis?.relation ??
+    null;
 
 
-    // ==================================================
-    // 2. GIS EVIDENCE
-    // ==================================================
-
-    const distanceToDrain =
-        Number(
-            spatialAnalysis?.distanceToDrain
-        );
-
-    const overlapPercentage =
-        Number(
-            changeDrainAnalysis?.overlapPercentage
-        ) || 0;
-
-    const relation =
-        changeDrainAnalysis?.relation ||
-        'outside';
 
 
-   const satelliteChangePercentage =
+  const satelliteChangePercentage =
     Number(
+        satelliteChangeDetection?.engineeringChangePercentage ??
         satelliteChangeDetection?.changePercentage ??
+        window.latestSatelliteChangeDetection?.engineeringChangePercentage ??
         window.latestSatelliteChangeDetection?.changePercentage
     ) || 0;
-
+    
 const satelliteChangedAreaM2 =
     Number(
         satelliteChangeDetection?.changedAreaM2
@@ -3903,7 +3749,8 @@ function calculateFinalDecision(
             engineeringRisk.riskScore
         ) || 0;
 
-    let action = 'monitor';
+    let action =
+        'monitor';
 
     if (riskScore >= 70) {
 
@@ -3917,11 +3764,149 @@ function calculateFinalDecision(
     }
 
     return {
+
         riskScore,
-        action
+
+        action,
+
+        reason:
+            generateEngineeringDecisionReason(
+                engineeringRisk
+            )
     };
 }
 
+
+function calculateEngineeringRisk(
+    currentCase,
+    spatialAnalysis,
+    changeDrainAnalysis,
+    satelliteChangeDetection
+) {
+
+    const backendEngineering =
+        currentCase?.engineeringRisk ||
+        currentCase?.engineeringAnalysis ||
+        satelliteChangeDetection?.engineeringRisk ||
+        satelliteChangeDetection?.engineeringAnalysis ||
+        satelliteChangeDetection?.engineering ||
+        currentCase?.ai ||
+        null;
+
+    if (!backendEngineering) {
+
+        console.warn(
+            '⚠️ No backend engineering result available.'
+        );
+
+        return null;
+    }
+
+    const backendEvidence =
+        backendEngineering.evidence ||
+        backendEngineering.measurements ||
+        {};
+
+    return {
+
+        riskScore:
+            Number(
+                backendEngineering.riskScore
+            ) || 0,
+
+        action:
+            backendEngineering.action ||
+            currentCase?.decision?.action ||
+            'monitor',
+
+        evidence: {
+
+            aiRisk:
+                Number(
+                    backendEvidence.aiRisk ??
+                    backendEngineering.riskScore ??
+                    currentCase?.ai?.riskScore ??
+                    0
+                ),
+
+            aiRiskContribution:
+                backendEvidence.aiRiskContribution ??
+                null,
+
+            aiConfidence:
+                Number(
+                    backendEvidence.aiConfidence ??
+                    backendEngineering.confidence ??
+                    currentCase?.ai?.confidence ??
+                    0
+                ),
+
+            changePercentage:
+                Number(
+                    backendEvidence.changePercentage ??
+                    currentCase?.detection?.changePercentage ??
+                    satelliteChangeDetection?.changePercentage ??
+                    0
+                ),
+
+            changeArea:
+                Number(
+                    backendEvidence.changeArea ??
+                    backendEvidence.changeAreaM2 ??
+                    currentCase?.detection?.changeArea ??
+                    satelliteChangeDetection?.changedAreaM2 ??
+                    0
+                ),
+
+            distanceToDrain:
+                Number(
+                    backendEvidence.distanceToDrain ??
+                    backendEvidence.measurements?.distanceToDrain ??
+                    currentCase?.measurements?.distanceToDrain ??
+                    0
+                ),
+
+            overlapPercentage:
+                Number(
+                    backendEvidence.overlapPercentage ??
+                    backendEngineering.overlapPercentage ??
+                    0
+                ),
+
+            relation:
+                backendEvidence.relation ||
+                backendEngineering.relation ||
+                'outside',
+
+            satelliteChangePercentage:
+                Number(
+                    backendEvidence.satelliteChangePercentage ??
+                    satelliteChangeDetection?.changePercentage ??
+                    0
+                ),
+
+            satelliteChangedAreaM2:
+                Number(
+                    backendEvidence.satelliteChangedAreaM2 ??
+                    satelliteChangeDetection?.changedAreaM2 ??
+                    0
+                ),
+
+            satelliteMeanDeltaNDVI:
+                Number(
+                    backendEvidence.satelliteMeanDeltaNDVI ??
+                    satelliteChangeDetection?.meanDeltaNDVI ??
+                    0
+                ),
+
+            satelliteEvidenceScore:
+                backendEvidence.satelliteEvidenceScore ??
+                null
+        },
+
+        backendEngineering
+    };
+}
 
 
 
@@ -4306,13 +4291,10 @@ console.log(
     // ==================================================
 // SPATIAL INTELLIGENCE
 // ==================================================
-
 const spatialAnalysis =
-    analyzeCaseDrainSpatialRelation(
-        currentCase,
-        drainFeature
+    getBackendSpatialAnalysis(
+        currentCase
     );
-
 
 const spatialInfo =
     spatialAnalysis
@@ -4480,9 +4462,7 @@ const activeDrainFeature =
 
 const changeDrainAnalysis =
     analyzeChangeAgainstDrainBuffer(
-        currentCase,
-        activeDrainFeature,
-        50
+        currentCase
     );
 
 console.log(
@@ -4765,29 +4745,41 @@ if (analysisElement) {
     const satellite =
         currentCase?.satelliteChangeDetection ||
         {};
-
+const waterDetected =
+    satellite?.waterHyacinth?.detected === true;
 
         console.log(
     '🛰️ SATELLITE FULL DATA:',
     JSON.stringify(satellite, null, 2)
 );
 
-    const satelliteChange =
-        Number(
-            satellite?.changePercentage ??
-            0
-        );
+  const satelliteChange = Number(
+    satellite?.engineeringChangePercentage ??
+    satellite?.changePercentage ??
+    0
+);
 
-    const changedArea =
-        Number(
-            satellite?.changedAreaM2 ??
-            0
-        );
-
-    const waterDetected =
-        satellite?.waterHyacinth?.detected === true;
+const changedArea = Number(
+    satellite?.changedAreaM2 ??
+    0
+);
 
 
+
+const propertyAreaM2 =
+    satellite?.propertyAreaM2 ??
+    window.latestSatelliteChangeDetection?.propertyAreaM2 ??
+    null;
+
+const changedAreaWithinPropertyM2 =
+    satellite?.changedAreaWithinPropertyM2 ??
+    window.latestSatelliteChangeDetection?.changedAreaWithinPropertyM2 ??
+    null;
+
+const propertyChangePercentage =
+    satellite?.propertyChangePercentage ??
+    window.latestSatelliteChangeDetection?.propertyChangePercentage ??
+    null;
     // ==========================================
     // OVERLAP
     // ==========================================
@@ -5258,11 +5250,10 @@ if (analysisElement) {
                         display:grid;
 
                         grid-template-columns:
-                            repeat(
-                                4,
-                                minmax(0,1fr)
-                            );
-
+                          repeat(
+    3,
+    minmax(0,1fr)
+)
                         gap:16px;
 
                         width:100%;
@@ -5360,6 +5351,58 @@ if (analysisElement) {
                                 color:#8292a7;
                             "
                         >
+
+
+<!-- PROPERTY CHANGE -->
+
+<div style="min-width:0;">
+    <div style="
+        font-size:13px;
+        line-height:1.7;
+        color:#8292a7;
+    ">
+        التغيير داخل حدود الملكية
+    </div>
+
+    <div style="
+        margin-top:5px;
+        font-size:23px;
+        font-weight:900;
+        line-height:1.5;
+        color:#ffffff;
+        white-space:normal;
+    ">
+        ${
+            propertyChangePercentage == null
+                ? 'غير متاح'
+                : `${Number(propertyChangePercentage).toFixed(2)}%`
+        }
+    </div>
+
+    <div style="
+        margin-top:4px;
+        font-size:12px;
+        color:#8292a7;
+    ">
+        ${
+            changedAreaWithinPropertyM2 == null
+                ? 'مساحة التغيير داخل الملكية غير متاحة'
+                : `${Number(changedAreaWithinPropertyM2).toLocaleString('en-US', {
+                    maximumFractionDigits: 2
+                })} م² من إجمالي ${
+                    propertyAreaM2 == null
+                        ? 'مساحة ملكية غير متاحة'
+                        : `${Number(propertyAreaM2).toLocaleString('en-US', {
+                            maximumFractionDigits: 2
+                        })} م²`
+                }`
+        }
+    </div>
+</div>
+
+
+
+
                             مؤشر المياه والغطاء النباتي
                         </div>
 
@@ -6193,21 +6236,44 @@ function generateEngineeringDecisionReason(
     // 🟦 BUFFER / OVERLAP
     // ==========================================
 
-    if (
-        Number(evidence.overlapPercentage) > 0
-    ) {
 
-        reasons.push(
-            `يوجد تداخل بنسبة ${evidence.overlapPercentage}% مع نطاق المصرف`
-        );
+const overlapValue = evidence.overlapPercentage;
+const overlapPercentage =
+    overlapValue === null ||
+    overlapValue === undefined ||
+    overlapValue === ''
+        ? NaN
+        : Number(overlapValue);
 
-    } else {
+const relation = evidence.relation;
 
-        reasons.push(
-            'لا يوجد تداخل مع نطاق المصرف'
-        );
+if (
+    Number.isFinite(overlapPercentage) &&
+    overlapPercentage > 0
+) {
+    reasons.push(
+        `يوجد تداخل بنسبة ${overlapPercentage.toFixed(2)}% مع نطاق المصرف`
+    );
+} else if (
+    relation === 'outside'
+) {
+    reasons.push(
+        'أظهر التحليل المكاني أن الحالة خارج نطاق المصرف'
+    );
+} else if (
+    relation === 'inside' ||
+    relation === 'partial_overlap' ||
+    relation === 'high_overlap'
+) {
+    reasons.push(
+        'أظهر التحليل المكاني وجود علاقة مكانية مع نطاق المصرف'
+    );
+} else {
+    reasons.push(
+        'بيانات التداخل المكاني غير كافية لتأكيد وجود التداخل أو نفيه'
+    );
+}
 
-    }
 
     // ==========================================
     // 📍 SPATIAL RELATION
@@ -8016,11 +8082,14 @@ console.log(
             bounds:
                 selectedAOI.bounds,
 
-            geometry:
-                selectedAOI.geometry,
+          geometry:
+selectedAOI.geometry,
 
-            bufferMeters:
-                50,
+propertyGeometry:
+selectedAOI.propertyGeometry,
+
+bufferMeters:
+50,
 
             basedOn:
                 'drain-property'
@@ -8116,6 +8185,15 @@ showSatelliteNoNewImageMessage(
         ?.satelliteChangeDetection ||
     null;
 
+    console.log(
+    '🛰️ FULL COMPARISON OBJECT:',
+    JSON.stringify(
+        compareResult?.comparison,
+        null,
+        2
+    )
+);
+
 window.latestSatelliteChangeDetection =
     satelliteChangeDetection;
 
@@ -8171,12 +8249,10 @@ console.log(
         // باستخدام مركز المصرف الجديد
         // ==================================================
 
-        const spatialAnalysis =
-            analyzeCaseDrainSpatialRelation(
-                analysisCase,
-                selectedDrain
-            );
-
+const spatialAnalysis =
+    getBackendSpatialAnalysis(
+        analysisCase
+    );
         console.log(
             '📏 NEW CASE SPATIAL ANALYSIS:',
             spatialAnalysis
@@ -8186,12 +8262,10 @@ console.log(
         // 9. CHANGE ↔ DRAIN BUFFER
         // ==================================================
 
-        const changeDrainAnalysis =
-            analyzeChangeAgainstDrainBuffer(
-                analysisCase,
-                selectedDrain,
-                50
-            );
+const changeDrainAnalysis =
+    analyzeChangeAgainstDrainBuffer(
+        analysisCase
+    );
 
         console.log(
             '🔗 NEW CASE CHANGE ↔ DRAIN:',
@@ -8227,35 +8301,32 @@ console.log(
         analysisCase.engineeringRisk =
             engineeringRisk;
 
-        // ==================================================
-        // 11. FINAL DECISION
-        // ==================================================
+      analysisCase.engineeringRisk =
+    engineeringRisk;
 
-        const finalDecision =
-            calculateFinalDecision(
-                engineeringRisk
-            );
+analysisCase.finalDecision =
+    engineeringRisk?.backendEngineering?.finalDecision ||
+    engineeringRisk?.backendEngineering?.decision ||
+    null;
 
-        if (finalDecision) {
+analysisCase.risk =
+    Number(
+        engineeringRisk?.riskScore
+    ) || 0;
 
-            finalDecision.reason =
-                generateEngineeringDecisionReason(
-                    engineeringRisk
-                );
+analysisCase.action =
+    engineeringRisk?.action ||
+    engineeringRisk?.backendEngineering?.finalDecision?.action ||
+    engineeringRisk?.backendEngineering?.decision?.action ||
+    'monitor';
 
-            analysisCase.finalDecision =
-                finalDecision;
+analysisCase.reason =
+    engineeringRisk?.backendEngineering?.reason ||
+    engineeringRisk?.backendEngineering?.finalDecision?.reason ||
+    engineeringRisk?.backendEngineering?.decision?.reason ||
+    '';
 
-            analysisCase.risk =
-                finalDecision.riskScore;
-
-            analysisCase.action =
-                finalDecision.action;
-
-            analysisCase.reason =
-                finalDecision.reason;
-        }
-
+    
        // ==================================================
 // 12. SAVE NEW CASE TO BACKEND
 //

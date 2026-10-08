@@ -127,23 +127,41 @@ async function analyzeSatelliteChange(
     baselineFilePath,
     currentFilePath,
     bbox,
-    bufferGeometry
+    bufferGeometry,
+    originalPropertyGeometry = null
 )
+
 {
 
-    const { fromFile } = await import('geotiff');
-
+const GeoTIFF =
+    await import('geotiff');
 
 async function readRaster(filePath) {
 
+    const fileBuffer =
+        await fs.promises.readFile(
+            filePath
+        );
+
+    const arrayBuffer =
+        fileBuffer.buffer.slice(
+            fileBuffer.byteOffset,
+            fileBuffer.byteOffset +
+            fileBuffer.byteLength
+        );
+
     const tiff =
-        await fromFile(filePath);
+        await GeoTIFF.fromArrayBuffer(
+            arrayBuffer
+        );
 
     const image =
         await tiff.getImage();
 
     const rasters =
-        await image.readRasters();
+        await image.readRasters({
+            interleave: false
+        });
 
     return {
         width:
@@ -657,202 +675,6 @@ if (currentVegetatedWater) {
 
 
 
-  // ======================================================
-// REAL CHANGE GEOMETRY FROM PIXEL MASK
-// ======================================================
-// تحويل الـ changed pixels إلى GeoJSON حقيقي
-// بنفس إحداثيات Sentinel-2.
-// لا يوجد Circle صناعي.
-// ======================================================
-
-function buildChangeGeometryFromMask(
-    mask,
-    width,
-    height,
-    rasterBbox
-) {
-
-    const [
-        rasterMinLng,
-        rasterMinLat,
-        rasterMaxLng,
-        rasterMaxLat
-    ] = rasterBbox;
-
-    const rectangles = [];
-    const rowRuns = [];
-
-    // ==================================================
-    // استخراج الـ changed runs لكل Row
-    // ==================================================
-
-    for (let y = 0; y < height; y++) {
-
-        const runs = [];
-        let runStart = -1;
-
-        for (let x = 0; x < width; x++) {
-
-            const changed =
-                mask[y * width + x] === 1;
-
-            if (
-                changed &&
-                runStart < 0
-            ) {
-                runStart = x;
-            }
-
-            if (
-                (!changed || x === width - 1) &&
-                runStart >= 0
-            ) {
-
-                const runEnd =
-                    changed && x === width - 1
-                        ? x + 1
-                        : x;
-
-                runs.push({
-                    x1: runStart,
-                    x2: runEnd
-                });
-
-                runStart = -1;
-            }
-        }
-
-        rowRuns.push(runs);
-    }
-
-    // ==================================================
-    // دمج الـ Runs المتطابقة رأسيًا
-    // ==================================================
-
-    const active = new Map();
-
-    for (let y = 0; y < height; y++) {
-
-        const currentKeys = new Set();
-
-        for (const run of rowRuns[y]) {
-
-            const key =
-                `${run.x1}:${run.x2}`;
-
-            currentKeys.add(key);
-
-            const existing =
-                active.get(key);
-
-            if (existing) {
-
-                existing.y2 =
-                    y + 1;
-
-            } else {
-
-                active.set(
-                    key,
-                    {
-                        x1: run.x1,
-                        x2: run.x2,
-                        y1: y,
-                        y2: y + 1
-                    }
-                );
-
-            }
-        }
-
-        // أي منطقة انتهت
-        for (const [key, rect] of active) {
-
-            if (!currentKeys.has(key)) {
-
-                rectangles.push(rect);
-
-                active.delete(key);
-            }
-        }
-    }
-
-    // Flush
-    for (const rect of active.values()) {
-        rectangles.push(rect);
-    }
-
-    // ==================================================
-    // تحويل الـ Pixels إلى GeoJSON
-    // ==================================================
-
-    const features =
-        rectangles.map(
-            rect => {
-
-                const lng1 =
-                    rasterMinLng +
-                    (rect.x1 / width) *
-                    (
-                        rasterMaxLng -
-                        rasterMinLng
-                    );
-
-                const lng2 =
-                    rasterMinLng +
-                    (rect.x2 / width) *
-                    (
-                        rasterMaxLng -
-                        rasterMinLng
-                    );
-
-                const latTop =
-                    rasterMaxLat -
-                    (rect.y1 / height) *
-                    (
-                        rasterMaxLat -
-                        rasterMinLat
-                    );
-
-                const latBottom =
-                    rasterMaxLat -
-                    (rect.y2 / height) *
-                    (
-                        rasterMaxLat -
-                        rasterMinLat
-                    );
-
-                return turf.polygon([
-                    [
-                        [lng1, latTop],
-                        [lng2, latTop],
-                        [lng2, latBottom],
-                        [lng1, latBottom],
-                        [lng1, latTop]
-                    ]
-                ]);
-
-            }
-        );
-
-    return turf.featureCollection(
-        features
-    );
-}
-
-
-// ======================================================
-// REAL CHANGE GEOMETRY
-// ======================================================
-
-const changeGeometry =
-    buildChangeGeometryFromMask(
-        changedPixelMask,
-        baseline.width,
-        baseline.height,
-        bbox
-    );
-
 // ======================================================
 // REMOVE SMALL CHANGE NOISE
 // ======================================================
@@ -979,6 +801,353 @@ for (
     changedPixelMask[i] =
         cleanedChangeMask[i];
 }
+
+
+// ======================================================
+// FINAL CLEAN CHANGE GEOMETRY BUILDER
+// ======================================================
+
+function buildChangeGeometryFromMask(
+    mask,
+    width,
+    height,
+    rasterBbox
+) {
+
+    const [
+        rasterMinLng,
+        rasterMinLat,
+        rasterMaxLng,
+        rasterMaxLat
+    ] = rasterBbox;
+
+    const rectangles = [];
+    const rowRuns = [];
+
+    for (
+        let y = 0;
+        y < height;
+        y++
+    ) {
+
+        const runs = [];
+
+        let runStart = -1;
+
+        for (
+            let x = 0;
+            x < width;
+            x++
+        ) {
+
+            const changed =
+                mask[
+                    y * width + x
+                ] === 1;
+
+            if (
+                changed &&
+                runStart < 0
+            ) {
+
+                runStart = x;
+            }
+
+            if (
+                (!changed ||
+                    x === width - 1) &&
+                runStart >= 0
+            ) {
+
+                const runEnd =
+                    changed &&
+                    x === width - 1
+                        ? x + 1
+                        : x;
+
+                runs.push({
+                    x1: runStart,
+                    x2: runEnd
+                });
+
+                runStart = -1;
+            }
+        }
+
+        rowRuns.push(runs);
+    }
+
+    const active = new Map();
+
+    for (
+        let y = 0;
+        y < height;
+        y++
+    ) {
+
+        const currentKeys =
+            new Set();
+
+        for (
+            const run of rowRuns[y]
+        ) {
+
+            const key =
+                `${run.x1}:${run.x2}`;
+
+            currentKeys.add(key);
+
+            const existing =
+                active.get(key);
+
+            if (existing) {
+
+                existing.y2 =
+                    y + 1;
+
+            } else {
+
+                active.set(
+                    key,
+                    {
+                        x1: run.x1,
+                        x2: run.x2,
+                        y1: y,
+                        y2: y + 1
+                    }
+                );
+            }
+        }
+
+        for (
+            const [key, rect]
+            of active
+        ) {
+
+            if (
+                !currentKeys.has(key)
+            ) {
+
+                rectangles.push(
+                    rect
+                );
+
+                active.delete(key);
+            }
+        }
+    }
+
+    for (
+        const rect
+        of active.values()
+    ) {
+
+        rectangles.push(
+            rect
+        );
+    }
+
+    const features =
+        rectangles.map(
+            rect => {
+
+                const lng1 =
+                    rasterMinLng +
+                    (
+                        rect.x1 /
+                        width
+                    ) *
+                    (
+                        rasterMaxLng -
+                        rasterMinLng
+                    );
+
+                const lng2 =
+                    rasterMinLng +
+                    (
+                        rect.x2 /
+                        width
+                    ) *
+                    (
+                        rasterMaxLng -
+                        rasterMinLng
+                    );
+
+                const latTop =
+                    rasterMaxLat -
+                    (
+                        rect.y1 /
+                        height
+                    ) *
+                    (
+                        rasterMaxLat -
+                        rasterMinLat
+                    );
+
+                const latBottom =
+                    rasterMaxLat -
+                    (
+                        rect.y2 /
+                        height
+                    ) *
+                    (
+                        rasterMaxLat -
+                        rasterMinLat
+                    );
+
+                return turf.polygon([
+                    [
+                        [
+                            lng1,
+                            latTop
+                        ],
+                        [
+                            lng2,
+                            latTop
+                        ],
+                        [
+                            lng2,
+                            latBottom
+                        ],
+                        [
+                            lng1,
+                            latBottom
+                        ],
+                        [
+                            lng1,
+                            latTop
+                        ]
+                    ]
+                ]);
+            }
+        );
+
+    return turf.featureCollection(
+        features
+    );
+}
+
+// ======================================================
+// FINAL CHANGE GEOMETRY
+// IMPORTANT:
+// Geometry is generated ONLY after the final cleaned mask.
+// Area, percentage and geometry now use the SAME mask.
+// ======================================================
+
+const changeGeometry =
+    buildChangeGeometryFromMask(
+        changedPixelMask,
+        baseline.width,
+        baseline.height,
+        bbox
+    );
+
+let changedAreaWithinPropertyM2 = null;
+let propertyAreaM2 = null;
+let propertyChangePercentage = null;
+let propertyIntersectionFeatures = 0;
+
+if (
+    originalPropertyGeometry &&
+    originalPropertyGeometry.geometry &&
+    changeGeometry &&
+    Array.isArray(changeGeometry.features)
+) {
+    const validPropertyArea =
+        turf.area(originalPropertyGeometry);
+
+    if (
+        Number.isFinite(validPropertyArea) &&
+        validPropertyArea > 0
+    ) {
+        propertyAreaM2 = validPropertyArea;
+
+        let intersectionAreaSum = 0;
+
+        for (const changeFeature of changeGeometry.features) {
+            if (
+                !changeFeature ||
+                !changeFeature.geometry
+            ) {
+                continue;
+            }
+
+            try {
+                const intersection =
+                    turf.intersect(
+                        turf.featureCollection([
+                            changeFeature,
+                            originalPropertyGeometry
+                        ])
+                    );
+
+                if (
+                    intersection &&
+                    intersection.geometry
+                ) {
+                    const intersectionArea =
+                        turf.area(intersection);
+
+                    if (
+                        Number.isFinite(intersectionArea) &&
+                        intersectionArea > 0
+                    ) {
+                        intersectionAreaSum +=
+                            intersectionArea;
+
+                        propertyIntersectionFeatures++;
+                    }
+                }
+            } catch (intersectionError) {
+                console.warn(
+                    'Property/change intersection skipped:',
+                    intersectionError.message
+                );
+            }
+        }
+
+        changedAreaWithinPropertyM2 =
+            Math.min(
+                intersectionAreaSum,
+                propertyAreaM2
+            );
+
+        propertyChangePercentage =
+            (
+                changedAreaWithinPropertyM2 /
+                propertyAreaM2
+            ) * 100;
+
+        console.log(
+            'PROPERTY-ONLY CHANGE AREA:',
+            {
+                propertyAreaM2:
+                    Number(propertyAreaM2.toFixed(2)),
+
+                changedAreaWithinPropertyM2:
+                    Number(
+                        changedAreaWithinPropertyM2.toFixed(2)
+                    ),
+
+                propertyChangePercentage:
+                    Number(
+                        propertyChangePercentage.toFixed(2)
+                    ),
+
+                propertyIntersectionFeatures
+            }
+        );
+    }
+}
+
+
+console.log(
+    '🗺️ FINAL CLEAN CHANGE GEOMETRY:',
+    {
+        features:
+            changeGeometry?.features?.length || 0
+    }
+);
 
 // ======================================================
 // SPATIAL CLUSTERING
@@ -1128,62 +1297,204 @@ for (
               validPixels
             : 0;
 
-    const changePercentage =
-        validPixels
-            ? (
-                changedPixels /
-                validPixels
-            ) * 100
-            : 0;
+    // ======================================================
+// RAW CHANGE PERCENTAGE
+// Percentage of initially detected changed pixels
+// among spectrally valid pixels.
+// This is diagnostic only.
+// ======================================================
 
+const rawChangePercentage =
+    validPixels > 0
+        ? (
+            changedPixels /
+            validPixels
+        ) * 100
+        : 0;
   
 // ======================================================
-// AOI AREA FROM REAL BBOX
+// ENGINEERING PIXEL GEOMETRY
+// ======================================================
+
+// ======================================================
+// ENGINEERING PIXEL GEOMETRY
+// GEODESIC / AOI-AWARE CALCULATION
 // ======================================================
 
 const [
-    minLng,
-    minLat,
-    maxLng,
-    maxLat
+    rasterMinLng,
+    rasterMinLat,
+    rasterMaxLng,
+    rasterMaxLat
 ] = bbox;
 
-const latitudeMetersPerDegree =
-    111320;
+// ------------------------------------------------------
+// Real AOI area
+// ------------------------------------------------------
 
-const midLat =
-    (minLat + maxLat) / 2;
-
-const longitudeMetersPerDegree =
-    111320 *
-    Math.cos(
-        midLat *
-        Math.PI /
-        180
-    );
-
-const aoiWidthMeters =
-    (maxLng - minLng) *
-    longitudeMetersPerDegree;
-
-const aoiHeightMeters =
-    (maxLat - minLat) *
-    latitudeMetersPerDegree;
-
-const aoiAreaM2 =
-    aoiWidthMeters *
-    aoiHeightMeters;
-
-const pixelAreaM2 =
-    totalPixels > 0
-        ? aoiAreaM2 / totalPixels
+const realAOIAreaM2 =
+    bufferGeometry
+        ? turf.area(
+            bufferGeometry
+        )
         : 0;
 
+// ------------------------------------------------------
+// Raster geographic dimensions
+// ------------------------------------------------------
+
+const rasterWidthDegrees =
+    rasterMaxLng -
+    rasterMinLng;
+
+const rasterHeightDegrees =
+    rasterMaxLat -
+    rasterMinLat;
+
+// ------------------------------------------------------
+// Raster center
+// ------------------------------------------------------
+
+const rasterCenterLng =
+    (
+        rasterMinLng +
+        rasterMaxLng
+    ) / 2;
+
+const rasterCenterLat =
+    (
+        rasterMinLat +
+        rasterMaxLat
+    ) / 2;
+
+// ------------------------------------------------------
+// REAL GEODESIC raster dimensions
+// ------------------------------------------------------
+
+const rasterWidthMeters =
+    turf.distance(
+        turf.point([
+            rasterMinLng,
+            rasterCenterLat
+        ]),
+        turf.point([
+            rasterMaxLng,
+            rasterCenterLat
+        ]),
+        {
+            units: 'meters'
+        }
+    );
+
+const rasterHeightMeters =
+    turf.distance(
+        turf.point([
+            rasterCenterLng,
+            rasterMinLat
+        ]),
+        turf.point([
+            rasterCenterLng,
+            rasterMaxLat
+        ]),
+        {
+            units: 'meters'
+        }
+    );
+
+// ------------------------------------------------------
+// Pixel dimensions
+// ------------------------------------------------------
+
+const pixelWidthMeters =
+    rasterWidthMeters /
+    baseline.width;
+
+const pixelHeightMeters =
+    rasterHeightMeters /
+    baseline.height;
+
+// ------------------------------------------------------
+// Pixel area
+// ------------------------------------------------------
+
+const pixelAreaM2 =
+    pixelWidthMeters *
+    pixelHeightMeters;
+
+console.log(
+    '📐 FINAL ENGINEERING PIXEL GEOMETRY:',
+    {
+
+        rasterWidth:
+            baseline.width,
+
+        rasterHeight:
+            baseline.height,
+
+        rasterWidthMeters:
+            Number(
+                rasterWidthMeters.toFixed(3)
+            ),
+
+        rasterHeightMeters:
+            Number(
+                rasterHeightMeters.toFixed(3)
+            ),
+
+        pixelWidthMeters:
+            Number(
+                pixelWidthMeters.toFixed(4)
+            ),
+
+        pixelHeightMeters:
+            Number(
+                pixelHeightMeters.toFixed(4)
+            ),
+
+        pixelAreaM2:
+            Number(
+                pixelAreaM2.toFixed(6)
+            ),
+
+        realAOIAreaM2:
+            Number(
+                realAOIAreaM2.toFixed(2)
+            )
+    }
+);
+
+console.log(
+    '📐 ENGINEERING PIXEL GEOMETRY:',
+    {
+
+        rasterWidth:
+            baseline.width,
+
+        rasterHeight:
+            baseline.height,
+
+        pixelWidthMeters,
+
+        pixelHeightMeters,
+
+        pixelAreaM2,
+
+        realAOIAreaM2,
+
+        rasterBBoxAreaM2:
+            pixelAreaM2 *
+            totalPixels
+
+    }
+);
 // ======================================================
 // FINAL REAL CHANGE AREA
+// SAME FINAL CLEANED MASK
 // ======================================================
 
 let finalChangedPixels = 0;
+
+let finalValidPixels = 0;
 
 for (
     let i = 0;
@@ -1197,14 +1508,187 @@ for (
 
         finalChangedPixels++;
     }
+
+    // validPixels was already determined
+    // by the spectral analysis.
+    // Keep it as the denominator.
 }
+
+finalValidPixels =
+    validPixels;
+
+// ------------------------------------------------------
+// Final satellite-detected change area
+// ------------------------------------------------------
 
 const changedAreaM2 =
     finalChangedPixels *
     pixelAreaM2;
 
+// ------------------------------------------------------
+// Final change percentage
+// IMPORTANT:
+// Percentage uses the SAME final cleaned mask.
+// ------------------------------------------------------
 
+// ======================================================
+// FINAL ENGINEERING PERCENTAGES
+// ======================================================
 
+// Final cleaned change percentage among valid pixels.
+// Diagnostic metric only.
+const finalValidPixelChangePercentage =
+    finalValidPixels > 0
+        ? (
+            finalChangedPixels /
+            finalValidPixels
+        ) * 100
+        : 0;
+
+// Engineering percentage:
+// final detected change area / REAL AOI area.
+//
+// This is the percentage that must be used by:
+// - Dashboard
+// - Engineering AI
+// - Risk engine
+// - Final decision
+//
+// Denominator = actual geographic AOI area,
+// NOT valid raster pixels.
+const engineeringChangePercentage =
+    realAOIAreaM2 > 0
+        ? (
+            changedAreaM2 /
+            realAOIAreaM2
+        ) * 100
+        : 0;
+
+// Safety validation.
+// Engineering percentage must always remain within 0–100%.
+const validatedEngineeringChangePercentage =
+    Math.max(
+        0,
+        Math.min(
+            100,
+            engineeringChangePercentage
+        )
+    );
+
+console.log(
+    '📐 ENGINEERING CHANGE PERCENTAGE VALIDATION:',
+    {
+        realAOIAreaM2:
+            Number(
+                realAOIAreaM2.toFixed(2)
+            ),
+
+        finalChangedPixels,
+
+        pixelAreaM2:
+            Number(
+                pixelAreaM2.toFixed(6)
+            ),
+
+        changedAreaM2:
+            Number(
+                changedAreaM2.toFixed(2)
+            ),
+
+            changedAreaWithinPropertyM2:
+    changedAreaWithinPropertyM2 === null
+        ? null
+        : Number(
+            changedAreaWithinPropertyM2.toFixed(2)
+        ),
+
+propertyAreaM2:
+    propertyAreaM2 === null
+        ? null
+        : Number(
+            propertyAreaM2.toFixed(2)
+        ),
+
+propertyChangePercentage:
+    propertyChangePercentage === null
+        ? null
+        : Number(
+            propertyChangePercentage.toFixed(2)
+        ),
+
+propertyIntersectionFeatures,
+
+        rawChangePercentage:
+            Number(
+                rawChangePercentage.toFixed(2)
+            ),
+
+        finalValidPixelChangePercentage:
+            Number(
+                finalValidPixelChangePercentage.toFixed(2)
+            ),
+
+        engineeringChangePercentage:
+            Number(
+                validatedEngineeringChangePercentage.toFixed(2)
+            ),
+
+        consistencyCheck:
+            realAOIAreaM2 > 0
+                ? Number(
+                    (
+                        (
+                            changedAreaM2 /
+                            realAOIAreaM2
+                        ) * 100
+                    ).toFixed(6)
+                )
+                : 0
+    }
+);
+console.log(
+    '📐 FINAL ENGINEERING AREA VALIDATION:',
+    {
+
+        realAOIAreaM2:
+            Number(
+                realAOIAreaM2.toFixed(2)
+            ),
+
+        totalPixels,
+
+        validPixels:
+            finalValidPixels,
+
+        changedPixels:
+            finalChangedPixels,
+
+        pixelAreaM2:
+            Number(
+                pixelAreaM2.toFixed(6)
+            ),
+
+        changedAreaM2:
+            Number(
+                changedAreaM2.toFixed(2)
+            ),
+
+        rawChangePercentage:
+            Number(
+                rawChangePercentage.toFixed(2)
+            ),
+
+        finalValidPixelChangePercentage:
+            Number(
+                finalValidPixelChangePercentage.toFixed(2)
+            ),
+
+        engineeringChangePercentage:
+            Number(
+                validatedEngineeringChangePercentage.toFixed(2)
+            )
+    }
+);
     
     // ======================================================
     // Water Hyacinth Results
@@ -1239,13 +1723,66 @@ const changedAreaM2 =
                 ? 100
                 : 0;
 
-    const coveragePercentage =
-        totalPixels > 0
-            ? (
-                currentHyacinthAreaPixels /
-                totalPixels
-            ) * 100
-            : 0;
+    
+// ======================================================
+// REAL WATER SURFACE AREA
+// ======================================================
+
+const baselineWaterAreaM2 =
+    baselineWaterPixels *
+    pixelAreaM2;
+
+const currentWaterAreaM2 =
+    currentWaterPixels *
+    pixelAreaM2;
+
+
+// ======================================================
+// AQUATIC VEGETATION AREA
+// ======================================================
+
+const baselineAquaticVegetationAreaM2 =
+    baselineWaterVegetationPixels *
+    pixelAreaM2;
+
+const currentAquaticVegetationAreaM2 =
+    currentWaterVegetationPixels *
+    pixelAreaM2;
+
+
+// ======================================================
+// AQUATIC VEGETATION COVERAGE INSIDE WATER
+// ======================================================
+
+const coveragePercentage =
+    currentWaterAreaM2 > 0
+        ? (
+            currentAquaticVegetationAreaM2 /
+            currentWaterAreaM2
+        ) * 100
+        : 0;
+
+
+// ======================================================
+// AQUATIC VEGETATION DENSITY
+// ======================================================
+
+let density =
+    'none';
+
+if (coveragePercentage >= 60) {
+    density = 'very_high';
+}
+else if (coveragePercentage >= 30) {
+    density = 'high';
+}
+else if (coveragePercentage >= 10) {
+    density = 'moderate';
+}
+else if (coveragePercentage > 0) {
+    density = 'low';
+}
+
 
     let trend =
         'stable';
@@ -1834,6 +2371,20 @@ return {
 
         changeThreshold,
 
+
+        realAOIAreaM2:
+    Number(
+        realAOIAreaM2.toFixed(2)
+    ),
+
+rasterAreaM2:
+    Number(
+        (
+            pixelAreaM2 *
+            totalPixels
+        ).toFixed(2)
+    ),
+
         meanBaselineNDVI:
             Number(
                 meanBaselineNDVI.toFixed(4)
@@ -1849,21 +2400,56 @@ return {
                 meanDeltaNDVI.toFixed(4)
             ),
 
-        changedPixels,
+      // ======================================================
+// FINAL ENGINEERING METRICS
+// ======================================================
 
-        changePercentage:
-            Number(
-                changePercentage.toFixed(2)
-            ),
+changedPixels,
 
-        pixelAreaM2:
-            Number(
-                pixelAreaM2.toFixed(2)
-            ),
+// IMPORTANT:
+// Public changePercentage = REAL AOI percentage.
+// This is the ONLY percentage to be consumed
+// by engineering/risk/dashboard logic.
+changePercentage:
+    Number(
+        validatedEngineeringChangePercentage.toFixed(2)
+    ),
 
-       changedAreaM2:
+// Explicit engineering name for clarity.
+engineeringChangePercentage:
+    Number(
+        validatedEngineeringChangePercentage.toFixed(2)
+    ),
+
+// Diagnostic only:
+// raw spectral change before final cleaning.
+rawChangePercentage:
+    Number(
+        rawChangePercentage.toFixed(2)
+    ),
+
+// Diagnostic only:
+// final cleaned change / valid raster pixels.
+finalValidPixelChangePercentage:
+    Number(
+        finalValidPixelChangePercentage.toFixed(2)
+    ),
+
+pixelAreaM2:
+    Number(
+        pixelAreaM2.toFixed(4)
+    ),
+
+changedAreaM2:
     Number(
         changedAreaM2.toFixed(2)
+    ),
+
+// Kept for backward compatibility.
+// It now represents the same final engineering percentage.
+changedAreaPercentage:
+    Number(
+        validatedEngineeringChangePercentage.toFixed(2)
     ),
 
 // ==================================================
@@ -1920,16 +2506,35 @@ landCoverClassification: {
     detected:
         waterHyacinthDetected,
 
-    baselineAreaM2:
-        Number(
-            baselineHyacinthAreaM2.toFixed(2)
-        ),
+waterSurfaceAreaM2:
+    Number(
+        currentWaterAreaM2.toFixed(2)
+    ),
 
-    currentAreaM2:
-        Number(
-            currentHyacinthAreaM2.toFixed(2)
-        ),
+baselineWaterSurfaceAreaM2:
+    Number(
+        baselineWaterAreaM2.toFixed(2)
+    ),
 
+aquaticVegetationAreaM2:
+    Number(
+        currentAquaticVegetationAreaM2.toFixed(2)
+    ),
+
+baselineAquaticVegetationAreaM2:
+    Number(
+        baselineAquaticVegetationAreaM2.toFixed(2)
+    ),
+
+baselineAreaM2:
+    Number(
+        baselineHyacinthAreaM2.toFixed(2)
+    ),
+
+currentAreaM2:
+    Number(
+        currentHyacinthAreaM2.toFixed(2)
+    ),
     newAreaM2:
         Number(
             newHyacinthAreaM2.toFixed(2)
@@ -1944,6 +2549,36 @@ landCoverClassification: {
         Number(
             coveragePercentage.toFixed(2)
         ),
+
+density,
+
+classification: {
+    primary:
+        waterHyacinthDetected
+            ? 'water_hyacinth_candidate'
+            : (
+                currentWaterVegetationPixels > 0
+                    ? 'other_aquatic_vegetation_candidate'
+                    : 'none'
+            ),
+
+    label:
+        waterHyacinthDetected
+            ? 'Water Hyacinth Candidate'
+            : (
+                currentWaterVegetationPixels > 0
+                    ? 'Other Aquatic Vegetation Candidate'
+                    : 'No Aquatic Vegetation Detected'
+            ),
+
+    confidenceType:
+        'candidate_detection_not_species_confirmation'
+},
+
+trend,
+
+
+
 
     growthPercentage:
         Number(
@@ -3328,6 +3963,8 @@ function evaluatePixel(sample) {
 `;
 
 
+
+
             // ==================================================
             // 6. تجهيز Processing Request
             // ==================================================
@@ -3829,173 +4466,77 @@ async function findBestSatelliteDate(
         ? new Date(`${afterDate}T23:59:59.999Z`)
         : null;
 
-    let validCandidates;
+   let validCandidates;
 
-    // ==================================================
-    // FIRST ANALYSIS
-    // latest image <= targetDate
-    // ==================================================
+// ==================================================
+// EXACT
+// اختيار صورة Sentinel-2 من نفس التاريخ بالضبط
+// ==================================================
 
-    if (direction === 'before') {
+if (direction === 'exact') {
 
-        validCandidates =
-            candidates.filter(item => {
-
-                const itemDate =
-                    new Date(item.date);
-
-                return itemDate <= target;
-
-            });
-
-        validCandidates.sort(
-            (a, b) => {
-
-                const dateA =
-                    new Date(a.date).getTime();
-
-                const dateB =
-                    new Date(b.date).getTime();
-
-                // أحدث صورة أولاً
-                if (dateA !== dateB) {
-                    return dateB - dateA;
-                }
-
-                // لو نفس التاريخ، الأقل سحباً
-                return (
-                    Number(a.cloudCover) -
-                    Number(b.cloudCover)
-                );
-
-            }
+    const exactStart =
+        new Date(
+            `${targetDate}T00:00:00.000Z`
         );
 
-    }
-
-    // ==================================================
-    // NEXT ANALYSIS
-    // latest image > previous current
-    // AND <= targetDate
-    // ==================================================
-
-    else if (
-        direction === 'after' &&
-        referenceDate
-    ) {
-
-        validCandidates =
-            candidates.filter(item => {
-
-                const itemDate =
-                    new Date(item.date);
-
-                return (
-                    itemDate > referenceDate &&
-                    itemDate <= target
-                );
-
-            });
-
-        validCandidates.sort(
-            (a, b) => {
-
-                const dateA =
-                    new Date(a.date).getTime();
-
-                const dateB =
-                    new Date(b.date).getTime();
-
-                // أهم حاجة: أحدث صورة بعد التحليل السابق
-                if (dateA !== dateB) {
-                    return dateB - dateA;
-                }
-
-                // لو نفس التاريخ، الأقل سحباً
-                return (
-                    Number(a.cloudCover) -
-                    Number(b.cloudCover)
-                );
-
-            }
+    const exactEnd =
+        new Date(
+            `${targetDate}T23:59:59.999Z`
         );
 
-    }
+    validCandidates =
+        candidates.filter(item => {
 
-    else {
-
-const validCandidates =
-    candidates.filter(item => {
-
-        const itemDate =
-            new Date(item.date);
-
-        // ==========================================
-        // BEFORE
-        // الصورة تكون في أو قبل التاريخ المطلوب
-        // ==========================================
-
-        if (direction === 'before') {
+            const itemDate =
+                new Date(item.date);
 
             return (
-                itemDate <= target
+                itemDate >= exactStart &&
+                itemDate <= exactEnd
+            );
+
+        });
+
+    validCandidates.sort(
+        (a, b) => {
+
+            return (
+                Number(a.cloudCover) -
+                Number(b.cloudCover)
             );
 
         }
+    );
+
+}
 
 
-        // ==========================================
-        // AFTER
-        // الصورة لازم تكون بعد آخر تحليل
-        // وحتى التاريخ الحالي
-        // ==========================================
+// ==================================================
+// BEFORE
+// أحدث صورة في أو قبل التاريخ المطلوب
+// ==================================================
 
-        if (direction === 'after') {
+else if (direction === 'before') {
 
-            if (!afterDate) {
+    validCandidates =
+        candidates.filter(item => {
 
-                return (
-                    itemDate > target
-                );
+            const itemDate =
+                new Date(item.date);
 
-            }
+            return itemDate <= target;
 
-            const lowerBound =
-                new Date(
-                    `${afterDate}T23:59:59Z`
-                );
+        });
 
-            return (
-                itemDate > lowerBound &&
-                itemDate <= target
-            );
+    validCandidates.sort(
+        (a, b) => {
 
-        }
+            const dateA =
+                new Date(a.date).getTime();
 
-
-        // ==========================================
-        // NEAREST
-        // ==========================================
-
-        return true;
-
-    });
-
-       validCandidates.sort(
-    (a, b) => {
-
-        const dateA =
-            new Date(a.date).getTime();
-
-        const dateB =
-            new Date(b.date).getTime();
-
-        // ==========================================
-        // في التحليل الجديد:
-        // نريد أحدث صورة بعد آخر تحليل
-        // ==========================================
-
-        if (direction === 'after') {
+            const dateB =
+                new Date(b.date).getTime();
 
             if (dateA !== dateB) {
                 return dateB - dateA;
@@ -4005,53 +4546,112 @@ const validCandidates =
                 Number(a.cloudCover) -
                 Number(b.cloudCover)
             );
+
         }
+    );
+
+}
 
 
-        // ==========================================
-        // BEFORE / NEAREST
-        // ==========================================
+// ==================================================
+// AFTER
+// أحدث صورة بعد آخر تحليل
+// وحتى التاريخ الحالي
+// ==================================================
 
-        const distanceA =
-            Math.abs(
-                dateA -
-                target.getTime()
+else if (
+    direction === 'after' &&
+    referenceDate
+) {
+
+    validCandidates =
+        candidates.filter(item => {
+
+            const itemDate =
+                new Date(item.date);
+
+            return (
+                itemDate > referenceDate &&
+                itemDate <= target
             );
 
-        const distanceB =
-            Math.abs(
-                dateB -
-                target.getTime()
+        });
+
+    validCandidates.sort(
+        (a, b) => {
+
+            const dateA =
+                new Date(a.date).getTime();
+
+            const dateB =
+                new Date(b.date).getTime();
+
+            if (dateA !== dateB) {
+                return dateB - dateA;
+            }
+
+            return (
+                Number(a.cloudCover) -
+                Number(b.cloudCover)
             );
 
-        const cloudA =
-            Number(a.cloudCover);
-
-        const cloudB =
-            Number(b.cloudCover);
-
-        const MAX_REASONABLE_CLOUD =
-            20;
-
-        const aGood =
-            cloudA <= MAX_REASONABLE_CLOUD;
-
-        const bGood =
-            cloudB <= MAX_REASONABLE_CLOUD;
-
-        if (aGood !== bGood) {
-            return aGood ? -1 : 1;
         }
+    );
 
-        if (distanceA !== distanceB) {
-            return distanceA - distanceB;
+}
+
+
+// ==================================================
+// NEAREST
+// السلوك الافتراضي
+// ==================================================
+
+else {
+
+    validCandidates =
+        candidates.filter(item => {
+
+            const itemDate =
+                new Date(item.date);
+
+            return true;
+
+        });
+
+    validCandidates.sort(
+        (a, b) => {
+
+            const dateA =
+                new Date(a.date).getTime();
+
+            const dateB =
+                new Date(b.date).getTime();
+
+            const distanceA =
+                Math.abs(
+                    dateA -
+                    target.getTime()
+                );
+
+            const distanceB =
+                Math.abs(
+                    dateB -
+                    target.getTime()
+                );
+
+            if (distanceA !== distanceB) {
+                return distanceA - distanceB;
+            }
+
+            return (
+                Number(a.cloudCover) -
+                Number(b.cloudCover)
+            );
+
         }
+    );
 
-        return cloudA - cloudB;
-
-    }
-);
-    }
+}
 
     if (!validCandidates.length) {
 
@@ -4223,7 +4823,7 @@ let maxLng =
 let bbox;
 
 let bufferGeometry;
-
+let originalPropertyGeometryForChange = null;
 
 // ==================================================
 // 5️⃣ تحليل نقطة محددة على المصرف
@@ -4477,127 +5077,160 @@ else {
 const aoiGeometry =
     requestedAOI.geometry;
 
+const originalPropertyInput =
+    requestedAOI.propertyGeometry;
 
-if (
-    !aoiGeometry
-) {
-
+if (!aoiGeometry) {
     throw new Error(
         'Real drain property AOI geometry is required.'
     );
-
 }
 
-
-let aoiFeatureCollection;
-
-
-if (
-    aoiGeometry.type ===
-    'FeatureCollection'
-) {
-
-    aoiFeatureCollection =
-        aoiGeometry;
-
+if (!originalPropertyInput) {
+    throw new Error(
+        'Original property geometry is required for property-level change area.'
+    );
 }
 
-else if (
-    aoiGeometry.type ===
-    'Feature'
-) {
+function toPolygonFeatureCollection(input) {
+    let collection;
 
-    aoiFeatureCollection =
-        turf.featureCollection([
-            aoiGeometry
+    if (input.type === 'FeatureCollection') {
+        collection = input;
+    } else if (input.type === 'Feature') {
+        collection = turf.featureCollection([input]);
+    } else if (
+        input.type === 'Polygon' ||
+        input.type === 'MultiPolygon'
+    ) {
+        collection = turf.featureCollection([
+            turf.feature(input)
         ]);
+    } else {
+        throw new Error(
+            `Unsupported property geometry type: ${input.type}`
+        );
+    }
 
-}
-
-else if (
-    aoiGeometry.type ===
-    'Polygon' ||
-    aoiGeometry.type ===
-    'MultiPolygon'
-) {
-
-    aoiFeatureCollection =
-        turf.featureCollection([
-
-            turf.feature(
-                aoiGeometry
+    const polygonFeatures = collection.features.filter(
+        feature =>
+            feature &&
+            feature.geometry &&
+            (
+                feature.geometry.type === 'Polygon' ||
+                feature.geometry.type === 'MultiPolygon'
             )
-
-        ]);
-
-}
-
-else {
-
-    throw new Error(
-        `Unsupported AOI geometry type: ${aoiGeometry.type}`
     );
 
+    if (polygonFeatures.length === 0) {
+        throw new Error(
+            'No valid property polygons were provided.'
+        );
+    }
+
+    return turf.featureCollection(polygonFeatures);
 }
+
+const originalPropertyCollection =
+    toPolygonFeatureCollection(originalPropertyInput);
+
+const originalPropertyUnion =
+    originalPropertyCollection.features.length === 1
+        ? originalPropertyCollection.features[0]
+        : turf.union(originalPropertyCollection);
+
+if (
+    !originalPropertyUnion ||
+    !originalPropertyUnion.geometry
+) {
+    throw new Error(
+        'Failed to union original property polygons.'
+    );
+}
+
+originalPropertyGeometryForChange =
+    originalPropertyUnion;
+
+const aoiFeatureCollection =
+    toPolygonFeatureCollection(aoiGeometry);
+
+const propertyGeometry =
+    aoiFeatureCollection.features.length === 1
+        ? aoiFeatureCollection.features[0]
+        : turf.union(aoiFeatureCollection);
+
+if (
+    !propertyGeometry ||
+    !propertyGeometry.geometry
+) {
+    throw new Error(
+        'Failed to build drain analysis AOI.'
+    );
+}
+
+bufferGeometry =
+    propertyGeometry.geometry;
 
 
 if (
-    !Array.isArray(
-        aoiFeatureCollection.features
-    ) ||
-    aoiFeatureCollection.features.length === 0
+    !bufferGeometry
 ) {
 
     throw new Error(
-        'Real drain property AOI contains no property polygons.'
+        'Real drain property AOI geometry is invalid.'
     );
 
 }
 
+const bufferMeters =
+    Number(
+        requestedAOI.bufferMeters || 50
+    );
+
+console.log(
+    '🟢 REAL DRAIN PROPERTY AOI RECEIVED FROM FRONTEND:',
+    {
+        drainId:
+            requestedAOI.drainId || null,
+
+        bufferMeters,
+
+        geometryType:
+            bufferGeometry.type,
+
+        alreadyBuffered:
+            true
+    }
+);
+// --------------------------------------------------
+// إعادة حساب BBOX من الـ Buffer الحقيقي
+// --------------------------------------------------
 
 bbox =
     turf.bbox(
-        aoiFeatureCollection
+        bufferGeometry
     );
 
+console.log(
+    '🟢 REAL DRAIN PROPERTY AOI + TRUE BUFFER:',
+    {
 
-let bufferFeature;
+        drainId:
+            requestedAOI.drainId ||
+            null,
 
+        propertyFeatures:
+            aoiFeatureCollection.features.length,
 
-if (
-    aoiFeatureCollection.features.length === 1
-) {
+        bufferMeters,
 
-    bufferFeature =
-        aoiFeatureCollection.features[0];
+        geometryType:
+            bufferGeometry.type,
 
-}
+        bbox
 
-else {
-
-    bufferFeature =
-        turf.union(
-            aoiFeatureCollection
-        );
-
-}
-
-
-if (
-    !bufferFeature ||
-    !bufferFeature.geometry
-) {
-
-    throw new Error(
-        'Failed to build unified drain property AOI.'
-    );
-
-}
-
-
-bufferGeometry =
-    bufferFeature.geometry;
-
+    }
+);
 
 console.log(
     '🟢 REAL DRAIN PROPERTY AOI:',
@@ -4804,12 +5437,26 @@ const hasCurrentPoint =
 // البحث عن التحليلات السابقة
 // ==================================================
 
+// ==================================================
+// البحث عن التحليلات السابقة
+// حسب:
+// 1) نفس المصرف
+// 2) نفس نوع التحليل
+// 3) لو نقطة: نفس موقع النقطة
+// ==================================================
+
+const currentMode =
+    requestedAOI?.basedOn === 'drain-location'
+        ? 'drain-location'
+        : 'drain-property';
+
+
 const previousCases =
     readCases()
         .filter(item => {
 
             // ------------------------------------------
-            // أولًا: نفس المصرف
+            // نفس المصرف فقط
             // ------------------------------------------
 
             const itemDrainId =
@@ -4833,13 +5480,61 @@ const previousCases =
             }
 
 
-            // ==========================================
-            // تحليل نقطة محددة
-            // ==========================================
+            // ------------------------------------------
+            // نوع التحليل السابق
+            // ------------------------------------------
+
+            const oldMode =
+                item
+                    ?.satelliteChangeDetection
+                    ?.aoi
+                    ?.mode ||
+                (
+                    item
+                        ?.satelliteChangeDetection
+                        ?.analysisPoint
+                        ? 'drain-location'
+                        : 'drain-property'
+                );
+
+
+            // ==================================================
+            // 1) تحليل المصرف بالكامل
+            // لا يرى إلا Full Drain سابق
+            // ==================================================
 
             if (
-                isPointAnalysis
+                currentMode ===
+                'drain-property'
             ) {
+
+                return (
+                    oldMode ===
+                    'drain-property'
+                );
+
+            }
+
+
+            // ==================================================
+            // 2) تحليل نقطة
+            // لا يرى إلا Point Analysis سابق
+            // ==================================================
+
+            if (
+                currentMode ===
+                'drain-location'
+            ) {
+
+                if (
+                    oldMode !==
+                    'drain-location'
+                ) {
+
+                    return false;
+
+                }
+
 
                 // --------------------------------------
                 // محاولة المطابقة عن طريق Chainage
@@ -4867,7 +5562,7 @@ const previousCases =
                         );
 
 
-                    // 0.05 km = 50 meters
+                    // 50 متر = 0.05 كم
 
                     return (
                         chainageDifference <=
@@ -4878,9 +5573,7 @@ const previousCases =
 
 
                 // --------------------------------------
-                // Fallback:
-                // لو مفيش chainage محفوظ
-                // نقارن بالإحداثيات
+                // Fallback بالإحداثيات
                 // --------------------------------------
 
                 const oldPoint =
@@ -4909,7 +5602,6 @@ const previousCases =
                             Number(
                                 oldPoint.lng
                             ),
-
                             Number(
                                 oldPoint.lat
                             )
@@ -4942,25 +5634,20 @@ const previousCases =
                 }
 
 
-                // --------------------------------------
-                // مفيش تطابق
-                // --------------------------------------
-
                 return false;
 
             }
 
 
-            // ==========================================
-            // تحليل المصرف بالكامل
-            // النظام القديم
-            // ==========================================
-
-            return true;
+            return false;
 
         });
 
-        
+
+// ==================================================
+// ترتيب الأحدث أولًا
+// ==================================================
+
 previousCases.sort(
     (a, b) => {
 
@@ -4972,6 +5659,7 @@ previousCases.sort(
                 0
             ).getTime();
 
+
         const dateB =
             new Date(
                 b?.satelliteChangeDetection
@@ -4980,10 +5668,12 @@ previousCases.sort(
                 0
             ).getTime();
 
+
         return dateB - dateA;
 
     }
 );
+
 
 const lastAnalysisDate =
     previousCases.length > 0
@@ -4995,11 +5685,15 @@ const lastAnalysisDate =
         )
         : null;
 
+
 console.log(
     '🛰️ Previous analysis:',
     {
         drainId:
             currentDrainId,
+
+        mode:
+            currentMode,
 
         previousCases:
             previousCases.length,
@@ -5007,6 +5701,7 @@ console.log(
         lastAnalysisDate
     }
 );
+        
 
 
 // ==================================================
@@ -5070,20 +5765,31 @@ else {
 const currentDate =
     currentSelection.date;
 
-
 // ==================================================
 // 1️⃣1️⃣ تحديد Baseline
+// ==================================================
+//
+// القاعدة:
+//
+// أول تحليل:
+// Baseline = أحدث صورة قبل التاريخ المستهدف
+//
+// تحليل لاحق:
+// Baseline = نفس تاريخ Current الخاص بآخر تحليل ناجح
+//
+// ممنوع الرجوع لصورة أقدم في التحليل اللاحق.
 // ==================================================
 
 let baselineTargetDate;
 
 let baselineSource;
 
+let baselineSelection;
 
-// ==========================================
-// تحليل جديد
-// Baseline = Current السابق
-// ==========================================
+
+// ==================================================
+// تحليل لاحق
+// ==================================================
 
 if (lastAnalysisDate) {
 
@@ -5091,15 +5797,44 @@ if (lastAnalysisDate) {
         lastAnalysisDate;
 
     baselineSource =
-        'LAST_ANALYSIS';
+        'LAST_ANALYSIS_EXACT';
+
+    console.log(
+        '🛰️ BASELINE SOURCE = LAST ANALYSIS',
+        {
+            drainId:
+                currentDrainId,
+
+            lastAnalysisDate,
+
+            message:
+                'Baseline must use the exact Sentinel-2 date of the previous successful analysis.'
+        }
+    );
+
+
+    // ==================================================
+    // مهم جدًا:
+    // EXACT وليس BEFORE
+    //
+    // لأننا نريد نفس صورة آخر تحليل
+    // وليس صورة أقدم منها
+    // ==================================================
+
+    baselineSelection =
+        await findBestSatelliteDate(
+            token,
+            bbox,
+            baselineTargetDate,
+            'exact'
+        );
 
 }
 
 
-// ==========================================
+// ==================================================
 // أول تحليل
-// Baseline = قبل Current بـ 30 يوم
-// ==========================================
+// ==================================================
 
 else {
 
@@ -5120,42 +5855,61 @@ else {
     baselineSource =
         'INITIAL_30_DAYS';
 
-}
+    console.log(
+        '🛰️ BASELINE SOURCE = INITIAL',
+        {
+            drainId:
+                currentDrainId,
 
+            baselineTargetDate,
 
-// ==================================================
-// Manual baseline override
-// ==================================================
-
-if (requestedBaselineDate) {
-
-    baselineTargetDate =
-        requestedBaselineDate;
-
-    baselineSource =
-        'REQUESTED';
-
-}
-
-
-// ==================================================
-// اختيار Baseline الفعلي
-// ==================================================
-
-const baselineSelection =
-    await findBestSatelliteDate(
-        token,
-        bbox,
-        baselineTargetDate,
-        'before'
+            message:
+                'First analysis: baseline is approximately 30 days before current Sentinel-2 image.'
+        }
     );
+
+
+    baselineSelection =
+        await findBestSatelliteDate(
+            token,
+            bbox,
+            baselineTargetDate,
+            'before'
+        );
+
+}
+
+
+// ==================================================
+// التاريخ النهائي للـ Baseline
+// ==================================================
 
 const baselineDate =
     baselineSelection.date;
 
 
+// ==================================================
+// حماية إضافية
+// ==================================================
+//
+// في التحليل اللاحق:
+// لازم Baseline يساوي تاريخ آخر تحليل بالضبط
+// ==================================================
+
+if (
+    lastAnalysisDate &&
+    baselineDate !== lastAnalysisDate
+) {
+
+    throw new Error(
+        `INVALID_BASELINE_IMAGE: Expected exact previous analysis date ${lastAnalysisDate}, but selected ${baselineDate}.`
+    );
+
+}
+
+
 console.log(
-    '🛰️ FINAL SATELLITE PAIR:',
+    '🛰️ FINAL SATELLITE BASELINE:',
     {
         drainId:
             currentDrainId,
@@ -5168,14 +5922,16 @@ console.log(
 
         lastAnalysisDate,
 
-        baselineProductId:
-            baselineSelection.productId,
+        baselineCloudCover:
+            baselineSelection.cloudCover,
 
-        currentProductId:
-            currentSelection.productId
+        baselineProductId:
+            baselineSelection.productId
     }
 );
-            // ==================================================
+
+
+// ==================================================
             // 1️⃣1️⃣ Sentinel-2 Processing
             // ==================================================
 
@@ -5342,6 +6098,92 @@ function evaluatePixel(sample) {
 `;
 
 
+const bboxWidthMeters =
+    turf.distance(
+        turf.point([
+            bbox[0],
+            bbox[1]
+        ]),
+        turf.point([
+            bbox[2],
+            bbox[1]
+        ]),
+        {
+            units: 'meters'
+        }
+    );
+
+const bboxHeightMeters =
+    turf.distance(
+        turf.point([
+            bbox[0],
+            bbox[1]
+        ]),
+        turf.point([
+            bbox[0],
+            bbox[3]
+        ]),
+        {
+            units: 'meters'
+        }
+    );
+
+const TARGET_RESOLUTION = 10;
+
+let outputWidth =
+    Math.ceil(
+        bboxWidthMeters /
+        TARGET_RESOLUTION
+    );
+
+let outputHeight =
+    Math.ceil(
+        bboxHeightMeters /
+        TARGET_RESOLUTION
+    );
+
+const MAX_PIXELS = 2500;
+
+const scale =
+    Math.min(
+        1,
+        MAX_PIXELS /
+        Math.max(
+            outputWidth,
+            outputHeight
+        )
+    );
+
+outputWidth =
+    Math.max(
+        1,
+        Math.round(
+            outputWidth *
+            scale
+        )
+    );
+
+outputHeight =
+    Math.max(
+        1,
+        Math.round(
+            outputHeight *
+            scale
+        )
+    );
+
+console.log(
+    '🛰️ Processing output size:',
+    {
+        bboxWidthMeters,
+        bboxHeightMeters,
+        outputWidth,
+        outputHeight
+    }
+);
+
+
+
                 const processingRequest = {
                     input: {
 
@@ -5387,34 +6229,19 @@ function evaluatePixel(sample) {
                     },
 
 
-                    output: {
-
-                        width:
-                            512,
-
-                        height:
-                            512,
-
-                        responses: [
-
-                            {
-
-                                identifier:
-                                    'default',
-
-                                format: {
-
-                                    type:
-                                        'image/tiff'
-
-                                }
-
-                            }
-
-                        ]
-
-                    },
-
+             output: {
+    width: outputWidth,
+    height: outputHeight,
+    responses: [   
+    
+         {
+            identifier: 'default',
+            format: {
+                type: 'image/tiff'
+            }
+        }
+    ]
+},
 
                     evalscript
 
@@ -5913,7 +6740,10 @@ const ndviChange =
         baselineFilePath,
         currentFilePath,
         bbox,
-        bufferGeometry
+        bufferGeometry,
+        isPointAnalysis
+            ? null
+            : originalPropertyGeometryForChange
     );
 
             // ==================================================
@@ -6042,15 +6872,63 @@ currentCloudCover:
                 meanDeltaNDVI:
                     ndviChange.meanDeltaNDVI,
 
-                changePercentage:
-                    ndviChange.changePercentage,
+              // ==================================================
+// FINAL ENGINEERING SATELLITE METRICS
+// ==================================================
 
-                changedPixels:
-                    ndviChange.changedPixels,
+changePercentage:
+    ndviChange.engineeringChangePercentage ??
+    ndviChange.changePercentage ??
+    0,
 
-              changedAreaM2:
+engineeringChangePercentage:
+    ndviChange.engineeringChangePercentage ??
+    ndviChange.changePercentage ??
+    0,
+
+rawChangePercentage:
+    ndviChange.rawChangePercentage ??
+    0,
+
+finalValidPixelChangePercentage:
+    ndviChange.finalValidPixelChangePercentage ??
+    0,
+
+changedPixels:
+    ndviChange.changedPixels,
+
+changedAreaM2:
     ndviChange.changedAreaM2,
 
+
+    // Property-only change metrics
+propertyAreaM2:
+    ndviChange.propertyAreaM2 ?? null,
+
+changedAreaWithinPropertyM2:
+    ndviChange.changedAreaWithinPropertyM2 ?? null,
+
+propertyChangePercentage:
+    ndviChange.propertyChangePercentage ?? null,
+
+
+    changedAreaWithinPropertyM2:
+    ndviChange.changedAreaWithinPropertyM2 ?? null,
+
+propertyAreaM2:
+    ndviChange.propertyAreaM2 ?? null,
+
+propertyChangePercentage:
+    ndviChange.propertyChangePercentage ?? null,
+
+propertyIntersectionFeatures:
+    ndviChange.propertyIntersectionFeatures ?? 0,
+
+realAOIAreaM2:
+    ndviChange.realAOIAreaM2,
+
+pixelAreaM2:
+    ndviChange.pixelAreaM2,
 // ==================================================
 // REAL SPATIAL CHANGE GEOMETRY
 // ==================================================
@@ -6204,11 +7082,24 @@ console.log('==========================================');
 
                         currentDate,
 
-                        changePercentage:
-                            ndviChange.changePercentage,
+                       changePercentage:
+    ndviChange.engineeringChangePercentage ??
+    ndviChange.changePercentage,
 
-                        changedAreaM2:
-                            ndviChange.changedAreaM2,
+engineeringChangePercentage:
+    ndviChange.engineeringChangePercentage,
+
+rawChangePercentage:
+    ndviChange.rawChangePercentage,
+
+finalValidPixelChangePercentage:
+    ndviChange.finalValidPixelChangePercentage,
+
+changedAreaM2:
+    ndviChange.changedAreaM2,
+
+realAOIAreaM2:
+    ndviChange.realAOIAreaM2,
 
                         meanDeltaNDVI:
                             ndviChange.meanDeltaNDVI,
@@ -6512,13 +7403,27 @@ app.post(
                     ),
 
 
-                changePercentage:
-                    Number(
-                        measurements.changePercentage ??
-                        detection.changePercentage ??
-                        0
-                    ),
-
+               // ==================================================
+// ENGINEERING CHANGE PERCENTAGE
+// ==================================================
+//
+// IMPORTANT:
+// This value represents:
+//
+// final changed area / real AOI area × 100
+//
+// It must NOT use:
+// changedPixels / validPixels
+//
+// because valid raster pixels are not the geographic AOI.
+changePercentage:
+    Number(
+        measurements.engineeringChangePercentage ??
+        measurements.changePercentage ??
+        detection.engineeringChangePercentage ??
+        detection.changePercentage ??
+        0
+    ),
 
                 structureDetected:
                     Boolean(
@@ -6789,15 +7694,32 @@ console.log('============================\n');
                 // Satellite Detection
                 // ==================================================
 
-                detection: {
+             detection: {
 
-                    changeArea:
-                        engineeringInput.changeArea,
+    changeArea:
+        engineeringInput.changeArea,
 
+    // FINAL ENGINEERING PERCENTAGE
+    // = final changed area / real AOI area × 100
+    changePercentage:
+        engineeringInput.changePercentage,
 
-                    changePercentage:
-                        engineeringInput.changePercentage,
+    engineeringChangePercentage:
+        engineeringInput.changePercentage,
 
+    rawChangePercentage:
+        Number(
+            measurements.rawChangePercentage ??
+            detection.rawChangePercentage ??
+            0
+        ),
+
+    finalValidPixelChangePercentage:
+        Number(
+            measurements.finalValidPixelChangePercentage ??
+            detection.finalValidPixelChangePercentage ??
+            0
+        ),
 
                     structureDetected:
                         engineeringInput.structureDetected,
@@ -6923,29 +7845,27 @@ console.log('============================\n');
                 // Measurements
                 // ==================================================
 
-                measurements: {
+              measurements: {
 
-                    distanceToDrain:
-                        engineeringInput.distanceToDrain,
+    distanceToDrain:
+        engineeringInput.distanceToDrain,
 
+    changeAreaM2:
+        engineeringInput.changeArea,
 
-                    changeAreaM2:
-                        engineeringInput.changeArea,
+    // FINAL ENGINEERING METRIC
+    changePercentage:
+        engineeringInput.changePercentage,
 
+    engineeringChangePercentage:
+        engineeringInput.changePercentage,
 
-                    changePercentage:
-                        engineeringInput.changePercentage,
+    vegetationChangePercentage:
+        engineeringInput.vegetationChange,
 
-
-                    vegetationChangePercentage:
-                        engineeringInput.vegetationChange,
-
-
-                    confidenceScore:
-                        engineeringInput.confidenceScore
-
-                },
-
+    confidenceScore:
+        engineeringInput.confidenceScore
+},
 
                 // ==================================================
                 // Satellite Metadata
