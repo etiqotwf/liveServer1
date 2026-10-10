@@ -3777,30 +3777,30 @@ function calculateFinalDecision(
 }
 
 
-function calculateEngineeringRisk(
+function normalizeBackendEngineeringRisk(
     currentCase,
     spatialAnalysis,
     changeDrainAnalysis,
     satelliteChangeDetection
-) {
+) 
+
+{
 
     const backendEngineering =
-        currentCase?.engineeringRisk ||
-        currentCase?.engineeringAnalysis ||
-        satelliteChangeDetection?.engineeringRisk ||
-        satelliteChangeDetection?.engineeringAnalysis ||
-        satelliteChangeDetection?.engineering ||
-        currentCase?.ai ||
-        null;
+    currentCase?.engineeringRisk ||
+    currentCase?.engineeringAnalysis ||
+    satelliteChangeDetection?.engineeringRisk ||
+    null;
 
-    if (!backendEngineering) {
-
-        console.warn(
-            '⚠️ No backend engineering result available.'
-        );
-
-        return null;
-    }
+if (
+    !backendEngineering ||
+    !Number.isFinite(Number(backendEngineering.riskScore))
+) {
+    console.warn(
+        '⚠️ Backend engineering risk is unavailable.'
+    );
+    return null;
+}
 
     const backendEvidence =
         backendEngineering.evidence ||
@@ -3809,11 +3809,17 @@ function calculateEngineeringRisk(
 
     return {
 
-        riskScore:
-            Number(
-                backendEngineering.riskScore
-            ) || 0,
-
+        riskScore: Number(
+    backendEngineering?.riskScore ??
+    backendEngineering?.finalDecision?.riskScore ??
+    backendEngineering?.decision?.riskScore ??
+    backendEngineering?.engineeringRisk?.riskScore ??
+    currentCase?.finalDecision?.riskScore ??
+    currentCase?.risk ??
+    currentCase?.ai?.riskScore ??
+    currentCase?.irrigationAI?.riskScore ??
+    0
+),
         action:
             backendEngineering.action ||
             currentCase?.decision?.action ||
@@ -4572,17 +4578,26 @@ console.log(
 );
 
 const engineeringRisk =
-    calculateEngineeringRisk(
-        currentCase,
-        spatialAnalysis,
-        changeDrainAnalysis,
-        satelliteDataForRisk
-    );
-
+   normalizeBackendEngineeringRisk(
+    currentCase,
+    spatialAnalysis,
+    changeDrainAnalysis,
+    satelliteDataForRisk
+);
       console.log(
         '🚨 Engineering Risk Decision:',
         engineeringRisk
     );
+
+
+    console.log('🔎 RISK SCORE DEBUG:', {
+    engineeringRisk,
+    backendEngineering: engineeringRisk?.backendEngineering,
+    finalDecision: currentCase?.finalDecision,
+    caseRisk: currentCase?.risk,
+    aiRisk: currentCase?.ai?.riskScore,
+    irrigationAIRisk: currentCase?.irrigationAI?.riskScore
+});
 
     if (engineeringRisk) {
 
@@ -4738,68 +4753,165 @@ if (analysisElement) {
         'تم اختيار هذا الإجراء لدعم عملية جمع الأدلة وتحسين القرار الهندسي.';
 
 
+
     // ==========================================
     // SATELLITE DATA
     // ==========================================
 
     const satellite =
         currentCase?.satelliteChangeDetection ||
+        window.latestSatelliteChangeDetection ||
         {};
-const waterDetected =
-    satellite?.waterHyacinth?.detected === true;
 
-        console.log(
-    '🛰️ SATELLITE FULL DATA:',
-    JSON.stringify(satellite, null, 2)
-);
+    const waterData =
+        satellite?.waterHyacinth || {};
 
-  const satelliteChange = Number(
-    satellite?.engineeringChangePercentage ??
-    satellite?.changePercentage ??
-    0
-);
+    const waterDiagnostics =
+        waterData?.waterDiagnostics || {};
 
-const changedArea = Number(
-    satellite?.changedAreaM2 ??
-    0
-);
+    const waterPixels =
+        waterData?.pixels || {};
 
+    const waterDetected =
+        waterData?.detected === true;
 
+    const satelliteChangeValue =
+        satellite?.engineeringChangePercentage ??
+        satellite?.changePercentage;
 
-const propertyAreaM2 =
-    satellite?.propertyAreaM2 ??
-    window.latestSatelliteChangeDetection?.propertyAreaM2 ??
-    null;
+    const satelliteChange =
+        satelliteChangeValue == null ||
+        !Number.isFinite(Number(satelliteChangeValue))
+            ? null
+            : Number(satelliteChangeValue);
 
-const changedAreaWithinPropertyM2 =
-    satellite?.changedAreaWithinPropertyM2 ??
-    window.latestSatelliteChangeDetection?.changedAreaWithinPropertyM2 ??
-    null;
+    const changedAreaValue =
+        satellite?.changedAreaM2 ??
+        satellite?.changedArea;
 
-const propertyChangePercentage =
-    satellite?.propertyChangePercentage ??
-    window.latestSatelliteChangeDetection?.propertyChangePercentage ??
-    null;
+    const changedArea =
+        changedAreaValue == null ||
+        !Number.isFinite(Number(changedAreaValue))
+            ? null
+            : Number(changedAreaValue);
+
+    const propertyAreaM2 =
+        satellite?.propertyAreaM2 ??
+        window.latestSatelliteChangeDetection?.propertyAreaM2 ??
+        null;
+
+    const changedAreaWithinPropertyM2 =
+        satellite?.changedAreaWithinPropertyM2 ??
+        window.latestSatelliteChangeDetection?.changedAreaWithinPropertyM2 ??
+        null;
+
+    const propertyChangePercentage =
+        satellite?.propertyChangePercentage ??
+        window.latestSatelliteChangeDetection?.propertyChangePercentage ??
+        null;
+
+    const currentWaterPixels =
+        Number(
+            waterDiagnostics?.currentWaterPixels ??
+            waterPixels?.currentWater ??
+            0
+        );
+
+    const currentWaterVegetationPixels =
+        Number(
+            waterPixels?.currentWaterVegetation ?? 0
+        );
+
+    const waterSurfaceAreaM2 =
+        Number(waterData?.waterSurfaceAreaM2 ?? 0);
+
+    const aquaticVegetationAreaM2 =
+        Number(waterData?.aquaticVegetationAreaM2 ?? 0);
+
+    const waterConfidence =
+        waterData?.confidence == null
+            ? null
+            : Number(waterData.confidence);
+
+    const clusterCount =
+        Number(
+            waterDiagnostics?.spatialClustering?.clusterCount ?? 0
+        );
+
+    const waterDetectionReason =
+        waterDetected
+            ? 'تم تأكيد وجود مرشح غطاء نباتي مائي وفق شروط الكاشف؛ ولا يعني ذلك تأكيد النوع النباتي.'
+            : currentWaterPixels > 0
+                ? 'رُصدت بكسلات مياه محتملة، لكن شروط تأكيد الغطاء النباتي المائي لم تتحقق.'
+                : 'لم تُرصد بكسلات مياه مستوفية لعتبات الكشف في البيانات المتاحة؛ وهذا لا يثبت انعدام المياه تمامًا.';
+
     // ==========================================
     // OVERLAP
     // ==========================================
 
-    const overlap =
-        Number(
-            currentCase?.changeDrainAnalysis?.overlapPercentage ??
-            0
-        );
+    const changeDrainAnalysis =
+        currentCase?.changeDrainAnalysis ||
+        satellite?.changeDrainAnalysis ||
+        {};
 
+    const overlapValue =
+        changeDrainAnalysis?.overlapPercentage;
+
+    const overlap =
+        overlapValue == null ||
+        !Number.isFinite(Number(overlapValue))
+            ? null
+            : Number(overlapValue);
+
+    const overlapAreaM2 =
+        changeDrainAnalysis?.overlapAreaM2 ??
+        changeDrainAnalysis?.intersectionAreaM2 ??
+        null;
+
+    const drainRelation =
+        changeDrainAnalysis?.relation ||
+        'غير محدد';
+
+    const distanceValue =
+        currentCase?.spatialAnalysis?.distanceToDrain ??
+        currentCase?.measurements?.distanceToDrain ??
+        changeDrainAnalysis?.distanceToDrain;
+
+    const distanceToDrain =
+        distanceValue == null ||
+        !Number.isFinite(Number(distanceValue))
+            ? null
+            : Number(distanceValue);
+
+    const overlapReason =
+        overlap == null
+            ? 'تعذر تحديد نسبة التداخل من نتيجة هندسية متاحة.'
+            : `تصنيف العلاقة المسجل: ${drainRelation}.`;
 
     // ==========================================
     // ENGINEERING RISK
     // ==========================================
 
+    const riskValue =
+        currentCase?.engineeringRisk?.riskScore ??
+        currentCase?.risk;
+
     const riskScore =
-        Number(
-            currentCase?.engineeringRisk?.riskScore ??
-            currentCase?.risk ??
-            0
+        riskValue == null ||
+        !Number.isFinite(Number(riskValue))
+            ? null
+            : Math.max(
+                0,
+                Math.min(100, Number(riskValue))
+            );
+
+    const riskReason =
+        currentCase?.engineeringRisk?.reason ||
+        currentCase?.engineeringRisk?.explanation ||
+        (
+            riskScore == null
+                ? 'لم تتوفر درجة مخاطر هندسية محسوبة.'
+                : 'لا يتوفر تفسير تفصيلي لدرجة المخاطر في البيانات المرجعة.'
         );
 
 
@@ -5330,187 +5442,87 @@ const propertyChangePercentage =
                                 white-space:nowrap;
                             "
                         >
-                            ${changedArea.toLocaleString()} م²
+${
+    changedArea == null
+        ? 'غير محسوبة'
+        : `${changedArea.toLocaleString('en-US', {
+            maximumFractionDigits: 2
+        })} م²`
+}
                         </div>
 
                     </div>
 
 
-                    <!-- WATER -->
-
-                    <div
-                        style="
-                            min-width:0;
-                        "
-                    >
-
-                        <div
-                            style="
-                                font-size:13px;
-                                line-height:1.7;
-                                color:#8292a7;
-                            "
-                        >
-
-
-<!-- PROPERTY CHANGE -->
+                  
+<!-- WATER -->
 
 <div style="min-width:0;">
-    <div style="
-        font-size:13px;
-        line-height:1.7;
-        color:#8292a7;
-    ">
-        التغيير داخل حدود الملكية
+    <div style="font-size:13px;line-height:1.7;color:#8292a7;">
+        مؤشر المياه والغطاء النباتي
     </div>
 
     <div style="
         margin-top:5px;
-        font-size:23px;
+        font-size:18px;
         font-weight:900;
-        line-height:1.5;
-        color:#ffffff;
+        line-height:1.7;
+        color:${waterDetected ? '#5de08b' : '#f0c674'};
         white-space:normal;
     ">
-        ${
-            propertyChangePercentage == null
-                ? 'غير متاح'
-                : `${Number(propertyChangePercentage).toFixed(2)}%`
-        }
+        ${waterDetected ? '● تم الكشف' : '● لم يتم تأكيد الكشف'}
     </div>
 
-    <div style="
-        margin-top:4px;
-        font-size:12px;
-        color:#8292a7;
-    ">
-        ${
-            changedAreaWithinPropertyM2 == null
-                ? 'مساحة التغيير داخل الملكية غير متاحة'
-                : `${Number(changedAreaWithinPropertyM2).toLocaleString('en-US', {
-                    maximumFractionDigits: 2
-                })} م² من إجمالي ${
-                    propertyAreaM2 == null
-                        ? 'مساحة ملكية غير متاحة'
-                        : `${Number(propertyAreaM2).toLocaleString('en-US', {
-                            maximumFractionDigits: 2
-                        })} م²`
-                }`
-        }
+    <div style="margin-top:5px;font-size:12px;line-height:1.8;color:#c2ccda;">
+        بكسلات المياه المرصودة: ${currentWaterPixels}
+        <br>
+        مساحة المياه المرصودة: ${waterSurfaceAreaM2.toLocaleString('en-US', {maximumFractionDigits: 2})} م²
+        <br>
+        بكسلات الغطاء النباتي المائي: ${currentWaterVegetationPixels}
+        <br>
+        مساحة الغطاء النباتي المائي: ${aquaticVegetationAreaM2.toLocaleString('en-US', {maximumFractionDigits: 2})} م²
+        <br>
+        التجمعات المكانية: ${clusterCount}
+        <br>
+        الثقة المسجلة: ${waterConfidence == null || !Number.isFinite(waterConfidence) ? 'غير متاحة' : `${waterConfidence}%`}
+        <br>
+        السبب: ${waterDetectionReason}
     </div>
 </div>
 
 
+                  
+<!-- OVERLAP -->
 
+<div style="min-width:0;">
+    <div style="font-size:13px;line-height:1.7;color:#8292a7;">
+        التداخل مع نطاق المصرف
+    </div>
 
-                            مؤشر المياه والغطاء النباتي
-                        </div>
+    <div style="margin-top:5px;font-size:23px;font-weight:900;line-height:1.5;color:#ffffff;white-space:normal;">
+        ${overlap == null ? 'غير محسوب' : `${overlap.toFixed(2)}%`}
+    </div>
 
-                        <div
-                            style="
-                                margin-top:5px;
-
-                                font-size:18px;
-                                font-weight:900;
-
-                                line-height:1.7;
-
-                                color:
-                                    ${
-                                        waterDetected
-                                            ? '#5de08b'
-                                            : '#9aa7b7'
-                                    };
-
-                                white-space:normal;
-                            "
-                        >
-                            ${
-                                waterDetected
-                                    ? '● مكتشف'
-                                    : '● غير مكتشف'
-                            }
-                        </div>
-
-                    </div>
-
-
-                    <!-- OVERLAP -->
-
-                    <div
-                        style="
-                            min-width:0;
-                        "
-                    >
-
-                        <div
-                            style="
-                                font-size:13px;
-                                line-height:1.7;
-                                color:#8292a7;
-                            "
-                        >
-                            التداخل مع نطاق التحليل
-                        </div>
-
-                        <div
-                            style="
-                                margin-top:5px;
-
-                                font-size:23px;
-                                font-weight:900;
-
-                                line-height:1.5;
-
-                                color:#ffffff;
-
-                                white-space:nowrap;
-                            "
-                        >
-                            ${overlap.toFixed(0)}%
-                        </div>
-
-                    </div>
-
-                </div>
-
-
-                <div
-                    style="
-                        margin-top:16px;
-
-                        padding-top:13px;
-
-                        border-top:
-                            1px solid
-                            rgba(255,255,255,.07);
-
-                        font-size:14px;
-
-                        line-height:1.9;
-
-                        color:#9aaabd;
-                    "
-                >
-                    📍 نطاق التحليل المكاني للمصرف:
-
-                    <strong
-                        style="
-                            color:#d6e0eb;
-                            font-weight:900;
-                        "
-                    >
-                        ${
-                            overlap > 0
-                                ? 'يوجد تداخل مكاني'
-                                : 'خارج نطاق التحليل'
-                        }
-                    </strong>
-
-                </div>
-
-            </div>
-
+    <div style="margin-top:4px;font-size:12px;line-height:1.8;color:#c2ccda;">
+        مساحة التداخل:
+        ${
+            overlapAreaM2 == null
+                ? 'غير متاحة'
+                : `${Number(overlapAreaM2).toLocaleString('en-US', {maximumFractionDigits: 2})} م²`
+        }
+        <br>
+        المسافة إلى المصرف:
+        ${
+            distanceToDrain == null
+                ? 'غير محسوبة'
+                : `${distanceToDrain.toFixed(2)} م`
+        }
+        <br>
+        العلاقة الهندسية: ${drainRelation}
+        <br>
+        التفسير: ${overlapReason}
+    </div>
+</div>
 
             <!-- ==================================
                  FOOTER
@@ -5571,13 +5583,15 @@ const riskNumber =
 
 if (riskNumber) {
 
-    riskNumber.innerHTML = `
-        ${
-            currentCase.engineeringRisk?.riskScore ??
-            currentCase.ai?.riskScore ??
-            0
-        }
-
+   riskNumber.innerHTML = `
+    ${
+        currentCase.engineeringRisk?.riskScore != null
+            ? Number(currentCase.engineeringRisk.riskScore).toFixed(0)
+            : ai.riskScore != null
+                ? Number(ai.riskScore).toFixed(0)
+                : 'غير محسوبة'
+    }
+    
         <span style="
             font-size:16px;
         ">

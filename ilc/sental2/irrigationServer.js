@@ -2610,47 +2610,32 @@ trend,
             currentWaterVegetationPixels
     },
 
+   
     waterDiagnostics: {
+        baselineWaterPixels,
         currentWaterPixels,
 
+        baselineWaterVegetationPixels,
+        currentWaterVegetationPixels,
+
         currentWaterMeanNDVI:
-            Number(
-                currentWaterMeanNDVI.toFixed(4)
-            ),
+            currentWaterPixels > 0
+                ? Number(currentWaterMeanNDVI.toFixed(4))
+                : null,
 
         currentWaterNdviMin:
             currentWaterPixels > 0
-                ? Number(
-                    currentWaterNdviMin.toFixed(4)
-                )
+                ? Number(currentWaterNdviMin.toFixed(4))
                 : null,
 
         currentWaterNdviMax:
             currentWaterPixels > 0
-                ? Number(
-                    currentWaterNdviMax.toFixed(4)
-                )
+                ? Number(currentWaterNdviMax.toFixed(4))
                 : null,
-
-        ndviDistribution: {
-            belowZero:
-                currentWaterNdviBelowZero,
-
-            zeroTo02:
-                currentWaterNdviZeroTo02,
-
-            from02To04:
-                currentWaterNdvi02To04,
-
-            above04:
-                currentWaterNdviAbove04
-        },
 
         spatialClustering: {
             clusterCount,
-
             largestClusterPixels,
-
             clusteredCandidatePixels,
 
             largestClusterPercentage:
@@ -2665,7 +2650,19 @@ trend,
                     : 0,
 
             clusterSizes
-        }
+        },
+
+        thresholds: {
+            ndwi: waterThreshold,
+            ndvi: vegetationThreshold
+        },
+
+        detectionReason:
+            waterHyacinthDetected
+                ? 'تم رصد مرشح غطاء نباتي مائي.'
+                : currentWaterPixels > 0
+                    ? 'رُصدت مياه محتملة، لكن بكسلات الغطاء النباتي المائي لم تحقق شروط الكشف.'
+                    : 'لم تُرصد بكسلات مياه مستوفية لعتبات الكشف.'
     },
 
            rawNdwi: {
@@ -7202,10 +7199,16 @@ realAOIAreaM2:
 
         catch (error) {
 
-            console.error(
-                '❌ REAL Satellite comparison failed:',
-                error
-            );
+           
+console.error(
+    '❌ REAL Satellite comparison failed:',
+    error?.stack || error
+);
+
+console.error(
+    '❌ Error message:',
+    error?.message
+);
 
 
             return res.status(500).json({
@@ -7742,66 +7745,74 @@ console.log('============================\n');
                 // ==================================================
                 // Engineering AI
                 // ==================================================
-
                 ai: {
+                    riskScore: Number(engineeringAI.riskScore || 0),
 
-                    riskScore:
-                        Number(
-                            engineeringAI.riskScore || 0
-                        ),
+                    confidence: Number(
+                        engineeringAI.measurements?.confidenceScore ??
+                        engineeringInput.confidenceScore ??
+                        0
+                    ),
 
-
-                    confidence:
-                        Number(
-                            engineeringAI.measurements
-                                ?.confidenceScore ||
-                            engineeringInput.confidenceScore ||
-                            0
-                        ),
-
-
-                    severity:
-                        engineeringAI.severity ||
-                        'low',
-
+                    severity: engineeringAI.severity || 'low',
 
                     reason:
                         engineeringAI.reason ||
                         'تم تحليل الحالة هندسيًا.',
 
-
                     modelVersion:
                         engineeringAI.modelVersion ||
                         'engineering-risk-v2',
 
-
-                    riskFactors:
-                        engineeringAI.riskFactors ||
-                        []
-
+                    riskFactors: engineeringAI.riskFactors || []
                 },
 
+                // ==================================================
+                // Engineering Risk — Backend
+                // ==================================================
+                engineeringRisk: {
+                    riskScore: Number(engineeringAI.riskScore ?? 0),
+
+                    action: engineeringAI.action || 'monitor',
+
+                    confidence: Number(
+                        engineeringAI.measurements?.confidenceScore ??
+                        engineeringInput.confidenceScore ??
+                        0
+                    ),
+
+                    evidence: {
+                        changePercentage: Number(
+                            engineeringInput.changePercentage ?? 0
+                        ),
+
+                        changeArea: Number(
+                            engineeringInput.changeArea ?? 0
+                        ),
+
+                        distanceToDrain: Number(
+                            engineeringInput.distanceToDrain ?? 0
+                        ),
+
+                        aiConfidence: Number(
+                            engineeringAI.measurements?.confidenceScore ??
+                            engineeringInput.confidenceScore ??
+                            0
+                        )
+                    }
+                },
 
                 // ==================================================
                 // Engineering Decision
                 // ==================================================
-
                 decision: {
+                    action: engineeringAI.action || 'monitor',
 
-                    action:
-                        engineeringAI.action ||
-                        'monitor',
-
-
-                    status:
-                        engineeringAI.status ||
-                        'monitoring',
-
+                    status: engineeringAI.status || 'monitoring',
 
                     reason:
                         engineeringAI.reason ||
                         'تم تحليل الحالة هندسيًا.'
-
                 },
 
 
