@@ -8045,35 +8045,25 @@ console.log(
     // لو المستخدم اختار نقطة محددة على المصرف
     // ==================================================
 
-    ...(isPointSatelliteAnalysis
-        ? {
+   
+...(isPointSatelliteAnalysis
+    ? {
+        analysisPoint: {
+            lat: Number(selectedSatellitePoint.lat),
+            lng: Number(selectedSatellitePoint.lng)
+        },
 
-            analysisPoint: {
+        chainageKm:
+            Number(selectedSatellitePoint.chainageKm),
 
-                lat:
-                    Number(
-                        selectedSatellitePoint.lat
-                    ),
+        bufferMeters: 50,
 
-                lng:
-                    Number(
-                        selectedSatellitePoint.lng
-                    )
+        // إرسال حدود الملكية الحقيقية، وليس دائرة الـ 50 متر
+        propertyGeometry:
+            selectedAOI.propertyGeometry,
 
-            },
-
-            chainageKm:
-                Number(
-                    selectedSatellitePoint.chainageKm
-                ),
-
-            bufferMeters:
-                50,
-
-            basedOn:
-                'drain-location'
-
-        }
+        basedOn: 'drain-location'
+    }
 
         // ==================================================
         // لو تحليل المصرف بالكامل
@@ -11389,3 +11379,409 @@ if (downloadDrainsBtn) {
     }
 );
 
+
+let drainSearchMarker = null;
+
+
+function populateDrainNameSuggestions() {
+    const nameInput = document.getElementById("drainSearchName");
+
+    if (!nameInput || !Array.isArray(drainGeoJsonData?.features)) {
+        return;
+    }
+
+    // إنشاء قائمة الاقتراحات مرة واحدة فقط
+    let list = document.getElementById("drainSearchSuggestions");
+
+    if (!list) {
+        list = document.createElement("datalist");
+        list.id = "drainSearchSuggestions";
+        nameInput.insertAdjacentElement("afterend", list);
+    }
+
+    nameInput.setAttribute("list", "drainSearchSuggestions");
+
+    const drains = drainGeoJsonData.features;
+    const names = new Map();
+
+    drains.forEach(feature => {
+        const p = feature.properties || {};
+        const name = String(p.name || p.drainName || p.NAME || p.DRAIN_NAME || "").trim();
+
+        if (name) {
+            names.set(name.toLowerCase(), name);
+        }
+    });
+
+    list.replaceChildren();
+
+    [...names.values()]
+        .sort((a, b) => a.localeCompare(b, "ar"))
+        .forEach(name => {
+            const option = document.createElement("option");
+            option.value = name;
+            list.appendChild(option);
+        });
+
+    console.log("✅ Drain name suggestions loaded:", names.size);
+}
+
+
+
+
+async function searchDrainByNameAndKm() {
+    const nameInput = document.getElementById("drainSearchName");
+    const kmInput = document.getElementById("drainSearchKm");
+    const message = document.getElementById("drainSearchMessage");
+
+    const showMessage = (text, color = "#b42318") => {
+        if (message) {
+            message.textContent = text;
+            message.style.color = color;
+        }
+    };
+
+    const searchText = nameInput?.value.trim().toLowerCase();
+    const kmText = kmInput?.value.trim();
+
+    // الكيلو اختياري: لو فاضي يبقى التحليل للمصرف بالكامل
+    const wholeDrainAnalysis = !kmText;
+    const km = wholeDrainAnalysis ? null : Number(kmText);
+
+    if (!searchText) {
+        showMessage("أدخل اسم المصرف.");
+        return;
+    }
+
+    if (
+        !wholeDrainAnalysis &&
+        (!Number.isFinite(km) || km < 0)
+    ) {
+        showMessage("أدخل رقم كيلو صحيح أو اترك خانة الكيلو فارغة لتحليل المصرف بالكامل.");
+        return;
+    }
+
+    if (
+        typeof gisMap === "undefined" ||
+        !gisMap ||
+        typeof drainGeoJsonData === "undefined" ||
+        !drainGeoJsonData?.features?.length
+    ) {
+        showMessage("الخريطة أو بيانات المصارف غير جاهزة.");
+        return;
+    }
+
+    if (typeof turf === "undefined") {
+        showMessage("مكتبة Turf غير متاحة.");
+        return;
+    }
+
+    if (typeof runSatellitePipeline !== "function") {
+        showMessage("دالة التحليل غير متاحة في الوقت الحالي.");
+        return;
+    }
+
+    // منع تشغيل أكثر من تحليل في نفس الوقت
+    if (window.drainSearchAnalysisRunning) {
+        showMessage("التحليل السابق ما زال جاريًا.", "#b54708");
+        return;
+    }
+
+    // ==========================================
+    // 1. العثور على المصرف بالاسم
+    // ==========================================
+
+    const feature = drainGeoJsonData.features.find(f => {
+        const p = f.properties || {};
+
+        const values = [
+            p.drainId,
+            p.name,
+            p.drainName,
+            p.NAME,
+            p.DRAIN_NAME,
+            p.code
+        ];
+
+        return values.some(v =>
+            v != null &&
+            String(v).trim().toLowerCase().includes(searchText)
+        );
+    });
+
+    if (!feature) {
+        showMessage("لم يتم العثور على المصرف.");
+        return;
+    }
+
+    const drainId = feature.properties?.drainId;
+
+    if (drainId == null) {
+        showMessage("المصرف لا يحتوي على معرّف drainId صالح.");
+        return;
+    }
+
+    const geometry = feature.geometry;
+
+    if (
+        !geometry ||
+        !["LineString", "MultiLineString"].includes(geometry.type)
+    ) {
+        showMessage("هندسة مسار المصرف غير مدعومة.");
+        return;
+    }
+
+    const drainName =
+        feature.properties?.name ||
+        feature.properties?.drainName ||
+        feature.properties?.NAME ||
+        feature.properties?.DRAIN_NAME ||
+        String(drainId);
+
+    // ==========================================
+    // 2. اختيار المصرف الحقيقي
+    // ==========================================
+
+    try {
+        selectRealDrain(drainId);
+    } catch (error) {
+        console.error("Failed to select drain:", error);
+        showMessage("تعذر تحديد المصرف للتحليل.");
+        return;
+    }
+
+    if (!window.selectedRealDrain || !window.selectedDrainAOI) {
+        showMessage("لم يتم تجهيز المصرف ومنطقة الدراسة للتحليل.");
+        return;
+    }
+
+    // ==========================================
+    // 3. تجهيز وضع التحليل حسب إدخال الكيلو
+    // ==========================================
+
+    if (wholeDrainAnalysis) {
+        // تحليل المصرف بالكامل
+        selectedSatellitePoint = null;
+
+        satelliteAnalysisMode = "drain-property";
+        satellitePointSelectionActive = false;
+
+        window.selectedDrainSearchPoint = {
+            drainId,
+            drainName,
+            kilometer: null,
+            lat: null,
+            lng: null,
+            wholeDrain: true
+        };
+
+        // إزالة علامة نقطة قديمة إن وجدت
+        if (drainSearchMarker) {
+            drainSearchMarker.remove();
+            drainSearchMarker = null;
+        }
+
+        console.log("🌊 Whole-drain satellite analysis selected:", {
+            drainId,
+            drainName,
+            mode: satelliteAnalysisMode,
+            wholeDrain: true
+        });
+
+        showMessage(
+            `تم تحديد المصرف ${drainName}. جاري تحليل المصرف بالكامل...`,
+            "#067647"
+        );
+
+    } else {
+        // ==========================================
+        // 4. حساب نقطة الكيلو المطلوبة
+        // ==========================================
+
+        let lines;
+
+        if (geometry.type === "LineString") {
+            lines = [geometry.coordinates];
+        } else {
+            lines = geometry.coordinates;
+        }
+
+        // تنظيف الإحداثيات المتكررة والمتضررة
+        const cleanLines = lines
+            .filter(line => Array.isArray(line) && line.length >= 2)
+            .map(line => {
+                const clean = [];
+
+                line.forEach(coord => {
+                    if (
+                        Array.isArray(coord) &&
+                        Number.isFinite(Number(coord[0])) &&
+                        Number.isFinite(Number(coord[1])) &&
+                        (
+                            clean.length === 0 ||
+                            clean[clean.length - 1][0] !== coord[0] ||
+                            clean[clean.length - 1][1] !== coord[1]
+                        )
+                    ) {
+                        clean.push(coord);
+                    }
+                });
+
+                return clean;
+            })
+            .filter(line => line.length >= 2);
+
+        if (!cleanLines.length) {
+            showMessage("مسار المصرف لا يحتوي على نقاط كافية.");
+            return;
+        }
+
+        let targetPoint = null;
+        let remainingKm = km;
+
+        try {
+            for (const coordinates of cleanLines) {
+                const lineFeature = turf.lineString(coordinates);
+                const lineLength = turf.length(lineFeature, {
+                    units: "kilometers"
+                });
+
+                if (remainingKm <= lineLength) {
+                    targetPoint = turf.along(lineFeature, remainingKm, {
+                        units: "kilometers"
+                    });
+                    break;
+                }
+
+                remainingKm -= lineLength;
+            }
+        } catch (error) {
+            console.error("Failed to calculate drain chainage:", error);
+            showMessage("تعذر حساب موقع الكيلو على مسار المصرف.");
+            return;
+        }
+
+        if (!targetPoint) {
+            const totalLength = cleanLines.reduce((sum, coordinates) => {
+                return sum + turf.length(turf.lineString(coordinates), {
+                    units: "kilometers"
+                });
+            }, 0);
+
+            showMessage(
+                `رقم الكيلو يتجاوز طول المسار (${totalLength.toFixed(2)} كم).`
+            );
+            return;
+        }
+
+        const [lng, lat] = targetPoint.geometry.coordinates;
+
+        selectedSatellitePoint = {
+            lat: Number(lat),
+            lng: Number(lng),
+            chainageKm: Number(km)
+        };
+
+        satelliteAnalysisMode = "drain-location";
+        satellitePointSelectionActive = false;
+
+        window.selectedDrainSearchPoint = {
+            drainId,
+            drainName,
+            kilometer: km,
+            lat: Number(lat),
+            lng: Number(lng),
+            wholeDrain: false
+        };
+
+        console.log("📍 Selected drain search point:", {
+            ...window.selectedDrainSearchPoint,
+            mode: satelliteAnalysisMode
+        });
+
+        // تحديث علامة نقطة الكيلو على الخريطة
+        if (drainSearchMarker) {
+            drainSearchMarker.remove();
+            drainSearchMarker = null;
+        }
+
+        gisMap.flyTo([lat, lng], 16, {
+            animate: true,
+            duration: 1.2
+        });
+
+        drainSearchMarker = L.marker([lat, lng])
+            .addTo(gisMap)
+            .bindPopup(`
+                <div dir="rtl" style="text-align:center;line-height:1.8">
+                    <strong>📍 نقطة التحليل</strong><br>
+                    المصرف: ${drainName}<br>
+                    الكيلو: <strong>${km.toFixed(2)} كم</strong>
+                </div>
+            `)
+            .openPopup();
+
+        showMessage(
+            `تم تحديد ${drainName} عند الكيلو ${km.toFixed(2)}. جاري تشغيل التحليل...`,
+            "#067647"
+        );
+    }
+
+    // ==========================================
+    // 5. تشغيل التحليل
+    // ==========================================
+
+    window.drainSearchAnalysisRunning = true;
+
+    try {
+        await runSatellitePipeline();
+
+        showMessage(
+            wholeDrainAnalysis
+                ? `تم إرسال طلب تحليل المصرف بالكامل: ${drainName}.`
+                : `تم إرسال طلب التحليل للنقطة عند الكيلو ${km.toFixed(2)}.`,
+            "#067647"
+        );
+
+    } catch (error) {
+        console.error("Automatic satellite analysis failed:", error);
+
+        showMessage(
+            "تعذر إكمال التحليل التلقائي. راجع Console لمعرفة سبب الخطأ."
+        );
+
+    } finally {
+        window.drainSearchAnalysisRunning = false;
+    }
+}
+
+
+document.addEventListener("DOMContentLoaded", () => {
+    const nameInput = document.getElementById("drainSearchName");
+    const kmInput = document.getElementById("drainSearchKm");
+    const searchBtn = document.getElementById("drainSearchBtn");
+
+    // عرض جميع أسماء المصارف عند جاهزية البيانات
+    populateDrainNameSuggestions();
+
+    // إظهار القائمة عند الضغط على البوكس
+    nameInput?.addEventListener("focus", () => {
+        populateDrainNameSuggestions();
+    });
+
+    // تحديث الاقتراحات عند الكتابة
+    nameInput?.addEventListener("input", () => {
+        populateDrainNameSuggestions();
+    });
+
+    searchBtn?.addEventListener("click", searchDrainByNameAndKm);
+
+    [nameInput, kmInput].forEach(input => {
+        input?.addEventListener("keydown", event => {
+            if (event.key === "Enter") {
+                event.preventDefault();
+                searchDrainByNameAndKm();
+            }
+        });
+    });
+});

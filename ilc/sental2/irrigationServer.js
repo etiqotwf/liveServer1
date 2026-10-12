@@ -4817,10 +4817,78 @@ let maxLng =
         requestedAOI.maxLng
     );
 
+
 let bbox;
 
 let bufferGeometry;
 let originalPropertyGeometryForChange = null;
+
+// ==================================================
+// تجهيز هندسة ملكية المصرف لتحليل النقطة
+// ==================================================
+
+const pointPropertyInput =
+    requestedAOI.propertyGeometry || null;
+
+if (pointPropertyInput) {
+    try {
+        let propertyFeatures = [];
+
+        if (pointPropertyInput.type === 'FeatureCollection') {
+            propertyFeatures = pointPropertyInput.features || [];
+        } else if (pointPropertyInput.type === 'Feature') {
+            propertyFeatures = [pointPropertyInput];
+        } else if (
+            pointPropertyInput.type === 'Polygon' ||
+            pointPropertyInput.type === 'MultiPolygon'
+        ) {
+            propertyFeatures = [{
+                type: 'Feature',
+                properties: {},
+                geometry: pointPropertyInput
+            }];
+        }
+
+        const validPropertyFeatures = propertyFeatures.filter(
+            feature =>
+                feature?.geometry &&
+                (
+                    feature.geometry.type === 'Polygon' ||
+                    feature.geometry.type === 'MultiPolygon'
+                )
+        );
+
+        if (validPropertyFeatures.length === 1) {
+            originalPropertyGeometryForChange =
+                validPropertyFeatures[0];
+        } else if (validPropertyFeatures.length > 1) {
+            originalPropertyGeometryForChange =
+                turf.union(
+                    turf.featureCollection(validPropertyFeatures)
+                );
+        }
+
+        if (
+            !originalPropertyGeometryForChange?.geometry
+        ) {
+            originalPropertyGeometryForChange = null;
+        }
+    } catch (error) {
+        console.error(
+            '❌ Failed to prepare point property geometry:',
+            error.message
+        );
+
+        originalPropertyGeometryForChange = null;
+    }
+}
+
+console.log('📍 POINT PROPERTY GEOMETRY:', {
+    drainId: requestedAOI.drainId || null,
+    propertyAvailable: Boolean(
+        originalPropertyGeometryForChange?.geometry
+    )
+});
 
 // ==================================================
 // 5️⃣ تحليل نقطة محددة على المصرف
@@ -6732,15 +6800,15 @@ return {
 // تشغيل NDVI + NDWI داخل Buffer المصرف
 // ==================================================
 
+
+
 const ndviChange =
     await analyzeSatelliteChange(
         baselineFilePath,
         currentFilePath,
         bbox,
         bufferGeometry,
-        isPointAnalysis
-            ? null
-            : originalPropertyGeometryForChange
+        originalPropertyGeometryForChange
     );
 
             // ==================================================

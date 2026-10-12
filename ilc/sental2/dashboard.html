@@ -1,0 +1,2711 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        IRRIGATION AI | Smart Irrigation & Drainage Intelligence
+    </title>
+
+
+    <!-- ==================================================
+         LEAFLET GIS
+    ================================================== -->
+
+    <link
+        rel="stylesheet"
+        href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    >
+
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+
+        body {
+
+            margin: 0;
+
+            font-family:
+                "Segoe UI",
+                Tahoma,
+                Arial,
+                sans-serif;
+
+            background:
+                #071321;
+
+            color:
+                #eaf4ff;
+
+        }
+
+
+        /* ================================
+           HEADER
+        ================================= */
+
+        header {
+
+            height: 70px;
+
+            padding:
+                0 28px;
+
+            display:
+                flex;
+
+            align-items:
+                center;
+
+            justify-content:
+                space-between;
+
+            border-bottom:
+                1px solid #1b3850;
+
+            background:
+                #091827;
+
+        }
+
+
+        .brand {
+
+            display:
+                flex;
+
+            align-items:
+                center;
+
+            gap: 12px;
+
+        }
+
+
+        .logo {
+
+            width: 42px;
+
+            height: 42px;
+
+            border-radius: 12px;
+
+            background:
+                #0d8fb0;
+
+            display:
+                flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            font-size: 22px;
+
+        }
+
+
+        .brand h1 {
+
+            margin: 0;
+
+            font-size: 21px;
+
+            letter-spacing: .5px;
+
+        }
+
+
+        .brand span {
+
+            display: block;
+
+            font-size: 11px;
+
+            color: #8ba6bb;
+
+            margin-top: 3px;
+
+        }
+
+
+        .system-status {
+
+            color: #5de08b;
+
+            font-size: 13px;
+
+        }
+
+
+        /* ================================
+           MAIN
+        ================================= */
+
+        main {
+
+            padding:
+                24px;
+
+            max-width:
+                1450px;
+
+            margin:
+                auto;
+
+        }
+
+
+        /* ================================
+           STAT CARDS
+        ================================= */
+
+        .stats {
+
+            display:
+                grid;
+
+            grid-template-columns:
+                repeat(4, 1fr);
+
+            gap:
+                16px;
+
+            margin-bottom:
+                20px;
+
+        }
+
+
+        .stat-card {
+
+            background:
+                #0c1c2e;
+
+            border:
+                1px solid #1b3a54;
+
+            border-radius:
+                14px;
+
+            padding:
+                20px;
+
+        }
+
+
+        .stat-title {
+
+            color:
+                #91aac0;
+
+            font-size:
+                13px;
+
+            margin-bottom:
+                10px;
+
+        }
+
+
+        .stat-value {
+
+            font-size:
+                32px;
+
+            font-weight:
+                700;
+
+        }
+
+
+        .stat-sub {
+
+            color:
+                #6f8da5;
+
+            font-size:
+                11px;
+
+            margin-top:
+                6px;
+
+        }
+
+
+        /* ================================
+           CONTENT
+        ================================= */
+
+        .content {
+
+            display:
+                grid;
+
+            grid-template-columns:
+                1fr 1.4fr;
+
+            gap:
+                18px;
+
+        }
+
+
+        .panel {
+
+            background:
+                #0c1c2e;
+
+            border:
+                1px solid #1b3a54;
+
+            border-radius:
+                14px;
+
+            overflow:
+                hidden;
+
+        }
+
+
+        .panel-header {
+
+            padding:
+                17px 20px;
+
+            border-bottom:
+                1px solid #1b3a54;
+
+            display:
+                flex;
+
+            justify-content:
+                space-between;
+
+            align-items:
+                center;
+
+        }
+
+
+        .panel-title {
+
+            font-weight:
+                700;
+
+            font-size:
+                16px;
+
+        }
+
+
+        .panel-sub {
+
+            color:
+                #7592a9;
+
+            font-size:
+                11px;
+
+        }
+
+
+        /* ================================
+           CASE
+        ================================= */
+
+        .case {
+
+            padding:
+                20px;
+
+        }
+
+
+        .case-id {
+
+            color:
+                #5ebee0;
+
+            font-size:
+                12px;
+
+            margin-bottom:
+                8px;
+
+        }
+
+
+        .case-title {
+
+            font-size:
+                23px;
+
+            font-weight:
+                700;
+
+            margin-bottom:
+                20px;
+
+        }
+
+
+        .risk-box {
+
+            background:
+                #12263a;
+
+            border-radius:
+                12px;
+
+            padding:
+                18px;
+
+            display:
+                flex;
+
+            justify-content:
+                space-between;
+
+            align-items:
+                center;
+
+            margin-bottom:
+                16px;
+
+        }
+
+
+        .risk-number {
+
+            font-size:
+                38px;
+
+            font-weight:
+                800;
+
+            color:
+                #ffad45;
+
+        }
+
+
+        .action {
+
+            padding:
+                9px 13px;
+
+            border:
+                1px solid #b56b20;
+
+            border-radius:
+                8px;
+
+            color:
+                #ffb45c;
+
+            font-size:
+                12px;
+
+        }
+
+
+        .details {
+
+            display:
+                grid;
+
+            grid-template-columns:
+                1fr 1fr;
+
+            gap:
+                10px;
+
+        }
+
+
+        .detail {
+
+            background:
+                #0a1929;
+
+            border-radius:
+                10px;
+
+            padding:
+                14px;
+
+        }
+
+
+        .detail-label {
+
+            color:
+                #7895ad;
+
+            font-size:
+                11px;
+
+            margin-bottom:
+                5px;
+
+        }
+
+
+        .detail-value {
+
+            font-weight:
+                700;
+
+            font-size:
+                14px;
+
+        }
+
+.analysis {
+
+    margin-top:
+        18px;
+
+    padding:
+        24px 26px;
+
+    border:
+        1px solid #28b9d7;
+
+    border-right:
+        5px solid #48d5ef;
+
+    border-radius:
+        15px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #102f45,
+            #091b2c
+        );
+
+    box-shadow:
+        0 0 12px rgba(40,185,215,.20),
+        0 0 28px rgba(40,185,215,.10);
+
+    line-height:
+        2;
+
+    color:
+        #eaf4ff;
+
+    position:
+        relative;
+
+    overflow:
+        hidden;
+
+}
+
+
+.analysis::before {
+
+    content:
+        "";
+
+    position:
+        absolute;
+
+    top:
+        0;
+
+    right:
+        0;
+
+    width:
+        100%;
+
+    height:
+        2px;
+
+    background:
+        #48d5ef;
+
+    box-shadow:
+        0 0 12px #48d5ef,
+        0 0 25px #28b9d7;
+
+    animation:
+        analysisGlow 2.5s ease-in-out infinite;
+
+}
+
+
+.analysis-header {
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    gap:
+        14px;
+
+    margin-bottom:
+        18px;
+
+    padding-bottom:
+        14px;
+
+    border-bottom:
+        1px solid #24516a;
+
+}
+
+
+.analysis-icon {
+
+    width:
+        48px;
+
+    height:
+        48px;
+
+    flex-shrink:
+        0;
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    justify-content:
+        center;
+
+    border-radius:
+        13px;
+
+    background:
+        #0d5268;
+
+    border:
+        1px solid #48d5ef;
+
+    font-size:
+        25px;
+
+    box-shadow:
+        0 0 10px rgba(72,213,239,.35),
+        0 0 22px rgba(40,185,215,.18);
+
+}
+
+
+.analysis-title {
+
+    color:
+        #48d5ef;
+
+    font-size:
+        19px;
+
+    font-weight:
+        900;
+
+    letter-spacing:
+        .6px;
+
+    text-shadow:
+        0 0 8px rgba(72,213,239,.65),
+        0 0 18px rgba(40,185,215,.35);
+
+}
+
+
+.analysis-subtitle {
+
+    margin-top:
+        4px;
+
+    color:
+        #91b7ca;
+
+    font-size:
+        12px;
+
+}
+
+
+.analysis-content {
+
+    font-size:
+        18px;
+
+    font-weight:
+        600;
+
+    color:
+        #f1f8ff;
+
+    line-height:
+        2;
+
+    text-shadow:
+        0 0 5px rgba(234,244,255,.15);
+
+}
+
+
+@keyframes analysisGlow {
+
+    0%,
+    100% {
+
+        opacity:
+            .45;
+
+        box-shadow:
+            0 0 8px #48d5ef;
+
+    }
+
+    50% {
+
+        opacity:
+            1;
+
+        box-shadow:
+            0 0 18px #48d5ef,
+            0 0 32px #28b9d7;
+
+    }
+
+}
+        /* ================================
+           REAL GIS MAP
+        ================================= */
+
+        .map {
+
+            height:
+                510px;
+
+            position:
+                relative;
+
+            overflow:
+                hidden;
+
+            background:
+                #0b2733;
+
+        }
+
+
+        #gisMap {
+
+            width:
+                100%;
+
+            height:
+                100%;
+
+        }
+
+
+        /* Leaflet RTL-friendly popup */
+
+        .leaflet-popup-content {
+
+            text-align:
+                right;
+
+            direction:
+                rtl;
+
+        }
+
+.map-note {
+
+    position:
+        absolute;
+
+    bottom:
+        18px;
+
+    left:
+        18px;
+
+    z-index:
+        500;
+
+    background:
+        rgba(9,24,39,.92);
+
+    border:
+        1px solid #31506a;
+
+    padding:
+        8px 12px;
+
+    border-radius:
+        7px;
+
+    font-size:
+        11px;
+
+}
+
+        /* ================================
+           RESPONSIVE
+        ================================= */
+
+        @media(max-width: 900px) {
+
+            .stats {
+
+                grid-template-columns:
+                    1fr 1fr;
+
+            }
+
+            .content {
+
+                grid-template-columns:
+                    1fr;
+
+            }
+
+        }
+
+
+        @media(max-width: 600px) {
+
+            main {
+
+                padding:
+                    12px;
+
+            }
+
+            .stats {
+
+                grid-template-columns:
+                    1fr;
+
+            }
+
+        }
+
+
+
+/* ================================
+   CASE SELECTOR
+================================ */
+
+.case-selector {
+
+    margin-bottom:
+        18px;
+
+}
+
+.case-selector label {
+
+    display:
+        block;
+
+    color:
+        #7895ad;
+
+    font-size:
+        11px;
+
+    margin-bottom:
+        7px;
+
+}
+
+.case-selector select {
+
+    width:
+        100%;
+
+    padding:
+        11px 13px;
+
+    background:
+        #0a1929;
+
+    color:
+        #eaf4ff;
+
+    border:
+        1px solid #1b3a54;
+
+    border-radius:
+        9px;
+
+    font-size:
+        13px;
+
+    outline:
+        none;
+
+    cursor:
+        pointer;
+
+}
+
+.case-selector select:focus {
+
+    border-color:
+        #28b9d7;
+
+}
+
+
+
+/* ================================
+   DRAIN DATA DOWNLOAD
+================================ */
+
+.drain-data-box {
+
+    background:
+        linear-gradient(
+            135deg,
+            #0d2538,
+            #0a1c2c
+        );
+
+    border:
+        1px solid #1e526b;
+
+    border-radius:
+        12px;
+
+    padding:
+        14px;
+
+    margin-bottom:
+        18px;
+
+}
+
+.drain-data-header {
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    justify-content:
+        space-between;
+
+    gap:
+        12px;
+
+}
+
+.drain-data-info {
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    gap:
+        10px;
+
+}
+
+.drain-data-icon {
+
+    width:
+        38px;
+
+    height:
+        38px;
+
+    border-radius:
+        10px;
+
+    background:
+        #10364a;
+
+    border:
+        1px solid #21647d;
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    justify-content:
+        center;
+
+    font-size:
+        19px;
+
+}
+
+.drain-data-title {
+
+    font-size:
+        13px;
+
+    font-weight:
+        700;
+
+    margin-bottom:
+        3px;
+
+}
+
+.drain-data-subtitle {
+
+    color:
+        #7895ad;
+
+    font-size:
+        10px;
+
+}
+
+.download-drains-btn {
+
+    border:
+        1px solid #28b9d7;
+
+    background:
+        #0d5268;
+
+    color:
+        #eaf4ff;
+
+    border-radius:
+        9px;
+
+    padding:
+        10px 14px;
+
+    font-size:
+        12px;
+
+    font-weight:
+        700;
+
+    cursor:
+        pointer;
+
+    white-space:
+        nowrap;
+
+    transition:
+        .2s;
+
+}
+
+.download-drains-btn:hover {
+
+    background:
+        #126a84;
+
+    border-color:
+        #48d5ef;
+
+    transform:
+        translateY(-1px);
+
+}
+
+.download-drains-btn:active {
+
+    transform:
+        translateY(0);
+
+}
+
+.drain-data-status {
+
+    margin-top:
+        10px;
+
+    padding-top:
+        9px;
+
+    border-top:
+        1px solid #17394f;
+
+    color:
+        #7895ad;
+
+    font-size:
+        10px;
+
+}
+
+.drain-data-status.ready {
+
+    color:
+        #5de08b;
+
+}
+
+@media(max-width: 600px) {
+
+    .drain-data-header {
+
+        flex-direction:
+            column;
+
+        align-items:
+            stretch;
+
+    }
+
+    .download-drains-btn {
+
+        width:
+            100%;
+
+    }
+
+}
+
+
+
+/* ================================
+   CHANGE ↔ DRAIN IMPACT
+================================ */
+
+.drain-impact-box {
+
+    margin-top:
+        16px;
+
+    padding:
+        16px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #0d2538,
+            #0a1c2c
+        );
+
+    border:
+        1px solid #1e526b;
+
+    border-radius:
+        12px;
+
+}
+
+
+.drain-impact-title {
+
+    font-size:
+        14px;
+
+    font-weight:
+        700;
+
+    margin-bottom:
+        3px;
+
+}
+
+
+.drain-impact-subtitle {
+
+    color:
+        #7895ad;
+
+    font-size:
+        10px;
+
+    margin-bottom:
+        14px;
+
+}
+
+
+.drain-impact-grid {
+
+    display:
+        grid;
+
+    grid-template-columns:
+        1fr 1fr;
+
+    gap:
+        10px;
+
+}
+
+
+.drain-relation {
+
+    margin-top:
+        12px;
+
+    padding:
+        11px;
+
+    border-radius:
+        8px;
+
+    background:
+        #0a1929;
+
+    border-right:
+        3px solid #28b9d7;
+
+    color:
+        #b9ccdc;
+
+    font-size:
+        12px;
+
+    font-weight:
+        700;
+
+}
+
+
+@media(max-width: 600px) {
+
+    .drain-impact-grid {
+
+        grid-template-columns:
+            1fr;
+
+    }
+
+}
+
+.analysis-content {
+    font-size: 22px !important;
+    font-weight: 800 !important;
+    line-height: 2 !important;
+    color: #ffffff !important;
+}
+
+
+
+/* =================================
+   DASHBOARD 97% SCREEN SIZE
+================================= */
+
+html,
+body {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+}
+
+body {
+    width: 97vw;
+    min-height: 97vh;
+    margin: 1.5vh auto;
+    overflow: auto;
+}
+
+main {
+    width: 100%;
+    max-width: none;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* تكبير واستغلال المساحة المتاحة */
+.content {
+    width: 100%;
+}
+
+/* الخريطة تستغل الارتفاع */
+.map {
+    height: 510px;
+}
+
+
+
+.stats {
+    gap: 10px !important;
+    margin-bottom: 12px !important;
+}
+
+.stat-card {
+    padding: 5px 12px !important;
+    min-height: 0 !important;
+}
+
+.stat-title {
+    font-size: 10px !important;
+    margin-bottom: 1px !important;
+}
+
+.stat-value {
+    font-size: 20px !important;
+    line-height: 1.1 !important;
+}
+
+.stat-sub {
+    font-size: 8px !important;
+    margin-top: 1px !important;
+}
+
+
+/* ===== تفاصيل الحالة - خط كبير + Glow ===== */
+
+.case {
+    color: #ffffff;
+}
+
+.case-id {
+    font-size: 30px !important;
+    font-weight: 900 !important;
+    letter-spacing: 1px;
+    color: #ffffff !important;
+    text-shadow:
+        0 0 6px rgba(72, 213, 239, 0.9),
+        0 0 14px rgba(72, 213, 239, 0.65),
+        0 0 28px rgba(72, 213, 239, 0.35);
+}
+
+.case-title {
+    font-size: 25px !important;
+    font-weight: 900 !important;
+    color: #ffffff !important;
+    line-height: 1.4;
+    text-shadow:
+        0 0 5px rgba(72, 213, 239, 0.9),
+        0 0 12px rgba(72, 213, 239, 0.6),
+        0 0 22px rgba(72, 213, 239, 0.3);
+}
+
+/* عنوان تفاصيل الحالة */
+.case h3,
+.case h4 {
+    font-size: 24px !important;
+    font-weight: 900 !important;
+    color: #ffffff !important;
+    text-shadow:
+        0 0 5px rgba(72, 213, 239, 0.9),
+        0 0 12px rgba(72, 213, 239, 0.55);
+}
+
+/* زر تحميل بيانات المصارف */
+.case button {
+    font-size: 18px !important;
+    font-weight: 900 !important;
+    text-shadow:
+        0 0 5px rgba(255,255,255,0.8),
+        0 0 12px rgba(72,213,239,0.7);
+}
+
+/* اختيار الحالة */
+.case select {
+    font-size: 18px !important;
+    font-weight: 800 !important;
+    color: #ffffff !important;
+    background: #07131d !important;
+    border: 1px solid #28b9d7 !important;
+    text-shadow:
+        0 0 5px rgba(72,213,239,0.8);
+    box-shadow:
+        0 0 8px rgba(40,185,215,0.35),
+        inset 0 0 8px rgba(40,185,215,0.08);
+}
+
+/* CASE ID */
+.case-id-label {
+    font-size: 17px !important;
+    font-weight: 900 !important;
+    color: #8eeeff !important;
+    text-shadow:
+        0 0 5px rgba(72,213,239,0.8),
+        0 0 10px rgba(72,213,239,0.45);
+}
+
+/* أي نصوص داخل البلوك */
+.case p,
+.case label,
+.case span {
+    font-size: 17px;
+    font-weight: 700;
+    color: #ffffff;
+}
+
+
+
+/* ===== تفاصيل الحالة ===== */
+
+.case-title {
+    font-size: 30px !important;
+    font-weight: 900 !important;
+    color: #ffffff !important;
+    text-shadow:
+        0 0 6px rgba(72, 213, 239, 1),
+        0 0 14px rgba(72, 213, 239, 0.8),
+        0 0 28px rgba(72, 213, 239, 0.45);
+}
+
+/* Engineering Case */
+.case-subtitle,
+.case-type {
+    font-size: 23px !important;
+    font-weight: 900 !important;
+    color: #dffaff !important;
+    letter-spacing: 1px;
+    text-shadow:
+        0 0 5px rgba(72, 213, 239, 0.9),
+        0 0 12px rgba(72, 213, 239, 0.65),
+        0 0 20px rgba(72, 213, 239, 0.35);
+}
+
+/* تحميل بيانات المصارف */
+.case button {
+    font-size: 21px !important;
+    font-weight: 900 !important;
+    color: #ffffff !important;
+    text-shadow:
+        0 0 5px rgba(255,255,255,0.9),
+        0 0 12px rgba(72,213,239,0.8),
+        0 0 22px rgba(72,213,239,0.5);
+
+    box-shadow:
+        0 0 8px rgba(40,185,215,0.45),
+        0 0 18px rgba(40,185,215,0.25);
+}
+
+
+/* ===== AI Risk + Decision ===== */
+
+.risk-box {
+    font-size: 28px !important;
+    font-weight: 900 !important;
+    color: #ffffff !important;
+    line-height: 1.4 !important;
+}
+
+/* 45 /100 */
+.risk-box strong,
+.risk-box .risk-score {
+    font-size: 34px !important;
+    font-weight: 1000 !important;
+    color: #ffffff !important;
+}
+
+/* 🟠 تحتاج معاينة ميدانية */
+.risk-box .decision,
+.risk-box .action,
+.risk-box span {
+    font-size: 23px !important;
+    font-weight: 900 !important;
+    color: #ffffff !important;
+}
+
+
+button {
+    font-size: 16px !important;
+    font-weight: 1000 !important;
+}
+
+
+
+/* =========================================================
+   🛰️ SATELLITE GAME STYLE NOTIFICATION
+   ========================================================= */
+
+.satellite-game-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 999999;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background:
+        radial-gradient(
+            circle at center,
+            rgba(0, 210, 255, 0.10),
+            rgba(0, 0, 0, 0.78) 55%,
+            rgba(0, 0, 0, 0.94)
+        );
+
+    backdrop-filter: blur(7px);
+
+    animation:
+        satelliteOverlayIn 0.25s ease forwards;
+}
+
+.satellite-game-modal {
+    position: relative;
+
+    width: min(520px, calc(100vw - 40px));
+
+    padding: 34px 32px 28px;
+
+    border: 1px solid rgba(0, 220, 255, 0.45);
+
+    border-radius: 22px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(8, 24, 38, 0.97),
+            rgba(4, 10, 18, 0.98)
+        );
+
+    box-shadow:
+        0 0 25px rgba(0, 200, 255, 0.20),
+        0 0 80px rgba(0, 160, 255, 0.12),
+        inset 0 0 35px rgba(0, 180, 255, 0.05);
+
+    color: white;
+
+    text-align: center;
+
+    transform: scale(0.85);
+    opacity: 0;
+
+    animation:
+        satelliteModalIn 0.35s
+        cubic-bezier(.17,.67,.35,1.25)
+        forwards;
+
+    overflow: hidden;
+}
+
+/* Top glowing line */
+
+.satellite-game-modal::before {
+    content: "";
+
+    position: absolute;
+
+    top: 0;
+    left: 8%;
+    right: 8%;
+
+    height: 2px;
+
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            #00d9ff,
+            #6df6ff,
+            #00d9ff,
+            transparent
+        );
+
+    box-shadow:
+        0 0 15px #00d9ff;
+}
+
+/* Decorative background */
+
+.satellite-game-modal::after {
+    content: "";
+
+    position: absolute;
+
+    width: 260px;
+    height: 260px;
+
+    top: -140px;
+    right: -100px;
+
+    border-radius: 50%;
+
+    background:
+        radial-gradient(
+            circle,
+            rgba(0, 220, 255, 0.18),
+            transparent 70%
+        );
+
+    pointer-events: none;
+}
+
+/* Satellite icon */
+
+.satellite-game-icon {
+    position: relative;
+
+    width: 82px;
+    height: 82px;
+
+    margin: 0 auto 20px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    background:
+        radial-gradient(
+            circle,
+            rgba(0, 220, 255, 0.22),
+            rgba(0, 80, 120, 0.08) 65%,
+            transparent
+        );
+
+    border: 1px solid rgba(0, 220, 255, 0.35);
+
+    box-shadow:
+        0 0 20px rgba(0, 220, 255, 0.35);
+
+    animation:
+        satellitePulse 2s ease-in-out infinite;
+}
+
+.satellite-game-icon span {
+    font-size: 42px;
+
+    filter:
+        drop-shadow(0 0 10px rgba(0, 220, 255, 0.9));
+
+    animation:
+        satelliteFloat 2.5s ease-in-out infinite;
+}
+
+/* Title */
+
+.satellite-game-title {
+    margin: 0 0 10px;
+
+    font-size: 25px;
+    font-weight: 800;
+
+    letter-spacing: 0.5px;
+
+    color: #ffffff;
+
+    text-shadow:
+        0 0 12px rgba(0, 220, 255, 0.45);
+}
+
+/* Subtitle */
+
+.satellite-game-subtitle {
+    margin: 0 auto 22px;
+
+    max-width: 420px;
+
+    font-size: 15px;
+
+    line-height: 1.8;
+
+    color: rgba(220, 240, 248, 0.82);
+}
+
+/* Last analysis information */
+
+.satellite-game-date {
+    margin: 0 auto 24px;
+
+    padding: 13px 18px;
+
+    width: fit-content;
+    max-width: 100%;
+
+    border-radius: 12px;
+
+    background:
+        rgba(0, 180, 255, 0.07);
+
+    border:
+        1px solid rgba(0, 210, 255, 0.18);
+
+    color: #8feeff;
+
+    font-size: 14px;
+}
+
+/* Button */
+
+.satellite-game-button {
+    min-width: 150px;
+
+    padding: 12px 28px;
+
+    border: 1px solid rgba(0, 220, 255, 0.55);
+
+    border-radius: 12px;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(0, 190, 255, 0.20),
+            rgba(0, 90, 160, 0.18)
+        );
+
+    color: white;
+
+    font-size: 15px;
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease,
+        background 0.2s ease;
+}
+
+.satellite-game-button:hover {
+    transform: translateY(-2px);
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(0, 210, 255, 0.32),
+            rgba(0, 110, 190, 0.25)
+        );
+
+    box-shadow:
+        0 0 20px rgba(0, 210, 255, 0.30);
+}
+
+.satellite-game-button:active {
+    transform: scale(0.96);
+}
+
+/* Animations */
+
+@keyframes satelliteOverlayIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes satelliteModalIn {
+    from {
+        opacity: 0;
+        transform:
+            scale(0.82)
+            translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform:
+            scale(1)
+            translateY(0);
+    }
+}
+
+@keyframes satellitePulse {
+    0%,
+    100% {
+        box-shadow:
+            0 0 18px rgba(0, 220, 255, 0.25);
+    }
+
+    50% {
+        box-shadow:
+            0 0 35px rgba(0, 220, 255, 0.55);
+    }
+}
+
+@keyframes satelliteFloat {
+    0%,
+    100% {
+        transform:
+            translateY(0)
+            rotate(-4deg);
+    }
+
+    50% {
+        transform:
+            translateY(-5px)
+            rotate(4deg);
+    }
+}
+
+
+
+.satellite-error-modal {
+    border-color:
+        rgba(255, 92, 92, 0.45);
+
+    box-shadow:
+        0 0 25px rgba(255, 70, 70, 0.18),
+        0 0 80px rgba(255, 50, 50, 0.08),
+        inset 0 0 35px rgba(255, 70, 70, 0.04);
+}
+
+.satellite-error-icon {
+    border-color:
+        rgba(255, 92, 92, 0.40);
+
+    background:
+        radial-gradient(
+            circle,
+            rgba(255, 70, 70, 0.18),
+            rgba(120, 20, 20, 0.06) 65%,
+            transparent
+        );
+
+    box-shadow:
+        0 0 25px rgba(255, 70, 70, 0.35);
+}
+
+.satellite-error-icon span {
+    filter:
+        drop-shadow(
+            0 0 10px
+            rgba(255, 70, 70, 0.9)
+        );
+}
+
+.satellite-error-message {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 8px;
+
+    width: 100%;
+
+    box-sizing: border-box;
+
+    color: #ffb0b0;
+
+    background:
+        rgba(255, 60, 60, 0.07);
+
+    border-color:
+        rgba(255, 80, 80, 0.20);
+
+    text-align: right;
+
+    line-height: 1.7;
+}
+
+.satellite-error-message span {
+    font-size: 13px;
+
+    color: #ff7777;
+
+    font-weight: 700;
+}
+
+.satellite-error-message strong {
+    font-size: 13px;
+
+    color: rgba(255, 230, 230, 0.90);
+
+    font-weight: 500;
+
+    direction: ltr;
+
+    text-align: left;
+
+    word-break: break-word;
+}
+
+
+
+/* ==================================================
+   🛰️ LIVE DRAIN ANALYSIS BUTTON
+   ================================================== */
+
+.live-analysis-map-btn {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 8px;
+
+    padding: 9px 13px;
+
+    border: 1px solid
+        rgba(0, 220, 255, 0.35);
+
+    border-radius: 13px;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(7, 25, 40, 0.95),
+            rgba(3, 12, 22, 0.97)
+        );
+
+    color: #dffaff;
+
+    box-shadow:
+        0 5px 18px rgba(0,0,0,.35),
+        0 0 18px
+        rgba(0,200,255,.10);
+
+    backdrop-filter:
+        blur(8px);
+
+    cursor: pointer;
+
+    font-size: 13px;
+
+    font-weight: 800;
+
+    transition:
+        .2s ease;
+}
+
+.live-analysis-map-btn {
+    transform: translateX(25px);
+}
+
+
+.live-analysis-map-btn:hover {
+
+    transform:
+        translateY(-2px);
+
+    border-color:
+        rgba(0,220,255,.65);
+
+    box-shadow:
+        0 7px 22px rgba(0,0,0,.4),
+        0 0 22px
+        rgba(0,210,255,.22);
+}
+
+.live-analysis-map-btn:active {
+
+    transform:
+        scale(.96);
+}
+
+.live-analysis-icon {
+
+    width: 24px;
+
+    height: 24px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border-radius: 50%;
+
+    color: #00dcff;
+
+    background:
+        rgba(0,210,255,.10);
+
+    border:
+        1px solid
+        rgba(0,220,255,.28);
+
+    font-size: 16px;
+
+    transition:
+        .2s ease;
+}
+
+.live-analysis-label {
+
+    white-space: nowrap;
+}
+
+
+/* ==========================================
+   الحالة النشطة
+   ========================================== */
+
+.live-analysis-map-btn.active {
+
+    border-color:
+        rgba(0,255,170,.55);
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(0,110,85,.32),
+            rgba(3,25,22,.97)
+        );
+
+    box-shadow:
+        0 0 20px
+        rgba(0,255,170,.16);
+}
+
+.live-analysis-map-btn.active
+.live-analysis-icon {
+
+    color: #00ffae;
+
+    background:
+        rgba(0,255,170,.12);
+
+    border-color:
+        rgba(0,255,170,.40);
+
+    box-shadow:
+        0 0 12px
+        rgba(0,255,170,.30);
+}
+
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<header>
+
+    <div class="brand">
+
+        <div class="logo">
+            💧
+        </div>
+
+        <div>
+
+            <h1>
+                IRRIGATION AI
+            </h1>
+
+            <span>
+                Smart Irrigation & Drainage Intelligence
+            </span>
+
+        </div>
+
+    </div>
+
+
+    <div class="system-status">
+
+        ● النظام متصل
+
+    </div>
+
+</header>
+
+
+
+<main>
+
+
+    <!-- ================================
+         STATISTICS
+    ================================= -->
+
+    <section class="stats">
+
+
+        <div class="stat-card">
+
+            <div class="stat-title">
+                إجمالي الحالات
+            </div>
+
+            <div class="stat-value">
+                0
+            </div>
+
+            <div class="stat-sub">
+                حالات مسجلة بالنظام
+            </div>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <div class="stat-title">
+                حالات عالية الخطورة
+            </div>
+
+            <div class="stat-value">
+                0
+            </div>
+
+            <div class="stat-sub">
+                تحتاج تدخل عاجل
+            </div>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <div class="stat-title">
+                تحتاج معاينة
+            </div>
+
+            <div class="stat-value">
+                0
+            </div>
+
+            <div class="stat-sub">
+                Field Inspection
+            </div>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <div class="stat-title">
+                متوسط دقة التحليل
+            </div>
+
+            <div class="stat-value">
+                0%
+            </div>
+
+            <div class="stat-sub">
+                AI Confidence
+            </div>
+
+        </div>
+
+
+    </section>
+
+
+
+    <!-- ================================
+         MAIN CONTENT
+    ================================= -->
+
+    <section class="content">
+
+
+        <!-- CASE -->
+
+        <div class="panel">
+
+           <div class="panel-header">
+
+    <div>
+        <div class="panel-title">
+            تفاصيل الحالة
+        </div>
+
+        <div class="panel-sub">
+            Engineering Case
+        </div>
+    </div>
+
+    <button
+        class="download-drains-btn"
+        id="downloadDrainsBtn"
+        type="button"
+    >
+        📥 تحليل بيانات المصارف
+    </button>
+
+</div>
+
+
+            <div class="case">
+                
+                
+
+                <div class="case-selector">
+
+    <label for="caseSelect">
+        اختيار الحالة
+    </label>
+
+    <select id="caseSelect">
+        <option value="">
+            جاري تحميل الحالات...
+        </option>
+    </select>
+
+    
+<!-- Drain Search: search by drain name/code and kilometer -->
+<div id="drainSearchBox" class="drain-search-box">
+    <input
+        id="drainSearchName"
+        type="text"
+        placeholder="اسم المصرف أو الكود"
+        aria-label="اسم المصرف أو الكود"
+    />
+
+    <input
+        id="drainSearchKm"
+        type="number"
+        min="0"
+        step="0.01"
+        placeholder="رقم الكيلو"
+        aria-label="رقم الكيلو"
+    />
+
+    <button id="drainSearchBtn" type="button">
+        🔎 بحث على الخريطة
+    </button>
+
+    <span id="drainSearchMessage" role="status"></span>
+</div>
+
+<style>
+    .drain-search-box {
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin: 10px 0;
+    }
+
+    .drain-search-box input {
+        box-sizing: border-box;
+        min-width: 150px;
+        padding: 9px 12px;
+        border: 1px solid #cbd5e1;
+        border-radius: 7px;
+        font: inherit;
+    }
+
+    .drain-search-box button {
+        padding: 9px 14px;
+        border: 0;
+        border-radius: 7px;
+        background: #1769aa;
+        color: #fff;
+        cursor: pointer;
+        font: inherit;
+    }
+
+    .drain-search-box button:hover {
+        background: #125487;
+    }
+
+    #drainSearchMessage {
+        font-size: 13px;
+    }
+</style>
+
+
+</div>
+
+
+                <div class="case-id">
+                    CASE ID: —
+                </div>
+
+
+                <div class="case-title">
+                    لا توجد حالة
+                </div>
+
+
+                <div class="risk-box">
+
+                    <div>
+
+                        <div class="panel-sub">
+                            AI RISK SCORE
+                        </div>
+
+                        <div class="risk-number">
+                            0 /100
+                        </div>
+
+                    </div>
+
+
+                    <div class="action">
+                        —
+                    </div>
+
+                </div>
+
+
+
+                <div class="details">
+
+
+                    <div class="detail">
+
+                        <div class="detail-label">
+                            المصرف
+                        </div>
+
+                        <div class="detail-value">
+                            —
+                        </div>
+
+                    </div>
+
+
+                    <div class="detail">
+
+                        <div class="detail-label">
+                            المحافظة
+                        </div>
+
+                        <div class="detail-value">
+                            —
+                        </div>
+
+                    </div>
+
+
+                    <div class="detail">
+
+                        <div class="detail-label">
+                            المركز
+                        </div>
+
+                        <div class="detail-value">
+                            —
+                        </div>
+
+                    </div>
+
+
+                    <div class="detail">
+
+                        <div class="detail-label">
+                            مساحة التغير
+                        </div>
+
+                        <div class="detail-value">
+                            —
+                        </div>
+
+                    </div>
+
+
+                    <div class="detail">
+
+                        <div class="detail-label">
+                            نسبة التغير
+                        </div>
+
+                        <div class="detail-value">
+                            —
+                        </div>
+
+                    </div>
+
+
+                    <div class="detail">
+
+                        <div class="detail-label">
+                            ثقة الذكاء الاصطناعي
+                        </div>
+
+                        <div class="detail-value">
+                            —
+                        </div>
+
+                    </div>
+
+
+                </div>
+
+
+
+
+<div class="drain-impact-box" id="drainImpactBox">
+
+    <div class="drain-impact-title">
+        🧠 تحليل تأثير التغير على المصرف
+    </div>
+
+    <div class="drain-impact-subtitle">
+        Change ↔ Drain Buffer Analysis
+    </div>
+
+    <div class="drain-impact-grid">
+
+        <div class="detail">
+            <div class="detail-label">
+                المسافة لأقرب نقطة
+            </div>
+
+            <div class="detail-value" id="drainDistanceValue">
+                —
+            </div>
+        </div>
+
+
+        <div class="detail">
+            <div class="detail-label">
+                نطاق الحماية
+            </div>
+
+            <div class="detail-value" id="drainBufferValue">
+                —
+            </div>
+        </div>
+
+
+        <div class="detail">
+            <div class="detail-label">
+                مساحة التغير
+            </div>
+
+            <div class="detail-value" id="drainChangeAreaValue">
+                —
+            </div>
+        </div>
+
+
+        <div class="detail">
+            <div class="detail-label">
+                نسبة التداخل
+            </div>
+
+            <div class="detail-value" id="drainOverlapValue">
+                —
+            </div>
+        </div>
+
+    </div>
+
+
+    <div class="drain-relation" id="drainRelationValue">
+        في انتظار تحليل العلاقة...
+    </div>
+
+</div>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- MAP -->
+
+        <div class="panel">
+
+            <div class="panel-header">
+
+                <div>
+
+                    <div class="panel-title">
+                        خريطة المتابعة الذكية
+                    </div>
+
+                    <div class="panel-sub">
+                        Smart GIS Monitoring
+                    </div>
+
+                </div>
+
+                <div class="panel-sub">
+                    مصر
+                </div>
+
+            </div>
+
+<div class="map">
+
+    <div id="gisMap"></div>
+
+    <div class="map-note">
+        Smart GIS Monitoring
+    </div>
+
+</div>
+
+<div class="analysis">
+
+    <div class="analysis-header">
+        <span class="analysis-icon">🧠</span>
+
+        <div>
+            <div class="analysis-title">
+                AI ENGINEERING ANALYSIS
+            </div>
+
+            <div class="analysis-subtitle">
+                القرار والتحليل الهندسي للحالة الحالية
+            </div>
+        </div>
+    </div>
+
+    <div class="analysis-content">
+        في انتظار بيانات التحليل الهندسي...
+    </div>
+
+</div>
+            </div>
+
+        </div>
+
+
+    </section>
+
+
+</main>
+
+
+
+<!-- ==================================================
+     LEAFLET GIS LIBRARY
+================================================== -->
+
+<script
+    src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js">
+</script>
+
+
+<!-- ==================================================
+     DASHBOARD CONTROLLER
+================================================== -->
+
+
+<script src="https://unpkg.com/@turf/turf@7/turf.min.js"></script>
+
+<script src="dashboard.js"></script>
+
+
+
+
+
+<script>
+document.addEventListener('click', async function () {
+
+    // لو الصفحة بالفعل Full Screen، لا تعمل حاجة
+    if (document.fullscreenElement) {
+        return;
+    }
+
+    try {
+
+        await document.documentElement.requestFullscreen();
+
+        console.log('🖥️ Dashboard entered Full Screen');
+
+    } catch (error) {
+
+        console.log(
+            '⚠️ Fullscreen was not allowed:',
+            error
+        );
+
+    }
+
+}, { once: true });
+
+
+
+function showSatelliteNoNewImageMessage(
+    lastAnalysisDate = null
+) {
+    const oldOverlay =
+        document.querySelector(
+            '.satellite-game-overlay'
+        );
+
+    if (oldOverlay) {
+        oldOverlay.remove();
+    }
+
+    const overlay =
+        document.createElement('div');
+
+    overlay.className =
+        'satellite-game-overlay';
+
+    const dateText =
+        lastAnalysisDate
+            ? new Date(
+                `${lastAnalysisDate}T00:00:00`
+              ).toLocaleDateString(
+                'ar-EG',
+                {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric'
+                }
+              )
+            : 'غير متاح';
+
+    overlay.innerHTML = `
+        <div
+            class="satellite-game-modal"
+            dir="rtl"
+        >
+
+            <div class="satellite-game-icon">
+                <span>🛰️</span>
+            </div>
+
+            <h2 class="satellite-game-title">
+                لا توجد صورة فضائية جديدة
+            </h2>
+
+            <p class="satellite-game-subtitle">
+                نظام المراقبة الفضائية لم يجد حتى الآن
+                صورة Sentinel-2 أحدث من آخر تحليل لهذا المصرف.
+            </p>
+
+            <div class="satellite-game-date">
+                🕒 آخر تحليل:
+                <strong>${dateText}</strong>
+            </div>
+
+            <button
+                class="satellite-game-button"
+                type="button"
+            >
+                متابعة
+            </button>
+
+        </div>
+    `;
+
+    document.body.appendChild(overlay);
+
+    const closeButton =
+        overlay.querySelector(
+            '.satellite-game-button'
+        );
+
+    closeButton.addEventListener(
+        'click',
+        () => {
+
+            overlay.style.opacity = '0';
+
+            setTimeout(() => {
+                overlay.remove();
+            }, 200);
+        }
+    );
+
+    overlay.addEventListener(
+        'click',
+        event => {
+
+            if (event.target === overlay) {
+                overlay.remove();
+            }
+        }
+    );
+}
+
+
+
+function showSatelliteErrorMessage(error) {
+    const oldOverlay =
+        document.querySelector(
+            '.satellite-game-overlay'
+        );
+
+    if (oldOverlay) {
+        oldOverlay.remove();
+    }
+
+    const errorMessage =
+        error?.message ||
+        'حدث خطأ غير معروف أثناء تشغيل تحليل الأقمار الصناعية.';
+
+    const overlay =
+        document.createElement('div');
+
+    overlay.className =
+        'satellite-game-overlay';
+
+    overlay.innerHTML = `
+        <div
+            class="satellite-game-modal satellite-error-modal"
+            dir="rtl"
+        >
+
+            <div
+                class="satellite-game-icon satellite-error-icon"
+            >
+                <span>⚠️</span>
+            </div>
+
+            <h2 class="satellite-game-title">
+                تعذر تشغيل التحليل
+            </h2>
+
+            <p class="satellite-game-subtitle">
+                حدث خطأ أثناء تشغيل تحليل المصرف
+                باستخدام صور الأقمار الصناعية.
+            </p>
+
+            <div
+                class="satellite-game-date satellite-error-message"
+            >
+                <span>⚠️ تفاصيل الخطأ</span>
+
+                <strong>
+                    ${errorMessage}
+                </strong>
+            </div>
+
+            <button
+                class="satellite-game-button"
+                type="button"
+            >
+                متابعة
+            </button>
+
+        </div>
+    `;
+
+    document.body.appendChild(overlay);
+
+    const closeButton =
+        overlay.querySelector(
+            '.satellite-game-button'
+        );
+
+    closeButton.addEventListener(
+        'click',
+        () => {
+            overlay.remove();
+        }
+    );
+
+    overlay.addEventListener(
+        'click',
+        event => {
+            if (event.target === overlay) {
+                overlay.remove();
+            }
+        }
+    );
+}
+
+</script>
+
+
+</body>
+
+</html>
